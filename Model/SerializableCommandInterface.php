@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of the FreshCentrifugoBundle
+ * This file is part of the taxi6565-backend project
  *
  * (c) Artem Henvald <genvaldartem@gmail.com>
  *
@@ -10,15 +10,13 @@
 
 declare(strict_types=1);
 
-namespace Fresh\CentrifugoBundle\Token;
+namespace Fresh\CentrifugoBundle\Model;
 
 /**
- * JsonWebTokenHeader.
+ * SerializableCommandInterface.
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-final class JsonWebTokenHeader
+interface SerializableCommandInterface extends CommandInterface, \JsonSerializable
 {
-    public const ALGORITHM = 'HS256';
-    public const TYPE = 'JWT';
 }

@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of the FreshCentrifugoBundle.
+ * This file is part of the taxi6565-backend project
  *
  * (c) Artem Henvald <genvaldartem@gmail.com>
  *
@@ -10,15 +10,17 @@
 
 declare(strict_types=1);
 
-namespace Fresh\CentrifugoBundle;
-
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+namespace Fresh\CentrifugoBundle\Model;
 
 /**
- * FreshCentrifugoBundle.
+ * CommandInterface.
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-class FreshCentrifugoBundle extends Bundle
+interface CommandInterface
 {
+    /**
+     * @return string[]
+     */
+    public function getChannels(): iterable;
 }

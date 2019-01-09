@@ -10,15 +10,13 @@
 
 declare(strict_types=1);
 
-namespace Fresh\CentrifugoBundle;
-
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+namespace Fresh\CentrifugoBundle\Exception;
 
 /**
- * FreshCentrifugoBundle.
+ * ExceptionInterface.
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-class FreshCentrifugoBundle extends Bundle
+interface ExceptionInterface extends \Throwable
 {
 }

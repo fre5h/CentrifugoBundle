@@ -1,10 +1,15 @@
 includes:
     - 'vendor/phpstan/phpstan-phpunit/extension.neon'
     - 'vendor/phpstan/phpstan-phpunit/rules.neon'
+    - 'vendor/phpstan/phpstan-symfony/extension.neon'
+    - 'vendor/slam/phpstan-extensions/conf/slam-rules.neon'
 parameters:
-    level: 7
+    level: 8
+    checkMissingIterableValueType: false
     excludes_analyse:
+        - '%rootDir%/../../../DependencyInjection/Configuration'
         - '%rootDir%/../../../Tests/*'
+        - '%rootDir%/../../../tests/*'
         - '%rootDir%/../../../vendor/*'
     fileExtensions:
         - 'php'

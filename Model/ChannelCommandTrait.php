@@ -10,15 +10,23 @@
 
 declare(strict_types=1);
 
-namespace Fresh\CentrifugoBundle;
-
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+namespace Fresh\CentrifugoBundle\Model;
 
 /**
- * FreshCentrifugoBundle.
+ * ChannelCommandTrait.
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-class FreshCentrifugoBundle extends Bundle
+trait ChannelCommandTrait
 {
+    /** @var string */
+    private $channel;
+
+    /**
+     * @return string[]
+     */
+    public function getChannels(): iterable
+    {
+        return [$this->channel];
+    }
 }

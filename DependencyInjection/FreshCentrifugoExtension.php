@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of the FreshCentrifugoBundle
+ * This file is part of the FreshCentrifugoBundle.
  *
  * (c) Artem Henvald <genvaldartem@gmail.com>
  *
@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
- * This is the class that loads and manages FreshCentrifugoExtension configuration.
+ * FreshCentrifugoExtension.
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
@@ -26,12 +26,14 @@ class FreshCentrifugoExtension extends Extension
 {
     /**
      * {@inheritdoc}
-     *
-     * @throws \Exception
      */
     public function load(array $configs, ContainerBuilder $container): void
     {
+        $configuration = new Configuration();
+        $config = $this->processConfiguration($configuration, $configs);
+        $container->setParameter('centrifugo.channel_max_length', (int) $config['channel_max_length']);
+
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('services.yml');
+        $loader->load('services.yaml');
     }
 }

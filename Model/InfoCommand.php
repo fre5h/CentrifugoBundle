@@ -10,15 +10,20 @@
 
 declare(strict_types=1);
 
-namespace Fresh\CentrifugoBundle;
-
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+namespace Fresh\CentrifugoBundle\Model;
 
 /**
- * FreshCentrifugoBundle.
+ * InfoCommand.
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-class FreshCentrifugoBundle extends Bundle
+final class InfoCommand extends AbstractCommand implements ResultableCommandInterface
 {
+    /**
+     * Constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct(Method::INFO, []);
+    }
 }

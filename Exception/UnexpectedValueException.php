@@ -10,15 +10,13 @@
 
 declare(strict_types=1);
 
-namespace Fresh\CentrifugoBundle;
-
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+namespace Fresh\CentrifugoBundle\Exception;
 
 /**
- * FreshCentrifugoBundle.
+ * UnexpectedValueException.
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-class FreshCentrifugoBundle extends Bundle
+class UnexpectedValueException extends \UnexpectedValueException implements ExceptionInterface
 {
 }
