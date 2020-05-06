@@ -14,9 +14,9 @@ namespace Fresh\CentrifugoBundle\Tests\Model;
 
 use Fresh\CentrifugoBundle\Exception\UnexpectedValueException;
 use Fresh\CentrifugoBundle\Model\BatchRequest;
+use Fresh\CentrifugoBundle\Model\BroadcastCommand;
 use Fresh\CentrifugoBundle\Model\InfoCommand;
 use Fresh\CentrifugoBundle\Model\PublishCommand;
-use Fresh\CentrifugoBundle\Model\BroadcastCommand;
 use PHPUnit\Framework\TestCase;
 
 /**

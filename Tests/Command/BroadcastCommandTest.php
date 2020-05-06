@@ -105,4 +105,30 @@ final class BroadcastCommandTest extends TestCase
         $output = $this->commandTester->getDisplay();
         self::assertStringContainsString('test', $output);
     }
+
+    public function testInvalidChannelName(): void
+    {
+        $this->centrifugoChecker
+            ->expects(self::once())
+            ->method('assertValidChannelName')
+            ->with('channelA')
+            ->willThrowException(new CentrifugoInvalidArgumentException('test'))
+        ;
+
+        $this->centrifugo
+            ->expects(self::never())
+            ->method('broadcast')
+        ;
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('test');
+
+        $this->commandTester->execute(
+            [
+                'command' => $this->command->getName(),
+                'data' => '{"foo":"bar"}',
+                'channels' => ['channelA', 'channelB'],
+            ]
+        );
+    }
 }

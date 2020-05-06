@@ -55,7 +55,7 @@ class ResponseProcessor
         $content = $response->getContent();
 
         if ($command instanceof BatchRequest) {
-            $content = \explode("\n", $content); // @todo Process batch respone
+            $content = \explode("\n", $content); // @todo Process batch response
         } else {
             try {
                 $data = \json_decode($content, true, 512, \JSON_THROW_ON_ERROR);
