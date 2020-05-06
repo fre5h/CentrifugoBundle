@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Tests\Command;
 
-use Fresh\CentrifugoBundle\Command\BroadcastCommand;
+use Fresh\CentrifugoBundle\Command\PresenceCommand;
 use Fresh\CentrifugoBundle\Exception\InvalidArgumentException as CentrifugoInvalidArgumentException;
 use Fresh\CentrifugoBundle\Service\Centrifugo;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
@@ -23,7 +23,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Tester\CommandTester;
 
-final class BroadcastCommandTest extends TestCase
+final class ArgumentChannelTraitTest extends TestCase
 {
     /** @var Centrifugo|MockObject */
     private $centrifugo;
@@ -44,12 +44,12 @@ final class BroadcastCommandTest extends TestCase
     {
         $this->centrifugo = $this->createMock(Centrifugo::class);
         $this->centrifugoChecker = $this->createMock(CentrifugoChecker::class);
-        $command = new BroadcastCommand($this->centrifugo, $this->centrifugoChecker);
+        $command = new PresenceCommand($this->centrifugo, $this->centrifugoChecker);
 
         $this->application = new Application();
         $this->application->add($command);
 
-        $this->command = $this->application->find('centrifugo:broadcast');
+        $this->command = $this->application->find('centrifugo:presence');
         $this->commandTester = new CommandTester($this->command);
     }
 
@@ -64,45 +64,51 @@ final class BroadcastCommandTest extends TestCase
         );
     }
 
-    public function testSuccessfulExecute(): void
+    public function testInvalidChannelName(): void
     {
-        $this->centrifugo
+        $this->centrifugoChecker
             ->expects(self::once())
-            ->method('broadcast')
-            ->with(['foo' => 'bar'], ['channelA', 'channelB'])
+            ->method('assertValidChannelName')
+            ->with('channelA')
+            ->willThrowException(new CentrifugoInvalidArgumentException('test'))
         ;
 
-        $result = $this->commandTester->execute(
+        $this->centrifugo
+            ->expects(self::never())
+            ->method('presence')
+        ;
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('test');
+
+        $this->commandTester->execute(
             [
                 'command' => $this->command->getName(),
-                'data' => '{"foo":"bar"}',
-                'channels' => ['channelA', 'channelB'],
+                'channel' => 'channelA',
             ]
         );
-        self::assertSame(0, $result);
-
-        $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('DONE', $output);
     }
 
-    public function testException(): void
+    public function testChannelNameIsNotString(): void
     {
-        $this->centrifugo
-            ->expects(self::once())
-            ->method('broadcast')
-            ->willThrowException(new \Exception('test'))
+        $this->centrifugoChecker
+            ->expects(self::never())
+            ->method('assertValidChannelName')
         ;
 
-        $result = $this->commandTester->execute(
+        $this->centrifugo
+            ->expects(self::never())
+            ->method('presence')
+        ;
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Argument "channel" is not a string.');
+
+        $this->commandTester->execute(
             [
                 'command' => $this->command->getName(),
-                'data' => '{"foo":"bar"}',
-                'channels' => ['channelA', 'channelB'],
+                'channel' => ['channelA'],
             ]
         );
-        self::assertSame(0, $result);
-
-        $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('test', $output);
     }
 }
