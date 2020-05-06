@@ -31,9 +31,6 @@ final class HistoryRemoveCommand extends AbstractCommand
 
     protected static $defaultName = 'centrifugo:history-remove';
 
-    /** @var CentrifugoChecker */
-    private $centrifugoChecker;
-
     /**
      * @param Centrifugo        $centrifugo
      * @param CentrifugoChecker $centrifugoChecker

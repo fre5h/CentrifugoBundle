@@ -31,9 +31,6 @@ final class PresenceCommand extends AbstractCommand
 
     protected static $defaultName = 'centrifugo:presence';
 
-    /** @var CentrifugoChecker */
-    private $centrifugoChecker;
-
     /**
      * @param Centrifugo        $centrifugo
      * @param CentrifugoChecker $centrifugoChecker

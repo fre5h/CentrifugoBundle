@@ -33,7 +33,7 @@ trait ArgumentDataTrait
     protected function initializeDataArgument(InputInterface $input): void
     {
         try {
-            $data = (string) $input->getArgument('data');
+            $data = $input->getArgument('data');
 
             if (!\is_string($data)) {
                 throw new InvalidArgumentException('Argument "data" is not a string.');

@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Command;
 
+use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputInterface;
 
@@ -24,6 +25,9 @@ trait ArgumentChannelTrait
 {
     /** @var string */
     protected $channel;
+
+    /** @var CentrifugoChecker */
+    protected $centrifugoChecker;
 
     /**
      * @param InputInterface $input
