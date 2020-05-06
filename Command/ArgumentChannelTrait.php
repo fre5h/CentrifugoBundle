@@ -33,7 +33,12 @@ trait ArgumentChannelTrait
     protected function initializeChannelArgument(InputInterface $input): void
     {
         try {
-            $channel = (string) $input->getArgument('channel');
+            $channel = $input->getArgument('channel');
+
+            if (!\is_string($channel)) {
+                throw new InvalidArgumentException('Argument "channel" is not a string.');
+            }
+
             $this->centrifugoChecker->assertValidChannelName($channel);
             $this->channel = $channel;
         } catch (\Exception $e) {

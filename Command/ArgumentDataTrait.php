@@ -33,9 +33,13 @@ trait ArgumentDataTrait
     protected function initializeDataArgument(InputInterface $input): void
     {
         try {
-            $json = (string) $input->getArgument('data');
-            $data = \json_decode($json, true, 512, \JSON_THROW_ON_ERROR);
-            $this->data = $data;
+            $data = (string) $input->getArgument('data');
+
+            if (!\is_string($data)) {
+                throw new InvalidArgumentException('Argument "data" is not a string.');
+            }
+
+            $this->data = \json_decode($data, true, 512, \JSON_THROW_ON_ERROR);
         } catch (\Exception $e) {
             throw new InvalidArgumentException('Data is not a valid JSON.');
         }

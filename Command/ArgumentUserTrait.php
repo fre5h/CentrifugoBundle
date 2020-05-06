@@ -23,7 +23,7 @@ use Symfony\Component\Console\Input\InputInterface;
 trait ArgumentUserTrait
 {
     /** @var string */
-    private $user;
+    protected $user;
 
     /**
      * @param InputInterface $input
@@ -32,6 +32,12 @@ trait ArgumentUserTrait
      */
     protected function initializeUserArgument(InputInterface $input): void
     {
-        $this->user = (string) $input->getArgument('user');
+        $user = $input->getArgument('user');
+
+        if (!\is_string($user)) {
+            throw new InvalidArgumentException('Argument "user" is not a string.');
+        }
+
+        $this->user = $user;
     }
 }
