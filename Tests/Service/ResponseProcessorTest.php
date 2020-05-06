@@ -14,6 +14,7 @@ namespace Fresh\CentrifugoBundle\Tests\Service;
 
 use Fresh\CentrifugoBundle\Exception\CentrifugoErrorException;
 use Fresh\CentrifugoBundle\Exception\CentrifugoException;
+use Fresh\CentrifugoBundle\Exception\LogicException;
 use Fresh\CentrifugoBundle\Model\BatchRequest;
 use Fresh\CentrifugoBundle\Model\BroadcastCommand;
 use Fresh\CentrifugoBundle\Model\ChannelsCommand;
@@ -106,6 +107,32 @@ final class ResponseProcessorTest extends TestCase
                 ],
             ],
             $result
+        );
+    }
+
+    public function testLogicException(): void
+    {
+        $this->response
+            ->expects(self::once())
+            ->method('getContent')
+            ->willReturn(<<<'LDJSON'
+                {"result":{"channels":["chat","notification"]}}
+            LDJSON
+            )
+        ;
+
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('Number of command doesn\'t match number of responses');
+
+        $this->responseProcessor->processResponse(
+            new BatchRequest(
+                [
+                    new PublishCommand(['foo' => 'bar'], 'channelA'),
+                    new BroadcastCommand(['foo' => 'bar'], ['channelA', 'channelB']),
+                    new ChannelsCommand(),
+                ]
+            ),
+            $this->response
         );
     }
 

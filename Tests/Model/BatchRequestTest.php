@@ -50,9 +50,11 @@ final class BatchRequestTest extends TestCase
         self::assertInstanceOf(BroadcastCommand::class, $commands->current());
     }
 
-    public function testAddCommand(): void
+    public function testAddCommandAndGetNumberOfCommands(): void
     {
+        self::assertEquals(2, $this->command->getNumberOfCommands());
         $this->command->addCommand(new InfoCommand());
+        self::assertEquals(3, $this->command->getNumberOfCommands());
         $commands = $this->command->getCommands();
         $commands->next();
         $commands->next();

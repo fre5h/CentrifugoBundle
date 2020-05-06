@@ -14,6 +14,7 @@ namespace Fresh\CentrifugoBundle\Service;
 
 use Fresh\CentrifugoBundle\Exception\CentrifugoErrorException;
 use Fresh\CentrifugoBundle\Exception\CentrifugoException;
+use Fresh\CentrifugoBundle\Exception\LogicException;
 use Fresh\CentrifugoBundle\Model\BatchRequest;
 use Fresh\CentrifugoBundle\Model\CommandInterface;
 use Fresh\CentrifugoBundle\Model\ResultableCommandInterface;
@@ -41,6 +42,8 @@ class ResponseProcessor
      * @param CommandInterface  $command
      * @param ResponseInterface $response
      *
+     * @throws LogicException
+     *
      * @return array|null
      */
     public function processResponse(CommandInterface $command, ResponseInterface $response): ?array
@@ -54,11 +57,15 @@ class ResponseProcessor
         if ($command instanceof BatchRequest) {
             $contents = \explode("\n", $content);
             $result = [];
-            $commands = $command->getCommands();
 
-            foreach ($contents as $innerContent) {
-                $result[] = $this->decodeAndProcessResponseResult($commands->current(), $innerContent);
-                $commands->next();
+            if (\count($contents) !== $command->getNumberOfCommands()) {
+                throw new LogicException('Number of command doesn\'t match number of responses');
+            }
+
+            $i = 0;
+            foreach ($command->getCommands() as $innerCommand) {
+                $result[] = $this->decodeAndProcessResponseResult($innerCommand, $contents[$i]);
+                ++$i;
             }
 
             return $result;

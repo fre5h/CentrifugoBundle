@@ -63,6 +63,14 @@ final class BatchRequest implements CommandInterface
     }
 
     /**
+     * @return int
+     */
+    public function getNumberOfCommands(): int
+    {
+        return \count($this->commands);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getChannels(): iterable
