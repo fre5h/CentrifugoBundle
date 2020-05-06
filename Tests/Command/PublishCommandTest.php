@@ -12,18 +12,16 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Tests\Command;
 
-use Fresh\CentrifugoBundle\Command\BroadcastCommand;
-use Fresh\CentrifugoBundle\Exception\InvalidArgumentException as CentrifugoInvalidArgumentException;
+use Fresh\CentrifugoBundle\Command\PublishCommand;
 use Fresh\CentrifugoBundle\Service\Centrifugo;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Tester\CommandTester;
 
-final class BroadcastCommandTest extends TestCase
+final class PublishCommandTest extends TestCase
 {
     /** @var Centrifugo|MockObject */
     private $centrifugo;
@@ -44,12 +42,12 @@ final class BroadcastCommandTest extends TestCase
     {
         $this->centrifugo = $this->createMock(Centrifugo::class);
         $this->centrifugoChecker = $this->createMock(CentrifugoChecker::class);
-        $command = new BroadcastCommand($this->centrifugo, $this->centrifugoChecker);
+        $command = new PublishCommand($this->centrifugo, $this->centrifugoChecker);
 
         $this->application = new Application();
         $this->application->add($command);
 
-        $this->command = $this->application->find('centrifugo:broadcast');
+        $this->command = $this->application->find('centrifugo:publish');
         $this->commandTester = new CommandTester($this->command);
     }
 
@@ -68,15 +66,15 @@ final class BroadcastCommandTest extends TestCase
     {
         $this->centrifugo
             ->expects(self::once())
-            ->method('broadcast')
-            ->with(['foo' => 'bar'], ['channelA', 'channelB'])
+            ->method('publish')
+            ->with(['foo' => 'bar'], 'channelA')
         ;
 
         $result = $this->commandTester->execute(
             [
                 'command' => $this->command->getName(),
                 'data' => '{"foo":"bar"}',
-                'channels' => ['channelA', 'channelB'],
+                'channel' => 'channelA',
             ]
         );
         self::assertSame(0, $result);
@@ -85,37 +83,11 @@ final class BroadcastCommandTest extends TestCase
         self::assertStringContainsString('DONE', $output);
     }
 
-    public function testInvalidChannelName(): void
-    {
-        $this->centrifugoChecker
-            ->expects(self::once())
-            ->method('assertValidChannelName')
-            ->with('channelA')
-            ->willThrowException(new CentrifugoInvalidArgumentException('test'))
-        ;
-
-        $this->centrifugo
-            ->expects(self::never())
-            ->method('broadcast')
-        ;
-
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('test');
-
-        $this->commandTester->execute(
-            [
-                'command' => $this->command->getName(),
-                'data' => '{"foo":"bar"}',
-                'channels' => ['channelA', 'channelB'],
-            ]
-        );
-    }
-
     public function testException(): void
     {
         $this->centrifugo
             ->expects(self::once())
-            ->method('broadcast')
+            ->method('publish')
             ->willThrowException(new \Exception('test'))
         ;
 
@@ -123,7 +95,7 @@ final class BroadcastCommandTest extends TestCase
             [
                 'command' => $this->command->getName(),
                 'data' => '{"foo":"bar"}',
-                'channels' => ['channelA', 'channelB'],
+                'channel' => 'channelA',
             ]
         );
         self::assertSame(0, $result);

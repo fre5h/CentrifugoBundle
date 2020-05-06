@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Fresh\CentrifugoBundle\Tests\Command;
 
 use Fresh\CentrifugoBundle\Command\BroadcastCommand;
-use Fresh\CentrifugoBundle\Exception\InvalidArgumentException as CentrifugoInvalidArgumentException;
 use Fresh\CentrifugoBundle\Service\Centrifugo;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -23,7 +22,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Tester\CommandTester;
 
-final class BroadcastCommandTest extends TestCase
+final class ArgumentDataTraitTest extends TestCase
 {
     /** @var Centrifugo|MockObject */
     private $centrifugo;
@@ -64,71 +63,41 @@ final class BroadcastCommandTest extends TestCase
         );
     }
 
-    public function testSuccessfulExecute(): void
+    public function testDataIsNotValidJson(): void
     {
-        $this->centrifugo
-            ->expects(self::once())
-            ->method('broadcast')
-            ->with(['foo' => 'bar'], ['channelA', 'channelB'])
-        ;
-
-        $result = $this->commandTester->execute(
-            [
-                'command' => $this->command->getName(),
-                'data' => '{"foo":"bar"}',
-                'channels' => ['channelA', 'channelB'],
-            ]
-        );
-        self::assertSame(0, $result);
-
-        $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('DONE', $output);
-    }
-
-    public function testInvalidChannelName(): void
-    {
-        $this->centrifugoChecker
-            ->expects(self::once())
-            ->method('assertValidChannelName')
-            ->with('channelA')
-            ->willThrowException(new CentrifugoInvalidArgumentException('test'))
-        ;
-
         $this->centrifugo
             ->expects(self::never())
             ->method('broadcast')
         ;
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('test');
+        $this->expectExceptionMessage('Argument "data" is not a valid JSON.');
 
         $this->commandTester->execute(
             [
                 'command' => $this->command->getName(),
-                'data' => '{"foo":"bar"}',
+                'data' => 'invalid json',
                 'channels' => ['channelA', 'channelB'],
             ]
         );
     }
 
-    public function testException(): void
+    public function testDataIsNotString(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects(self::never())
             ->method('broadcast')
-            ->willThrowException(new \Exception('test'))
         ;
 
-        $result = $this->commandTester->execute(
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Argument "data" is not a string.');
+
+        $this->commandTester->execute(
             [
                 'command' => $this->command->getName(),
-                'data' => '{"foo":"bar"}',
+                'data' => ['foo'],
                 'channels' => ['channelA', 'channelB'],
             ]
         );
-        self::assertSame(0, $result);
-
-        $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('test', $output);
     }
 }
