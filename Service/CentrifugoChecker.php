@@ -68,7 +68,7 @@ class CentrifugoChecker
      *
      * @throws CentrifugoException
      */
-    public function assertResponseHeaders(ResponseInterface $response): void
+    public function assertValidResponseHeaders(ResponseInterface $response): void
     {
         $headers = $response->getHeaders(false);
 

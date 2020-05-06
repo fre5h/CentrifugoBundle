@@ -49,7 +49,7 @@ class ResponseProcessor
     public function processResponse(CommandInterface $command, ResponseInterface $response): ?array
     {
         $this->centrifugoChecker->assertValidResponseStatusCode($response);
-        $this->centrifugoChecker->assertResponseHeaders($response);
+        $this->centrifugoChecker->assertValidResponseHeaders($response);
         $this->centrifugoChecker->assertValidResponseContentType($response);
 
         $content = $response->getContent();

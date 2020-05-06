@@ -12,9 +12,11 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Tests\Service;
 
+use Fresh\CentrifugoBundle\Exception\CentrifugoException;
 use Fresh\CentrifugoBundle\Exception\InvalidArgumentException;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use PHPUnit\Framework\TestCase;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 /**
  * CentrifugoCheckerTest.
@@ -23,17 +25,24 @@ use PHPUnit\Framework\TestCase;
  */
 final class CentrifugoCheckerTest extends TestCase
 {
+    /** @var ResponseInterface */
+    private $response;
+
     /** @var CentrifugoChecker */
     private $centrifugoChecker;
 
     protected function setUp(): void
     {
+        $this->response = $this->createMock(ResponseInterface::class);
         $this->centrifugoChecker = new CentrifugoChecker(10);
     }
 
     protected function tearDown(): void
     {
-        unset($this->centrifugoChecker);
+        unset(
+            $this->response,
+            $this->centrifugoChecker,
+        );
     }
 
     public function testInvalidChannelName(): void
@@ -58,5 +67,84 @@ final class CentrifugoCheckerTest extends TestCase
     public function testValidChannelName(): void
     {
         $this->centrifugoChecker->assertValidChannelName('1234567890');
+    }
+
+    public function testInvalidResponseStatusCode(): void
+    {
+        $this->response
+            ->expects(self::once())
+            ->method('getStatusCode')
+            ->willReturn(500)
+        ;
+
+        $this->expectException(CentrifugoException::class);
+        $this->expectExceptionMessage('Wrong status code for Centrifugo response');
+
+        $this->centrifugoChecker->assertValidResponseStatusCode($this->response);
+    }
+
+    public function testValidResponseStatusCode(): void
+    {
+        $this->response
+            ->expects(self::once())
+            ->method('getStatusCode')
+            ->willReturn(200)
+        ;
+
+        $this->centrifugoChecker->assertValidResponseStatusCode($this->response);
+    }
+
+    public function testInvalidResponseHeaders(): void
+    {
+        $this->response
+            ->expects(self::once())
+            ->method('getHeaders')
+            ->with(false)
+            ->willReturn([])
+        ;
+
+        $this->expectException(CentrifugoException::class);
+        $this->expectExceptionMessage('Missing "content-type" header in Centrifugo response');
+
+        $this->centrifugoChecker->assertValidResponseHeaders($this->response);
+    }
+
+    public function testValidResponseHeaders(): void
+    {
+        $this->response
+            ->expects(self::once())
+            ->method('getHeaders')
+            ->with(false)
+            ->willReturn(['content-type' => []])
+        ;
+
+        $this->centrifugoChecker->assertValidResponseHeaders($this->response);
+    }
+
+    public function testInvalidResponseContentType(): void
+    {
+        $this->response
+            ->expects(self::once())
+            ->method('getHeaders')
+            ->with(false)
+            ->willReturn(['content-type' => ['text/html']])
+        ;
+
+        $this->expectException(CentrifugoException::class);
+        $this->expectExceptionMessage('Unexpected content type for Centrifugo response');
+
+        $this->centrifugoChecker->assertValidResponseContentType($this->response);
+    }
+
+    public function testValidResponseContentType(): void
+    {
+        $this->response
+            ->expects(self::once())
+            ->method('getHeaders')
+            ->with(false)
+            ->willReturn(['content-type' => ['application/json']])
+        ;
+
+        $this->centrifugoChecker->assertValidResponseContentType($this->response);
     }
 }
