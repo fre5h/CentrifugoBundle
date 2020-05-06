@@ -14,8 +14,6 @@ namespace Fresh\CentrifugoBundle\Command;
 
 use Fresh\CentrifugoBundle\Service\Centrifugo;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,18 +25,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-final class PresenceCommand extends Command
+final class PresenceCommand extends AbstractCommand
 {
+    use ArgumentChannelTrait;
+
     protected static $defaultName = 'centrifugo:presence';
-
-    /** @var Centrifugo */
-    private $centrifugo;
-
-    /** @var CentrifugoChecker */
-    private $centrifugoChecker;
-
-    /** @var string */
-    private $channel;
 
     /**
      * @param Centrifugo        $centrifugo
@@ -46,10 +37,9 @@ final class PresenceCommand extends Command
      */
     public function __construct(Centrifugo $centrifugo, CentrifugoChecker $centrifugoChecker)
     {
-        $this->centrifugo = $centrifugo;
         $this->centrifugoChecker = $centrifugoChecker;
 
-        parent::__construct();
+        parent::__construct($centrifugo);
     }
 
     /**
@@ -65,13 +55,13 @@ final class PresenceCommand extends Command
                 ])
             )
             ->setHelp(
-                <<<'EOT'
+                <<<'HELP'
 The <info>%command.name%</info> command allows to get channel presence information:
 
 <info>%command.full_name%</info> <comment>channelAbc</comment>
 
 Read more at https://centrifugal.github.io/centrifugo/server/http_api/#presence
-EOT
+HELP
             )
         ;
     }
@@ -83,13 +73,7 @@ EOT
     {
         parent::initialize($input, $output);
 
-        try {
-            $channel = (string) $input->getArgument('channel');
-            $this->centrifugoChecker->assertValidChannelName($channel);
-            $this->channel = $channel;
-        } catch (\Exception $e) {
-            throw new InvalidArgumentException($e->getMessage());
-        }
+        $this->initializeChannelArgument($input);
     }
 
     /**

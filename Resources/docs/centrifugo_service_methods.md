@@ -112,7 +112,6 @@ $data = $this->centrifugo->history('channelA');
  *                         (
  *                             [text] => hello
  *                         )
- *                     [uid] => BWcn14OTBrqUhTXyjNg0fg
  *                 )
  *             [1] => Array
  *                 (
@@ -120,7 +119,6 @@ $data = $this->centrifugo->history('channelA');
  *                         (
  *                             [text] => hi!
  *                         )
- *                     [uid] => Ascn14OTBrq14OXyjNg0hg
  *                 )
  *         )
  * )
@@ -173,6 +171,7 @@ $data = $this->centrifugo->info();
  *             [version] => 
  *             [metrics] => Array
  *                 (
+ *                     ...
  *                 )
  *         )
  * )

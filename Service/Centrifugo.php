@@ -110,7 +110,7 @@ class Centrifugo
     /**
      * @param string $channel
      *
-     * @return array{presence: array<string, array{client: string, user: string}>}
+     * @return array
      */
     public function presence(string $channel): array
     {

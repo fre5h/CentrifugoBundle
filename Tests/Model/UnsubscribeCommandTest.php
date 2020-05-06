@@ -13,9 +13,9 @@ declare(strict_types=1);
 namespace Fresh\CentrifugoBundle\Tests\Model;
 
 use Fresh\CentrifugoBundle\Model\CommandInterface;
+use Fresh\CentrifugoBundle\Model\Method;
 use Fresh\CentrifugoBundle\Model\SerializableCommandInterface;
 use Fresh\CentrifugoBundle\Model\UnsubscribeCommand;
-use Fresh\CentrifugoBundle\Model\Method;
 use PHPUnit\Framework\TestCase;
 
 /**

@@ -12,8 +12,6 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Command;
 
-use Fresh\CentrifugoBundle\Service\Centrifugo;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
@@ -25,25 +23,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-final class DisconnectCommand extends Command
+final class DisconnectCommand extends AbstractCommand
 {
+    use ArgumentUserTrait;
+
     protected static $defaultName = 'centrifugo:disconnect';
-
-    /** @var Centrifugo */
-    private $centrifugo;
-
-    /** @var string */
-    private $user;
-
-    /**
-     * @param Centrifugo $centrifugo
-     */
-    public function __construct(Centrifugo $centrifugo)
-    {
-        $this->centrifugo = $centrifugo;
-
-        parent::__construct();
-    }
 
     /**
      * {@inheritdoc}
@@ -58,13 +42,13 @@ final class DisconnectCommand extends Command
                 ])
             )
             ->setHelp(
-                <<<'EOT'
+                <<<'HELP'
 The <info>%command.name%</info> command allows to disconnect user by ID:
 
 <info>%command.full_name%</info> <comment>user123</comment>
 
 Read more at https://centrifugal.github.io/centrifugo/server/http_api/#disconnect
-EOT
+HELP
             )
         ;
     }
@@ -76,7 +60,7 @@ EOT
     {
         parent::initialize($input, $output);
 
-        $this->user = (string) $input->getArgument('user');
+        $this->initializeUserArgument($input);
     }
 
     /**

@@ -14,7 +14,6 @@ namespace Fresh\CentrifugoBundle\Command;
 
 use Fresh\CentrifugoBundle\Service\Centrifugo;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
@@ -27,18 +26,14 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-final class BroadcastCommand extends Command
+final class BroadcastCommand extends AbstractCommand
 {
-    protected static $defaultName = 'centrifugo:broadcast';
+    use ArgumentDataTrait;
 
-    /** @var Centrifugo */
-    private $centrifugo;
+    protected static $defaultName = 'centrifugo:broadcast';
 
     /** @var CentrifugoChecker */
     private $centrifugoChecker;
-
-    /** @var mixed[] */
-    private $data = [];
 
     /** @var string[] */
     private $channels;
@@ -49,10 +44,9 @@ final class BroadcastCommand extends Command
      */
     public function __construct(Centrifugo $centrifugo, CentrifugoChecker $centrifugoChecker)
     {
-        $this->centrifugo = $centrifugo;
         $this->centrifugoChecker = $centrifugoChecker;
 
-        parent::__construct();
+        parent::__construct($centrifugo);
     }
 
     /**
@@ -69,13 +63,13 @@ final class BroadcastCommand extends Command
                 ])
             )
             ->setHelp(
-                <<<'EOT'
+                <<<'HELP'
 The <info>%command.name%</info> command allows to publish same data into many channels:
 
 <info>%command.full_name%</info> <comment>'{"foo":"bar"}'</comment> </comment>channelAbc</comment> </comment>channelDef</comment>
 
 Read more at https://centrifugal.github.io/centrifugo/server/http_api/#broadcast
-EOT
+HELP
             )
         ;
     }
@@ -87,13 +81,7 @@ EOT
     {
         parent::initialize($input, $output);
 
-        try {
-            $json = (string) $input->getArgument('data');
-            $data = \json_decode($json, true, 512, \JSON_THROW_ON_ERROR);
-            $this->data = $data;
-        } catch (\Exception $e) {
-            throw new InvalidArgumentException('Data is not a valid JSON.');
-        }
+        $this->initializeDataArgument($input);
 
         try {
             $channels = (array) $input->getArgument('channels');
