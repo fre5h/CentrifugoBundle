@@ -14,8 +14,6 @@ namespace Fresh\CentrifugoBundle\Command;
 
 use Fresh\CentrifugoBundle\Service\Centrifugo;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,21 +25,15 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-final class PublishCommand extends Command
+final class PublishCommand extends AbstractCommand
 {
-    protected static $defaultName = 'centrifugo:publish';
+    use ArgumentDataTrait;
+    use ArgumentChannelTrait;
 
-    /** @var Centrifugo */
-    private $centrifugo;
+    protected static $defaultName = 'centrifugo:publish';
 
     /** @var CentrifugoChecker */
     private $centrifugoChecker;
-
-    /** @var mixed[] */
-    private $data = [];
-
-    /** @var string */
-    private $channel;
 
     /**
      * @param Centrifugo        $centrifugo
@@ -49,10 +41,9 @@ final class PublishCommand extends Command
      */
     public function __construct(Centrifugo $centrifugo, CentrifugoChecker $centrifugoChecker)
     {
-        $this->centrifugo = $centrifugo;
         $this->centrifugoChecker = $centrifugoChecker;
 
-        parent::__construct();
+        parent::__construct($centrifugo);
     }
 
     /**
@@ -69,13 +60,13 @@ final class PublishCommand extends Command
                 ])
             )
             ->setHelp(
-                <<<'EOT'
+                <<<'HELP'
 The <info>%command.name%</info> command allows to publish data into channel:
 
 <info>%command.full_name%</info> <comment>'{"foo":"bar"}'</comment> <comment>channelAbc</comment>
 
 Read more at https://centrifugal.github.io/centrifugo/server/http_api/#publish
-EOT
+HELP
             )
         ;
     }
@@ -87,23 +78,8 @@ EOT
     {
         parent::initialize($input, $output);
 
-        try {
-            $json = (string) $input->getArgument('data');
-            $data = \json_decode($json, true, 512, \JSON_THROW_ON_ERROR);
-            $this->data = $data;
-        } catch (\Exception $e) {
-            $this->data = [];
-
-            throw new InvalidArgumentException('Data is not a valid JSON.');
-        }
-
-        try {
-            $channel = (string) $input->getArgument('channel');
-            $this->centrifugoChecker->assertValidChannelName($channel);
-            $this->channel = $channel;
-        } catch (\Exception $e) {
-            throw new InvalidArgumentException($e->getMessage());
-        }
+        $this->initializeDataArgument($input);
+        $this->initializeChannelArgument($input);
     }
 
     /**

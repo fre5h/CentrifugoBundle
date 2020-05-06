@@ -12,8 +12,6 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Command;
 
-use Fresh\CentrifugoBundle\Service\Centrifugo;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -23,22 +21,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-final class ChannelsCommand extends Command
+final class ChannelsCommand extends AbstractCommand
 {
     protected static $defaultName = 'centrifugo:channels';
-
-    /** @var Centrifugo */
-    private $centrifugo;
-
-    /**
-     * @param Centrifugo $centrifugo
-     */
-    public function __construct(Centrifugo $centrifugo)
-    {
-        $this->centrifugo = $centrifugo;
-
-        parent::__construct();
-    }
 
     /**
      * {@inheritdoc}
@@ -48,11 +33,11 @@ final class ChannelsCommand extends Command
         $this
             ->setDescription('Get list of active (with one or more subscribers) channels')
             ->setHelp(
-                <<<'EOT'
+                <<<'HELP'
 The <info>%command.name%</info> command allows to get list of active (with one or more subscribers) channels:
 
 Read more at https://centrifugal.github.io/centrifugo/server/http_api/#channels
-EOT
+HELP
             )
         ;
     }

@@ -14,8 +14,6 @@ namespace Fresh\CentrifugoBundle\Command;
 
 use Fresh\CentrifugoBundle\Service\Centrifugo;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,21 +25,15 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-final class UnsubscribeCommand extends Command
+final class UnsubscribeCommand extends AbstractCommand
 {
-    protected static $defaultName = 'centrifugo:unsubscribe';
+    use ArgumentChannelTrait;
+    use ArgumentUserTrait;
 
-    /** @var Centrifugo */
-    private $centrifugo;
+    protected static $defaultName = 'centrifugo:unsubscribe';
 
     /** @var CentrifugoChecker */
     private $centrifugoChecker;
-
-    /** @var string */
-    private $user;
-
-    /** @var string */
-    private $channel;
 
     /**
      * @param Centrifugo        $centrifugo
@@ -49,10 +41,9 @@ final class UnsubscribeCommand extends Command
      */
     public function __construct(Centrifugo $centrifugo, CentrifugoChecker $centrifugoChecker)
     {
-        $this->centrifugo = $centrifugo;
         $this->centrifugoChecker = $centrifugoChecker;
 
-        parent::__construct();
+        parent::__construct($centrifugo);
     }
 
     /**
@@ -69,13 +60,13 @@ final class UnsubscribeCommand extends Command
                 ])
             )
             ->setHelp(
-                <<<'EOT'
+                <<<'HELP'
 The <info>%command.name%</info> command allows to unsubscribe user from channel:
 
 <info>%command.full_name%</info> <comment>user123</comment> <comment>channelAbc</comment>
 
 Read more at https://centrifugal.github.io/centrifugo/server/http_api/#unsubscribe
-EOT
+HELP
             )
         ;
     }
@@ -87,15 +78,8 @@ EOT
     {
         parent::initialize($input, $output);
 
-        $this->user = (string) $input->getArgument('user');
-
-        try {
-            $channel = (string) $input->getArgument('channel');
-            $this->centrifugoChecker->assertValidChannelName($channel);
-            $this->channel = $channel;
-        } catch (\Exception $e) {
-            throw new InvalidArgumentException($e->getMessage());
-        }
+        $this->initializeUserArgument($input);
+        $this->initializeChannelArgument($input);
     }
 
     /**
