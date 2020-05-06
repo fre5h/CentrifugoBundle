@@ -32,6 +32,8 @@ class FreshCentrifugoExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
         $container->setParameter('centrifugo.channel_max_length', (int) $config['channel_max_length']);
+        $container->setParameter('centrifugo.jwt.algorithm', (int) $config['jwt']['algorithm']);
+        $container->setParameter('centrifugo.jwt.ttl', (int) $config['jwt']['ttl']);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yaml');

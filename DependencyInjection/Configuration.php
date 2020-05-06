@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\DependencyInjection;
 
+use Fresh\CentrifugoBundle\Token\JwtAlgorithm;
+use Fresh\DateTime\TimeConstants;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -35,9 +37,24 @@ class Configuration implements ConfigurationInterface
 
         $root
             ->children()
-                ->scalarNode('channel_max_length')
+                ->arrayNode('jwt')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->enumNode('algorithm')
+                            ->values([JwtAlgorithm::HS256, JwtAlgorithm::RSA])
+                            ->defaultValue(JwtAlgorithm::HS256)
+                            ->info('JWT algorithm. At moment the only supported JWT algorithms are HMAC and RSA.')
+                        ->end()
+                        ->integerNode('ttl')
+                            ->min(0)
+                            ->defaultNull()
+                            ->info('TTL for JWT tokens in seconds.')
+                        ->end()
+                    ->end()
+                ->end()
+                ->integerNode('channel_max_length')
                     ->defaultValue(255)
-                    ->info('Sets maximum length of channel name.')
+                    ->info('Maximum length of channel name.')
                 ->end()
             ->end()
         ;

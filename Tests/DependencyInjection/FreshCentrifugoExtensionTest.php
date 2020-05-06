@@ -57,6 +57,11 @@ final class FreshCentrifugoExtensionTest extends TestCase
         $this->expectException(ServiceNotFoundException::class);
 
         $this->container->get(Centrifugo::class);
-        $this->container->hasParameter('fresh_centrifugo.channel_max_length');
+        self::assertTrue($this->container->hasParameter('fresh_centrifugo.channel_max_length'));
+        self::assertSame(255, $this->container->getParameter('fresh_centrifugo.channel_max_length'));
+        self::assertTrue($this->container->hasParameter('centrifugo.jwt.algorithm'));
+        self::assertSame('HS256', $this->container->getParameter('centrifugo.jwt.algorithm'));
+        self::assertTrue($this->container->hasParameter('centrifugo.jwt.ttl'));
+        self::assertNull($this->container->getParameter('centrifugo.jwt.ttl'));
     }
 }

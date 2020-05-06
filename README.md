@@ -20,6 +20,11 @@
 - [x] [Console commands](./Resources/docs/console_commands.md "Console commands") ⚒️️
 - [ ] @todo Integration into Symfony Web-Profiler 🎛️
 
+## Requirements
+
+* PHP 7.3 *and later*
+* Symfony 5.0 *and later*
+
 ## Installation 🌱
 
 ```bash
