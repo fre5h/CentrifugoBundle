@@ -47,7 +47,8 @@ final class InfoCommand extends Command
     {
         $this
             ->setDescription('Get information about running Centrifugo nodes')
-            ->setHelp(<<<EOT
+            ->setHelp(
+                <<<EOT
 The <info>%command.name%</info> command allows to get information about running Centrifugo nodes:
 
 Read more at https://centrifugal.github.io/centrifugo/server/http_api/#info

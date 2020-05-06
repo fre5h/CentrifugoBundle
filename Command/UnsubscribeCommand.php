@@ -68,7 +68,8 @@ final class UnsubscribeCommand extends Command
                     new InputArgument('channel', InputArgument::REQUIRED, 'Channel name'),
                 ])
             )
-            ->setHelp(<<<EOT
+            ->setHelp(
+                <<<EOT
 The <info>%command.name%</info> command allows to unsubscribe user from channel:
 
 <info>%command.full_name%</info> <comment>user123</comment> <comment>channelAbc</comment>
@@ -93,8 +94,6 @@ EOT
             $this->centrifugoChecker->assertValidChannelName($channel);
             $this->channel = $channel;
         } catch (\Exception $e) {
-            $this->channel = null;
-
             throw new InvalidArgumentException($e->getMessage());
         }
     }

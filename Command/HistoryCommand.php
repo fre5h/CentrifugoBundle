@@ -64,7 +64,8 @@ final class HistoryCommand extends Command
                     new InputArgument('channel', InputArgument::REQUIRED, 'Channel name'),
                 ])
             )
-            ->setHelp(<<<EOT
+            ->setHelp(
+                <<<EOT
 The <info>%command.name%</info> command allows to get channel history information (list of last messages published into channel):
 
 <info>%command.full_name%</info> <comment>channelAbc</comment>
@@ -87,8 +88,6 @@ EOT
             $this->centrifugoChecker->assertValidChannelName($channel);
             $this->channel = $channel;
         } catch (\Exception $e) {
-            $this->channel = null;
-
             throw new InvalidArgumentException($e->getMessage());
         }
     }

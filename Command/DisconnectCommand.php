@@ -57,7 +57,8 @@ final class DisconnectCommand extends Command
                     new InputArgument('user', InputArgument::REQUIRED, 'User ID'),
                 ])
             )
-            ->setHelp(<<<EOT
+            ->setHelp(
+                <<<EOT
 The <info>%command.name%</info> command allows to disconnect user by ID:
 
 <info>%command.full_name%</info> <comment>user123</comment>

@@ -68,7 +68,8 @@ final class BroadcastCommand extends Command
                     new InputArgument('channels', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'Channel names'),
                 ])
             )
-            ->setHelp(<<<EOT
+            ->setHelp(
+                <<<EOT
 The <info>%command.name%</info> command allows to publish same data into many channels:
 
 <info>%command.full_name%</info> <comment>'{"foo":"bar"}'</comment> </comment>channelAbc</comment> </comment>channelDef</comment>
@@ -91,8 +92,6 @@ EOT
             $data = \json_decode($json, true, 512, \JSON_THROW_ON_ERROR);
             $this->data = $data;
         } catch (\Exception $e) {
-            $this->data = [];
-
             throw new InvalidArgumentException('Data is not a valid JSON.');
         }
 
@@ -103,8 +102,6 @@ EOT
             }
             $this->channels = $channels;
         } catch (\Exception $e) {
-            $this->channels = null;
-
             throw new InvalidArgumentException($e->getMessage());
         }
     }

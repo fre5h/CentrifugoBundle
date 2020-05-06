@@ -114,7 +114,7 @@ class Centrifugo
      */
     public function presence(string $channel): array
     {
-        return $this->doSendCommand(new Model\PresenceCommand($channel));
+        return (array) $this->doSendCommand(new Model\PresenceCommand($channel));
     }
 
     /**
@@ -124,7 +124,7 @@ class Centrifugo
      */
     public function presenceStats(string $channel): array
     {
-        return $this->doSendCommand(new Model\PresenceStatsCommand($channel));
+        return (array) $this->doSendCommand(new Model\PresenceStatsCommand($channel));
     }
 
     /**
@@ -134,7 +134,7 @@ class Centrifugo
      */
     public function history(string $channel): array
     {
-        return $this->doSendCommand(new Model\HistoryCommand($channel));
+        return (array) $this->doSendCommand(new Model\HistoryCommand($channel));
     }
 
     /**
@@ -150,7 +150,7 @@ class Centrifugo
      */
     public function channels(): array
     {
-        return $this->doSendCommand(new Model\ChannelsCommand());
+        return (array) $this->doSendCommand(new Model\ChannelsCommand());
     }
 
     /**
@@ -158,7 +158,7 @@ class Centrifugo
      */
     public function info(): array
     {
-        return $this->doSendCommand(new Model\InfoCommand());
+        return (array) $this->doSendCommand(new Model\InfoCommand());
     }
 
     /**
@@ -168,7 +168,7 @@ class Centrifugo
      */
     public function batchRequest(array $commands): array
     {
-        return $this->doSendCommand(new Model\BatchRequest($commands));
+        return (array) $this->doSendCommand(new Model\BatchRequest($commands));
     }
 
     /**
