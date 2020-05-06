@@ -15,7 +15,6 @@ namespace Fresh\CentrifugoBundle\Token;
 /**
  * JwtPayload.
  *
- * You can set only claims, that are supported by Centrifugo.
  * @see https://centrifugal.github.io/centrifugo/server/authentication/#claims
  *
  * @author Artem Henvald <genvaldartem@gmail.com>

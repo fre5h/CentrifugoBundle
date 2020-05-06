@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Fresh\CentrifugoBundle\DependencyInjection;
 
 use Fresh\CentrifugoBundle\Token\JwtAlgorithm;
-use Fresh\DateTime\TimeConstants;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
