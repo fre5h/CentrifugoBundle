@@ -65,7 +65,7 @@ final class HistoryCommand extends Command
                 ])
             )
             ->setHelp(
-                <<<EOT
+                <<<'EOT'
 The <info>%command.name%</info> command allows to get channel history information (list of last messages published into channel):
 
 <info>%command.full_name%</info> <comment>channelAbc</comment>

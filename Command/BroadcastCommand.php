@@ -69,7 +69,7 @@ final class BroadcastCommand extends Command
                 ])
             )
             ->setHelp(
-                <<<EOT
+                <<<'EOT'
 The <info>%command.name%</info> command allows to publish same data into many channels:
 
 <info>%command.full_name%</info> <comment>'{"foo":"bar"}'</comment> </comment>channelAbc</comment> </comment>channelDef</comment>

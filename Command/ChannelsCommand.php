@@ -48,7 +48,7 @@ final class ChannelsCommand extends Command
         $this
             ->setDescription('Get list of active (with one or more subscribers) channels')
             ->setHelp(
-                <<<EOT
+                <<<'EOT'
 The <info>%command.name%</info> command allows to get list of active (with one or more subscribers) channels:
 
 Read more at https://centrifugal.github.io/centrifugo/server/http_api/#channels

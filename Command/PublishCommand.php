@@ -69,7 +69,7 @@ final class PublishCommand extends Command
                 ])
             )
             ->setHelp(
-                <<<EOT
+                <<<'EOT'
 The <info>%command.name%</info> command allows to publish data into channel:
 
 <info>%command.full_name%</info> <comment>'{"foo":"bar"}'</comment> <comment>channelAbc</comment>

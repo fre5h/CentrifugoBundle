@@ -69,7 +69,7 @@ final class UnsubscribeCommand extends Command
                 ])
             )
             ->setHelp(
-                <<<EOT
+                <<<'EOT'
 The <info>%command.name%</info> command allows to unsubscribe user from channel:
 
 <info>%command.full_name%</info> <comment>user123</comment> <comment>channelAbc</comment>
