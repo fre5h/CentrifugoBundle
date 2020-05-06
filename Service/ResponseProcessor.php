@@ -41,9 +41,6 @@ class ResponseProcessor
      * @param CommandInterface  $command
      * @param ResponseInterface $response
      *
-     * @throws CentrifugoException
-     * @throws CentrifugoErrorException
-     *
      * @return array|null
      */
     public function processResponse(CommandInterface $command, ResponseInterface $response): ?array
@@ -55,32 +52,42 @@ class ResponseProcessor
         $content = $response->getContent();
 
         if ($command instanceof BatchRequest) {
-            $content = \explode("\n", $content); // @todo Process batch response
-        } else {
-            try {
-                $data = \json_decode($content, true, 512, \JSON_THROW_ON_ERROR);
-            } catch (\Exception $e) {
-                throw new CentrifugoException('Centrifugo response payload is not a valid JSON');
+            $contents = \explode("\n", $content);
+            $result = [];
+            $commands = $command->getCommands();
+
+            foreach ($contents as $innerContent) {
+                $result[] = $this->decodeAndProcessResponseResult($commands->current(), $innerContent);
+                $commands->next();
             }
 
-            if (isset($data['error'])) {
-                throw new CentrifugoErrorException($data['error']['message'], $data['error']['code']);
-            }
-
-            return $this->processResponseResult($command, $data);
+            return $result;
         }
 
-        return null;
+        return $this->decodeAndProcessResponseResult($command, $content);
     }
 
     /**
      * @param CommandInterface $command
-     * @param array            $data
+     * @param string           $content
+     *
+     * @throws CentrifugoException
+     * @throws CentrifugoErrorException
      *
      * @return array|null
      */
-    private function processResponseResult(CommandInterface $command, array $data): ?array
+    private function decodeAndProcessResponseResult(CommandInterface $command, string $content): ?array
     {
+        try {
+            $data = \json_decode($content, true, 512, \JSON_THROW_ON_ERROR);
+        } catch (\Exception $e) {
+            throw new CentrifugoException('Centrifugo response payload is not a valid JSON');
+        }
+
+        if (isset($data['error'])) {
+            throw new CentrifugoErrorException($data['error']['message'], $data['error']['code']);
+        }
+
         if ($command instanceof ResultableCommandInterface) {
             return $data['result'];
         }

@@ -14,7 +14,11 @@ namespace Fresh\CentrifugoBundle\Tests\Service;
 
 use Fresh\CentrifugoBundle\Exception\CentrifugoErrorException;
 use Fresh\CentrifugoBundle\Exception\CentrifugoException;
+use Fresh\CentrifugoBundle\Model\BatchRequest;
+use Fresh\CentrifugoBundle\Model\BroadcastCommand;
+use Fresh\CentrifugoBundle\Model\ChannelsCommand;
 use Fresh\CentrifugoBundle\Model\CommandInterface;
+use Fresh\CentrifugoBundle\Model\PublishCommand;
 use Fresh\CentrifugoBundle\Model\ResultableCommandInterface;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\ResponseProcessor;
@@ -54,6 +58,57 @@ final class ResponseProcessorTest extends TestCase
         );
     }
 
+    public function testProcessingBatchRequest(): void
+    {
+        $this->centrifugoChecker
+            ->expects(self::once())
+            ->method('assertValidResponseStatusCode')
+            ->with($this->response)
+        ;
+        $this->centrifugoChecker
+            ->expects(self::once())
+            ->method('assertValidResponseHeaders')
+            ->with($this->response)
+        ;
+        $this->centrifugoChecker
+            ->expects(self::once())
+            ->method('assertValidResponseContentType')
+            ->with($this->response)
+        ;
+
+        $this->response
+            ->expects(self::once())
+            ->method('getContent')
+            ->willReturn(<<<'LDJSON'
+                null
+                null
+                {"result":{"channels":["chat","notification"]}}
+            LDJSON
+            )
+        ;
+
+        $result = $this->responseProcessor->processResponse(
+            new BatchRequest(
+                [
+                    new PublishCommand(['foo' => 'bar'], 'channelA'),
+                    new BroadcastCommand(['foo' => 'bar'], ['channelA', 'channelB']),
+                    new ChannelsCommand(),
+                ]
+            ),
+            $this->response
+        );
+        self::assertSame(
+            [
+                null,
+                null,
+                [
+                    'channels' => ['chat', 'notification'],
+                ],
+            ],
+            $result
+        );
+    }
+
     public function testProcessingResultableCommand(): void
     {
         $this->centrifugoChecker
@@ -82,7 +137,7 @@ final class ResponseProcessorTest extends TestCase
             $this->createStub(ResultableCommandInterface::class),
             $this->response
         );
-        self::assertSame(['foo' => "bar"], $result);
+        self::assertSame(['foo' => 'bar'], $result);
     }
 
     public function testProcessingNonResultableCommand(): void
