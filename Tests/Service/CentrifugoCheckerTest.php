@@ -15,6 +15,7 @@ namespace Fresh\CentrifugoBundle\Tests\Service;
 use Fresh\CentrifugoBundle\Exception\CentrifugoException;
 use Fresh\CentrifugoBundle\Exception\InvalidArgumentException;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
@@ -25,7 +26,7 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
  */
 final class CentrifugoCheckerTest extends TestCase
 {
-    /** @var ResponseInterface */
+    /** @var ResponseInterface|MockObject */
     private $response;
 
     /** @var CentrifugoChecker */

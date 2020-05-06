@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Fresh\CentrifugoBundle\Tests\Service;
 
 use Fresh\CentrifugoBundle\Logger\CommandHistoryLogger;
-use Fresh\CentrifugoBundle\Model\PublishCommand;
+use Fresh\CentrifugoBundle\Model;
 use Fresh\CentrifugoBundle\Service\Centrifugo;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\ResponseProcessor;
@@ -84,7 +84,7 @@ final class CentrifugoTest extends TestCase
         );
     }
 
-    public function testPublish(): void
+    public function testPublishCommand(): void
     {
         $this->centrifugoChecker
             ->expects(self::once())
@@ -101,16 +101,318 @@ final class CentrifugoTest extends TestCase
         $this->commandHistoryLogger
             ->expects(self::once())
             ->method('logCommand')
-            ->with($this->isInstanceOf(PublishCommand::class))
+            ->with($this->isInstanceOf(Model\PublishCommand::class))
         ;
 
         $this->responseProcessor
             ->expects(self::once())
             ->method('processResponse')
-            ->with($this->isInstanceOf(PublishCommand::class), $this->response)
+            ->with($this->isInstanceOf(Model\PublishCommand::class), $this->response)
             ->willReturn(null)
         ;
 
         $this->centrifugo->publish(['foo' => 'bar'], 'channelA');
+    }
+
+    public function testBroadcastCommand(): void
+    {
+        $this->centrifugoChecker
+            ->expects(self::exactly(2))
+            ->method('assertValidChannelName')
+            ->withConsecutive(['channelA'], ['channelB'])
+        ;
+
+        $this->httpClient
+            ->expects(self::once())
+            ->method('request')
+            ->willReturn($this->response)
+        ;
+
+        $this->commandHistoryLogger
+            ->expects(self::once())
+            ->method('logCommand')
+            ->with($this->isInstanceOf(Model\BroadcastCommand::class))
+        ;
+
+        $this->responseProcessor
+            ->expects(self::once())
+            ->method('processResponse')
+            ->with($this->isInstanceOf(Model\BroadcastCommand::class), $this->response)
+            ->willReturn(null)
+        ;
+
+        $this->centrifugo->broadcast(['foo' => 'bar'], ['channelA', 'channelB']);
+    }
+
+    public function testUnsubscribeCommand(): void
+    {
+        $this->centrifugoChecker
+            ->expects(self::once())
+            ->method('assertValidChannelName')
+            ->with('channelA')
+        ;
+
+        $this->httpClient
+            ->expects(self::once())
+            ->method('request')
+            ->willReturn($this->response)
+        ;
+
+        $this->commandHistoryLogger
+            ->expects(self::once())
+            ->method('logCommand')
+            ->with($this->isInstanceOf(Model\UnsubscribeCommand::class))
+        ;
+
+        $this->responseProcessor
+            ->expects(self::once())
+            ->method('processResponse')
+            ->with($this->isInstanceOf(Model\UnsubscribeCommand::class), $this->response)
+            ->willReturn(null)
+        ;
+
+        $this->centrifugo->unsubscribe('user123', 'channelA');
+    }
+
+    public function testDisconnectCommand(): void
+    {
+        $this->centrifugoChecker
+            ->expects(self::never())
+            ->method('assertValidChannelName')
+        ;
+
+        $this->httpClient
+            ->expects(self::once())
+            ->method('request')
+            ->willReturn($this->response)
+        ;
+
+        $this->commandHistoryLogger
+            ->expects(self::once())
+            ->method('logCommand')
+            ->with($this->isInstanceOf(Model\DisconnectCommand::class))
+        ;
+
+        $this->responseProcessor
+            ->expects(self::once())
+            ->method('processResponse')
+            ->with($this->isInstanceOf(Model\DisconnectCommand::class), $this->response)
+            ->willReturn(null)
+        ;
+
+        $this->centrifugo->disconnect('user123');
+    }
+
+    public function testPresenceCommand(): void
+    {
+        $this->centrifugoChecker
+            ->expects(self::once())
+            ->method('assertValidChannelName')
+            ->with('channelA')
+        ;
+
+        $this->httpClient
+            ->expects(self::once())
+            ->method('request')
+            ->willReturn($this->response)
+        ;
+
+        $this->commandHistoryLogger
+            ->expects(self::once())
+            ->method('logCommand')
+            ->with($this->isInstanceOf(Model\PresenceCommand::class))
+        ;
+
+        $this->responseProcessor
+            ->expects(self::once())
+            ->method('processResponse')
+            ->with($this->isInstanceOf(Model\PresenceCommand::class), $this->response)
+            ->willReturn([])
+        ;
+
+        $this->centrifugo->presence('channelA');
+    }
+
+    public function testPresenceStatsCommand(): void
+    {
+        $this->centrifugoChecker
+            ->expects(self::once())
+            ->method('assertValidChannelName')
+            ->with('channelA')
+        ;
+
+        $this->httpClient
+            ->expects(self::once())
+            ->method('request')
+            ->willReturn($this->response)
+        ;
+
+        $this->commandHistoryLogger
+            ->expects(self::once())
+            ->method('logCommand')
+            ->with($this->isInstanceOf(Model\PresenceStatsCommand::class))
+        ;
+
+        $this->responseProcessor
+            ->expects(self::once())
+            ->method('processResponse')
+            ->with($this->isInstanceOf(Model\PresenceStatsCommand::class), $this->response)
+            ->willReturn([])
+        ;
+
+        $this->centrifugo->presenceStats('channelA');
+    }
+
+    public function testHistoryCommand(): void
+    {
+        $this->centrifugoChecker
+            ->expects(self::once())
+            ->method('assertValidChannelName')
+            ->with('channelA')
+        ;
+
+        $this->httpClient
+            ->expects(self::once())
+            ->method('request')
+            ->willReturn($this->response)
+        ;
+
+        $this->commandHistoryLogger
+            ->expects(self::once())
+            ->method('logCommand')
+            ->with($this->isInstanceOf(Model\HistoryCommand::class))
+        ;
+
+        $this->responseProcessor
+            ->expects(self::once())
+            ->method('processResponse')
+            ->with($this->isInstanceOf(Model\HistoryCommand::class), $this->response)
+            ->willReturn([])
+        ;
+
+        $this->centrifugo->history('channelA');
+    }
+
+    public function testHistoryRemoveCommand(): void
+    {
+        $this->centrifugoChecker
+            ->expects(self::once())
+            ->method('assertValidChannelName')
+            ->with('channelA')
+        ;
+
+        $this->httpClient
+            ->expects(self::once())
+            ->method('request')
+            ->willReturn($this->response)
+        ;
+
+        $this->commandHistoryLogger
+            ->expects(self::once())
+            ->method('logCommand')
+            ->with($this->isInstanceOf(Model\HistoryRemoveCommand::class))
+        ;
+
+        $this->responseProcessor
+            ->expects(self::once())
+            ->method('processResponse')
+            ->with($this->isInstanceOf(Model\HistoryRemoveCommand::class), $this->response)
+            ->willReturn(null)
+        ;
+
+        $this->centrifugo->historyRemove('channelA');
+    }
+
+    public function testChannelsCommand(): void
+    {
+        $this->centrifugoChecker
+            ->expects(self::never())
+            ->method('assertValidChannelName')
+        ;
+
+        $this->httpClient
+            ->expects(self::once())
+            ->method('request')
+            ->willReturn($this->response)
+        ;
+
+        $this->commandHistoryLogger
+            ->expects(self::once())
+            ->method('logCommand')
+            ->with($this->isInstanceOf(Model\ChannelsCommand::class))
+        ;
+
+        $this->responseProcessor
+            ->expects(self::once())
+            ->method('processResponse')
+            ->with($this->isInstanceOf(Model\ChannelsCommand::class), $this->response)
+            ->willReturn([])
+        ;
+
+        $this->centrifugo->channels();
+    }
+
+    public function testInfoCommand(): void
+    {
+        $this->centrifugoChecker
+            ->expects(self::never())
+            ->method('assertValidChannelName')
+        ;
+
+        $this->httpClient
+            ->expects(self::once())
+            ->method('request')
+            ->willReturn($this->response)
+        ;
+
+        $this->commandHistoryLogger
+            ->expects(self::once())
+            ->method('logCommand')
+            ->with($this->isInstanceOf(Model\InfoCommand::class))
+        ;
+
+        $this->responseProcessor
+            ->expects(self::once())
+            ->method('processResponse')
+            ->with($this->isInstanceOf(Model\InfoCommand::class), $this->response)
+            ->willReturn([])
+        ;
+
+        $this->centrifugo->info();
+    }
+
+    public function testBatchRequest(): void
+    {
+        $this->centrifugoChecker
+            ->expects(self::exactly(2))
+            ->method('assertValidChannelName')
+            ->withConsecutive(['channelA'], ['channelB'])
+        ;
+
+        $this->httpClient
+            ->expects(self::once())
+            ->method('request')
+            ->willReturn($this->response)
+        ;
+
+        $this->commandHistoryLogger
+            ->expects(self::once())
+            ->method('logCommand')
+            ->with($this->isInstanceOf(Model\BatchRequest::class))
+        ;
+
+        $this->responseProcessor
+            ->expects(self::once())
+            ->method('processResponse')
+            ->with($this->isInstanceOf(Model\BatchRequest::class), $this->response)
+            ->willReturn([])
+        ;
+
+        $this->centrifugo->batchRequest(
+            [
+                new Model\PublishCommand([], 'channelA'),
+                new Model\PublishCommand([], 'channelB'),
+            ]
+        );
     }
 }
