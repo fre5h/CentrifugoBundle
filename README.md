@@ -72,12 +72,8 @@ use Fresh\CentrifugoBundle\Service\Centrifugo;
 
 class YourService
 {
-    /** @var Centrifugo */
     private $centrifugo;    
 
-    /**
-     * @param Centrifugo $centrifugo
-     */
     public function __construct(Centrifugo $centrifugo)
     {
         $this->centrifugo = $centrifugo;

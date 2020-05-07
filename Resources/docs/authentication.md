@@ -8,9 +8,12 @@
 
 ### Authenticated User
 
-If in your Symfony application you have a `User` entity, then it implements the interface `Symfony\Component\Security\Core\User\UserInterface`.
-To allow this user to be authenticated in Centrifugo, you have to implement also `Fresh\CentrifugoBundle\User\CentrifugoUserInterface`.
-It has two methods: `getCentrifugoSubject`, `getCentrifugoUserInfo`, which return information needed for JWT token claims.
+If in your Symfony application you have a `User` entity, then it implements the interface [`Symfony\Component\Security\Core\User\UserInterface`](https://github.com/symfony/security-core/blob/master/User/UserInterface.php).
+To allow this user to be authenticated in Centrifugo, you have to **implement** also [`Fresh\CentrifugoBundle\User\CentrifugoUserInterface`](./../../User/CentrifugoUserInterface.php).
+
+It has two methods: `getCentrifugoSubject()`, `getCentrifugoUserInfo()`, which return information needed for JWT token claims.
+
+#### Implement `CentrifugoUserInterface` for your User entity
 
 ```php
 <?php
@@ -25,17 +28,11 @@ class User implements CentrifugoUserInterface, UserInterface
 {
     // ... implement methods from UserInterface
 
-    /**
-     * @return string
-     */
     public function getCentrifugoSubject(): string
     {
         return $this->getUsername(); // or ->getId()
     }
 
-    /**
-     * @return array
-     */
     public function getCentrifugoUserInfo(): array
     {
         // User info is not required, you can return an empty array
@@ -49,6 +46,7 @@ class User implements CentrifugoUserInterface, UserInterface
 
 ```
 
+#### Use `CredentialsGenerator` to receive a JWT token
 
 ```php
 <?php
@@ -62,29 +60,20 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class CentrifugoCredentialsController
 {
-    /** @var CredentialsGenerator */
     private $credentialsGenerator;
-    
-    /** @var TokenStorageInterface */
     private $tokenStorage;
 
-    /**
-     * @param CredentialsGenerator $credentialsGenerator
-     * @param TokenStorageInterface $tokenStorage
-     */
     public function __construct(CredentialsGenerator $credentialsGenerator, TokenStorageInterface $tokenStorage)
     {
         $this->credentialsGenerator = $credentialsGenerator;
         $this->tokenStorage = $tokenStorage;
     }
 
-    /**
-     * @return JsonResponse
-     */
-    public function getTokenAction(): JsonResponse
+    public function getJwtTokenAction(): JsonResponse
     {
         /** @var \Fresh\CentrifugoBundle\User\CentrifugoUserInterface $user */
         $user = $this->tokenStorage->getToken()->getUser();
+        
         // $user should be instance of Fresh\CentrifugoBundle\User\CentrifugoUserInterface
         $token = $this->credentialsGenerator->generateJwtTokenForUser($user);
 
