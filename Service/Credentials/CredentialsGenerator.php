@@ -58,7 +58,26 @@ class CredentialsGenerator
         $jwtPayload = new JwtPayload(
             $user->getCentrifugoSubject(),
             $user->getCentrifugoUserInfo(),
-            $this->calculateExpirationTime(),
+            $this->getExpirationTime(),
+            $base64info,
+            $channels
+        );
+
+        return $this->jwtGenerator->generateToken($jwtPayload);
+    }
+
+    /**
+     * @param string|null $base64info
+     * @param array       $channels
+     *
+     * @return string
+     */
+    public function generateJwtTokenForAnonymous(?string $base64info = null, array $channels = []): string
+    {
+        $jwtPayload = new JwtPayload(
+            '',
+            [],
+            $this->getExpirationTime(),
             $base64info,
             $channels
         );
@@ -79,8 +98,8 @@ class CredentialsGenerator
         $jwtPayload = new JwtPayloadForPrivateChannel(
             $client,
             $channel,
-            [], // @todo
-            $this->calculateExpirationTime(),
+            [],
+            $this->getExpirationTime(),
             $base64info,
             $eto
         );
@@ -91,7 +110,7 @@ class CredentialsGenerator
     /**
      * @return int|null
      */
-    private function calculateExpirationTime(): ?int
+    private function getExpirationTime(): ?int
     {
         $expireAt = null;
 

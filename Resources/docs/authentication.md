@@ -4,7 +4,38 @@
 
 ### Anonymous
 
-@todo
+#### Use `CredentialsGenerator` to receive an anonymous JWT token
+
+```php
+<?php
+declare(strict_types=1);
+
+namespace App\Controller;
+
+use Fresh\CentrifugoBundle\Service\Credentials\CredentialsGenerator;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Routing\Annotation\Route;
+
+class CentrifugoAnonymousController
+{
+    private $credentialsGenerator;
+
+    /**
+     * @Route("/centrifugo/credentials/anonymous", methods={"GET"}, name="get_centrifugo_credentials_for_anonymous")
+     */
+    public function __construct(CredentialsGenerator $credentialsGenerator)
+    {
+        $this->credentialsGenerator = $credentialsGenerator;
+    }
+
+    public function getJwtTokenForAnonymousAction(): JsonResponse
+    {
+        $token = $this->credentialsGenerator->generateJwtTokenForAnonymous();
+
+        return new JsonResponse(['token' => $token], JsonResponse::HTTP_OK);
+    }
+}
+```
 
 ### Authenticated User
 
@@ -65,7 +96,7 @@ class CentrifugoCredentialsController
     private $tokenStorage;
 
     /**
-     * @Route("/centrifugo/credentials", methods={"GET"}, name="get_centrifugo_credentials_for_current_user")
+     * @Route("/centrifugo/credentials/user", methods={"GET"}, name="get_centrifugo_credentials_for_current_user")
      */
     public function __construct(CredentialsGenerator $credentialsGenerator, TokenStorageInterface $tokenStorage)
     {
@@ -73,7 +104,7 @@ class CentrifugoCredentialsController
         $this->tokenStorage = $tokenStorage;
     }
 
-    public function getJwtTokenAction(): JsonResponse
+    public function getJwtTokenForCurrentUserAction(): JsonResponse
     {
         /** @var Fresh\CentrifugoBundle\User\CentrifugoUserInterface $user */
         $user = $this->tokenStorage->getToken()->getUser();

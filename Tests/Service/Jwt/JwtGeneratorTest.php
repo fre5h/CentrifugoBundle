@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Fresh\CentrifugoBundle\Tests\Service;
+namespace Fresh\CentrifugoBundle\Tests\Service\Jwt;
 
 use Fresh\CentrifugoBundle\Service\Jwt\JwtGenerator;
 use Fresh\CentrifugoBundle\Token\JwtAlgorithm;
