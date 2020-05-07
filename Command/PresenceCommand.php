@@ -94,13 +94,7 @@ HELP
                     $io->text(\sprintf('  ├ client: <comment>%s</comment>', $info['client']));
                     if (isset($info['conn_info'])) {
                         $io->text('  ├ conn_info:');
-                        $json = \json_encode($info['conn_info'], \JSON_PRETTY_PRINT | \JSON_THROW_ON_ERROR);
-                        $jsonWithPadding = '';
-                        foreach (\explode("\n", $json) as $line) {
-                            $jsonWithPadding .= \sprintf("   │ <comment>%s</comment>\n", $line);
-                        }
-
-                        $io->write($jsonWithPadding);
+                        $io->write($this->formatConnInfo($info['conn_info']));
                     }
                     $io->text(\sprintf('  └ user: <comment>%s</comment>', $info['user']));
                 }
@@ -114,5 +108,22 @@ HELP
         }
 
         return 0;
+    }
+
+    /**
+     * @param array $connInfo
+     *
+     * @return string
+     */
+    private function formatConnInfo(array $connInfo): string
+    {
+        $json = \json_encode($connInfo, \JSON_PRETTY_PRINT | \JSON_THROW_ON_ERROR);
+
+        $jsonWithPadding = '';
+        foreach (\explode("\n", $json) as $line) {
+            $jsonWithPadding .= \sprintf("   │ <comment>%s</comment>\n", $line);
+        }
+
+        return $jsonWithPadding;
     }
 }
