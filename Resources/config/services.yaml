@@ -9,9 +9,6 @@ services:
             $centrifugoJwtTtl: '%centrifugo.jwt.ttl%'
             $centrifugoSecret: '%env(CENTRIFUGO_SECRET)%'
             iterable $channelAuthenticators: !tagged_iterator 'centrifugo.channel_authenticator'
-    _instanceof:
-        Fresh\CentrifugoBundle\Service\ChannelAuthenticator\ChannelAuthenticatorInterface:
-            tags: ['centrifugo.channel_authenticator']
 
     Fresh\CentrifugoBundle\:
         resource: '../../{Command,Logger,Service}/'

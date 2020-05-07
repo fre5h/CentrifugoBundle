@@ -14,7 +14,7 @@
 ## Features ⚙️
 
 - [x] Compatible with latest [Centrifugo 2.4](https://github.com/centrifugal/centrifugo/releases/tag/v2.4.0) 🚀
-- [x] Wrapper over [Centrifugo HTTP API](https://centrifugal.github.io/centrifugo/server/http_api/) 🧥
+- [x] Wrapper over [Centrifugo HTTP API](https://centrifugal.github.io/centrifugo/server/http_api/) 🔌
 - [X] JWT token generation for [anonymous](./Resources/docs/credentials.md#anonymous), [authenticated user](./Resources/docs/credentials.md#authenticated-user) and [private channel](./Resources/docs/credentials.md#private-channel) 🗝️
 - [x] [Batch request](./Resources/docs/centrifugo_service_methods.md#batch-request) in [JSON streaming format](https://en.wikipedia.org/wiki/JSON_streaming) 💪
 - [x] [Console commands](./Resources/docs/console_commands.md "Console commands") ⚒️️

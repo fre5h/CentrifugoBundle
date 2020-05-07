@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\DependencyInjection;
 
+use Fresh\CentrifugoBundle\Service\ChannelAuthenticator\ChannelAuthenticatorInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -29,13 +30,14 @@ class FreshCentrifugoExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container): void
     {
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('services.yaml');
+
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
         $container->setParameter('centrifugo.channel_max_length', (int) $config['channel_max_length']);
         $container->setParameter('centrifugo.jwt.algorithm', (string) $config['jwt']['algorithm']);
-        $container->setParameter('centrifugo.jwt.ttl', (int) $config['jwt']['ttl']);
-
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('services.yaml');
+        $container->setParameter('centrifugo.jwt.ttl', $config['jwt']['ttl']);
+        $container->registerForAutoconfiguration(ChannelAuthenticatorInterface::class)->addTag('centrifugo.channel_authenticator');
     }
 }
