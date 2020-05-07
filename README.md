@@ -19,6 +19,7 @@
 - [x] [Batch request](./Resources/docs/centrifugo_service_methods.md#batch-request) in [JSON streaming format](https://en.wikipedia.org/wiki/JSON_streaming) 💪
 - [x] [Console commands](./Resources/docs/console_commands.md "Console commands") ⚒️️
 - [ ] @todo Integration into Symfony Web-Profiler 🎛️
+- [ ] @todo Add bundle configuration description
 
 ## Requirements
 
