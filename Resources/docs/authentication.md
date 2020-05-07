@@ -9,9 +9,9 @@
 ### Authenticated User
 
 If in your Symfony application you have a `User` entity, then it implements the interface [`Symfony\Component\Security\Core\User\UserInterface`](https://github.com/symfony/security-core/blob/master/User/UserInterface.php).
-To allow this user to be authenticated in Centrifugo, you have to **implement** also [`Fresh\CentrifugoBundle\User\CentrifugoUserInterface`](./../../User/CentrifugoUserInterface.php).
+To allow this user to be authenticated in Centrifugo, you **have to implement interface** [`Fresh\CentrifugoBundle\User\CentrifugoUserInterface`](./../../User/CentrifugoUserInterface.php).
 
-It has two methods: `getCentrifugoSubject()`, `getCentrifugoUserInfo()`, which return information needed for JWT token claims.
+It has two methods: `getCentrifugoSubject()`, `getCentrifugoUserInfo()`. Which return information needed for JWT token claims.
 
 #### Implement `CentrifugoUserInterface` for your User entity
 
@@ -39,7 +39,7 @@ class User implements CentrifugoUserInterface, UserInterface
         // return [];
 
         return [
-            'username' => $this->getUsername(), // Or some additional info, if you want
+            'username' => $this->getUsername(), // Or some additional info, if you wish
         ];
     }
 }
@@ -71,10 +71,10 @@ class CentrifugoCredentialsController
 
     public function getJwtTokenAction(): JsonResponse
     {
-        /** @var \Fresh\CentrifugoBundle\User\CentrifugoUserInterface $user */
+        /** @var Fresh\CentrifugoBundle\User\CentrifugoUserInterface $user */
         $user = $this->tokenStorage->getToken()->getUser();
         
-        // $user should be instance of Fresh\CentrifugoBundle\User\CentrifugoUserInterface
+        // $user should be an instance of Fresh\CentrifugoBundle\User\CentrifugoUserInterface
         $token = $this->credentialsGenerator->generateJwtTokenForUser($user);
 
         return new JsonResponse(['token' => $token], JsonResponse::HTTP_OK);

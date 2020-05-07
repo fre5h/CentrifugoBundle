@@ -90,9 +90,9 @@ class YourService
 
 ### Authentication with JWT tokens 🗝️
 
-* [Anonymous](./Resources/docs/authentication.md#anonymous)
-* [Authenticated User](./Resources/docs/authentication.md#authenticated-user)
-* [Private Channel](./Resources/docs/authentication.md#private-channel) 
+* [For anonymous](./Resources/docs/authentication.md#anonymous)
+* [For authenticated User](./Resources/docs/authentication.md#authenticated-user)
+* [For private channel](./Resources/docs/authentication.md#private-channel) 
 
 ### Console commands ⚒️
 
