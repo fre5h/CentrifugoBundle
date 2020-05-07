@@ -26,7 +26,7 @@ abstract class AbstractJwtPayload implements JwtPayloadInterface
     private $info;
 
     /** @var string|null */
-    private $base64info;
+    private $base64info; // phpcs:ignore
 
     /**
      * @param array       $info
