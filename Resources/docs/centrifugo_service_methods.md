@@ -209,3 +209,4 @@ $data = $this->centrifugo->batchRequest([$publish, $broadcast, $channels]);
 
 * [Back to index](./../../README.md "Back to index")
 * [Examples of using console commands](./console_commands.md "Examples of using console commands")
+* [Examples of receiving JWT tokens](./credentials.md "Examples of receiving JWT tokens")
