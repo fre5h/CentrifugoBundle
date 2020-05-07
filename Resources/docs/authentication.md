@@ -8,9 +8,9 @@
 
 ### Authenticated User
 
-If in your Symfony application you have a `User` entity, then it implements the interface [`Symfony\Component\Security\Core\User\UserInterface`](https://github.com/symfony/security-core/blob/master/User/UserInterface.php).
+If in your Symfony application you have a `User` entity, then it should implement the [`UserInterface`](https://github.com/symfony/security-core/blob/master/User/UserInterface.php) interface.
 
-To allow this user to be authenticated in Centrifugo, you **have to implement interface** [`Fresh\CentrifugoBundle\User\CentrifugoUserInterface`](./../../User/CentrifugoUserInterface.php).
+To allow this user to be authenticated in Centrifugo, you **have to implement interface** [`CentrifugoUserInterface`](./../../User/CentrifugoUserInterface.php).
 It has two methods: `getCentrifugoSubject()`, `getCentrifugoUserInfo()`. Which return information needed for JWT token claims.
 
 #### Implement `CentrifugoUserInterface` for your User entity
@@ -91,7 +91,7 @@ class CentrifugoCredentialsController
 #### Create own channel authenticator
 
 This bundle provides possibility to register custom channel authenticators for private channels.
-What you need is to create a service which implements [`Fresh\CentrifugoBundle\Service\ChannelAuthenticator\ChannelAuthenticatorInterface`](./../../Service/ChannelAuthenticator/ChannelAuthenticatorInterface.php).
+What you need is to create a service which implements [`ChannelAuthenticatorInterface`](./../../Service/ChannelAuthenticator/ChannelAuthenticatorInterface.php).
 
 ```php
 <?php
@@ -102,9 +102,6 @@ namespace App\Service\Centrifugo\ChannelAuthenticator;
 use Fresh\CentrifugoBundle\Service\ChannelAuthenticator\ChannelAuthenticatorInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-/**
- * AdminChannelAuthenticator.
- */
 class AdminChannelAuthenticator implements ChannelAuthenticatorInterface
 {
     private $authorizationChecker;
