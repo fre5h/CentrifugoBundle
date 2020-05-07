@@ -41,7 +41,7 @@ class CentrifugoAnonymousController
 
 If in your Symfony application you have a `User` entity, then it should implement the [`UserInterface`](https://github.com/symfony/security-core/blob/master/User/UserInterface.php) interface.
 
-To allow this user to be authenticated in Centrifugo, you **have to implement interface** [`CentrifugoUserInterface`](./../../User/CentrifugoUserInterface.php).
+To allow user be authenticated in Centrifugo, you **have to implement interface** [`CentrifugoUserInterface`](./../../User/CentrifugoUserInterface.php).
 It has two methods: `getCentrifugoSubject()`, `getCentrifugoUserInfo()`. Which return information needed for JWT token claims.
 
 #### Implement `CentrifugoUserInterface` for your User entity
@@ -77,7 +77,7 @@ class User implements CentrifugoUserInterface, UserInterface
 
 ```
 
-#### Use `CredentialsGenerator` to receive a JWT token
+#### Use `CredentialsGenerator` to receive a JWT token for authenticated user
 
 ```php
 <?php
@@ -182,7 +182,7 @@ class CentrifugoSubscribeController
      */
     public function centrifugoSubscribeAction(Request $request): JsonResponse
     {
-        $data = $this->privateChannelAuthenticator->authChannelsForUserFromRequest($request);
+        $data = $this->privateChannelAuthenticator->authChannelsForClientFromRequest($request);
 
         return new JsonResponse($data, JsonResponse::HTTP_OK);
     }

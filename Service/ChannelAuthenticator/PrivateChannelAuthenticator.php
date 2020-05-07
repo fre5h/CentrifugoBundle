@@ -44,22 +44,24 @@ class PrivateChannelAuthenticator
      *
      * @return array
      */
-    public function authChannelsForUserFromRequest(Request $request): array
+    public function authChannelsForClientFromRequest(Request $request): array
     {
-        $channelsAuth = [];
+        $authData = [];
 
         [$client, $channels] = $this->processRequest($request);
 
         foreach ($channels as $channel) {
-            if (($token = $this->authChannelForUser($client, $channel)) && \is_string($token)) {
-                $channelsAuth[] = [
-                    'channel' => $channel,
+            $token = $this->authChannelForClient($client, (string) $channel);
+
+            if (\is_string($token)) {
+                $authData[] = [
+                    'channel' => (string) $channel,
                     'token' => $token,
                 ];
             }
         }
 
-        return ['channels' => $channelsAuth];
+        return ['channels' => $authData];
     }
 
     /**
@@ -68,7 +70,7 @@ class PrivateChannelAuthenticator
      *
      * @return string|null
      */
-    private function authChannelForUser(string $client, string $channel): ?string
+    private function authChannelForClient(string $client, string $channel): ?string
     {
         $token = null;
 
@@ -100,21 +102,35 @@ class PrivateChannelAuthenticator
      * @param Request $request
      *
      * @throws BadRequestHttpException
+     * @throws \Exception
      *
      * @return array
      */
     private function processRequest(Request $request): array
     {
-        $content = \json_decode((string) $request->getContent(), true, 512, \JSON_THROW_ON_ERROR);
+        try {
+            $content = \json_decode((string) $request->getContent(), true, 512, \JSON_THROW_ON_ERROR);
+        } catch (\JsonException $e) {
+            throw new BadRequestHttpException('Invalid JSON.');
+        } catch (\Exception $e) {
+            throw $e;
+        }
 
         if (!isset($content['client']) || !\is_string($content['client'])) {
-            throw new BadRequestHttpException('Client must be set in request');
+            throw new BadRequestHttpException('Client must be set in request.');
         }
         $result[] = $content['client'];
 
-        if (!isset($content['channels']) || empty($content['channels'] || !\is_array($content['channels']))) {
-            throw new BadRequestHttpException('Channels must be set in request');
+        if (!isset($content['channels']) || !\is_array($content['channels']) || empty($content['channels'])) {
+            throw new BadRequestHttpException('Channels must be set in request.');
         }
+
+        foreach ($content['channels'] as $channel) {
+            if (!\is_string($channel)) {
+                throw new BadRequestHttpException('Channel must be a string.');
+            }
+        }
+
         $result[] = $content['channels'];
 
         return $result;
