@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Token;
 
+use Fresh\CentrifugoBundle\Exception\InvalidArgumentException;
+
 /**
  * JwtAlgorithm.
  *
@@ -22,4 +24,19 @@ final class JwtAlgorithm
     public const HS256 = 'HS256';
 
     public const RSA = 'RSA';
+
+    /**
+     * @param string $algorithm
+     *
+     * @throws InvalidArgumentException
+     */
+    public static function assertValidAlgorithm(string $algorithm): void
+    {
+        $reflectionClass = new \ReflectionClass(self::class);
+        $availableAlgorithms = $reflectionClass->getConstants();
+
+        if (!\in_array($algorithm, $availableAlgorithms, true)) {
+            throw new InvalidArgumentException(\sprintf('Unsupported JWT algorithm: %s', $algorithm));
+        }
+    }
 }

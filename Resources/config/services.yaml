@@ -7,6 +7,7 @@ services:
             $centrifugoChannelMaxLength: '%centrifugo.channel_max_length%'
             $centrifugoJwtAlgorithm: '%centrifugo.jwt.algorithm%'
             $centrifugoJwtTtl: '%centrifugo.jwt.ttl%'
+            $centrifugoSecret: '%env(CENTRIFUGO_SECRET)%'
             iterable $channelAuthenticators: !tagged_iterator 'centrifugo.channel_authenticator'
     _instanceof:
         Fresh\CentrifugoBundle\Service\ChannelAuthenticator\ChannelAuthenticatorInterface:
@@ -20,7 +21,6 @@ services:
         arguments:
             - '%env(CENTRIFUGO_API_ENDPOINT)%'
             - '%env(CENTRIFUGO_API_KEY)%'
-            - '%env(CENTRIFUGO_SECRET)%'
             - '@http_client'
             - '@Fresh\CentrifugoBundle\Service\ResponseProcessor'
             - '@Fresh\CentrifugoBundle\Logger\CommandHistoryLogger'

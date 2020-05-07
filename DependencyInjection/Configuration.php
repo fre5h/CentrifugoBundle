@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\DependencyInjection;
 
-use Fresh\CentrifugoBundle\Token\JwtAlgorithm;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -40,8 +39,8 @@ class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->enumNode('algorithm')
-                            ->values([JwtAlgorithm::HS256, JwtAlgorithm::RSA])
-                            ->defaultValue(JwtAlgorithm::HS256)
+                            ->values(['HS256', 'RSA'])
+                            ->defaultValue('HS256')
                             ->info('JWT algorithm. At moment the only supported JWT algorithms are HMAC and RSA.')
                         ->end()
                         ->integerNode('ttl')

@@ -10,24 +10,17 @@
 
 declare(strict_types=1);
 
-namespace Fresh\CentrifugoBundle\User;
-
-use Symfony\Component\Security\Core\User\UserInterface;
+namespace Fresh\CentrifugoBundle\Token;
 
 /**
- * CentrifugoUserInterface.
+ * JwtPayloadInterface.
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-interface CentrifugoUserInterface extends UserInterface
+interface JwtPayloadInterface
 {
     /**
-     * @return string
+     * @return array
      */
-    public function getCentrifugoSubject(): string;
-
-    /**
-     * @return mixed[]
-     */
-    public function getCentrifugoUserInfo(): array;
+    public function getPayloadData(): array;
 }

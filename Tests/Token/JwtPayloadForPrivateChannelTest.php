@@ -13,82 +13,88 @@ declare(strict_types=1);
 namespace Fresh\CentrifugoBundle\Tests\Token;
 
 use Fresh\CentrifugoBundle\Token\AbstractJwtPayload;
-use Fresh\CentrifugoBundle\Token\JwtPayload;
+use Fresh\CentrifugoBundle\Token\JwtPayloadForPrivateChannel;
 use PHPUnit\Framework\TestCase;
 
 /**
- * JwtPayloadTest.
+ * JwtPayloadForPrivateChannelTest.
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-final class JwtPayloadTest extends TestCase
+final class JwtPayloadForPrivateChannelTest extends TestCase
 {
     public function testConstructor(): void
     {
-        $jwtPayload = new JwtPayload(
+        $jwtPayloadForPrivateChannel = new JwtPayloadForPrivateChannel(
             'spiderman',
+            'avengers',
             [
                 'name' => 'Peter Parker',
                 'email' => 'spiderman@marvel.com',
             ],
             123,
             'test',
-            ['avengers']
+            true
         );
 
-        self::assertInstanceOf(AbstractJwtPayload::class, $jwtPayload);
-        self::assertSame('spiderman', $jwtPayload->getSubject());
+        self::assertInstanceOf(AbstractJwtPayload::class, $jwtPayloadForPrivateChannel);
+        self::assertSame('spiderman', $jwtPayloadForPrivateChannel->getClient());
+        self::assertSame('avengers', $jwtPayloadForPrivateChannel->getChannel());
         self::assertSame(
             [
                 'name' => 'Peter Parker',
                 'email' => 'spiderman@marvel.com',
             ],
-            $jwtPayload->getInfo()
+            $jwtPayloadForPrivateChannel->getInfo()
         );
-        self::assertSame(123, $jwtPayload->getExpirationTime());
-        self::assertSame('test', $jwtPayload->getBase64Info());
-        self::assertSame(['avengers'], $jwtPayload->getChannels());
+        self::assertSame(123, $jwtPayloadForPrivateChannel->getExpirationTime());
+        self::assertSame('test', $jwtPayloadForPrivateChannel->getBase64Info());
+        self::assertTrue($jwtPayloadForPrivateChannel->isEto());
     }
 
     public function testGetPayloadDataWithAllClaims(): void
     {
-        $jwtPayload = new JwtPayload(
+        $jwtPayloadForPrivateChannel = new JwtPayloadForPrivateChannel(
             'spiderman',
+            'avengers',
             [
                 'name' => 'Peter Parker',
                 'email' => 'spiderman@marvel.com',
             ],
             123,
             'test',
-            ['avengers']
+            true
         );
 
         self::assertEquals(
             [
-                'sub' => 'spiderman',
+                'client' => 'spiderman',
+                'channel' => 'avengers',
                 'info' => [
                     'name' => 'Peter Parker',
                     'email' => 'spiderman@marvel.com',
                 ],
                 'exp' => 123,
                 'b64info' => 'test',
-                'channels' => ['avengers'],
+                'eto' => true,
             ],
-            $jwtPayload->getPayloadData()
+            $jwtPayloadForPrivateChannel->getPayloadData()
         );
     }
 
     public function testGetPayloadDataWithOnlyRequiredClaims(): void
     {
-        $jwtPayload = new JwtPayload(
-            'spiderman'
+        $jwtPayloadForPrivateChannel = new JwtPayloadForPrivateChannel(
+            'spiderman',
+            'avengers',
         );
 
         self::assertEquals(
             [
-                'sub' => 'spiderman',
+                'client' => 'spiderman',
+                'channel' => 'avengers',
             ],
-            $jwtPayload->getPayloadData()
+            $jwtPayloadForPrivateChannel->getPayloadData()
         );
     }
 }

@@ -13,31 +13,36 @@ declare(strict_types=1);
 namespace Fresh\CentrifugoBundle\Token;
 
 /**
- * JwtPayload.
+ * JwtPayloadForPrivateChannel.
  *
- * @see https://centrifugal.github.io/centrifugo/server/authentication/#claims
+ * @see https://centrifugal.github.io/centrifugo/server/private_channels/#claims
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-final class JwtPayload extends AbstractJwtPayload
+final class JwtPayloadForPrivateChannel extends AbstractJwtPayload
 {
     /** @var string */
-    private $subject;
+    private $client;
 
-    /** @var string[] */
-    private $channels;
+    /** @var string */
+    private $channel;
+
+    /** @var bool|null */
+    private $eto;
 
     /**
-     * @param string      $subject
+     * @param string      $client
+     * @param string      $channel
      * @param array       $info
      * @param int|null    $expirationTime
      * @param string|null $base64info
-     * @param string[]    $channels
+     * @param bool        $eto
      */
-    public function __construct(string $subject, array $info = [], ?int $expirationTime = null, ?string $base64info = null, array $channels = [])
+    public function __construct(string $client, string $channel, array $info = [], ?int $expirationTime = null, ?string $base64info = null, bool $eto = null)
     {
-        $this->subject = $subject;
-        $this->channels = $channels;
+        $this->client = $client;
+        $this->channel = $channel;
+        $this->eto = $eto;
 
         parent::__construct($info, $expirationTime, $base64info);
     }
@@ -45,17 +50,25 @@ final class JwtPayload extends AbstractJwtPayload
     /**
      * @return string
      */
-    public function getSubject(): string
+    public function getClient(): string
     {
-        return $this->subject;
+        return $this->client;
     }
 
     /**
-     * @return array
+     * @return string
      */
-    public function getChannels(): array
+    public function getChannel(): string
     {
-        return $this->channels;
+        return $this->channel;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function isEto(): ?bool
+    {
+        return $this->eto;
     }
 
     /**
@@ -64,7 +77,8 @@ final class JwtPayload extends AbstractJwtPayload
     public function getPayloadData(): array
     {
         $data = [
-            'sub' => $this->getSubject(),
+            'client' => $this->getClient(),
+            'channel' => $this->getChannel(),
         ];
 
         if (null !== $this->getExpirationTime()) {
@@ -79,8 +93,8 @@ final class JwtPayload extends AbstractJwtPayload
             $data['b64info'] = $this->getBase64Info();
         }
 
-        if (!empty($this->getChannels())) {
-            $data['channels'] = $this->getChannels();
+        if (null !== $this->isEto()) {
+            $data['eto'] = $this->isEto();
         }
 
         return $data;
