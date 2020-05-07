@@ -9,8 +9,8 @@
 ### Authenticated User
 
 If in your Symfony application you have a `User` entity, then it implements the interface [`Symfony\Component\Security\Core\User\UserInterface`](https://github.com/symfony/security-core/blob/master/User/UserInterface.php).
-To allow this user to be authenticated in Centrifugo, you **have to implement interface** [`Fresh\CentrifugoBundle\User\CentrifugoUserInterface`](./../../User/CentrifugoUserInterface.php).
 
+To allow this user to be authenticated in Centrifugo, you **have to implement interface** [`Fresh\CentrifugoBundle\User\CentrifugoUserInterface`](./../../User/CentrifugoUserInterface.php).
 It has two methods: `getCentrifugoSubject()`, `getCentrifugoUserInfo()`. Which return information needed for JWT token claims.
 
 #### Implement `CentrifugoUserInterface` for your User entity
@@ -84,7 +84,42 @@ class CentrifugoCredentialsController
 
 ### Private Channel
 
-@todo
+This bundle provides possibility to register custom channel authenticators. What you need is to create a service which implements [`Fresh\CentrifugoBundle\Service\ChannelAuthenticator\ChannelAuthenticatorInterface`](./../../Service/ChannelAuthenticator/ChannelAuthenticatorInterface.php).
+
+```php
+<?php
+declare(strict_types=1);
+
+namespace App\Service\Centrifugo\ChannelAuthenticator;
+
+use Fresh\CentrifugoBundle\Service\ChannelAuthenticator\ChannelAuthenticatorInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+
+/**
+ * AdminPrivateChannelAuthenticator.
+ */
+class AdminPrivateChannelAuthenticator implements ChannelAuthenticatorInterface
+{
+    private $authorizationChecker;
+
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
+    {
+        $this->authorizationChecker = $authorizationChecker;
+    }
+
+    // This method is used to detect channels which are processed by this channel authenticator
+    public function supports(string $channel): bool
+    {
+        return 0 === \mb_strpos($channel, '$admins');
+    }
+
+    // This method is used to decide if current user is granted to access this private channel
+    public function hasAccessToChannel(string $channel): bool
+    {
+        return $this->authorizationChecker->isGranted('ROLE_ADMIN');
+    }
+}
+```
 
 ## More features
 
