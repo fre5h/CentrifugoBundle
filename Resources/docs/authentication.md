@@ -57,12 +57,16 @@ namespace App\Controller;
 use Fresh\CentrifugoBundle\Service\Credentials\CredentialsGenerator;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Routing\Annotation\Route;
 
 class CentrifugoCredentialsController
 {
     private $credentialsGenerator;
     private $tokenStorage;
 
+    /**
+     * @Route("/centrifugo/credentials", methods={"GET"}, name="get_centrifugo_credentials_for_current_user")
+     */
     public function __construct(CredentialsGenerator $credentialsGenerator, TokenStorageInterface $tokenStorage)
     {
         $this->credentialsGenerator = $credentialsGenerator;
@@ -84,7 +88,10 @@ class CentrifugoCredentialsController
 
 ### Private Channel
 
-This bundle provides possibility to register custom channel authenticators. What you need is to create a service which implements [`Fresh\CentrifugoBundle\Service\ChannelAuthenticator\ChannelAuthenticatorInterface`](./../../Service/ChannelAuthenticator/ChannelAuthenticatorInterface.php).
+#### Create own channel authenticator
+
+This bundle provides possibility to register custom channel authenticators for private channels.
+What you need is to create a service which implements [`Fresh\CentrifugoBundle\Service\ChannelAuthenticator\ChannelAuthenticatorInterface`](./../../Service/ChannelAuthenticator/ChannelAuthenticatorInterface.php).
 
 ```php
 <?php
@@ -96,9 +103,9 @@ use Fresh\CentrifugoBundle\Service\ChannelAuthenticator\ChannelAuthenticatorInte
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
- * AdminPrivateChannelAuthenticator.
+ * AdminChannelAuthenticator.
  */
-class AdminPrivateChannelAuthenticator implements ChannelAuthenticatorInterface
+class AdminChannelAuthenticator implements ChannelAuthenticatorInterface
 {
     private $authorizationChecker;
 
@@ -107,7 +114,7 @@ class AdminPrivateChannelAuthenticator implements ChannelAuthenticatorInterface
         $this->authorizationChecker = $authorizationChecker;
     }
 
-    // This method is used to detect channels which are processed by this channel authenticator
+    // This method is used to detect channels which are supported by this channel authenticator
     public function supports(string $channel): bool
     {
         return 0 === \mb_strpos($channel, '$admins');
@@ -117,6 +124,39 @@ class AdminPrivateChannelAuthenticator implements ChannelAuthenticatorInterface
     public function hasAccessToChannel(string $channel): bool
     {
         return $this->authorizationChecker->isGranted('ROLE_ADMIN');
+    }
+}
+```
+
+#### Use `PrivateChannelAuthenticator` in your controller
+
+```php
+<?php
+
+namespace App\Controller;
+
+use Fresh\CentrifugoBundle\Service\ChannelAuthenticator\PrivateChannelAuthenticator;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+
+class CentrifugoSubscribeController
+{
+    private $privateChannelAuthenticator;
+
+    public function __construct(PrivateChannelAuthenticator $privateChannelAuthenticator)
+    {
+        $this->privateChannelAuthenticator = $privateChannelAuthenticator;
+    }
+
+    /**
+     * @Route("/centrifugo/subscribe", methods={"POST"}, name="centrifugo_subscribe")
+     */
+    public function centrifugoSubscribeAction(Request $request): JsonResponse
+    {
+        $data = $this->privateChannelAuthenticator->authChannelsForUserFromRequest($request);
+
+        return new JsonResponse($data, JsonResponse::HTTP_OK);
     }
 }
 ```
