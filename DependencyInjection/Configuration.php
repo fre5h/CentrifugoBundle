@@ -51,6 +51,7 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
                 ->integerNode('channel_max_length')
+                    ->min(1)
                     ->defaultValue(255)
                     ->info('Maximum length of channel name.')
                 ->end()
