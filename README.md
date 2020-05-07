@@ -15,7 +15,7 @@
 
 - [x] Compatible with latest [Centrifugo 2.4](https://github.com/centrifugal/centrifugo/releases/tag/v2.4.0) 🚀
 - [x] Wrapper over [Centrifugo HTTP API](https://centrifugal.github.io/centrifugo/server/http_api/) 🔌
-- [X] JWT token generation for [anonymous](./Resources/docs/credentials.md#anonymous), [authenticated user](./Resources/docs/credentials.md#authenticated-user) and [private channel](./Resources/docs/credentials.md#private-channel) 🗝️
+- [X] Authentication with JWT token for [anonymous](./Resources/docs/authentication.md#anonymous), [authenticated user](./Resources/docs/authentication.md#authenticated-user) and [private channel](./Resources/docs/authentication.md#private-channel) 🗝️
 - [x] [Batch request](./Resources/docs/centrifugo_service_methods.md#batch-request) in [JSON streaming format](https://en.wikipedia.org/wiki/JSON_streaming) 💪
 - [x] [Console commands](./Resources/docs/console_commands.md "Console commands") ⚒️️
 - [ ] @todo Integration into Symfony Web-Profiler 🎛️
@@ -60,6 +60,8 @@ CENTRIFUGO_SECRET=secret
 
 ## Using 🧑‍🎓
 
+### Centrifugo service
+
 ```php
 <?php
 declare(strict_types=1);
@@ -90,7 +92,13 @@ class YourService
 
 ℹ️ [More examples of using Centrifugo service](./Resources/docs/centrifugo_service_methods.md "More examples of using Centrifugo service")
 
-## Console commands ⚒️
+### Authentication with JWT tokens 🗝️
+
+* [Anonymous](./Resources/docs/authentication.md#anonymous)
+* [Authenticated User](./Resources/docs/authentication.md#authenticated-user)
+* [Private Channel](./Resources/docs/authentication.md#private-channel) 
+
+### Console commands ⚒️
 
 * `centrifugo:publish`
 * `centrifugo:broadcast`

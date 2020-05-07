@@ -12,14 +12,12 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\User;
 
-use Symfony\Component\Security\Core\User\UserInterface;
-
 /**
  * CentrifugoUserInterface.
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-interface CentrifugoUserInterface extends UserInterface
+interface CentrifugoUserInterface
 {
     /**
      * @return string

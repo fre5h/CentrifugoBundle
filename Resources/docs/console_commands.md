@@ -102,6 +102,8 @@ Channels
 
  * chat
  * notification
+
+ TOTAL: 2
 ```
 
 ### `centrifugo:info`
@@ -134,4 +136,4 @@ Node c980f44237d6_8000
 
 * [Back to index](./../../README.md "Back to index")
 * [Examples of using Centrifugo service](./centrifugo_service_methods.md "Examples of using Centrifugo service")
-* [Examples of receiving JWT tokens](./credentials.md "Examples of receiving JWT tokens")
+* [Authentication with JWT tokens](./authentication.md "Authentication with JWT tokens")
