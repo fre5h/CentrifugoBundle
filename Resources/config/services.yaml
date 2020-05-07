@@ -9,6 +9,13 @@ services:
     Fresh\CentrifugoBundle\:
         resource: '../../{Command,Logger,Service}/'
 
+    Fresh\CentrifugoBundle\DataCollector\CentrifugoCollector:
+        tags:
+            -
+                id: 'centrifugo'
+                name: data_collector
+                template: '@FreshCentrifugo/data_collector/centrifugo.html.twig'
+
     Fresh\CentrifugoBundle\Service\Centrifugo:
         class: Fresh\CentrifugoBundle\Service\Centrifugo
         arguments:
