@@ -15,6 +15,7 @@ env:
     - PHPUNIT_FLAGS="-v"
   jobs:
     - SYMFONY_VERSION=5.0.*
+    - SYMFONY_VERSION=4.4.*
 
 stages:
   - composer validation

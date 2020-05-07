@@ -116,6 +116,8 @@ class PrivateChannelAuthenticator
             throw $e;
         }
 
+        $result = [];
+
         if (!isset($content['client']) || !\is_string($content['client'])) {
             throw new BadRequestHttpException('Client must be set in request.');
         }

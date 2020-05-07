@@ -218,6 +218,25 @@ final class PrivateChannelAuthenticatorTest extends TestCase
         self::assertEquals(['channels' => []], $this->privateChannelAuthenticator->authChannelsForClientFromRequest($this->request));
     }
 
+    public function testExceptionOnGetContent(): void
+    {
+        $this->request
+            ->expects(self::once())
+            ->method('getContent')
+            ->willThrowException(new \Exception('test'))
+        ;
+
+        $this->customerChannelAuthenticator
+            ->expects(self::never())
+            ->method('supports')
+        ;
+
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('test');
+
+        self::assertEquals(['channels' => []], $this->privateChannelAuthenticator->authChannelsForClientFromRequest($this->request));
+    }
+
     public function testNoChannelAuthenticator(): void
     {
         $this->request
