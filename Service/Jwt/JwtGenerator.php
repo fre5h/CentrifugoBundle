@@ -22,13 +22,13 @@ use Fresh\CentrifugoBundle\Token\JwtPayloadInterface;
  */
 class JwtGenerator
 {
-    private const HMAC_ALGORITHM = 'sha256'; // @todo or sha512?
+    private const HMAC_ALGORITHM = 'sha256';
 
     /** @var string */
     private $secret;
 
     /** @var string */
-    private $centrifugoJwtAlgorithm; // @todo RSA
+    private $centrifugoJwtAlgorithm;
 
     /**
      * @param string $centrifugoSecret
