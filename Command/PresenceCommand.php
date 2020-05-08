@@ -92,6 +92,10 @@ HELP
                 foreach ($data['presence'] as $id => $info) {
                     $io->text(\sprintf('<info>%s</info>', $id));
                     $io->text(\sprintf('  ├ client: <comment>%s</comment>', $info['client']));
+                    if (isset($info['conn_info'])) {
+                        $io->text('  ├ conn_info:');
+                        $io->write($this->formatConnInfo($info['conn_info']));
+                    }
                     $io->text(\sprintf('  └ user: <comment>%s</comment>', $info['user']));
                 }
 
@@ -104,5 +108,22 @@ HELP
         }
 
         return 0;
+    }
+
+    /**
+     * @param array $connInfo
+     *
+     * @return string
+     */
+    private function formatConnInfo(array $connInfo): string
+    {
+        $json = \json_encode($connInfo, \JSON_PRETTY_PRINT | \JSON_THROW_ON_ERROR);
+
+        $jsonWithPadding = '';
+        foreach (\explode("\n", $json) as $line) {
+            $jsonWithPadding .= \sprintf("   │ <comment>%s</comment>\n", $line);
+        }
+
+        return $jsonWithPadding;
     }
 }

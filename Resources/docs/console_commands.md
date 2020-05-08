@@ -42,12 +42,13 @@ $ bin/console centrifugo:presence channelAbc
 Presence
 ========
 
- c54313b2-0442-499a-a70c-051f8588020f
-   ├ client: c54313b2-0442-499a-a70c-051f8588020f
-   └ user: 42
- adad13b1-0442-499a-a70c-051f858802da
-   ├ client: adad13b1-0442-499a-a70c-051f858802da
-   └ user: 42
+ f067a54a-6f68-47d2-aaf0-6e41dcb8f297
+   ├ client: f067a54a-6f68-47d2-aaf0-6e41dcb8f297
+   ├ conn_info:
+   │ {
+   │     "username": "user1@test.com"
+   │ }
+   └ user: bcb8c9dd-eba7-4ef6-8b86-0d6a2b1455a1
 ```
 
 ### `centrifugo:presence-stats`
@@ -102,6 +103,8 @@ Channels
 
  * chat
  * notification
+
+ TOTAL: 2
 ```
 
 ### `centrifugo:info`
@@ -134,3 +137,5 @@ Node c980f44237d6_8000
 
 * [Back to index](./../../README.md "Back to index")
 * [Examples of using Centrifugo service](./centrifugo_service_methods.md "Examples of using Centrifugo service")
+* [Authentication with JWT tokens](./authentication.md "Authentication with JWT tokens")
+* [Customize bundle configuration](./configuration.md "Customize bundle configuration")

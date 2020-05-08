@@ -32,9 +32,6 @@ class Centrifugo
     /** @var string */
     private $apiKey;
 
-    /** @var string */
-    private $secret;
-
     /** @var HttpClientInterface */
     private $httpClient;
 
@@ -53,18 +50,16 @@ class Centrifugo
     /**
      * @param string               $endpoint
      * @param string               $apiKey
-     * @param string               $secret
      * @param HttpClientInterface  $httpClient
      * @param ResponseProcessor    $responseProcessor
      * @param CommandHistoryLogger $commandHistoryLogger
      * @param CentrifugoChecker    $centrifugoChecker
      * @param Profiler|null        $profiler
      */
-    public function __construct(string $endpoint, string $apiKey, string $secret, HttpClientInterface $httpClient, ResponseProcessor $responseProcessor, CommandHistoryLogger $commandHistoryLogger, CentrifugoChecker $centrifugoChecker, ?Profiler $profiler)
+    public function __construct(string $endpoint, string $apiKey, HttpClientInterface $httpClient, ResponseProcessor $responseProcessor, CommandHistoryLogger $commandHistoryLogger, CentrifugoChecker $centrifugoChecker, ?Profiler $profiler)
     {
         $this->endpoint = $endpoint;
         $this->apiKey = $apiKey;
-        $this->secret = $secret;
         $this->httpClient = $httpClient;
         $this->responseProcessor = $responseProcessor;
         $this->commandHistoryLogger = $commandHistoryLogger;

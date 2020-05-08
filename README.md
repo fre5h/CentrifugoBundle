@@ -11,14 +11,20 @@
 [![StyleCI](https://styleci.io/repos/164834807/shield?style=flat-square)](https://styleci.io/repos/164834807)
 [![Gitter](https://img.shields.io/badge/gitter-join%20chat-brightgreen.svg?style=flat-square)](https://gitter.im/fre5h/CentrifugoBundle)
 
-## Features ⚙️
+## Features 🎁
 
 - [x] Compatible with latest [Centrifugo 2.4](https://github.com/centrifugal/centrifugo/releases/tag/v2.4.0) 🚀
-- [x] Wrapper over [Centrifugo HTTP API](https://centrifugal.github.io/centrifugo/server/http_api/) 🧥
-- [ ] @todo Json Web Token generation for anonymous, authenticated users and _private channels_ 🗝️
+- [x] Wrapper over [Centrifugo HTTP API](https://centrifugal.github.io/centrifugo/server/http_api/) 🔌
+- [X] Authentication with JWT token for [anonymous](./Resources/docs/authentication.md#anonymous), [authenticated user](./Resources/docs/authentication.md#authenticated-user) and [private channel](./Resources/docs/authentication.md#private-channel) 🗝️
 - [x] [Batch request](./Resources/docs/centrifugo_service_methods.md#batch-request) in [JSON streaming format](https://en.wikipedia.org/wiki/JSON_streaming) 💪
 - [x] [Console commands](./Resources/docs/console_commands.md "Console commands") ⚒️️
 - [ ] @todo Integration into Symfony Web-Profiler 🎛️
+- [ ] @todo Add RSA
+
+## Requirements
+
+* PHP 7.3 *and later*
+* Symfony 4.4, 5.0 *and later*
 
 ## Installation 🌱
 
@@ -53,7 +59,11 @@ CENTRIFUGO_SECRET=secret
 ###< fresh/centrifugo-bundle ###
 ```
 
+ℹ️ [Customize bundle configuration](./Resources/docs/configuration.md "Customize bundle configuration")
+
 ## Using 🧑‍🎓
+
+### Centrifugo service
 
 ```php
 <?php
@@ -65,12 +75,8 @@ use Fresh\CentrifugoBundle\Service\Centrifugo;
 
 class YourService
 {
-    /** @var Centrifugo */
     private $centrifugo;    
 
-    /**
-     * @param Centrifugo $centrifugo
-     */
     public function __construct(Centrifugo $centrifugo)
     {
         $this->centrifugo = $centrifugo;
@@ -85,7 +91,13 @@ class YourService
 
 ℹ️ [More examples of using Centrifugo service](./Resources/docs/centrifugo_service_methods.md "More examples of using Centrifugo service")
 
-## Console commands ⚒️
+### Authentication with JWT tokens 🗝️
+
+* [For anonymous](./Resources/docs/authentication.md#anonymous)
+* [For authenticated User](./Resources/docs/authentication.md#authenticated-user)
+* [For private channel](./Resources/docs/authentication.md#private-channel) 
+
+### Console commands ⚒️
 
 * `centrifugo:publish`
 * `centrifugo:broadcast`

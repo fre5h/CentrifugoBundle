@@ -62,7 +62,6 @@ final class CentrifugoTest extends TestCase
         $this->centrifugo = new Centrifugo(
             'http://test.com',
             'qwerty',
-            'secret',
             $this->httpClient,
             $this->responseProcessor,
             $this->commandHistoryLogger,

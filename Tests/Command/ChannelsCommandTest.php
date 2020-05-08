@@ -71,6 +71,7 @@ final class ChannelsCommandTest extends TestCase
         self::assertStringContainsString('Channels', $output);
         self::assertStringContainsString('* channelA', $output);
         self::assertStringContainsString('* channelB', $output);
+        self::assertStringContainsString('TOTAL: 2', $output);
     }
 
     public function testNoData(): void
