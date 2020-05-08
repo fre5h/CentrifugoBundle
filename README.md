@@ -47,8 +47,6 @@ return [
 ];
 ```
 
-ℹ️ [Configuration](./Resources/docs/configuration.md "Configuration")
-
 #### Check the `.env` file and add you configuration
 
 ```yaml
@@ -60,6 +58,8 @@ CENTRIFUGO_API_ENDPOINT=http://centrifugo:8000/api
 CENTRIFUGO_SECRET=secret
 ###< fresh/centrifugo-bundle ###
 ```
+
+ℹ️ [Customize bundle configuration](./Resources/docs/configuration.md "Customize bundle configuration")
 
 ## Using 🧑‍🎓
 

@@ -210,4 +210,4 @@ $data = $this->centrifugo->batchRequest([$publish, $broadcast, $channels]);
 * [Back to index](./../../README.md "Back to index")
 * [Examples of using console commands](./console_commands.md "Examples of using console commands")
 * [Authentication with JWT tokens](./authentication.md "Authentication with JWT tokens")
-* [Configuration](./configuration.md "Configuration")
+* [Customize bundle configuration](./configuration.md "Customize bundle configuration")
