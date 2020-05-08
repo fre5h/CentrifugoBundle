@@ -29,11 +29,11 @@ class CentrifugoCollector extends DataCollector
     private $centrifugoLogger;
 
     /**
-     * @param CommandHistoryLogger $centrifugoLogger
+     * @param CommandHistoryLogger $commandHistoryLogger
      */
-    public function __construct(CommandHistoryLogger $centrifugoLogger)
+    public function __construct(CommandHistoryLogger $commandHistoryLogger)
     {
-        $this->centrifugoLogger = $centrifugoLogger;
+        $this->centrifugoLogger = $commandHistoryLogger;
     }
 
     /**
@@ -47,18 +47,18 @@ class CentrifugoCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
-    public function reset(): void
+    public function getName(): string
     {
-        $this->data = [];
-        $this->centrifugoLogger->clearCommandHistory();
+        return 'centrifugo';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName(): string
+    public function reset(): void
     {
-        return 'centrifugo';
+        $this->data = [];
+        $this->centrifugoLogger->clearCommandHistory();
     }
 
     /**
