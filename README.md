@@ -21,7 +21,7 @@
 - [ ] @todo Integration into Symfony Web-Profiler 🎛️
 - [ ] @todo Add RSA
 
-## Requirements
+## Requirements 🧐
 
 * PHP 7.3 *and later*
 * Symfony 4.4, 5.0 *and later*
