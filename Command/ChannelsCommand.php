@@ -55,7 +55,7 @@ HELP
             if (!empty($data['channels'])) {
                 $io->title('Channels');
                 $io->listing($data['channels']);
-                $io->newLine();
+                $io->text(\sprintf('<info>TOTAL</info>: %d', \count($data['channels'])));
             } else {
                 $io->success('NO DATA');
             }

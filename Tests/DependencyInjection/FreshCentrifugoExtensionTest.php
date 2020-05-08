@@ -54,9 +54,25 @@ final class FreshCentrifugoExtensionTest extends TestCase
         self::assertArrayHasKey(Centrifugo::class, $this->container->getRemovedIds());
         self::assertArrayNotHasKey(Centrifugo::class, $this->container->getDefinitions());
 
-        $this->expectException(ServiceNotFoundException::class);
+        self::assertTrue($this->container->hasParameter('centrifugo.channel_max_length'));
+        self::assertSame(255, $this->container->getParameter('centrifugo.channel_max_length'));
+        self::assertTrue($this->container->hasParameter('centrifugo.jwt.algorithm'));
+        self::assertSame('HS256', $this->container->getParameter('centrifugo.jwt.algorithm'));
+        self::assertTrue($this->container->hasParameter('centrifugo.jwt.ttl'));
+        self::assertNull($this->container->getParameter('centrifugo.jwt.ttl'));
 
+        $childDefinitions = $this->container->getAutoconfiguredInstanceof();
+        foreach ($childDefinitions as $childDefinition) {
+           self::assertTrue($childDefinition->hasTag('centrifugo.channel_authenticator'));
+        }
+    }
+
+    public function testExceptionOnGettingPrivateService(): void
+    {
+        $this->container->loadFromExtension($this->extension->getAlias());
+        $this->container->compile();
+
+        $this->expectException(ServiceNotFoundException::class);
         $this->container->get(Centrifugo::class);
-        $this->container->hasParameter('fresh_centrifugo.channel_max_length');
     }
 }

@@ -5,6 +5,10 @@ services:
         public: false
         bind:
             $centrifugoChannelMaxLength: '%centrifugo.channel_max_length%'
+            $centrifugoJwtAlgorithm: '%centrifugo.jwt.algorithm%'
+            $centrifugoJwtTtl: '%centrifugo.jwt.ttl%'
+            $centrifugoSecret: '%env(CENTRIFUGO_SECRET)%'
+            iterable $channelAuthenticators: !tagged_iterator 'centrifugo.channel_authenticator'
 
     Fresh\CentrifugoBundle\:
         resource: '../../{Command,Logger,Service}/'
@@ -19,9 +23,8 @@ services:
     Fresh\CentrifugoBundle\Service\Centrifugo:
         class: Fresh\CentrifugoBundle\Service\Centrifugo
         arguments:
-            - '%env(APP_CENTRIFUGO_API_ENDPOINT)%'
-            - '%env(APP_CENTRIFUGO_API_KEY)%'
-            - '%env(APP_CENTRIFUGO_SECRET)%'
+            - '%env(CENTRIFUGO_API_ENDPOINT)%'
+            - '%env(CENTRIFUGO_API_KEY)%'
             - '@http_client'
             - '@Fresh\CentrifugoBundle\Service\ResponseProcessor'
             - '@Fresh\CentrifugoBundle\Logger\CommandHistoryLogger'

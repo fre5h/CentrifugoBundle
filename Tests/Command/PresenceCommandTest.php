@@ -74,6 +74,9 @@ final class PresenceCommandTest extends TestCase
                         'c54313b2-0442-499a-a70c-051f8588020f' => [
                             'client' => 'c54313b2-0442-499a-a70c-051f8588020f',
                             'user' => '42',
+                            'conn_info' => [
+                                'username' => 'user1@test.com',
+                            ],
                         ],
                     ],
                 ]
@@ -92,6 +95,8 @@ final class PresenceCommandTest extends TestCase
         self::assertStringContainsString('Presence', $output);
         self::assertStringContainsString('client: c54313b2-0442-499a-a70c-051f8588020f', $output);
         self::assertStringContainsString('user: 42', $output);
+        self::assertStringContainsString('conn_info', $output);
+        self::assertStringContainsString('"username": "user1@test.com"', $output);
     }
 
     public function testNoData(): void

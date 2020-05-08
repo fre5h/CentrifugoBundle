@@ -2,7 +2,7 @@
     "name": "fresh/centrifugo-bundle",
     "description": "Provides communication with web-socket server Centrifugo in Symfony applications.",
     "keywords": ["bundle", "symfony", "centrifugo", "web socket", "web-socket", "socket", "real time"],
-    "homepage": "https://github.com/fre5h/FreshCentrifugoBundle",
+    "homepage": "https://github.com/fre5h/CentrifugoBundle",
     "type": "symfony-bundle",
     "license": "MIT",
     "authors": [
@@ -13,22 +13,25 @@
         },
         {
             "name": "Community",
-            "homepage": "https://github.com/fre5h/FreshCentrifugoBundle/graphs/contributors",
+            "homepage": "https://github.com/fre5h/CentrifugoBundle/graphs/contributors",
             "role": "Contributors"
         }
     ],
     "support": {
         "email": "genvaldartem@gmail.com",
-        "issues": "https://github.com/fre5h/FreshCentrifugoBundle/issues"
+        "issues": "https://github.com/fre5h/CentrifugoBundle/issues"
     },
     "require": {
         "php": ">=7.3.0",
-        "symfony/config": "^5.0",
-        "symfony/dependency-injection": "^5.0",
-        "symfony/framework-bundle": "^5.0",
-        "symfony/http-client": "^5.0",
-        "symfony/http-foundation": "^5.0",
-        "symfony/validator": "^5.0"
+        "fresh/datetime": "^1.4",
+        "symfony/config": "^4.4 || ^5.0",
+        "symfony/dependency-injection": "^4.4 || ^5.0",
+        "symfony/framework-bundle": "^4.4 || ^5.0",
+        "symfony/http-client": "^4.4 || ^5.0",
+        "symfony/http-foundation": "^4.4 || ^5.0",
+        "symfony/http-kernel": "^4.4 || ^5.0",
+        "symfony/security-core": "^4.4 || ^5.0",
+        "symfony/validator": "^4.4 || ^5.0"
     },
     "require-dev": {
         "escapestudios/symfony2-coding-standard": "^3.11",
