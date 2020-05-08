@@ -11,7 +11,7 @@
 [![StyleCI](https://styleci.io/repos/164834807/shield?style=flat-square)](https://styleci.io/repos/164834807)
 [![Gitter](https://img.shields.io/badge/gitter-join%20chat-brightgreen.svg?style=flat-square)](https://gitter.im/fre5h/CentrifugoBundle)
 
-## Features ⚙️
+## Features 🎁
 
 - [x] Compatible with latest [Centrifugo 2.4](https://github.com/centrifugal/centrifugo/releases/tag/v2.4.0) 🚀
 - [x] Wrapper over [Centrifugo HTTP API](https://centrifugal.github.io/centrifugo/server/http_api/) 🔌
@@ -19,7 +19,7 @@
 - [x] [Batch request](./Resources/docs/centrifugo_service_methods.md#batch-request) in [JSON streaming format](https://en.wikipedia.org/wiki/JSON_streaming) 💪
 - [x] [Console commands](./Resources/docs/console_commands.md "Console commands") ⚒️️
 - [ ] @todo Integration into Symfony Web-Profiler 🎛️
-- [ ] @todo Add bundle configuration description
+- [ ] @todo Add RSA
 
 ## Requirements
 
@@ -46,6 +46,8 @@ return [
     // Other bundles...
 ];
 ```
+
+ℹ️ [Configuration](./Resources/docs/configuration.md "Configuration")
 
 #### Check the `.env` file and add you configuration
 

@@ -72,7 +72,7 @@ class PrivateChannelAuthenticator
      */
     private function authChannelForClient(string $client, string $channel): ?string
     {
-        $token = null;
+        $token = null; // @todo validate private channel name
 
         $channelAuthenticator = $this->findAppropriateChannelAuthenticator($channel);
         if ($channelAuthenticator instanceof ChannelAuthenticatorInterface && $channelAuthenticator->hasAccessToChannel($channel)) {

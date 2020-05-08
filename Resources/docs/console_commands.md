@@ -138,3 +138,4 @@ Node c980f44237d6_8000
 * [Back to index](./../../README.md "Back to index")
 * [Examples of using Centrifugo service](./centrifugo_service_methods.md "Examples of using Centrifugo service")
 * [Authentication with JWT tokens](./authentication.md "Authentication with JWT tokens")
+* [Configuration](./configuration.md "Configuration")

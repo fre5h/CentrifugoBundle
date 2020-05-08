@@ -2,9 +2,9 @@
 
 # Authentication with JWT token 🗝️️
 
-### Anonymous
+## Anonymous
 
-#### Use `CredentialsGenerator` to receive an anonymous JWT token
+### Use `CredentialsGenerator` to receive an anonymous JWT token
 
 ```php
 <?php
@@ -37,14 +37,14 @@ class CentrifugoAnonymousController
 }
 ```
 
-### Authenticated User
+## Authenticated User
 
 If in your Symfony application you have a `User` entity, then it should implement the [`UserInterface`](https://github.com/symfony/security-core/blob/master/User/UserInterface.php) interface.
 
 To allow user be authenticated in Centrifugo, you **have to implement interface** [`CentrifugoUserInterface`](./../../User/CentrifugoUserInterface.php).
 It has two methods: `getCentrifugoSubject()`, `getCentrifugoUserInfo()`. Which return information needed for JWT token claims.
 
-#### Implement `CentrifugoUserInterface` for your User entity
+### Implement `CentrifugoUserInterface` for your User entity
 
 ```php
 <?php
@@ -77,7 +77,7 @@ class User implements CentrifugoUserInterface, UserInterface
 
 ```
 
-#### Use `CredentialsGenerator` to receive a JWT token for authenticated user
+### Use `CredentialsGenerator` to receive a JWT token for authenticated user
 
 ```php
 <?php
@@ -117,9 +117,9 @@ class CentrifugoCredentialsController
 }
 ```
 
-### Private Channel
+## Private Channel
 
-#### Create own channel authenticator
+### Create own channel authenticator
 
 This bundle provides possibility to register custom channel authenticators for private channels.
 What you need is to create a service which implements [`ChannelAuthenticatorInterface`](./../../Service/ChannelAuthenticator/ChannelAuthenticatorInterface.php).
@@ -156,7 +156,7 @@ class AdminChannelAuthenticator implements ChannelAuthenticatorInterface
 }
 ```
 
-#### Use `PrivateChannelAuthenticator` in your controller
+### Use `PrivateChannelAuthenticator` in your controller
 
 ```php
 <?php
@@ -194,3 +194,4 @@ class CentrifugoSubscribeController
 * [Back to index](./../../README.md "Back to index")
 * [Examples of using Centrifugo service](./centrifugo_service_methods.md "Examples of using Centrifugo service")
 * [Examples of using console commands](./console_commands.md "Examples of using console commands")
+* [Configuration](./configuration.md "Configuration")
