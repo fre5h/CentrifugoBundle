@@ -122,7 +122,7 @@ final class ResponseProcessorTest extends TestCase
         ;
 
         $this->expectException(LogicException::class);
-        $this->expectExceptionMessage('Number of command doesn\'t match number of responses');
+        $this->expectExceptionMessage('Number of commands doesn\'t match number of responses');
 
         $this->responseProcessor->processResponse(
             new BatchRequest(

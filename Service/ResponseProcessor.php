@@ -55,11 +55,11 @@ class ResponseProcessor
         $content = $response->getContent();
 
         if ($command instanceof BatchRequest) {
-            $contents = \explode("\n", $content);
+            $contents = \explode("\n", \rtrim($content, "\n"));
             $result = [];
 
             if (\count($contents) !== $command->getNumberOfCommands()) {
-                throw new LogicException('Number of command doesn\'t match number of responses');
+                throw new LogicException('Number of commands doesn\'t match number of responses');
             }
 
             $i = 0;
