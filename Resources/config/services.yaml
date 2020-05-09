@@ -30,3 +30,10 @@ services:
             - '@Fresh\CentrifugoBundle\Logger\CommandHistoryLogger'
             - '@Fresh\CentrifugoBundle\Service\CentrifugoChecker'
             - '@?profiler'
+
+    Fresh\CentrifugoBundle\Service\ResponseProcessor:
+        class: Fresh\CentrifugoBundle\Service\ResponseProcessor
+        arguments:
+            - '@Fresh\CentrifugoBundle\Service\CentrifugoChecker'
+            - '@Fresh\CentrifugoBundle\Logger\CommandHistoryLogger'
+            - '@?profiler'

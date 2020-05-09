@@ -99,8 +99,7 @@ final class CentrifugoTest extends TestCase
 
         $this->commandHistoryLogger
             ->expects(self::once())
-            ->method('logCommand')
-            ->with($this->isInstanceOf(Model\PublishCommand::class))
+            ->method('increaseRequestsCount')
         ;
 
         $this->responseProcessor
@@ -129,8 +128,7 @@ final class CentrifugoTest extends TestCase
 
         $this->commandHistoryLogger
             ->expects(self::once())
-            ->method('logCommand')
-            ->with($this->isInstanceOf(Model\BroadcastCommand::class))
+            ->method('increaseRequestsCount')
         ;
 
         $this->responseProcessor
@@ -159,8 +157,7 @@ final class CentrifugoTest extends TestCase
 
         $this->commandHistoryLogger
             ->expects(self::once())
-            ->method('logCommand')
-            ->with($this->isInstanceOf(Model\UnsubscribeCommand::class))
+            ->method('increaseRequestsCount')
         ;
 
         $this->responseProcessor
@@ -188,8 +185,7 @@ final class CentrifugoTest extends TestCase
 
         $this->commandHistoryLogger
             ->expects(self::once())
-            ->method('logCommand')
-            ->with($this->isInstanceOf(Model\DisconnectCommand::class))
+            ->method('increaseRequestsCount')
         ;
 
         $this->responseProcessor
@@ -218,8 +214,7 @@ final class CentrifugoTest extends TestCase
 
         $this->commandHistoryLogger
             ->expects(self::once())
-            ->method('logCommand')
-            ->with($this->isInstanceOf(Model\PresenceCommand::class))
+            ->method('increaseRequestsCount')
         ;
 
         $this->responseProcessor
@@ -248,8 +243,7 @@ final class CentrifugoTest extends TestCase
 
         $this->commandHistoryLogger
             ->expects(self::once())
-            ->method('logCommand')
-            ->with($this->isInstanceOf(Model\PresenceStatsCommand::class))
+            ->method('increaseRequestsCount')
         ;
 
         $this->responseProcessor
@@ -278,8 +272,7 @@ final class CentrifugoTest extends TestCase
 
         $this->commandHistoryLogger
             ->expects(self::once())
-            ->method('logCommand')
-            ->with($this->isInstanceOf(Model\HistoryCommand::class))
+            ->method('increaseRequestsCount')
         ;
 
         $this->responseProcessor
@@ -308,8 +301,7 @@ final class CentrifugoTest extends TestCase
 
         $this->commandHistoryLogger
             ->expects(self::once())
-            ->method('logCommand')
-            ->with($this->isInstanceOf(Model\HistoryRemoveCommand::class))
+            ->method('increaseRequestsCount')
         ;
 
         $this->responseProcessor
@@ -337,8 +329,7 @@ final class CentrifugoTest extends TestCase
 
         $this->commandHistoryLogger
             ->expects(self::once())
-            ->method('logCommand')
-            ->with($this->isInstanceOf(Model\ChannelsCommand::class))
+            ->method('increaseRequestsCount')
         ;
 
         $this->responseProcessor
@@ -366,8 +357,7 @@ final class CentrifugoTest extends TestCase
 
         $this->commandHistoryLogger
             ->expects(self::once())
-            ->method('logCommand')
-            ->with($this->isInstanceOf(Model\InfoCommand::class))
+            ->method('increaseRequestsCount')
         ;
 
         $this->responseProcessor
@@ -396,8 +386,7 @@ final class CentrifugoTest extends TestCase
 
         $this->commandHistoryLogger
             ->expects(self::once())
-            ->method('logCommand')
-            ->with($this->isInstanceOf(Model\BatchRequest::class))
+            ->method('increaseRequestsCount')
         ;
 
         $this->responseProcessor

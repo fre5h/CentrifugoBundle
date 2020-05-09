@@ -26,14 +26,15 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 class CentrifugoCollector extends DataCollector
 {
     /** @var CommandHistoryLogger */
-    private $centrifugoLogger;
+    private $commandHistoryLogger;
 
     /**
      * @param CommandHistoryLogger $commandHistoryLogger
      */
     public function __construct(CommandHistoryLogger $commandHistoryLogger)
     {
-        $this->centrifugoLogger = $commandHistoryLogger;
+        $this->commandHistoryLogger = $commandHistoryLogger;
+        $this->reset();
     }
 
     /**
@@ -41,7 +42,13 @@ class CentrifugoCollector extends DataCollector
      */
     public function collect(Request $request, Response $response, \Throwable $exception = null): void
     {
-        $this->data = $this->centrifugoLogger->getCommandHistory();
+        $this->data = [
+            'command_history' => $this->commandHistoryLogger->getCommandHistory(),
+            'requests_count' => $this->commandHistoryLogger->getRequestsCount(),
+            'commands_count' => $this->commandHistoryLogger->getCommandsCount(),
+            'successful_commands_count' => $this->commandHistoryLogger->getSuccessfulCommandsCount(),
+            'failed_commands_count' => $this->commandHistoryLogger->getFailedCommandsCount(),
+        ];
     }
 
     /**
@@ -57,31 +64,53 @@ class CentrifugoCollector extends DataCollector
      */
     public function reset(): void
     {
-        $this->data = [];
-        $this->centrifugoLogger->clearCommandHistory();
+        $this->data = [
+            'command_history' => [],
+            'requests_count' => 0,
+            'commands_count' => 0,
+            'successful_commands_count' => 0,
+            'failed_commands_count' => 0,
+        ];
+        $this->commandHistoryLogger->clearCommandHistory();
     }
 
     /**
      * @return int
      */
-    public function getCommandCount(): int
+    public function getCommandsCount(): int
     {
-        return \count($this->data);
+        return $this->data['commands_count'];
     }
 
     /**
      * @return int
      */
-    public function getRequestCount(): int
+    public function getSuccessfulCommandsCount(): int
     {
-        return \count($this->data);
+        return $this->data['successful_commands_count'];
+    }
+
+    /**
+     * @return int
+     */
+    public function getFailedCommandsCount(): int
+    {
+        return $this->data['failed_commands_count'];
+    }
+
+    /**
+     * @return int
+     */
+    public function getRequestsCount(): int
+    {
+        return $this->data['requests_count'];
     }
 
     /**
      * @return CommandInterface[]
      */
-    public function getCommands(): array
+    public function getCommandHistory(): array
     {
-        return $this->data;
+        return $this->data['command_history'];
     }
 }

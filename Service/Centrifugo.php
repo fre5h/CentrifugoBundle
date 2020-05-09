@@ -195,10 +195,12 @@ class Centrifugo
             ]
         );
 
+        $result = $this->responseProcessor->processResponse($command, $response);
+
         if ($this->profilerEnabled) {
-            $this->commandHistoryLogger->logCommand($command);
+            $this->commandHistoryLogger->increaseRequestsCount();
         }
 
-        return $this->responseProcessor->processResponse($command, $response);
+        return $result;
     }
 }

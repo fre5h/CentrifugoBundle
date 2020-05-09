@@ -21,28 +21,28 @@
 {% block toolbar %}
     {% set icon %}
         {{ include('@FreshCentrifugo/data_collector/icon.svg.twig', { height: 24, fill_color_1: '#777777' }) }}
-        <span class="sf-toolbar-value">{{ collector.commandCount }}</span>
+        <span class="sf-toolbar-value">{{ collector.commandsCount }}</span>
     {% endset %}
 
     {% set text %}
         <div class="sf-toolbar-info-piece">
             <b>Total Commands</b>
-            <span class="sf-toolbar-status">{{ collector.commandCount }}</span>
+            <span class="sf-toolbar-status">{{ collector.commandsCount }}</span>
         </div>
 
         <div class="sf-toolbar-info-piece">
             <b>Successful Commands</b>
-            <span class="sf-toolbar-status sf-toolbar-status-green">{{ collector.commandCount }}</span>
+            <span class="sf-toolbar-status sf-toolbar-status-green">{{ collector.successfulCommandsCount }}</span>
         </div>
 
         <div class="sf-toolbar-info-piece">
             <b>Failed Commands</b>
-            <span class="sf-toolbar-status sf-toolbar-status-red">{{ collector.commandCount }}</span>
+            <span class="sf-toolbar-status sf-toolbar-status-red">{{ collector.failedCommandsCount }}</span>
         </div>
 
         <div class="sf-toolbar-info-piece">
             <b>Total Requests</b>
-            <span class="sf-toolbar-status">{{ collector.commandCount }}</span>
+            <span class="sf-toolbar-status">{{ collector.requestsCount }}</span>
         </div>
     {% endset %}
 
@@ -50,7 +50,7 @@
 {% endblock toolbar %}
 
 {% block menu %}
-    <span class="label {{ collector.commandCount ? '' : 'disabled' }}">
+    <span class="label {{ collector.commandsCount ? '' : 'disabled' }}">
         <span class="icon">{{ include('@FreshCentrifugo/data_collector/icon.svg.twig', { height: 32 }) }}</span>
         <strong>Centrifugo</strong>
     </span>
@@ -60,25 +60,25 @@
     <h2>Centrifugo Metrics</h2>
     <div class="metrics">
         <div class="metric">
-            <span class="value">{{ collector.requestCount }}</span>
+            <span class="value">{{ collector.requestsCount }}</span>
             <span class="label">Total Requests</span>
         </div>
         <div class="metric">
-            <span class="value">{{ collector.commandCount }}</span>
+            <span class="value">{{ collector.commandsCount }}</span>
             <span class="label">Total Commands</span>
         </div>
         <div class="metric">
-            <span class="value">{{ collector.commandCount }}</span>
+            <span class="value">{{ collector.successfulCommandsCount }}</span>
             <span class="label">Successful Commands</span>
         </div>
         <div class="metric">
-            <span class="value">{{ collector.commandCount }}</span>
+            <span class="value">{{ collector.failedCommandsCount }}</span>
             <span class="label">Failed Commands</span>
         </div>
     </div>
 
     <h2>Centrifugo Commands</h2>
-    {%- if collector.commandCount == 0 -%}
+    {%- if collector.commandsCount == 0 -%}
         <div class="empty">
             <p>No commands were performed.</p>
         </div>
@@ -97,7 +97,9 @@
                     <tr id="queryNo-{{ key }}">
                         <td class="nowrap font-normal">{{ loop.index }}</td>
                         <td class="font-normal">
-                            <span class="label status-success same-width">{{ history.command.method|upper }}</span>
+                            <span class="label status-{% if history.success %}success{% else %}error{% endif %} same-width">
+                                {{- history.command.method|upper -}}
+                            </span>
                         </td>
                         <td class="font-normal">
                             <a href="#" class="sf-toggle link-inverse" data-toggle-selector="#formatted-command-{{ key }}" data-toggle-alt-content="Hide body">Show body</a>
