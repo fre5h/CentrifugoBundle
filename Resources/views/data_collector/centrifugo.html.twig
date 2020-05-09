@@ -6,12 +6,21 @@
         .sql-runnable code pre:not(:last-child) {
             margin-bottom: 1em;
         }
+        th.command {
+            min-width: 80px;
+        }
+        th.request {
+            min-width: 250px;
+        }
+        th.response {
+            min-width: 250px;
+        }
     </style>
 {% endblock head %}
 
 {% block toolbar %}
     {% set icon %}
-        <img src="{{ asset('bundles/freshcentrifugo/images/centrifugo.png') }}" alt="Centrifugo Logo">
+        {{ include('@FreshCentrifugo/data_collector/icon.svg.twig', { height: 24, fill_color_1: '#777777' }) }}
         <span class="sf-toolbar-value">{{ collector.commandCount }}</span>
     {% endset %}
 
@@ -42,7 +51,7 @@
 
 {% block menu %}
     <span class="label {{ collector.commandCount ? '' : 'disabled' }}">
-        <span class="icon"><img src="{{ asset('bundles/freshcentrifugo/images/centrifugo.png') }}" alt="Centrifugo Logo"></span>
+        <span class="icon">{{ include('@FreshCentrifugo/data_collector/icon.svg.twig', { height: 32 }) }}</span>
         <strong>Centrifugo</strong>
     </span>
 {% endblock menu %}
@@ -50,6 +59,10 @@
 {% block panel %}
     <h2>Centrifugo Metrics</h2>
     <div class="metrics">
+        <div class="metric">
+            <span class="value">{{ collector.requestCount }}</span>
+            <span class="label">Total Requests</span>
+        </div>
         <div class="metric">
             <span class="value">{{ collector.commandCount }}</span>
             <span class="label">Total Commands</span>
@@ -62,111 +75,51 @@
             <span class="value">{{ collector.commandCount }}</span>
             <span class="label">Failed Commands</span>
         </div>
-        <div class="metric">
-            <span class="value">{{ collector.requestCount }}</span>
-            <span class="label">Total Requests</span>
-        </div>
     </div>
 
     <h2>Centrifugo Commands</h2>
-    {% if collector.commandCount == 0 %}
+    {%- if collector.commandCount == 0 -%}
         <div class="empty">
             <p>No commands were performed.</p>
         </div>
-    {% else %}
+    {%- else -%}
         <table class="alt queries-table">
             <thead>
-            <tr>
-                <th class="nowrap">#</th>
-                <th class="nowrap">Command<span></span></th>
-                <th class="nowrap">Status<span></span></th>
-                <th class="nowrap">Request Body<span></span></th>
-                <th class="nowrap">Response Body<span></span></th>
-            </tr>
+                <tr>
+                    <th class="nowrap">#</th>
+                    <th class="nowrap command">Command<span></span></th>
+                    <th class="nowrap request">Request<span></span></th>
+                    <th class="nowrap response">Response<span></span></th>
+                </tr>
             </thead>
             <tbody id="queries">
-                {% for key, command in collector.commands %}
+                {%- for key, history in collector.commandHistory -%}
                     <tr id="queryNo-{{ key }}">
-                        <td class="font-normal text-muted nowrap">{{ loop.index }}</td>
-                        <td class="nowrap"><strong>{{ command.method }}</strong></td>
-                        <td class="nowrap"><span class="sf-dump-const">{{ command.method }}</span></td>
-                        <td class="nowrap">
-                            <a href="#" class="sf-toggle link-inverse" data-toggle-selector="#formatted-query-{{ key }}" data-toggle-alt-content="Hide body">Show body</a>
-                            <div id="formatted-query-{{ key }}" class="sql-runnable hidden">
-                                <pre>{{ command.jsonSerialize|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
-                            </div>
-
-{#                            <button class="btn-link newline text-small sf-toggle sf-toggle-off"#}
-{#                                    data-toggle-selector="#parameters-{{ key }}"#}
-{#                                    data-toggle-alt-content="Hide parameters"#}
-{#                                    data-processed="true"#}
-{#                                    data-toggle-original-content="Show parameters">Show parameters#}
-{#                            </button>#}
-{#                            <div id="parameters-{{ key }}" class="hidden sf-toggle-content sf-toggle-hidden">#}
-{#                                Yo#}
-{#                            </div>#}
+                        <td class="nowrap font-normal">{{ loop.index }}</td>
+                        <td class="font-normal">
+                            <span class="label status-success same-width">{{ history.command.method|upper }}</span>
                         </td>
-                        <td class="nowrap">none</td>
-{#                    <td class="nowrap">{{ '%0.2f'|format(query.executionMS) }}&nbsp;ms</td>#}
-{#                    <td class="nowrap">{{ '%0.2f'|format(query.engineMS) }}&nbsp;ms</td>#}
-{#                    <td>#}
-{#                        <div>#}
-{#                            {% for data in query.data %}#}
-{#                                <pre>{{ data|json_encode }}</pre>#}
-{#                            {% endfor %}#}
-{#                        </div>#}
-{#                        <div class="font-normal text-small">#}
-{#                            <strong>Path</strong>: {{ query.path }}<br />#}
-{#                            <strong>Query</strong>: {{ query.queryString|url_encode }}<br />#}
-{#                            <strong>Method</strong>: {{ query.method }} ({{ query.connection.transport }} on {{ query.connection.host }}:{{ query.connection.port }})<br />#}
-{#                            <strong>Item count</strong>: {{ query.itemCount }}<br />#}
-
-{#                            <a href="#" class="sf-toggle link-inverse" data-toggle-selector="#formatted-query-{{ key }}" data-toggle-alt-content="Hide formatted query">View formatted query</a>#}
-
-{#                            {% if query.connection.transport in ['Http', 'Https'] %}#}{# cURL support only HTTP #}
-{#                                &nbsp;#}
-{#                                <a href="#" class="sf-toggle link-inverse" data-toggle-selector="#elastica-curl-query-{{ key }}" data-toggle-alt-content="Hide cURL query">View cURL query</a>#}
-{#                            {% endif %}#}
-{#                            {% if query.backtrace is defined %}#}
-{#                                &nbsp;#}
-{#                                <a href="#" class="sf-toggle link-inverse" data-toggle-selector="#elastica-query-backtrace-{{ key }}" data-toggle-alt-content="Hide query backtrace">View query backtrace</a>#}
-{#                            {% endif %}#}
-{#                        </div>#}
-
-{#                        <div id="formatted-query-{{ key }}" class="sql-runnable hidden">#}
-{#                            <code>#}
-{#                            {% for data in query.data %}#}
-{#                                <pre>{{ data|json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>#}
-{#                            {% endfor %}#}
-{#                            </code>#}
-{#                        </div>#}
-
-{#                        {% if query.connection.transport in ['Http', 'Https'] %}#}{# cURL support only HTTP #}
-{#                            <div id="elastica-curl-query-{{ key }}" class="sql-runnable hidden">#}
-{#                                {% if query.data|length == 1 %}#}
-{#                                    {% set dataFlag = '-d' %}#}
-{#                                    {% set curlData = query.data[0]|json_encode %}#}
-{#                                {% else %}#}
-{#                                    {% set dataFlag = '--data-binary' %}#}
-{#                                    {% set curlData = '' %}#}
-{#                                    {% for data in query.data %}#}
-{#                                        {% set curlData = curlData ~ data|json_encode ~ "\n" %}#}
-{#                                    {% endfor %}#}
-{#                                {% endif %}#}
-{#                                <code>curl -X{{ query.method }} '{{ query.connection.transport|lower }}://{{ query.connection.host }}:{{ query.connection.port }}/{{ query.path }}{% if query.queryString|length %}?{{ query.queryString|url_encode }}{% endif %}' -H 'Content-Type: application/json' {{ dataFlag }} '{{ curlData|nl2br }}'</code>#}
-{#                            </div>#}
-{#                        {% endif %}#}
-{#                        {% if query.backtrace is defined %}#}
-{#                            <div id="elastica-query-backtrace-{{ key }}" class="sql-runnable hidden">#}
-{#                                <code><pre>{{ query.backtrace }}</pre></code>#}
-{#                            </div>#}
-{#                        {% endif %}#}
-{#                    </td>#}
+                        <td class="font-normal">
+                            <a href="#" class="sf-toggle link-inverse" data-toggle-selector="#formatted-command-{{ key }}" data-toggle-alt-content="Hide body">Show body</a>
+                            <div id="formatted-command-{{ key }}" class="sql-runnable hidden">
+                                <pre>
+                                    {{- history.command.jsonSerialize|json_encode(constant('JSON_PRETTY_PRINT')) -}}
+                                </pre>
+                            </div>
+                        </td>
+                        <td class="font-normal">
+                            <a href="#" class="sf-toggle link-inverse" data-toggle-selector="#formatted-result-{{ key }}" data-toggle-alt-content="Hide body">Show body</a>
+                            <div id="formatted-result-{{ key }}" class="sql-runnable hidden">
+                                <pre>
+                                    {{- history.result|json_encode(constant('JSON_PRETTY_PRINT')) -}}
+                                </pre>
+                            </div>
+                        </td>
                     </tr>
-                {% endfor %}
+                {%- endfor -%}
             </tbody>
         </table>
-    {% endif %}
+    {%- endif -%}
 
     <h3>Additional Resources</h3>
     <ul>
