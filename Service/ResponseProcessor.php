@@ -85,11 +85,9 @@ class ResponseProcessor
                 $result[] = $this->decodeAndProcessResponseResult($innerCommand, $contents[$i]);
                 ++$i;
             }
-
-            return $result;
+        } else {
+            $result = $this->decodeAndProcessResponseResult($command, $content);
         }
-
-        $result = $this->decodeAndProcessResponseResult($command, $content);
 
         if (isset($this->centrifugoError['message'], $this->centrifugoError['code'])) {
             throw new CentrifugoErrorException($this->centrifugoError['message'], $this->centrifugoError['code']);
@@ -118,10 +116,13 @@ class ResponseProcessor
         $result = null;
 
         if (isset($data['error'])) {
-            $this->centrifugoError = [
-                'message' => $data['error']['message'],
-                'code' => $data['error']['code'],
-            ];
+            if (empty($this->centrifugoError)) {
+                $this->centrifugoError = [
+                    'message' => $data['error']['message'],
+                    'code' => $data['error']['code'],
+                ];
+            }
+
             $result = $data;
             $successfulCommand = false;
         } elseif ($command instanceof ResultableCommandInterface) {
