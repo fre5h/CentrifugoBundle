@@ -13,8 +13,6 @@ fresh_centrifugo:
     # then you can change it in bundle configuration, it effects only on validation
     channel_max_length: 255
     jwt:
-        algorithm: HS256 # HS256 or RSA
-        
         # You can set default TTL for all JWT tokens, if it not set, then default value is NULL
         # Default NULL value means that tokens will not be expired
         ttl: 86400 
