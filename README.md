@@ -28,7 +28,7 @@
 ## Installation 🌱
 
 ```bash
-$ composer req fresh/centrifugo-bundle='~1.0'
+$ composer req fresh/centrifugo-bundle
 ```
 
 By default, [Symfony Flex](https://flex.symfony.com/) adds this bundle to the `config/bundles.php` file and adds required environment variables into `.env` file.
