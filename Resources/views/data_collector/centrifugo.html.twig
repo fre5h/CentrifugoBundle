@@ -6,14 +6,23 @@
         .sql-runnable code pre:not(:last-child) {
             margin-bottom: 1em;
         }
-        th.command {
+        td.command {
             min-width: 80px;
         }
-        th.request {
-            min-width: 250px;
+        td.request {
+            min-width: 200px;
+            max-width: 400px;
         }
-        th.response {
-            min-width: 250px;
+        td.response {
+            min-width: 200px;
+            max-width: 400px;
+        }
+        .queries-table pre {
+            overflow-x: scroll;
+            margin: 0;
+            padding: 0;
+            word-break: normal;
+            white-space: pre;
         }
     </style>
 {% endblock head %}
@@ -87,21 +96,21 @@
             <thead>
                 <tr>
                     <th class="nowrap">#</th>
-                    <th class="nowrap command">Command<span></span></th>
-                    <th class="nowrap request">Request<span></span></th>
-                    <th class="nowrap response">Response<span></span></th>
+                    <th class="nowrap">Command<span></span></th>
+                    <th class="nowrap">Request<span></span></th>
+                    <th class="nowrap">Response<span></span></th>
                 </tr>
             </thead>
             <tbody id="queries">
                 {%- for key, history in collector.commandHistory -%}
-                    <tr id="queryNo-{{ key }}">
+                    <tr>
                         <td class="nowrap font-normal">{{ loop.index }}</td>
-                        <td class="font-normal">
+                        <td class="font-normal command">
                             <span class="label status-{% if history.success %}success{% else %}error{% endif %} same-width">
                                 {{- history.command.method|upper -}}
                             </span>
                         </td>
-                        <td class="font-normal">
+                        <td class="font-normal request">
                             <a href="#" class="sf-toggle link-inverse" data-toggle-selector="#formatted-command-{{ key }}" data-toggle-alt-content="Hide body">Show body</a>
                             <div id="formatted-command-{{ key }}" class="sql-runnable hidden">
                                 <pre>
@@ -109,7 +118,7 @@
                                 </pre>
                             </div>
                         </td>
-                        <td class="font-normal">
+                        <td class="font-normal response">
                             <a href="#" class="sf-toggle link-inverse" data-toggle-selector="#formatted-result-{{ key }}" data-toggle-alt-content="Hide body">Show body</a>
                             <div id="formatted-result-{{ key }}" class="sql-runnable hidden">
                                 <pre>

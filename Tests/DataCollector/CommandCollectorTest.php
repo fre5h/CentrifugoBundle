@@ -83,7 +83,6 @@ final class CommandCollectorTest extends TestCase
             ->willReturnOnConsecutiveCalls(0, 1)
         ;
 
-
         $this->centrifugoCollector->collect(
             $this->createStub(Request::class),
             $this->createStub(Response::class),

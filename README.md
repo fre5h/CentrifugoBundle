@@ -18,7 +18,7 @@
 - [X] Authentication with JWT token for [anonymous](./Resources/docs/authentication.md#anonymous), [authenticated user](./Resources/docs/authentication.md#authenticated-user) and [private channel](./Resources/docs/authentication.md#private-channel) 🗝️
 - [x] [Batch request](./Resources/docs/centrifugo_service_methods.md#batch-request) in [JSON streaming format](https://en.wikipedia.org/wiki/JSON_streaming) 💪
 - [x] [Console commands](./Resources/docs/console_commands.md "Console commands") ⚒️️
-- [x] Integration into Symfony Web-Profiler 🎛️
+- [x] [Integration into Symfony Web-Profiler](#integration-into-symfony-web-profiler) 🎛️
 - [ ] @todo Add RSA
 
 ## Requirements
@@ -111,6 +111,10 @@ class YourService
 * `centrifugo:info`
 
 ℹ️ [More examples of using console commands](./Resources/docs/console_commands.md "More examples of using console commands")
+
+### Integration into Symfony Web-Profiler
+
+![](./Resources/images/profiler_example.png "Profiler example")
 
 ## Contributing 🤝
 
