@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Fresh\CentrifugoBundle\Tests\Service\Jwt;
 
 use Fresh\CentrifugoBundle\Service\Jwt\JwtGenerator;
-use Fresh\CentrifugoBundle\Token\JwtAlgorithm;
 use Fresh\CentrifugoBundle\Token\JwtPayload;
 use Fresh\CentrifugoBundle\Token\JwtPayloadForPrivateChannel;
 use PHPUnit\Framework\TestCase;
@@ -30,7 +29,7 @@ final class JwtGeneratorTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->jwtGenerator = new JwtGenerator('qwerty', JwtAlgorithm::HS256);
+        $this->jwtGenerator = new JwtGenerator('qwerty');
     }
 
     protected function tearDown(): void

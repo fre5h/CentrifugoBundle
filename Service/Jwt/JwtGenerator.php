@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Service\Jwt;
 
-use Fresh\CentrifugoBundle\Token\JwtAlgorithm;
 use Fresh\CentrifugoBundle\Token\JwtPayloadInterface;
 
 /**
@@ -27,18 +26,12 @@ class JwtGenerator
     /** @var string */
     private $secret;
 
-    /** @var string */
-    private $centrifugoJwtAlgorithm;
-
     /**
      * @param string $centrifugoSecret
-     * @param string $centrifugoJwtAlgorithm
      */
-    public function __construct(string $centrifugoSecret, string $centrifugoJwtAlgorithm)
+    public function __construct(string $centrifugoSecret)
     {
         $this->secret = $centrifugoSecret;
-        JwtAlgorithm::assertValidAlgorithm($centrifugoJwtAlgorithm);
-        $this->centrifugoJwtAlgorithm = $centrifugoJwtAlgorithm;
     }
 
     /**
@@ -68,7 +61,7 @@ class JwtGenerator
     {
         $header = [
             'typ' => 'JWT',
-            'alg' => $this->centrifugoJwtAlgorithm,
+            'alg' => 'HS256',
         ];
 
         return $this->convertArrayToJsonString($header);

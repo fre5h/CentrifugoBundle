@@ -14,6 +14,7 @@ namespace Fresh\CentrifugoBundle\Tests\DependencyInjection;
 
 use Fresh\CentrifugoBundle\DependencyInjection\FreshCentrifugoExtension;
 use Fresh\CentrifugoBundle\Service\Centrifugo;
+use Fresh\CentrifugoBundle\Service\ResponseProcessor;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
@@ -52,12 +53,12 @@ final class FreshCentrifugoExtensionTest extends TestCase
         $this->container->compile();
 
         self::assertArrayHasKey(Centrifugo::class, $this->container->getRemovedIds());
+        self::assertArrayHasKey(ResponseProcessor::class, $this->container->getRemovedIds());
         self::assertArrayNotHasKey(Centrifugo::class, $this->container->getDefinitions());
+        self::assertArrayNotHasKey(ResponseProcessor::class, $this->container->getDefinitions());
 
         self::assertTrue($this->container->hasParameter('centrifugo.channel_max_length'));
         self::assertSame(255, $this->container->getParameter('centrifugo.channel_max_length'));
-        self::assertTrue($this->container->hasParameter('centrifugo.jwt.algorithm'));
-        self::assertSame('HS256', $this->container->getParameter('centrifugo.jwt.algorithm'));
         self::assertTrue($this->container->hasParameter('centrifugo.jwt.ttl'));
         self::assertNull($this->container->getParameter('centrifugo.jwt.ttl'));
 
