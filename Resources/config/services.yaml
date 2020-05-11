@@ -5,7 +5,6 @@ services:
         public: false
         bind:
             $centrifugoChannelMaxLength: '%centrifugo.channel_max_length%'
-            $centrifugoJwtAlgorithm: '%centrifugo.jwt.algorithm%'
             $centrifugoJwtTtl: '%centrifugo.jwt.ttl%'
             $centrifugoSecret: '%env(CENTRIFUGO_SECRET)%'
             iterable $channelAuthenticators: !tagged_iterator 'centrifugo.channel_authenticator'
