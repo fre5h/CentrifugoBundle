@@ -92,10 +92,7 @@ class ResponseProcessor
         $result = $this->decodeAndProcessResponseResult($command, $content);
 
         if (isset($this->centrifugoError['message'], $this->centrifugoError['code'])) {
-            throw new CentrifugoErrorException(
-                $this->centrifugoError['message'],
-                $this->centrifugoError['code']
-            );
+            throw new CentrifugoErrorException($this->centrifugoError['message'], $this->centrifugoError['code']);
         }
 
         return $result;
@@ -123,7 +120,7 @@ class ResponseProcessor
         if (isset($data['error'])) {
             $this->centrifugoError = [
                 'message' => $data['error']['message'],
-                'code' =>  $data['error']['code'],
+                'code' => $data['error']['code'],
             ];
             $result = $data;
             $successfulCommand = false;

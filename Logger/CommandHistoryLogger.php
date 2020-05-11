@@ -83,7 +83,7 @@ class CommandHistoryLogger
      */
     public function increaseRequestsCount(): void
     {
-        $this->requestsCount++;
+        ++$this->requestsCount;
     }
 
     /**
