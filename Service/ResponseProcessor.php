@@ -15,9 +15,11 @@ namespace Fresh\CentrifugoBundle\Service;
 use Fresh\CentrifugoBundle\Exception\CentrifugoErrorException;
 use Fresh\CentrifugoBundle\Exception\CentrifugoException;
 use Fresh\CentrifugoBundle\Exception\LogicException;
+use Fresh\CentrifugoBundle\Logger\CommandHistoryLogger;
 use Fresh\CentrifugoBundle\Model\BatchRequest;
 use Fresh\CentrifugoBundle\Model\CommandInterface;
 use Fresh\CentrifugoBundle\Model\ResultableCommandInterface;
+use Symfony\Component\HttpKernel\Profiler\Profiler;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
 /**
@@ -30,12 +32,25 @@ class ResponseProcessor
     /** @var CentrifugoChecker */
     private $centrifugoChecker;
 
+    /** @var bool */
+    private $profilerEnabled;
+
+    /** @var CommandHistoryLogger */
+    private $commandHistoryLogger;
+
+    /** @var array */
+    private $centrifugoError = [];
+
     /**
-     * @param CentrifugoChecker $centrifugoChecker
+     * @param CentrifugoChecker    $centrifugoChecker
+     * @param CommandHistoryLogger $commandHistoryLogger
+     * @param Profiler|null        $profiler
      */
-    public function __construct(CentrifugoChecker $centrifugoChecker)
+    public function __construct(CentrifugoChecker $centrifugoChecker, CommandHistoryLogger $commandHistoryLogger, ?Profiler $profiler)
     {
         $this->centrifugoChecker = $centrifugoChecker;
+        $this->profilerEnabled = $profiler instanceof Profiler;
+        $this->commandHistoryLogger = $commandHistoryLogger;
     }
 
     /**
@@ -43,6 +58,7 @@ class ResponseProcessor
      * @param ResponseInterface $response
      *
      * @throws LogicException
+     * @throws CentrifugoErrorException
      *
      * @return array|null
      */
@@ -52,14 +68,16 @@ class ResponseProcessor
         $this->centrifugoChecker->assertValidResponseHeaders($response);
         $this->centrifugoChecker->assertValidResponseContentType($response);
 
+        $this->centrifugoError = [];
+
         $content = $response->getContent();
 
         if ($command instanceof BatchRequest) {
-            $contents = \explode("\n", $content);
+            $contents = \explode("\n", \rtrim($content, "\n"));
             $result = [];
 
             if (\count($contents) !== $command->getNumberOfCommands()) {
-                throw new LogicException('Number of command doesn\'t match number of responses');
+                throw new LogicException('Number of commands doesn\'t match number of responses');
             }
 
             $i = 0;
@@ -67,11 +85,15 @@ class ResponseProcessor
                 $result[] = $this->decodeAndProcessResponseResult($innerCommand, $contents[$i]);
                 ++$i;
             }
-
-            return $result;
+        } else {
+            $result = $this->decodeAndProcessResponseResult($command, $content);
         }
 
-        return $this->decodeAndProcessResponseResult($command, $content);
+        if (isset($this->centrifugoError['message'], $this->centrifugoError['code'])) {
+            throw new CentrifugoErrorException($this->centrifugoError['message'], $this->centrifugoError['code']);
+        }
+
+        return $result;
     }
 
     /**
@@ -79,7 +101,6 @@ class ResponseProcessor
      * @param string           $content
      *
      * @throws CentrifugoException
-     * @throws CentrifugoErrorException
      *
      * @return array|null
      */
@@ -91,14 +112,27 @@ class ResponseProcessor
             throw new CentrifugoException('Centrifugo response payload is not a valid JSON');
         }
 
+        $successfulCommand = true;
+        $result = null;
+
         if (isset($data['error'])) {
-            throw new CentrifugoErrorException($data['error']['message'], $data['error']['code']);
+            if (empty($this->centrifugoError)) {
+                $this->centrifugoError = [
+                    'message' => $data['error']['message'],
+                    'code' => $data['error']['code'],
+                ];
+            }
+
+            $result = $data;
+            $successfulCommand = false;
+        } elseif ($command instanceof ResultableCommandInterface) {
+            $result = $data['result'];
         }
 
-        if ($command instanceof ResultableCommandInterface) {
-            return $data['result'];
+        if ($this->profilerEnabled) {
+            $this->commandHistoryLogger->logCommand($command, $successfulCommand, $result);
         }
 
-        return null;
+        return $result;
     }
 }

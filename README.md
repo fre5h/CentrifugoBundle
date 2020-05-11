@@ -13,13 +13,13 @@
 
 ## Features 🎁
 
-- [x] Compatible with latest [Centrifugo 2.4](https://github.com/centrifugal/centrifugo/releases/tag/v2.4.0) 🚀
+- [x] Compatible with latest [Centrifugo 2.5](https://github.com/centrifugal/centrifugo/releases/tag/v2.5.0) 🚀
 - [x] Wrapper over [Centrifugo HTTP API](https://centrifugal.github.io/centrifugo/server/http_api/) 🔌
 - [X] Authentication with JWT token for [anonymous](./Resources/docs/authentication.md#anonymous), [authenticated user](./Resources/docs/authentication.md#authenticated-user) and [private channel](./Resources/docs/authentication.md#private-channel) 🗝️
 - [x] [Batch request](./Resources/docs/centrifugo_service_methods.md#batch-request) in [JSON streaming format](https://en.wikipedia.org/wiki/JSON_streaming) 💪
 - [x] [Console commands](./Resources/docs/console_commands.md "Console commands") ⚒️️
-- [ ] @todo Integration into Symfony Web-Profiler 🎛️
-- [ ] @todo Add RSA
+- [x] Integration into Symfony Web-Profiler 🎛️
+- [ ] @todo Add RSA algorithm for JWT token generation.
 
 ## Requirements 🧐
 
@@ -111,6 +111,10 @@ class YourService
 * `centrifugo:info`
 
 ℹ️ [More examples of using console commands](./Resources/docs/console_commands.md "More examples of using console commands")
+
+### Integration into Symfony Web-Profiler 🎛️
+
+![](./Resources/images/profiler_example.png "Profiler example")
 
 ## Contributing 🤝
 

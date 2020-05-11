@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Logger;
 
-use Fresh\CentrifugoBundle\Model\BatchRequest;
 use Fresh\CentrifugoBundle\Model\CommandInterface;
 
 /**
@@ -22,8 +21,42 @@ use Fresh\CentrifugoBundle\Model\CommandInterface;
  */
 class CommandHistoryLogger
 {
-    /** @var CommandInterface[] */
+    /** @var array */
     private $commandHistory = [];
+
+    /** @var int */
+    private $requestsCount = 0;
+
+    /** @var int */
+    private $commandsCount = 0;
+
+    /** @var int */
+    private $successfulCommandsCount = 0;
+
+    /** @var int */
+    private $failedCommandsCount = 0;
+
+    /**
+     * @param CommandInterface $command
+     * @param bool             $success
+     * @param array|null       $result
+     */
+    public function logCommand(CommandInterface $command, bool $success, ?array $result): void
+    {
+        $this->commandHistory[] = [
+            'command' => $command,
+            'result' => $result,
+            'success' => $success,
+        ];
+
+        ++$this->commandsCount;
+
+        if ($success) {
+            ++$this->successfulCommandsCount;
+        } else {
+            ++$this->failedCommandsCount;
+        }
+    }
 
     /**
      * Clear command history.
@@ -31,6 +64,10 @@ class CommandHistoryLogger
     public function clearCommandHistory(): void
     {
         $this->commandHistory = [];
+        $this->requestsCount = 0;
+        $this->commandsCount = 0;
+        $this->successfulCommandsCount = 0;
+        $this->failedCommandsCount = 0;
     }
 
     /**
@@ -42,16 +79,42 @@ class CommandHistoryLogger
     }
 
     /**
-     * @param CommandInterface $command
+     * Increase requests count.
      */
-    public function logCommand(CommandInterface $command): void
+    public function increaseRequestsCount(): void
     {
-        if ($command instanceof BatchRequest) {
-            foreach ($command->getCommands() as $singleCommand) {
-                $this->commandHistory[] = $singleCommand;
-            }
-        } else {
-            $this->commandHistory[] = $command;
-        }
+        ++$this->requestsCount;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRequestsCount(): int
+    {
+        return $this->requestsCount;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCommandsCount(): int
+    {
+        return $this->commandsCount;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSuccessfulCommandsCount(): int
+    {
+        return $this->successfulCommandsCount;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFailedCommandsCount(): int
+    {
+        return $this->failedCommandsCount;
     }
 }

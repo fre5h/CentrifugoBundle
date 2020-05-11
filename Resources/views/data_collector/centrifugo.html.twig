@@ -1,0 +1,144 @@
+{% extends '@WebProfiler/Profiler/layout.html.twig' %}
+
+{% block head %}
+    {{ parent() }}
+    <style>
+        .sql-runnable code pre:not(:last-child) {
+            margin-bottom: 1em;
+        }
+        td.command {
+            min-width: 80px;
+        }
+        td.request {
+            min-width: 200px;
+            max-width: 400px;
+        }
+        td.response {
+            min-width: 200px;
+            max-width: 400px;
+        }
+        .queries-table pre {
+            overflow-x: scroll;
+            margin: 0;
+            padding: 0;
+            word-break: normal;
+            white-space: pre;
+        }
+    </style>
+{% endblock head %}
+
+{% block toolbar %}
+    {% set icon %}
+        {{ include('@FreshCentrifugo/data_collector/icon.svg.twig', { height: 24, fill_color_1: '#777777' }) }}
+        <span class="sf-toolbar-value">{{ collector.commandsCount }}</span>
+    {% endset %}
+
+    {% set text %}
+        <div class="sf-toolbar-info-piece">
+            <b>Total Commands</b>
+            <span class="sf-toolbar-status">{{ collector.commandsCount }}</span>
+        </div>
+
+        <div class="sf-toolbar-info-piece">
+            <b>Successful Commands</b>
+            <span class="sf-toolbar-status sf-toolbar-status-green">{{ collector.successfulCommandsCount }}</span>
+        </div>
+
+        <div class="sf-toolbar-info-piece">
+            <b>Failed Commands</b>
+            <span class="sf-toolbar-status sf-toolbar-status-red">{{ collector.failedCommandsCount }}</span>
+        </div>
+
+        <div class="sf-toolbar-info-piece">
+            <b>Total Requests</b>
+            <span class="sf-toolbar-status">{{ collector.requestsCount }}</span>
+        </div>
+    {% endset %}
+
+    {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { 'link': true }) }}
+{% endblock toolbar %}
+
+{% block menu %}
+    <span class="label {{ collector.commandsCount ? '' : 'disabled' }} {{ collector.failedCommandsCount > 0 ? 'label-status-error' : '' }}">
+        <span class="icon">{{ include('@FreshCentrifugo/data_collector/icon.svg.twig', { height: 32 }) }}</span>
+        <strong>Centrifugo</strong>
+        {%- if collector.failedCommandsCount > 0 -%}
+            <span class="count"><span>{{ collector.failedCommandsCount }}</span></span>
+        {%- endif -%}
+    </span>
+{% endblock menu %}
+
+{% block panel %}
+    <h2>Centrifugo Metrics</h2>
+    <div class="metrics">
+        <div class="metric">
+            <span class="value">{{ collector.requestsCount }}</span>
+            <span class="label">Total Requests</span>
+        </div>
+        <div class="metric">
+            <span class="value">{{ collector.commandsCount }}</span>
+            <span class="label">Total Commands</span>
+        </div>
+        <div class="metric">
+            <span class="value">{{ collector.successfulCommandsCount }}</span>
+            <span class="label">Successful Commands</span>
+        </div>
+        <div class="metric">
+            <span class="value">{{ collector.failedCommandsCount }}</span>
+            <span class="label">Failed Commands</span>
+        </div>
+    </div>
+
+    <h2>Centrifugo Commands</h2>
+    {%- if collector.commandsCount == 0 -%}
+        <div class="empty">
+            <p>No commands were performed.</p>
+        </div>
+    {%- else -%}
+        <table class="alt queries-table">
+            <thead>
+                <tr>
+                    <th class="nowrap">#</th>
+                    <th class="nowrap">Command<span></span></th>
+                    <th class="nowrap">Request<span></span></th>
+                    <th class="nowrap">Response<span></span></th>
+                </tr>
+            </thead>
+            <tbody id="queries">
+                {%- for key, history in collector.commandHistory -%}
+                    <tr>
+                        <td class="nowrap font-normal">{{ loop.index }}</td>
+                        <td class="font-normal command">
+                            <span class="label status-{% if history.success %}success{% else %}error{% endif %} same-width">
+                                {{- history.command.method|upper -}}
+                            </span>
+                        </td>
+                        <td class="font-normal request">
+                            <a href="#" class="sf-toggle link-inverse" data-toggle-selector="#formatted-command-{{ key }}" data-toggle-alt-content="Hide body">Show body</a>
+                            <div id="formatted-command-{{ key }}" class="sql-runnable hidden">
+                                <pre>
+                                    {{- history.command.jsonSerialize|json_encode(constant('JSON_PRETTY_PRINT')) -}}
+                                </pre>
+                            </div>
+                        </td>
+                        <td class="font-normal response">
+                            <a href="#" class="sf-toggle link-inverse" data-toggle-selector="#formatted-result-{{ key }}" data-toggle-alt-content="Hide body">Show body</a>
+                            <div id="formatted-result-{{ key }}" class="sql-runnable hidden">
+                                <pre>
+                                    {{- history.result|json_encode(constant('JSON_PRETTY_PRINT')) -}}
+                                </pre>
+                            </div>
+                        </td>
+                    </tr>
+                {%- endfor -%}
+            </tbody>
+        </table>
+    {%- endif -%}
+
+    <h3>Additional Resources</h3>
+    <ul>
+        <li><a href="https://github.com/fre5h/CentrifugoBundle/issues">Report an issue</a></li>
+        <li><a href="https://centrifugal.github.io/centrifugo/">Centrifugo documentation</a></li>
+        <li><a href="https://github.com/fre5h/CentrifugoBundle">CentrifugoBundle homepage</a></li>
+    </ul>
+{% endblock panel %}

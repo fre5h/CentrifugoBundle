@@ -9,3 +9,4 @@
 /.travis.yml        export-ignore
 /phpunit.xml.dist   export-ignore
 /Tests              export-ignore
+/Resources/images   export-ignore

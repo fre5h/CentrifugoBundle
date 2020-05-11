@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Fresh\CentrifugoBundle\Tests\Logger;
 
 use Fresh\CentrifugoBundle\Logger\CommandHistoryLogger;
-use Fresh\CentrifugoBundle\Model\BatchRequest;
 use Fresh\CentrifugoBundle\Model\PublishCommand;
 use PHPUnit\Framework\TestCase;
 
@@ -40,16 +39,52 @@ final class CommandHistoryLoggerTest extends TestCase
     public function testConstructor(): void
     {
         self::assertCount(0, $this->commandHistoryLogger->getCommandHistory());
+        self::assertSame(0, $this->commandHistoryLogger->getCommandsCount());
+        self::assertSame(0, $this->commandHistoryLogger->getRequestsCount());
+        self::assertSame(0, $this->commandHistoryLogger->getSuccessfulCommandsCount());
+        self::assertSame(0, $this->commandHistoryLogger->getFailedCommandsCount());
+    }
+
+    public function testRequestCount(): void
+    {
+        self::assertSame(0, $this->commandHistoryLogger->getRequestsCount());
+        $this->commandHistoryLogger->increaseRequestsCount();
+
+        self::assertSame(1, $this->commandHistoryLogger->getRequestsCount());
+        $this->commandHistoryLogger->increaseRequestsCount();
+        self::assertSame(2, $this->commandHistoryLogger->getRequestsCount());
+
+        $this->commandHistoryLogger->clearCommandHistory();
+        self::assertSame(0, $this->commandHistoryLogger->getRequestsCount());
     }
 
     public function testAllFlow(): void
     {
-        self::assertCount(0, $this->commandHistoryLogger->getCommandHistory());
-        $this->commandHistoryLogger->logCommand(new PublishCommand([], 'channelA'));
+        $command = new PublishCommand([], 'channelA');
+        $this->commandHistoryLogger->logCommand($command, true, ['test']);
         self::assertCount(1, $this->commandHistoryLogger->getCommandHistory());
-        $this->commandHistoryLogger->logCommand(new BatchRequest([new PublishCommand([], 'channelB'), new PublishCommand([], 'channelC')]));
-        self::assertCount(3, $this->commandHistoryLogger->getCommandHistory());
+        self::assertSame(
+            [
+                'command' => $command,
+                'result' => ['test'],
+                'success' => true,
+            ],
+            $this->commandHistoryLogger->getCommandHistory()[0]
+        );
+        self::assertSame(1, $this->commandHistoryLogger->getCommandsCount());
+        self::assertSame(1, $this->commandHistoryLogger->getSuccessfulCommandsCount());
+        self::assertSame(0, $this->commandHistoryLogger->getFailedCommandsCount());
+
+        $this->commandHistoryLogger->logCommand(new PublishCommand([], 'channelB'), false, []);
+        self::assertCount(2, $this->commandHistoryLogger->getCommandHistory());
+        self::assertSame(2, $this->commandHistoryLogger->getCommandsCount());
+        self::assertSame(1, $this->commandHistoryLogger->getSuccessfulCommandsCount());
+        self::assertSame(1, $this->commandHistoryLogger->getFailedCommandsCount());
+
         $this->commandHistoryLogger->clearCommandHistory();
         self::assertCount(0, $this->commandHistoryLogger->getCommandHistory());
+        self::assertSame(0, $this->commandHistoryLogger->getCommandsCount());
+        self::assertSame(0, $this->commandHistoryLogger->getSuccessfulCommandsCount());
+        self::assertSame(0, $this->commandHistoryLogger->getFailedCommandsCount());
     }
 }
