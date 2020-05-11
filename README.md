@@ -19,7 +19,7 @@
 - [x] [Batch request](./Resources/docs/centrifugo_service_methods.md#batch-request) in [JSON streaming format](https://en.wikipedia.org/wiki/JSON_streaming) 💪
 - [x] [Console commands](./Resources/docs/console_commands.md "Console commands") ⚒️️
 - [x] Integration into Symfony Web-Profiler 🎛️
-- [ ] @todo Add RSA
+- [ ] @todo Add RSA algorithm for JWT token generation.
 
 ## Requirements
 
