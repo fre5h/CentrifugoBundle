@@ -59,9 +59,12 @@
 {% endblock toolbar %}
 
 {% block menu %}
-    <span class="label {{ collector.commandsCount ? '' : 'disabled' }}">
+    <span class="label {{ collector.commandsCount ? '' : 'disabled' }} {{ collector.failedCommandsCount > 0 ? 'label-status-error' : '' }}">
         <span class="icon">{{ include('@FreshCentrifugo/data_collector/icon.svg.twig', { height: 32 }) }}</span>
         <strong>Centrifugo</strong>
+        {%- if collector.failedCommandsCount > 0 -%}
+            <span class="count"><span>{{ collector.failedCommandsCount }}</span></span>
+        {%- endif -%}
     </span>
 {% endblock menu %}
 

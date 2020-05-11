@@ -183,6 +183,10 @@ class Centrifugo
             $json = \json_encode($command, \JSON_THROW_ON_ERROR);
         }
 
+        if ($this->profilerEnabled) {
+            $this->commandHistoryLogger->increaseRequestsCount();
+        }
+
         $response = $this->httpClient->request(
             Request::METHOD_POST,
             $this->endpoint,
@@ -195,12 +199,6 @@ class Centrifugo
             ]
         );
 
-        $result = $this->responseProcessor->processResponse($command, $response);
-
-        if ($this->profilerEnabled) {
-            $this->commandHistoryLogger->increaseRequestsCount();
-        }
-
-        return $result;
+        return $this->responseProcessor->processResponse($command, $response);
     }
 }
