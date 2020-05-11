@@ -1,4 +1,4 @@
-# CentrifugoBundle [WIP]
+# CentrifugoBundle
 
 📦 Provides communication with web-socket server [Centrifugo](https://centrifugal.github.io/centrifugo/) in [Symfony](https://symfony.com/) applications.
 
