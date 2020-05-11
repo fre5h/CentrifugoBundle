@@ -21,7 +21,7 @@
 - [x] Integration into Symfony Web-Profiler 🎛️
 - [ ] @todo Add RSA algorithm for JWT token generation.
 
-## Requirements
+## Requirements 🧐
 
 * PHP 7.3 *and later*
 * Symfony 4.4, 5.0 *and later*
