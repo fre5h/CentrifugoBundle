@@ -21,7 +21,7 @@ use Fresh\CentrifugoBundle\Model\CommandInterface;
  */
 class CommandHistoryLogger
 {
-    /** @var CommandInterface[] */
+    /** @var array */
     private $commandHistory = [];
 
     /** @var int */
