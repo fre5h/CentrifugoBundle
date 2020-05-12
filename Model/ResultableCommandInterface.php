@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of the taxi6565-backend project
+ * This file is part of the FreshCentrifugoBundle.
  *
  * (c) Artem Henvald <genvaldartem@gmail.com>
  *
