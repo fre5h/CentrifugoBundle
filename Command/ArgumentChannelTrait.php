@@ -45,7 +45,7 @@ trait ArgumentChannelTrait
         try {
             $this->centrifugoChecker->assertValidChannelName($channel);
             $this->channel = $channel;
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             throw new InvalidArgumentException($e->getMessage());
         }
     }

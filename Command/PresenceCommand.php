@@ -103,7 +103,7 @@ HELP
             } else {
                 $io->success('NO DATA');
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $io->error($e->getMessage());
         }
 
@@ -119,11 +119,12 @@ HELP
     {
         $json = \json_encode($connInfo, \JSON_PRETTY_PRINT | \JSON_THROW_ON_ERROR);
 
-        $jsonWithPadding = '';
-        foreach (\explode("\n", $json) as $line) {
-            $jsonWithPadding .= \sprintf("   │ <comment>%s</comment>\n", $line);
-        }
-
-        return $jsonWithPadding;
+        return array_reduce(
+            \explode("\n", $json),
+            static function (string $jsonWithPadding, string $line) {
+                return \sprintf("%s   │ <comment>%s</comment>\n", $jsonWithPadding, $line);
+            },
+            ''
+        );
     }
 }

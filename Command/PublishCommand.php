@@ -89,7 +89,7 @@ HELP
         try {
             $this->centrifugo->publish($this->data, $this->channel);
             $io->success('DONE');
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $io->error($e->getMessage());
         }
 

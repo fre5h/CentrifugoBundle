@@ -66,7 +66,7 @@ HELP
             } else {
                 $io->success('NO DATA');
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $io->error($e->getMessage());
         }
 

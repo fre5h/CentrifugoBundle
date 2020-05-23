@@ -90,7 +90,7 @@ HELP
             $io->text(\sprintf('<info>num_clients</info>: <comment>%d</comment>', $data['num_clients']));
             $io->text(\sprintf('<info>num_users</info>: <comment>%d</comment>', $data['num_users']));
             $io->newLine();
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $io->error($e->getMessage());
         }
 
