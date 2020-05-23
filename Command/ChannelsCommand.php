@@ -61,6 +61,8 @@ HELP
             }
         } catch (\Exception $e) {
             $io->error($e->getMessage());
+
+            return $e->getCode();
         }
 
         return 0;
