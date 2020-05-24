@@ -94,11 +94,11 @@ final class ChannelsCommandTest extends TestCase
         $this->centrifugo
             ->expects(self::once())
             ->method('channels')
-            ->willThrowException(new \Exception('test'))
+            ->willThrowException(new \Exception('test', 5))
         ;
 
         $result = $this->commandTester->execute(['command' => $this->command->getName()]);
-        self::assertSame(0, $result);
+        self::assertSame(5, $result);
 
         $output = $this->commandTester->getDisplay();
         self::assertStringContainsString('test', $output);
