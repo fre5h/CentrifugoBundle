@@ -84,7 +84,7 @@ HELP
         try {
             $this->centrifugo->historyRemove($this->channel);
             $io->success('DONE');
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $io->error($e->getMessage());
 
             return $e->getCode();

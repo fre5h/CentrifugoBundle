@@ -89,7 +89,7 @@ HELP
                 $this->centrifugoChecker->assertValidChannelName($channel);
             }
             $this->channels = $channels;
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             throw new InvalidArgumentException($e->getMessage());
         }
     }
@@ -104,7 +104,7 @@ HELP
         try {
             $this->centrifugo->broadcast($this->data, $this->channels);
             $io->success('DONE');
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $io->error($e->getMessage());
 
             return $e->getCode();

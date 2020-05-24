@@ -73,7 +73,7 @@ HELP
         try {
             $this->centrifugo->disconnect($this->user);
             $io->success('DONE');
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $io->error($e->getMessage());
 
             return $e->getCode();
