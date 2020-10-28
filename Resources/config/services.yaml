@@ -19,7 +19,7 @@ services:
                 name: data_collector
                 template: '@FreshCentrifugo/data_collector/centrifugo.html.twig'
 
-    Fresh\CentrifugoBundle\Service\Centrifugo:
+    Fresh\CentrifugoBundle\Service\CentrifugoInterface:
         class: Fresh\CentrifugoBundle\Service\Centrifugo
         arguments:
             - '%env(CENTRIFUGO_API_ENDPOINT)%'
