@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Command;
 
-use Fresh\CentrifugoBundle\Service\Centrifugo;
+use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
 use Symfony\Component\Console\Command\Command;
 
 /**
@@ -22,13 +22,13 @@ use Symfony\Component\Console\Command\Command;
  */
 abstract class AbstractCommand extends Command
 {
-    /** @var Centrifugo */
+    /** @var CentrifugoInterface */
     protected $centrifugo;
 
     /**
-     * @param Centrifugo $centrifugo
+     * @param CentrifugoInterface $centrifugo
      */
-    public function __construct(Centrifugo $centrifugo)
+    public function __construct(CentrifugoInterface $centrifugo)
     {
         $this->centrifugo = $centrifugo;
 

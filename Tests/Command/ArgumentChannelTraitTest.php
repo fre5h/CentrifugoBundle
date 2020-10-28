@@ -14,8 +14,8 @@ namespace Fresh\CentrifugoBundle\Tests\Command;
 
 use Fresh\CentrifugoBundle\Command\PresenceCommand;
 use Fresh\CentrifugoBundle\Exception\InvalidArgumentException as CentrifugoInvalidArgumentException;
-use Fresh\CentrifugoBundle\Service\Centrifugo;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
+use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
@@ -25,7 +25,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 final class ArgumentChannelTraitTest extends TestCase
 {
-    /** @var Centrifugo|MockObject */
+    /** @var CentrifugoInterface|MockObject */
     private $centrifugo;
 
     /** @var CentrifugoChecker|MockObject */
@@ -42,7 +42,7 @@ final class ArgumentChannelTraitTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->centrifugo = $this->createMock(Centrifugo::class);
+        $this->centrifugo = $this->createMock(CentrifugoInterface::class);
         $this->centrifugoChecker = $this->createMock(CentrifugoChecker::class);
         $command = new PresenceCommand($this->centrifugo, $this->centrifugoChecker);
 

@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle;
 
+use Fresh\CentrifugoBundle\DependencyInjection\Compiler\RegisterCentrifugoPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -21,4 +23,13 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class FreshCentrifugoBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container): void
+    {
+        parent::build($container);
+
+        $container->addCompilerPass(new RegisterCentrifugoPass());
+    }
 }

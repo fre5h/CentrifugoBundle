@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Fresh\CentrifugoBundle\Tests\Service;
 
 use Fresh\CentrifugoBundle\Model;
-use Fresh\CentrifugoBundle\Service\Centrifugo;
 use Fresh\CentrifugoBundle\Service\FakeCentrifugo;
 use PHPUnit\Framework\TestCase;
 
@@ -24,7 +23,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class FakeCentrifugoTest extends TestCase
 {
-    /** @var Centrifugo */
+    /** @var FakeCentrifugo */
     private $centrifugo;
 
     protected function setUp(): void

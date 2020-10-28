@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Command;
 
-use Fresh\CentrifugoBundle\Service\Centrifugo;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
+use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
@@ -39,10 +39,10 @@ final class BroadcastCommand extends AbstractCommand
     private $channels;
 
     /**
-     * @param Centrifugo        $centrifugo
-     * @param CentrifugoChecker $centrifugoChecker
+     * @param CentrifugoInterface $centrifugo
+     * @param CentrifugoChecker   $centrifugoChecker
      */
-    public function __construct(Centrifugo $centrifugo, CentrifugoChecker $centrifugoChecker)
+    public function __construct(CentrifugoInterface $centrifugo, CentrifugoChecker $centrifugoChecker)
     {
         $this->centrifugoChecker = $centrifugoChecker;
 
