@@ -39,7 +39,7 @@ final class NullCentrifugoTest extends TestCase
         );
     }
 
-    public function testPublishCommand(): void
+    public function testAllMethods(): void
     {
         $this->centrifugo->publish(['foo' => 'bar'], 'channelA');
         $this->centrifugo->broadcast(['foo' => 'bar'], ['channelA', 'channelB']);
