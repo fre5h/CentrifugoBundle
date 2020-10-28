@@ -119,7 +119,7 @@ HELP
      */
     private function formatConnInfo(array $connInfo): string
     {
-        $json = \json_encode($connInfo, \JSON_PRETTY_PRINT | \JSON_THROW_ON_ERROR);
+        $json = \json_encode($connInfo, JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR);
 
         return array_reduce(
             \explode("\n", $json),
