@@ -61,7 +61,7 @@ final class FreshCentrifugoExtensionTest extends TestCase
         self::assertSame(255, $this->container->getParameter('centrifugo.channel_max_length'));
         self::assertTrue($this->container->hasParameter('centrifugo.jwt.ttl'));
         self::assertNull($this->container->getParameter('centrifugo.jwt.ttl'));
-        self::assertFalse($this->container->hasParameter('centrifugo.fake_mode'));
+        self::assertFalse($this->container->getParameter('centrifugo.fake_mode'));
 
         $childDefinitions = $this->container->getAutoconfiguredInstanceof();
         foreach ($childDefinitions as $childDefinition) {

@@ -39,8 +39,10 @@ class CentrifugoChecker
      * @param string $channelName
      *
      * @throws InvalidArgumentException
+     *
+     * @return bool
      */
-    public function assertValidChannelName(string $channelName): void
+    public function assertValidChannelName(string $channelName): bool
     {
         if (false === \mb_detect_encoding($channelName, 'ASCII', true)) {
             throw new InvalidArgumentException('Invalid channel name. Only ASCII symbols must be used in channel string.');
@@ -49,6 +51,8 @@ class CentrifugoChecker
         if (\strlen($channelName) > $this->channelMaxLength) {
             throw new InvalidArgumentException(\sprintf('Invalid channel name length. Maximum allowed length is %d.', $this->channelMaxLength));
         }
+
+        return true;
     }
 
     /**

@@ -62,12 +62,9 @@ final class CentrifugoCheckerTest extends TestCase
         $this->centrifugoChecker->assertValidChannelName('ABCDEFGHIJK');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
     public function testValidChannelName(): void
     {
-        $this->centrifugoChecker->assertValidChannelName('1234567890');
+        self::assertTrue($this->centrifugoChecker->assertValidChannelName('1234567890'));
     }
 
     public function testInvalidResponseStatusCode(): void
