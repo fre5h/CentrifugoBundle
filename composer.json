@@ -35,12 +35,11 @@
     },
     "require-dev": {
         "escapestudios/symfony2-coding-standard": "^3.11",
-        "johnkary/phpunit-speedtrap": "^3.2",
         "phpstan/phpstan": "^0.12",
         "phpstan/phpstan-deprecation-rules": "^0.12",
         "phpstan/phpstan-phpunit": "^0.12",
         "phpstan/phpstan-symfony": "^0.12",
-        "phpunit/phpunit": "9.1.1",
+        "phpunit/phpunit": "^9.4.0",
         "slam/phpstan-extensions": "^4.0"
     },
     "autoload": {

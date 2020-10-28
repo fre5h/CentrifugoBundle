@@ -109,7 +109,7 @@ class PrivateChannelAuthenticator
     private function processRequest(Request $request): array
     {
         try {
-            $content = \json_decode((string) $request->getContent(), true, 512, \JSON_THROW_ON_ERROR);
+            $content = \json_decode((string) $request->getContent(), true, 512, JSON_THROW_ON_ERROR);
         } catch (\JsonException $e) {
             throw new BadRequestHttpException('Invalid JSON.');
         } catch (\Exception $e) {

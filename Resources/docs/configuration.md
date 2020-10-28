@@ -16,6 +16,7 @@ fresh_centrifugo:
         # You can set default TTL for all JWT tokens, if it not set, then default value is NULL
         # Default NULL value means that tokens will not be expired
         ttl: 86400 
+    fake_mode: true # Enables fake mode for Centrifugo client, no real request will be sent.
 ```
 
 ## More features

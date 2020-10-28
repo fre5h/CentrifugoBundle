@@ -50,6 +50,10 @@ class Configuration implements ConfigurationInterface
                     ->defaultValue(255)
                     ->info('Maximum length of channel name.')
                 ->end()
+                ->booleanNode('fake_mode')
+                    ->defaultFalse()
+                    ->info('Enables fake mode for Centrifugo client, no real request will be sent.')
+                ->end()
             ->end()
         ;
 

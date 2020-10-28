@@ -63,7 +63,7 @@ final class UnsubscribeCommandTest extends TestCase
                     }
                 }
             JSON,
-            \json_encode($this->command, \JSON_THROW_ON_ERROR)
+            \json_encode($this->command, JSON_THROW_ON_ERROR)
         );
     }
 }

@@ -13,8 +13,8 @@ declare(strict_types=1);
 namespace Fresh\CentrifugoBundle\Tests\Command;
 
 use Fresh\CentrifugoBundle\Command\BroadcastCommand;
-use Fresh\CentrifugoBundle\Service\Centrifugo;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
+use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
@@ -24,7 +24,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 final class ArgumentDataTraitTest extends TestCase
 {
-    /** @var Centrifugo|MockObject */
+    /** @var CentrifugoInterface|MockObject */
     private $centrifugo;
 
     /** @var CentrifugoChecker|MockObject */
@@ -41,7 +41,7 @@ final class ArgumentDataTraitTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->centrifugo = $this->createMock(Centrifugo::class);
+        $this->centrifugo = $this->createMock(CentrifugoInterface::class);
         $this->centrifugoChecker = $this->createMock(CentrifugoChecker::class);
         $command = new BroadcastCommand($this->centrifugo, $this->centrifugoChecker);
 

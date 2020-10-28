@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Command;
 
-use Fresh\CentrifugoBundle\Service\Centrifugo;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
+use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,16 +27,16 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 final class PublishCommand extends AbstractCommand
 {
-    use ArgumentDataTrait;
     use ArgumentChannelTrait;
+    use ArgumentDataTrait;
 
     protected static $defaultName = 'centrifugo:publish';
 
     /**
-     * @param Centrifugo        $centrifugo
-     * @param CentrifugoChecker $centrifugoChecker
+     * @param CentrifugoInterface $centrifugo
+     * @param CentrifugoChecker   $centrifugoChecker
      */
-    public function __construct(Centrifugo $centrifugo, CentrifugoChecker $centrifugoChecker)
+    public function __construct(CentrifugoInterface $centrifugo, CentrifugoChecker $centrifugoChecker)
     {
         $this->centrifugoChecker = $centrifugoChecker;
 

@@ -24,7 +24,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-class Centrifugo
+class Centrifugo implements CentrifugoInterface
 {
     /** @var string */
     private $endpoint;
@@ -68,8 +68,7 @@ class Centrifugo
     }
 
     /**
-     * @param array  $data
-     * @param string $channel
+     * {@inheritdoc}
      */
     public function publish(array $data, string $channel): void
     {
@@ -77,8 +76,7 @@ class Centrifugo
     }
 
     /**
-     * @param array    $data
-     * @param string[] $channels
+     * {@inheritdoc}
      */
     public function broadcast(array $data, array $channels): void
     {
@@ -86,8 +84,7 @@ class Centrifugo
     }
 
     /**
-     * @param string $user
-     * @param string $channel
+     * {@inheritdoc}
      */
     public function unsubscribe(string $user, string $channel): void
     {
@@ -95,7 +92,7 @@ class Centrifugo
     }
 
     /**
-     * @param string $user
+     * {@inheritdoc}
      */
     public function disconnect(string $user): void
     {
@@ -103,9 +100,7 @@ class Centrifugo
     }
 
     /**
-     * @param string $channel
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function presence(string $channel): array
     {
@@ -113,9 +108,7 @@ class Centrifugo
     }
 
     /**
-     * @param string $channel
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function presenceStats(string $channel): array
     {
@@ -123,9 +116,7 @@ class Centrifugo
     }
 
     /**
-     * @param string $channel
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function history(string $channel): array
     {
@@ -133,7 +124,7 @@ class Centrifugo
     }
 
     /**
-     * @param string $channel
+     * {@inheritdoc}
      */
     public function historyRemove(string $channel): void
     {
@@ -141,7 +132,7 @@ class Centrifugo
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function channels(): array
     {
@@ -149,7 +140,7 @@ class Centrifugo
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function info(): array
     {
@@ -157,9 +148,7 @@ class Centrifugo
     }
 
     /**
-     * @param CommandInterface[] $commands
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function batchRequest(array $commands): array
     {
@@ -180,7 +169,7 @@ class Centrifugo
         if ($command instanceof Model\BatchRequest) {
             $json = $command->prepareLineDelimitedJson();
         } else {
-            $json = \json_encode($command, \JSON_THROW_ON_ERROR);
+            $json = \json_encode($command, JSON_THROW_ON_ERROR);
         }
 
         if ($this->profilerEnabled) {

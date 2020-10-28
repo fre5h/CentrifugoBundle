@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Fresh\CentrifugoBundle\Tests\Command;
 
 use Fresh\CentrifugoBundle\Command\ChannelsCommand;
-use Fresh\CentrifugoBundle\Service\Centrifugo;
+use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
@@ -22,7 +22,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 final class ChannelsCommandTest extends TestCase
 {
-    /** @var Centrifugo|MockObject */
+    /** @var CentrifugoInterface|MockObject */
     private $centrifugo;
 
     /** @var Command */
@@ -36,7 +36,7 @@ final class ChannelsCommandTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->centrifugo = $this->createMock(Centrifugo::class);
+        $this->centrifugo = $this->createMock(CentrifugoInterface::class);
         $command = new ChannelsCommand($this->centrifugo);
 
         $this->application = new Application();

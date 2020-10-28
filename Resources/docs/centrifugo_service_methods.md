@@ -10,17 +10,17 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use Fresh\CentrifugoBundle\Service\Centrifugo;
+use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
 
 class YourService
 {
-    /** @var Centrifugo */
+    /** @var CentrifugoInterface */
     private $centrifugo;    
 
     /**
-     * @param Centrifugo $centrifugo
+     * @param CentrifugoInterface $centrifugo
      */
-    public function __construct(Centrifugo $centrifugo)
+    public function __construct(CentrifugoInterface $centrifugo)
     {
         $this->centrifugo = $centrifugo;
     }

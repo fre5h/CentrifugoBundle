@@ -60,7 +60,7 @@ final class InfoCommandTest extends TestCase
                     "params": []
                 }
             JSON,
-            \json_encode($this->command, \JSON_THROW_ON_ERROR)
+            \json_encode($this->command, JSON_THROW_ON_ERROR)
         );
     }
 }
