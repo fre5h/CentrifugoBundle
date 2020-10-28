@@ -14,22 +14,22 @@ namespace Fresh\CentrifugoBundle\Tests\Service;
 
 use Fresh\CentrifugoBundle\Model;
 use Fresh\CentrifugoBundle\Service\Centrifugo;
-use Fresh\CentrifugoBundle\Service\NullCentrifugo;
+use Fresh\CentrifugoBundle\Service\FakeCentrifugo;
 use PHPUnit\Framework\TestCase;
 
 /**
- * NullCentrifugoTest.
+ * FakeCentrifugoTest.
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-final class NullCentrifugoTest extends TestCase
+final class FakeCentrifugoTest extends TestCase
 {
     /** @var Centrifugo */
     private $centrifugo;
 
     protected function setUp(): void
     {
-        $this->centrifugo = new NullCentrifugo();
+        $this->centrifugo = new FakeCentrifugo();
     }
 
     protected function tearDown(): void

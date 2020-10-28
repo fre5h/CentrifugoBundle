@@ -13,11 +13,11 @@ declare(strict_types=1);
 namespace Fresh\CentrifugoBundle\Service;
 
 /**
- * NullCentrifugo.
+ * FakeCentrifugo.
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-class NullCentrifugo implements CentrifugoInterface
+class FakeCentrifugo implements CentrifugoInterface
 {
     /**
      * {@inheritdoc}
