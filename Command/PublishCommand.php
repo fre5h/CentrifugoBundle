@@ -27,8 +27,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 final class PublishCommand extends AbstractCommand
 {
-    use ArgumentDataTrait;
     use ArgumentChannelTrait;
+    use ArgumentDataTrait;
 
     protected static $defaultName = 'centrifugo:publish';
 
