@@ -9,6 +9,9 @@ services:
             $centrifugoSecret: '%env(CENTRIFUGO_SECRET)%'
             iterable $channelAuthenticators: !tagged_iterator 'centrifugo.channel_authenticator'
 
+    Fresh\DateTime\DateTimeHelper:
+        class: Fresh\DateTime\DateTimeHelper
+
     Fresh\CentrifugoBundle\:
         resource: '../../{Command,Logger,Service}/'
         exclude: '../../Service/Centrifugo.php'
