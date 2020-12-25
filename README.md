@@ -22,8 +22,8 @@
 
 ## Requirements 🧐
 
-* PHP 7.3 *and later*
-* Symfony 4.4, 5.0 *and later*
+* PHP 7.3, 7.4, 8.0
+* Symfony 4.4, 5.0, 5.1, 5.2
 
 ## Installation 🌱
 
