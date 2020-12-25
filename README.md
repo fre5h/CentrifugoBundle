@@ -3,7 +3,7 @@
 📦 Provides communication with web-socket server [Centrifugo](https://centrifugal.github.io/centrifugo/) in [Symfony](https://symfony.com/) applications.
 
 [![Scrutinizer Quality Score](https://img.shields.io/scrutinizer/g/fre5h/CentrifugoBundle.svg?style=flat-square)](https://scrutinizer-ci.com/g/fre5h/CentrifugoBundle/)
-[![Build Status](https://img.shields.io/travis/fre5h/CentrifugoBundle/master.svg?style=flat-square)](https://travis-ci.org/fre5h/CentrifugoBundle)
+[![Build Status](https://img.shields.io/travis/fre5h/CentrifugoBundle/master.svg?style=flat-square)](https://travis-ci.com/fre5h/CentrifugoBundle)
 [![CodeCov](https://img.shields.io/codecov/c/github/fre5h/CentrifugoBundle.svg?style=flat-square)](https://codecov.io/github/fre5h/CentrifugoBundle)
 [![License](https://img.shields.io/packagist/l/fresh/centrifugo-bundle.svg?style=flat-square)](https://packagist.org/packages/fresh/centrifugo-bundle)
 [![Latest Stable Version](https://img.shields.io/packagist/v/fresh/centrifugo-bundle.svg?style=flat-square)](https://packagist.org/packages/fresh/centrifugo-bundle)
