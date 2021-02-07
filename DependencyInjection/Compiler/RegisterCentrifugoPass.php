@@ -40,8 +40,8 @@ class RegisterCentrifugoPass implements CompilerPassInterface
             $definition = new Definition(
                 Centrifugo::class,
                 [
-                    $container->resolveEnvPlaceholders('%env(CENTRIFUGO_API_ENDPOINT)%'),
-                    $container->resolveEnvPlaceholders('%env(CENTRIFUGO_API_KEY)%'),
+                    $container->getParameter('centrifugo.api_endpoint'),
+                    $container->getParameter('centrifugo.api_key'),
                     $container->findDefinition('http_client'),
                     $container->findDefinition(ResponseProcessor::class),
                     $container->findDefinition(CommandHistoryLogger::class),

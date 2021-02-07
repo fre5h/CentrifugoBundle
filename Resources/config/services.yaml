@@ -6,7 +6,7 @@ services:
         bind:
             $centrifugoChannelMaxLength: '%centrifugo.channel_max_length%'
             $centrifugoJwtTtl: '%centrifugo.jwt.ttl%'
-            $centrifugoSecret: '%env(CENTRIFUGO_SECRET)%'
+            $centrifugoSecret: '%centrifugo.secret%'
             iterable $channelAuthenticators: !tagged_iterator 'centrifugo.channel_authenticator'
 
     Fresh\DateTime\DateTimeHelper:

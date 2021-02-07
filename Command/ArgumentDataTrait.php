@@ -39,7 +39,7 @@ trait ArgumentDataTrait
         }
 
         try {
-            $this->data = \json_decode($data, true, 512, JSON_THROW_ON_ERROR);
+            $this->data = \json_decode($data, true, 512, \JSON_THROW_ON_ERROR);
         } catch (\JsonException $e) {
             throw new InvalidArgumentException('Argument "data" is not a valid JSON.');
         }

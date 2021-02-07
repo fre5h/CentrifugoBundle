@@ -54,6 +54,18 @@ class Configuration implements ConfigurationInterface
                     ->defaultFalse()
                     ->info('Enables fake mode for Centrifugo client, no real request will be sent.')
                 ->end()
+                ->scalarNode('api_key')
+                    ->defaultValue('%env(CENTRIFUGO_API_KEY)%')
+                    ->info('Centrifugo API key')
+                ->end()
+                ->scalarNode('api_endpoint')
+                    ->defaultValue('%env(CENTRIFUGO_API_ENDPOINT)%')
+                    ->info('Centrifugo API endpoint')
+                ->end()
+                ->scalarNode('secret')
+                    ->defaultValue('%env(CENTRIFUGO_SECRET)%')
+                    ->info('Centrifugo secret')
+                ->end()
             ->end()
         ;
 

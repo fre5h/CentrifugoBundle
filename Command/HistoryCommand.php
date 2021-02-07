@@ -90,7 +90,7 @@ HELP
                 $io->title('Publications');
 
                 foreach ($data['publications'] as $info) {
-                    $io->writeln(\json_encode($info['data'], JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR));
+                    $io->writeln(\json_encode($info['data'], \JSON_PRETTY_PRINT | \JSON_THROW_ON_ERROR));
                     $io->newLine();
                     $io->writeln('<info>------------</info>');
                     $io->newLine();

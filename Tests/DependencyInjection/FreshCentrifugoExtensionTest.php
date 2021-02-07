@@ -65,6 +65,9 @@ final class FreshCentrifugoExtensionTest extends TestCase
         self::assertTrue($this->container->hasParameter('centrifugo.jwt.ttl'));
         self::assertNull($this->container->getParameter('centrifugo.jwt.ttl'));
         self::assertFalse($this->container->getParameter('centrifugo.fake_mode'));
+        self::assertNotEmpty($this->container->getParameter('centrifugo.api_key'));
+        self::assertNotEmpty($this->container->getParameter('centrifugo.api_endpoint'));
+        self::assertNotEmpty($this->container->getParameter('centrifugo.secret'));
 
         $childDefinitions = $this->container->getAutoconfiguredInstanceof();
         foreach ($childDefinitions as $childDefinition) {

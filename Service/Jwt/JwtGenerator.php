@@ -98,7 +98,7 @@ class JwtGenerator
      */
     private function convertArrayToJsonString(array $array): string
     {
-        return \json_encode($array, JSON_THROW_ON_ERROR);
+        return \json_encode($array, \JSON_THROW_ON_ERROR);
     }
 
     /**
