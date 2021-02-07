@@ -88,7 +88,7 @@ HELP
         if ($padding > 0) {
             $formattedKey = $last ? '└ ' : '├ ';
             $formattedKey .= $key;
-            $formattedKey = \str_pad($formattedKey, \strlen($formattedKey) + $padding, ' ', STR_PAD_LEFT);
+            $formattedKey = \str_pad($formattedKey, \strlen($formattedKey) + $padding, ' ', \STR_PAD_LEFT);
         }
 
         if (!\is_array($value)) {
