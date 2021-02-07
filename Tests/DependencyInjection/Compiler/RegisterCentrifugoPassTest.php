@@ -71,7 +71,7 @@ final class RegisterCentrifugoPassTest extends TestCase
     public function testProcessCentrifugo(): void
     {
         $this->containerBuilder
-            ->expects(self::once())
+            ->expects(self::exactly(3))
             ->method('getParameter')
             ->withConsecutive(
                 ['centrifugo.fake_mode'],
