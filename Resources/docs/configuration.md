@@ -17,6 +17,9 @@ fresh_centrifugo:
         # Default NULL value means that tokens will not be expired
         ttl: 86400 
     fake_mode: true # Enables fake mode for Centrifugo client, no real request will be sent.
+    api_key: '%env(CENTRIFUGO_API_KEY)%' # You can change API key here
+    api_endpoint: '%env(CENTRIFUGO_API_ENDPOINT)%' # You can change API endpoint here
+    secret: '%env(CENTRIFUGO_SECRET)%' # You can change secret here
 ```
 
 ## More features

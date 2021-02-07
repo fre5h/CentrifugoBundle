@@ -53,7 +53,7 @@ return [
 
 ###> fresh/centrifugo-bundle ###
 CENTRIFUGO_API_KEY=secret-api-key
-CENTRIFUGO_API_ENDPOINT=http://centrifugo:8000/api
+CENTRIFUGO_API_ENDPOINT=http://localhost:8000/api
 CENTRIFUGO_SECRET=secret
 ###< fresh/centrifugo-bundle ###
 ```
