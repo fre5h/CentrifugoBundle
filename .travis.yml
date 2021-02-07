@@ -15,7 +15,6 @@ env:
   jobs:
     - SYMFONY_VERSION=5.2.*
     - SYMFONY_VERSION=5.1.*
-    - SYMFONY_VERSION=5.0.*
     - SYMFONY_VERSION=4.4.*
 
 stages:

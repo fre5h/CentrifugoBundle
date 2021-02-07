@@ -13,7 +13,7 @@
 
 ## Features 🎁
 
-- [x] Compatible with latest [Centrifugo 2.8.1](https://github.com/centrifugal/centrifugo/releases/tag/v2.8.1) 🚀
+- [x] Compatible with latest [Centrifugo 2.8.2](https://github.com/centrifugal/centrifugo/releases/tag/v2.8.2) 🚀
 - [x] Wrapper over [Centrifugo HTTP API](https://centrifugal.github.io/centrifugo/server/http_api/) 🔌
 - [X] Authentication with JWT token (HMAC algorithm) for [anonymous](./Resources/docs/authentication.md#anonymous), [authenticated user](./Resources/docs/authentication.md#authenticated-user) and [private channel](./Resources/docs/authentication.md#private-channel) 🗝️
 - [x] [Batch request](./Resources/docs/centrifugo_service_methods.md#batch-request) in [JSON streaming format](https://en.wikipedia.org/wiki/JSON_streaming) 💪
@@ -23,7 +23,7 @@
 ## Requirements 🧐
 
 * PHP 7.3, 7.4, 8.0
-* Symfony 4.4, 5.0, 5.1, 5.2
+* Symfony 4.4, 5.1, 5.2
 
 ## Installation 🌱
 
