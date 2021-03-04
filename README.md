@@ -74,7 +74,7 @@ use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
 
 class YourService
 {
-    private $centrifugo;    
+    private CentrifugoInterface $centrifugo;    
 
     public function __construct(CentrifugoInterface $centrifugo)
     {
