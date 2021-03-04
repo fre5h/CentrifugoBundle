@@ -34,8 +34,7 @@ final class CredentialsGeneratorTest extends TestCase
     /** @var DateTimeHelper|MockObject */
     private $dateTimeHelper;
 
-    /** @var CredentialsGenerator */
-    private $credentialsGenerator;
+    private CredentialsGenerator $credentialsGenerator;
 
     protected function setUp(): void
     {
@@ -64,7 +63,7 @@ final class CredentialsGeneratorTest extends TestCase
         $this->jwtGenerator
             ->expects(self::once())
             ->method('generateToken')
-            ->with($this->callback(static function (JwtPayload $jwtPayload) {
+            ->with(self::callback(static function (JwtPayload $jwtPayload) {
                 return '' === $jwtPayload->getSubject()
                     && [] === $jwtPayload->getInfo()
                     && 946684810 === $jwtPayload->getExpirationTime() // 2000-01-01 00:00:10
@@ -106,7 +105,7 @@ final class CredentialsGeneratorTest extends TestCase
         $this->jwtGenerator
             ->expects(self::once())
             ->method('generateToken')
-            ->with($this->callback(static function (JwtPayload $jwtPayload) {
+            ->with(self::callback(static function (JwtPayload $jwtPayload) {
                 return 'spiderman' === $jwtPayload->getSubject()
                     && ['name' => 'Peter Parker', 'email' => 'spiderman@marvel.com'] === $jwtPayload->getInfo()
                     && 949449610 === $jwtPayload->getExpirationTime() // 2000-02-02 00:00:10
@@ -131,7 +130,7 @@ final class CredentialsGeneratorTest extends TestCase
         $this->jwtGenerator
             ->expects(self::once())
             ->method('generateToken')
-            ->with($this->callback(static function (JwtPayloadForPrivateChannel $jwtPayloadForPrivateChannel) {
+            ->with(self::callback(static function (JwtPayloadForPrivateChannel $jwtPayloadForPrivateChannel) {
                 return 'spiderman' === $jwtPayloadForPrivateChannel->getClient()
                     && 'avengers' === $jwtPayloadForPrivateChannel->getChannel()
                     && [] === $jwtPayloadForPrivateChannel->getInfo()

@@ -25,8 +25,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class DisconnectCommandTest extends TestCase
 {
-    /** @var DisconnectCommand */
-    private $command;
+    private DisconnectCommand $command;
 
     protected function setUp(): void
     {

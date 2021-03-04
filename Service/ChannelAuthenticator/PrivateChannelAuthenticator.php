@@ -23,11 +23,10 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  */
 class PrivateChannelAuthenticator
 {
-    /** @var CredentialsGenerator */
-    private $credentialsGenerator;
+    private CredentialsGenerator $credentialsGenerator;
 
     /** @var ChannelAuthenticatorInterface[]|iterable */
-    private $channelAuthenticators;
+    private iterable $channelAuthenticators;
 
     /**
      * @param CredentialsGenerator                     $credentialsGenerator

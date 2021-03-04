@@ -23,11 +23,8 @@ use Symfony\Component\Console\Input\InputInterface;
  */
 trait ArgumentChannelTrait
 {
-    /** @var string */
-    protected $channel;
-
-    /** @var CentrifugoChecker */
-    protected $centrifugoChecker;
+    protected string $channel;
+    protected CentrifugoChecker $centrifugoChecker;
 
     /**
      * @param InputInterface $input

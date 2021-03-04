@@ -25,14 +25,9 @@ use Fresh\DateTime\DateTimeHelper;
  */
 class CredentialsGenerator
 {
-    /** @var JwtGenerator */
-    private $jwtGenerator;
-
-    /** @var DateTimeHelper */
-    private $dateTimeHelper;
-
-    /** @var int|null */
-    private $centrifugoJwtTtl;
+    private JwtGenerator $jwtGenerator;
+    private DateTimeHelper $dateTimeHelper;
+    private ?int $centrifugoJwtTtl;
 
     /**
      * @param JwtGenerator   $jwtGenerator

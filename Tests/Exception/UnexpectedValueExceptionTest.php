@@ -23,8 +23,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class UnexpectedValueExceptionTest extends TestCase
 {
-    /** @var UnexpectedValueException */
-    private $exception;
+    private UnexpectedValueException $exception;
 
     protected function setUp(): void
     {

@@ -48,8 +48,7 @@ final class ResponseProcessorTest extends TestCase
     /** @var Profiler|MockObject */
     private $profiler;
 
-    /** @var ResponseProcessor */
-    private $responseProcessor;
+    private ResponseProcessor $responseProcessor;
 
     protected function setUp(): void
     {
@@ -108,9 +107,9 @@ final class ResponseProcessorTest extends TestCase
             ->expects(self::exactly(3))
             ->method('logCommand')
             ->withConsecutive(
-                [$this->isInstanceOf(PublishCommand::class), true, null],
-                [$this->isInstanceOf(BroadcastCommand::class), true, null],
-                [$this->isInstanceOf(ChannelsCommand::class), true, ['channels' => ['chat', 'notification']]]
+                [self::isInstanceOf(PublishCommand::class), true, null],
+                [self::isInstanceOf(BroadcastCommand::class), true, null],
+                [self::isInstanceOf(ChannelsCommand::class), true, ['channels' => ['chat', 'notification']]]
             )
         ;
 
@@ -305,9 +304,9 @@ final class ResponseProcessorTest extends TestCase
             ->expects(self::exactly(3))
             ->method('logCommand')
             ->withConsecutive(
-                [$this->isInstanceOf(PublishCommand::class), false, ['error' => ['message' => 'test message 2', 'code' => 456]]],
-                [$this->isInstanceOf(BroadcastCommand::class), true, null],
-                [$this->isInstanceOf(ChannelsCommand::class), true, ['channels' => ['chat', 'notification']]]
+                [self::isInstanceOf(PublishCommand::class), false, ['error' => ['message' => 'test message 2', 'code' => 456]]],
+                [self::isInstanceOf(BroadcastCommand::class), true, null],
+                [self::isInstanceOf(ChannelsCommand::class), true, ['channels' => ['chat', 'notification']]]
             )
         ;
 

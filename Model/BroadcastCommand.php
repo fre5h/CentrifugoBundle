@@ -20,7 +20,7 @@ namespace Fresh\CentrifugoBundle\Model;
 final class BroadcastCommand extends AbstractCommand
 {
     /** @var string[] */
-    private $channels;
+    private array $channels;
 
     /**
      * @param array    $data

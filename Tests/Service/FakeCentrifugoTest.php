@@ -23,8 +23,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class FakeCentrifugoTest extends TestCase
 {
-    /** @var FakeCentrifugo */
-    private $centrifugo;
+    private FakeCentrifugo $centrifugo;
 
     protected function setUp(): void
     {

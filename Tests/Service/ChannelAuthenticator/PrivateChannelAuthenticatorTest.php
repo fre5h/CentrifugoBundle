@@ -36,8 +36,7 @@ final class PrivateChannelAuthenticatorTest extends TestCase
     /** @var CredentialsGenerator|MockObject */
     private $credentialsGenerator;
 
-    /** @var PrivateChannelAuthenticator */
-    private $privateChannelAuthenticator;
+    private PrivateChannelAuthenticator $privateChannelAuthenticator;
 
     protected function setUp(): void
     {

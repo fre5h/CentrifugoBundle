@@ -48,8 +48,7 @@ final class CentrifugoTest extends TestCase
     /** @var Profiler|MockObject */
     private $profiler;
 
-    /** @var Centrifugo */
-    private $centrifugo;
+    private Centrifugo $centrifugo;
 
     protected function setUp(): void
     {
@@ -105,7 +104,7 @@ final class CentrifugoTest extends TestCase
         $this->responseProcessor
             ->expects(self::once())
             ->method('processResponse')
-            ->with($this->isInstanceOf(Model\PublishCommand::class), $this->response)
+            ->with(self::isInstanceOf(Model\PublishCommand::class), $this->response)
             ->willReturn(null)
         ;
 
@@ -134,7 +133,7 @@ final class CentrifugoTest extends TestCase
         $this->responseProcessor
             ->expects(self::once())
             ->method('processResponse')
-            ->with($this->isInstanceOf(Model\BroadcastCommand::class), $this->response)
+            ->with(self::isInstanceOf(Model\BroadcastCommand::class), $this->response)
             ->willReturn(null)
         ;
 
@@ -163,7 +162,7 @@ final class CentrifugoTest extends TestCase
         $this->responseProcessor
             ->expects(self::once())
             ->method('processResponse')
-            ->with($this->isInstanceOf(Model\UnsubscribeCommand::class), $this->response)
+            ->with(self::isInstanceOf(Model\UnsubscribeCommand::class), $this->response)
             ->willReturn(null)
         ;
 
@@ -191,7 +190,7 @@ final class CentrifugoTest extends TestCase
         $this->responseProcessor
             ->expects(self::once())
             ->method('processResponse')
-            ->with($this->isInstanceOf(Model\DisconnectCommand::class), $this->response)
+            ->with(self::isInstanceOf(Model\DisconnectCommand::class), $this->response)
             ->willReturn(null)
         ;
 
@@ -220,7 +219,7 @@ final class CentrifugoTest extends TestCase
         $this->responseProcessor
             ->expects(self::once())
             ->method('processResponse')
-            ->with($this->isInstanceOf(Model\PresenceCommand::class), $this->response)
+            ->with(self::isInstanceOf(Model\PresenceCommand::class), $this->response)
             ->willReturn([])
         ;
 
@@ -249,7 +248,7 @@ final class CentrifugoTest extends TestCase
         $this->responseProcessor
             ->expects(self::once())
             ->method('processResponse')
-            ->with($this->isInstanceOf(Model\PresenceStatsCommand::class), $this->response)
+            ->with(self::isInstanceOf(Model\PresenceStatsCommand::class), $this->response)
             ->willReturn([])
         ;
 
@@ -278,7 +277,7 @@ final class CentrifugoTest extends TestCase
         $this->responseProcessor
             ->expects(self::once())
             ->method('processResponse')
-            ->with($this->isInstanceOf(Model\HistoryCommand::class), $this->response)
+            ->with(self::isInstanceOf(Model\HistoryCommand::class), $this->response)
             ->willReturn([])
         ;
 
@@ -307,7 +306,7 @@ final class CentrifugoTest extends TestCase
         $this->responseProcessor
             ->expects(self::once())
             ->method('processResponse')
-            ->with($this->isInstanceOf(Model\HistoryRemoveCommand::class), $this->response)
+            ->with(self::isInstanceOf(Model\HistoryRemoveCommand::class), $this->response)
             ->willReturn(null)
         ;
 
@@ -335,7 +334,7 @@ final class CentrifugoTest extends TestCase
         $this->responseProcessor
             ->expects(self::once())
             ->method('processResponse')
-            ->with($this->isInstanceOf(Model\ChannelsCommand::class), $this->response)
+            ->with(self::isInstanceOf(Model\ChannelsCommand::class), $this->response)
             ->willReturn([])
         ;
 
@@ -363,7 +362,7 @@ final class CentrifugoTest extends TestCase
         $this->responseProcessor
             ->expects(self::once())
             ->method('processResponse')
-            ->with($this->isInstanceOf(Model\InfoCommand::class), $this->response)
+            ->with(self::isInstanceOf(Model\InfoCommand::class), $this->response)
             ->willReturn([])
         ;
 
@@ -392,7 +391,7 @@ final class CentrifugoTest extends TestCase
         $this->responseProcessor
             ->expects(self::once())
             ->method('processResponse')
-            ->with($this->isInstanceOf(Model\BatchRequest::class), $this->response)
+            ->with(self::isInstanceOf(Model\BatchRequest::class), $this->response)
             ->willReturn([])
         ;
 

@@ -32,11 +32,10 @@ final class BroadcastCommand extends AbstractCommand
 
     protected static $defaultName = 'centrifugo:broadcast';
 
-    /** @var CentrifugoChecker */
-    private $centrifugoChecker;
+    private CentrifugoChecker $centrifugoChecker;
 
     /** @var string[] */
-    private $channels;
+    private array $channels;
 
     /**
      * @param CentrifugoInterface $centrifugo

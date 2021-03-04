@@ -19,11 +19,8 @@ namespace Fresh\CentrifugoBundle\Model;
  */
 abstract class AbstractCommand implements SerializableCommandInterface
 {
-    /** @var string */
-    private $method;
-
-    /** @var array */
-    private $params;
+    private string $method;
+    private array $params;
 
     /**
      * @param string $method

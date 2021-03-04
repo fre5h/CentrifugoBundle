@@ -29,17 +29,10 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
  */
 class ResponseProcessor
 {
-    /** @var CentrifugoChecker */
-    private $centrifugoChecker;
-
-    /** @var bool */
-    private $profilerEnabled;
-
-    /** @var CommandHistoryLogger */
-    private $commandHistoryLogger;
-
-    /** @var array */
-    private $centrifugoError = [];
+    private CentrifugoChecker $centrifugoChecker;
+    private bool $profilerEnabled;
+    private CommandHistoryLogger $commandHistoryLogger;
+    private array $centrifugoError = [];
 
     /**
      * @param CentrifugoChecker    $centrifugoChecker

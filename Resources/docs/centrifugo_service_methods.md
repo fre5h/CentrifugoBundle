@@ -14,8 +14,7 @@ use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
 
 class YourService
 {
-    /** @var CentrifugoInterface */
-    private $centrifugo;    
+    private CentrifugoInterface $centrifugo;    
 
     /**
      * @param CentrifugoInterface $centrifugo

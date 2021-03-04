@@ -24,8 +24,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class JwtGeneratorTest extends TestCase
 {
-    /** @var JwtGenerator */
-    private $jwtGenerator;
+    private JwtGenerator $jwtGenerator;
 
     protected function setUp(): void
     {

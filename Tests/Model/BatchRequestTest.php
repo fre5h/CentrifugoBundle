@@ -26,8 +26,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class BatchRequestTest extends TestCase
 {
-    /** @var BatchRequest */
-    private $command;
+    private BatchRequest $command;
 
     protected function setUp(): void
     {

@@ -22,8 +22,7 @@ use Symfony\Component\Console\Command\Command;
  */
 abstract class AbstractCommand extends Command
 {
-    /** @var CentrifugoInterface */
-    protected $centrifugo;
+    protected CentrifugoInterface $centrifugo;
 
     /**
      * @param CentrifugoInterface $centrifugo

@@ -5,7 +5,6 @@ cache:
     - $HOME/.composer/cache/files
 
 php:
-  - 7.3
   - 7.4
   - 8.0
 
@@ -29,25 +28,25 @@ jobs:
   include:
     # Composer validation
     - stage: composer validation
-      php: 7.4
+      php: 8.0
       env: SYMFONY_VERSION=5.2.*
       script:
         - composer validate --strict --no-check-lock
     # Code style
     - stage: code style
-      php: 7.4
+      php: 8.0
       env: SYMFONY_VERSION=5.2.*
       script:
         - ./vendor/bin/phpcs ./ -p --encoding=utf-8 --extensions=php --ignore="vendor|Tests" --standard=./vendor/escapestudios/symfony2-coding-standard/Symfony
     # Static analyze
     - stage: static analyze
-      php: 7.4
+      php: 8.0
       env: SYMFONY_VERSION=5.2.*
       script:
         - ./vendor/bin/phpstan analyse --no-progress -c phpstan.neon ./
     # Code coverage with Codecov.io
     - stage: code coverage
-      php: 7.4
+      php: 8.0
       env: COVERAGE=true SYMFONY_VERSION=5.2.*
       script:
         - ./vendor/bin/phpunit -c phpunit.xml.dist --coverage-clover=coverage.xml

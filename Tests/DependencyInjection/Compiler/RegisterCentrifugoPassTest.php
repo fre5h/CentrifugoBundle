@@ -31,8 +31,7 @@ final class RegisterCentrifugoPassTest extends TestCase
     /** @var ContainerBuilder|MockObject */
     private $containerBuilder;
 
-    /** @var RegisterCentrifugoPass */
-    private $registerCentrifugoPass;
+    private RegisterCentrifugoPass $registerCentrifugoPass;
 
     protected function setUp(): void
     {

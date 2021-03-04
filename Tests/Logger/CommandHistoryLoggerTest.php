@@ -23,8 +23,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class CommandHistoryLoggerTest extends TestCase
 {
-    /** @var CommandHistoryLogger */
-    private $commandHistoryLogger;
+    private CommandHistoryLogger $commandHistoryLogger;
 
     protected function setUp(): void
     {
