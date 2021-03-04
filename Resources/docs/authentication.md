@@ -131,6 +131,7 @@ declare(strict_types=1);
 namespace App\Service\Centrifugo\ChannelAuthenticator;
 
 use Fresh\CentrifugoBundle\Service\ChannelAuthenticator\ChannelAuthenticatorInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class AdminChannelAuthenticator implements ChannelAuthenticatorInterface
@@ -143,13 +144,13 @@ class AdminChannelAuthenticator implements ChannelAuthenticatorInterface
     }
 
     // This method is used to detect channels which are supported by this channel authenticator
-    public function supports(string $channel): bool
+    public function supports(string $channel, Request $request): bool
     {
         return 0 === \mb_strpos($channel, '$admins');
     }
 
     // This method is used to decide if current user is granted to access this private channel
-    public function hasAccessToChannel(string $channel): bool
+    public function hasAccessToChannel(string $channel, Request $request): bool
     {
         return $this->authorizationChecker->isGranted('ROLE_ADMIN');
     }

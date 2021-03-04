@@ -50,7 +50,7 @@ class PrivateChannelAuthenticator
         [$client, $channels] = $this->processRequest($request);
 
         foreach ($channels as $channel) {
-            $token = $this->authChannelForClient($client, (string) $channel);
+            $token = $this->authChannelForClient($client, (string) $channel, $request);
 
             if (\is_string($token)) {
                 $authData[] = [
@@ -64,17 +64,18 @@ class PrivateChannelAuthenticator
     }
 
     /**
-     * @param string $client
-     * @param string $channel
+     * @param string  $client
+     * @param string  $channel
+     * @param Request $request
      *
      * @return string|null
      */
-    private function authChannelForClient(string $client, string $channel): ?string
+    private function authChannelForClient(string $client, string $channel, Request $request): ?string
     {
         $token = null;
 
-        $channelAuthenticator = $this->findAppropriateChannelAuthenticator($channel);
-        if ($channelAuthenticator instanceof ChannelAuthenticatorInterface && $channelAuthenticator->hasAccessToChannel($channel)) {
+        $channelAuthenticator = $this->findAppropriateChannelAuthenticator($channel, $request);
+        if ($channelAuthenticator instanceof ChannelAuthenticatorInterface && $channelAuthenticator->hasAccessToChannel($channel, $request)) {
             $token = $this->credentialsGenerator->generateJwtTokenForPrivateChannel($client, $channel);
         }
 
@@ -82,14 +83,15 @@ class PrivateChannelAuthenticator
     }
 
     /**
-     * @param string $channel
+     * @param string  $channel
+     * @param Request $request
      *
      * @return ChannelAuthenticatorInterface|null
      */
-    private function findAppropriateChannelAuthenticator(string $channel): ?ChannelAuthenticatorInterface
+    private function findAppropriateChannelAuthenticator(string $channel, Request $request): ?ChannelAuthenticatorInterface
     {
         foreach ($this->channelAuthenticators as $channelAuthenticator) {
-            if ($channelAuthenticator->supports($channel)) {
+            if ($channelAuthenticator->supports($channel, $request)) {
                 return $channelAuthenticator;
             }
         }
