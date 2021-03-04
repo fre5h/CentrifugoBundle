@@ -25,8 +25,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class InfoCommandTest extends TestCase
 {
-    /** @var InfoCommand */
-    private $command;
+    private InfoCommand $command;
 
     protected function setUp(): void
     {

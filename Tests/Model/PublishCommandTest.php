@@ -25,8 +25,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class PublishCommandTest extends TestCase
 {
-    /** @var PublishCommand */
-    private $command;
+    private PublishCommand $command;
 
     protected function setUp(): void
     {

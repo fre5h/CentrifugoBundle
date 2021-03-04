@@ -25,8 +25,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class HistoryRemoveCommandTest extends TestCase
 {
-    /** @var HistoryRemoveCommand */
-    private $command;
+    private HistoryRemoveCommand $command;
 
     protected function setUp(): void
     {

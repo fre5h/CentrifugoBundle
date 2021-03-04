@@ -25,8 +25,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class ChannelsCommandTest extends TestCase
 {
-    /** @var ChannelsCommand */
-    private $command;
+    private ChannelsCommand $command;
 
     protected function setUp(): void
     {

@@ -25,8 +25,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class BroadcastCommandTest extends TestCase
 {
-    /** @var BroadcastCommand */
-    private $command;
+    private BroadcastCommand $command;
 
     protected function setUp(): void
     {

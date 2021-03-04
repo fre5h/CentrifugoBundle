@@ -27,11 +27,8 @@ use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
  */
 final class FreshCentrifugoExtensionTest extends TestCase
 {
-    /** @var FreshCentrifugoExtension */
-    private $extension;
-
-    /** @var ContainerBuilder */
-    private $container;
+    private FreshCentrifugoExtension $extension;
+    private ContainerBuilder $container;
 
     protected function setUp(): void
     {

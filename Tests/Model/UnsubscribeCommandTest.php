@@ -25,8 +25,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class UnsubscribeCommandTest extends TestCase
 {
-    /** @var UnsubscribeCommand */
-    private $command;
+    private UnsubscribeCommand $command;
 
     protected function setUp(): void
     {

@@ -24,8 +24,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class CentrifugoErrorExceptionTest extends TestCase
 {
-    /** @var CentrifugoErrorException */
-    private $exception;
+    private CentrifugoErrorException $exception;
 
     protected function setUp(): void
     {

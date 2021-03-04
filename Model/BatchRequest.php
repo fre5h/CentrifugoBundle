@@ -22,10 +22,10 @@ use Fresh\CentrifugoBundle\Exception\UnexpectedValueException;
 final class BatchRequest implements CommandInterface
 {
     /** @var string[] */
-    private $channels = [];
+    private array $channels = [];
 
     /** @var CommandInterface[] */
-    private $commands = [];
+    private array $commands = [];
 
     /**
      * @param CommandInterface[] $commands

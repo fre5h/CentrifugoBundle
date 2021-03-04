@@ -29,8 +29,7 @@ final class CentrifugoCheckerTest extends TestCase
     /** @var ResponseInterface|MockObject */
     private $response;
 
-    /** @var CentrifugoChecker */
-    private $centrifugoChecker;
+    private CentrifugoChecker $centrifugoChecker;
 
     protected function setUp(): void
     {

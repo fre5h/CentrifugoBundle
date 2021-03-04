@@ -26,26 +26,13 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  */
 class Centrifugo implements CentrifugoInterface
 {
-    /** @var string */
-    private $endpoint;
-
-    /** @var string */
-    private $apiKey;
-
-    /** @var HttpClientInterface */
-    private $httpClient;
-
-    /** @var ResponseProcessor */
-    private $responseProcessor;
-
-    /** @var CommandHistoryLogger */
-    private $commandHistoryLogger;
-
-    /** @var CentrifugoChecker */
-    private $centrifugoChecker;
-
-    /** @var bool */
-    private $profilerEnabled;
+    private string $endpoint;
+    private string $apiKey;
+    private HttpClientInterface $httpClient;
+    private ResponseProcessor $responseProcessor;
+    private CommandHistoryLogger $commandHistoryLogger;
+    private CentrifugoChecker $centrifugoChecker;
+    private bool $profilerEnabled;
 
     /**
      * @param string               $endpoint

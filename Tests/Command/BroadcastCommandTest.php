@@ -31,14 +31,9 @@ final class BroadcastCommandTest extends TestCase
     /** @var CentrifugoChecker|MockObject */
     private $centrifugoChecker;
 
-    /** @var Command */
-    private $command;
-
-    /** @var Application */
-    private $application;
-
-    /** @var CommandTester */
-    private $commandTester;
+    private Command $command;
+    private Application $application;
+    private CommandTester $commandTester;
 
     protected function setUp(): void
     {

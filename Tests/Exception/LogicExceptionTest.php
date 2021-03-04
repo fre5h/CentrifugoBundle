@@ -23,8 +23,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class LogicExceptionTest extends TestCase
 {
-    /** @var LogicException */
-    private $exception;
+    private LogicException $exception;
 
     protected function setUp(): void
     {

@@ -25,8 +25,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class PresenceCommandTest extends TestCase
 {
-    /** @var PresenceCommand */
-    private $command;
+    private PresenceCommand $command;
 
     protected function setUp(): void
     {

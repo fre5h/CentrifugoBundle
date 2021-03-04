@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CentrifugoAnonymousController
 {
-    private $credentialsGenerator;
+    private CredentialsGenerator $credentialsGenerator;
 
     /**
      * @Route("/centrifugo/credentials/anonymous", methods={"GET"}, name="get_centrifugo_credentials_for_anonymous")
@@ -92,8 +92,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CentrifugoCredentialsController
 {
-    private $credentialsGenerator;
-    private $tokenStorage;
+    private CredentialsGenerator $credentialsGenerator;
+    private TokenStorageInterface $tokenStorage;
 
     /**
      * @Route("/centrifugo/credentials/user", methods={"GET"}, name="get_centrifugo_credentials_for_current_user")
@@ -135,7 +135,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class AdminChannelAuthenticator implements ChannelAuthenticatorInterface
 {
-    private $authorizationChecker;
+    private AuthorizationCheckerInterface $authorizationChecker;
 
     public function __construct(AuthorizationCheckerInterface $authorizationChecker)
     {
@@ -170,7 +170,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CentrifugoSubscribeController
 {
-    private $privateChannelAuthenticator;
+    private PrivateChannelAuthenticator $privateChannelAuthenticator;
 
     public function __construct(PrivateChannelAuthenticator $privateChannelAuthenticator)
     {

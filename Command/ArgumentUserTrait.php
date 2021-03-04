@@ -22,8 +22,7 @@ use Symfony\Component\Console\Input\InputInterface;
  */
 trait ArgumentUserTrait
 {
-    /** @var string */
-    protected $user;
+    protected string $user;
 
     /**
      * @param InputInterface $input

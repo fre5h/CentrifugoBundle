@@ -23,8 +23,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class InvalidArgumentExceptionTest extends TestCase
 {
-    /** @var InvalidArgumentException */
-    private $exception;
+    private InvalidArgumentException $exception;
 
     protected function setUp(): void
     {

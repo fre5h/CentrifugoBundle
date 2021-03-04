@@ -21,20 +21,11 @@ use Fresh\CentrifugoBundle\Model\CommandInterface;
  */
 class CommandHistoryLogger
 {
-    /** @var array */
-    private $commandHistory = [];
-
-    /** @var int */
-    private $requestsCount = 0;
-
-    /** @var int */
-    private $commandsCount = 0;
-
-    /** @var int */
-    private $successfulCommandsCount = 0;
-
-    /** @var int */
-    private $failedCommandsCount = 0;
+    private array $commandHistory = [];
+    private int $requestsCount = 0;
+    private int $commandsCount = 0;
+    private int $successfulCommandsCount = 0;
+    private int $failedCommandsCount = 0;
 
     /**
      * @param CommandInterface $command
