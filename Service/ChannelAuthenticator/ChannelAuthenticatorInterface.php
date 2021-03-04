@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Service\ChannelAuthenticator;
 
+use Symfony\Component\HttpFoundation\Request;
+
 /**
  * ChannelAuthenticatorInterface.
  *
@@ -20,16 +22,18 @@ namespace Fresh\CentrifugoBundle\Service\ChannelAuthenticator;
 interface ChannelAuthenticatorInterface
 {
     /**
-     * @param string $channel
+     * @param string  $channel
+     * @param Request $request
      *
      * @return bool
      */
-    public function supports(string $channel): bool;
+    public function supports(string $channel, Request $request): bool;
 
     /**
-     * @param string $channel
+     * @param string  $channel
+     * @param Request $request
      *
      * @return bool
      */
-    public function hasAccessToChannel(string $channel): bool;
+    public function hasAccessToChannel(string $channel, Request $request): bool;
 }
