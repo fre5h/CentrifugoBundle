@@ -24,6 +24,7 @@
     "require": {
         "php": ">=7.4.0",
         "fresh/datetime": "^1.6",
+        "symfony/console": "^4.4 || ^5.1",
         "symfony/config": "^4.4 || ^5.1",
         "symfony/dependency-injection": "^4.4 || ^5.1",
         "symfony/framework-bundle": "^4.4 || ^5.1",
@@ -31,7 +32,8 @@
         "symfony/http-foundation": "^4.4 || ^5.1",
         "symfony/http-kernel": "^4.4 || ^5.1.5",
         "symfony/security-core": "^4.4 || ^5.1",
-        "symfony/validator": "^4.4 || ^5.1"
+        "symfony/validator": "^4.4 || ^5.1",
+        "symfony/yaml": "^4.4 || ^5.1"
     },
     "require-dev": {
         "escapestudios/symfony2-coding-standard": "^3.12",
