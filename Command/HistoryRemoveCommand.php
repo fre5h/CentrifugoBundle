@@ -31,6 +31,9 @@ final class HistoryRemoveCommand extends AbstractCommand
 
     protected static $defaultName = 'centrifugo:history-remove';
 
+    /** @var string */
+    protected static $defaultDescription = 'Remove history for channel';
+
     /**
      * @param CentrifugoInterface $centrifugo
      * @param CentrifugoChecker   $centrifugoChecker
@@ -48,7 +51,7 @@ final class HistoryRemoveCommand extends AbstractCommand
     protected function configure(): void
     {
         $this
-            ->setDescription('Remove history for channel')
+            ->setDescription(self::$defaultDescription)
             ->setDefinition(
                 new InputDefinition([
                     new InputArgument('channel', InputArgument::REQUIRED, 'Channel name'),

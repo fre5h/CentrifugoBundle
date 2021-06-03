@@ -31,6 +31,9 @@ final class HistoryCommand extends AbstractCommand
 
     protected static $defaultName = 'centrifugo:history';
 
+    /** @var string */
+    protected static $defaultDescription = 'Get channel history information (list of last messages published into channel)';
+
     /**
      * @param CentrifugoInterface $centrifugo
      * @param CentrifugoChecker   $centrifugoChecker
@@ -48,7 +51,7 @@ final class HistoryCommand extends AbstractCommand
     protected function configure(): void
     {
         $this
-            ->setDescription('Get channel history information (list of last messages published into channel)')
+            ->setDescription(self::$defaultDescription)
             ->setDefinition(
                 new InputDefinition([
                     new InputArgument('channel', InputArgument::REQUIRED, 'Channel name'),

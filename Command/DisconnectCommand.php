@@ -29,13 +29,16 @@ final class DisconnectCommand extends AbstractCommand
 
     protected static $defaultName = 'centrifugo:disconnect';
 
+    /** @var string */
+    protected static $defaultDescription = 'Disconnect user by ID';
+
     /**
      * {@inheritdoc}
      */
     protected function configure(): void
     {
         $this
-            ->setDescription('Disconnect user by ID')
+            ->setDescription(self::$defaultDescription)
             ->setDefinition(
                 new InputDefinition([
                     new InputArgument('user', InputArgument::REQUIRED, 'User ID'),
