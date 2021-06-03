@@ -25,13 +25,16 @@ final class ChannelsCommand extends AbstractCommand
 {
     protected static $defaultName = 'centrifugo:channels';
 
+    /** @var string */
+    protected static $defaultDescription = 'Get list of active (with one or more subscribers) channels';
+
     /**
      * {@inheritdoc}
      */
     protected function configure(): void
     {
         $this
-            ->setDescription('Get list of active (with one or more subscribers) channels')
+            ->setDescription(self::$defaultDescription)
             ->setHelp(
                 <<<'HELP'
 The <info>%command.name%</info> command allows to get list of active (with one or more subscribers) channels:

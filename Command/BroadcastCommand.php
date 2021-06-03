@@ -32,6 +32,9 @@ final class BroadcastCommand extends AbstractCommand
 
     protected static $defaultName = 'centrifugo:broadcast';
 
+    /** @var string */
+    protected static $defaultDescription = 'Publish same data into many channels';
+
     private CentrifugoChecker $centrifugoChecker;
 
     /** @var string[] */
@@ -54,7 +57,7 @@ final class BroadcastCommand extends AbstractCommand
     protected function configure(): void
     {
         $this
-            ->setDescription('Publish same data into many channels')
+            ->setDescription(self::$defaultDescription)
             ->setDefinition(
                 new InputDefinition([
                     new InputArgument('data', InputArgument::REQUIRED, 'Data in JSON format'),

@@ -32,6 +32,9 @@ final class PublishCommand extends AbstractCommand
 
     protected static $defaultName = 'centrifugo:publish';
 
+    /** @var string */
+    protected static $defaultDescription = 'Publish data into channel';
+
     /**
      * @param CentrifugoInterface $centrifugo
      * @param CentrifugoChecker   $centrifugoChecker
@@ -49,7 +52,7 @@ final class PublishCommand extends AbstractCommand
     protected function configure(): void
     {
         $this
-            ->setDescription('Publish data into channel')
+            ->setDescription(self::$defaultDescription)
             ->setDefinition(
                 new InputDefinition([
                     new InputArgument('data', InputArgument::REQUIRED, 'Data in JSON format'),

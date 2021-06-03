@@ -31,6 +31,9 @@ final class PresenceCommand extends AbstractCommand
 
     protected static $defaultName = 'centrifugo:presence';
 
+    /** @var string */
+    protected static $defaultDescription = 'Get channel presence information';
+
     /**
      * @param CentrifugoInterface $centrifugo
      * @param CentrifugoChecker   $centrifugoChecker
@@ -48,7 +51,7 @@ final class PresenceCommand extends AbstractCommand
     protected function configure(): void
     {
         $this
-            ->setDescription('Get channel presence information')
+            ->setDescription(self::$defaultDescription)
             ->setDefinition(
                 new InputDefinition([
                     new InputArgument('channel', InputArgument::REQUIRED, 'Channel name'),

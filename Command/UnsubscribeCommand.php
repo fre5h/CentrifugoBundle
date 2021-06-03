@@ -32,6 +32,9 @@ final class UnsubscribeCommand extends AbstractCommand
 
     protected static $defaultName = 'centrifugo:unsubscribe';
 
+    /** @var string */
+    protected static $defaultDescription = 'Unsubscribe user from channel';
+
     /**
      * @param CentrifugoInterface $centrifugo
      * @param CentrifugoChecker   $centrifugoChecker
@@ -49,7 +52,7 @@ final class UnsubscribeCommand extends AbstractCommand
     protected function configure(): void
     {
         $this
-            ->setDescription('Unsubscribe user from channel')
+            ->setDescription(self::$defaultDescription)
             ->setDefinition(
                 new InputDefinition([
                     new InputArgument('user', InputArgument::REQUIRED, 'User ID'),

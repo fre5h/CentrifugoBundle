@@ -25,13 +25,16 @@ final class InfoCommand extends AbstractCommand
 {
     protected static $defaultName = 'centrifugo:info';
 
+    /** @var string */
+    protected static $defaultDescription = 'Get information about running Centrifugo nodes';
+
     /**
      * {@inheritdoc}
      */
     protected function configure(): void
     {
         $this
-            ->setDescription('Get information about running Centrifugo nodes')
+            ->setDescription(self::$defaultDescription)
             ->setHelp(
                 <<<'HELP'
 The <info>%command.name%</info> command allows to get information about running Centrifugo nodes:
