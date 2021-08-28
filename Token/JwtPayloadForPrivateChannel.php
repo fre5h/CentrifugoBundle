@@ -21,14 +21,9 @@ namespace Fresh\CentrifugoBundle\Token;
  */
 final class JwtPayloadForPrivateChannel extends AbstractJwtPayload
 {
-    /** @var string */
-    private $client;
-
-    /** @var string */
-    private $channel;
-
-    /** @var bool|null */
-    private $eto;
+    private string $client;
+    private string $channel;
+    private ?bool $eto = null;
 
     /**
      * @param string      $client

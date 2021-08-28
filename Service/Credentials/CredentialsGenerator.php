@@ -27,7 +27,7 @@ class CredentialsGenerator
 {
     private JwtGenerator $jwtGenerator;
     private DateTimeHelper $dateTimeHelper;
-    private ?int $centrifugoJwtTtl;
+    private ?int $centrifugoJwtTtl = null;
 
     /**
      * @param JwtGenerator   $jwtGenerator

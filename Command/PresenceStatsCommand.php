@@ -99,6 +99,6 @@ HELP
             return $e->getCode();
         }
 
-        return 0;
+        return self::SUCCESS;
     }
 }

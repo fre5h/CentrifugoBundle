@@ -1,10 +1,10 @@
 checks:
-  php: true
+    php: true
 
 filter:
-  excluded_paths:
-    - vendor/*
-    - Tests/*
+    excluded_paths:
+        - vendor/*
+        - Tests/*
 
 before_commands:
-  - "composer install --prefer-dist"
+    - "composer install --prefer-dist"
