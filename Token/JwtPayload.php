@@ -23,7 +23,7 @@ final class JwtPayload extends AbstractJwtPayload
 {
     private string $subject;
 
-    /** @var string[] */
+    /** @var array<string> */
     private array $channels;
 
     /**

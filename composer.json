@@ -23,7 +23,7 @@
     },
     "require": {
         "php": ">=7.4.0",
-        "fresh/datetime": "^1.6",
+        "fresh/datetime": "^1.7",
         "symfony/console": "^4.4 || ^5.1",
         "symfony/config": "^4.4 || ^5.1",
         "symfony/dependency-injection": "^4.4 || ^5.1",
@@ -42,7 +42,7 @@
         "phpstan/phpstan-phpunit": "^0.12",
         "phpstan/phpstan-symfony": "^0.12",
         "phpunit/phpunit": "^9.5",
-        "slam/phpstan-extensions": "^5.0"
+        "slam/phpstan-extensions": "^5.1"
     },
     "autoload": {
         "psr-4": {
