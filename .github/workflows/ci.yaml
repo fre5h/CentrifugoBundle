@@ -89,10 +89,6 @@ jobs:
                     - '7.4'
                     - '8.0'
                 symfony-version:
-                    - '4.4'
-                    - '5.0'
-                    - '5.1'
-                    - '5.2'
                     - '5.3'
         steps:
             -   name: 'Checkout Code'
@@ -128,7 +124,7 @@ jobs:
             -   name: 'Setup PHP'
                 uses: shivammathur/setup-php@v2
                 with:
-                    php-version: 7.4
+                    php-version: 8.0
                     ini-values: memory_limit=-1
                     coverage: pcov
                     tools: composer:v2

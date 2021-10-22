@@ -338,7 +338,7 @@ final class CentrifugoTest extends TestCase
             ->willReturn([])
         ;
 
-        $this->centrifugo->channels();
+        $this->centrifugo->channels('pattern');
     }
 
     public function testInfoCommand(): void

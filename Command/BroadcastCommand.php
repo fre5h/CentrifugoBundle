@@ -33,7 +33,7 @@ final class BroadcastCommand extends AbstractCommand
     protected static $defaultName = 'centrifugo:broadcast';
 
     /** @var string */
-    protected static $defaultDescription = 'Publish same data into many channels';
+    protected static $defaultDescription = 'Publish data into many channels';
 
     private CentrifugoChecker $centrifugoChecker;
 
@@ -66,11 +66,11 @@ final class BroadcastCommand extends AbstractCommand
             )
             ->setHelp(
                 <<<'HELP'
-The <info>%command.name%</info> command allows to publish same data into many channels:
+The <info>%command.name%</info> command allows to publish data into many channels:
 
 <info>%command.full_name%</info> <comment>'{"foo":"bar"}'</comment> </comment>channelAbc</comment> </comment>channelDef</comment>
 
-Read more at https://centrifugal.github.io/centrifugo/server/http_api/#broadcast
+Read more at https://centrifugal.dev/docs/server/server_api#broadcast
 HELP
             )
         ;

@@ -32,7 +32,7 @@ final class PresenceCommand extends AbstractCommand
     protected static $defaultName = 'centrifugo:presence';
 
     /** @var string */
-    protected static $defaultDescription = 'Get channel presence information';
+    protected static $defaultDescription = 'Get channel presence information (all clients currently subscribed on this channel)';
 
     /**
      * @param CentrifugoInterface $centrifugo
@@ -59,11 +59,11 @@ final class PresenceCommand extends AbstractCommand
             )
             ->setHelp(
                 <<<'HELP'
-The <info>%command.name%</info> command allows to get channel presence information:
+The <info>%command.name%</info> command allows to get channel presence information (all clients currently subscribed on this channel):
 
 <info>%command.full_name%</info> <comment>channelAbc</comment>
 
-Read more at https://centrifugal.github.io/centrifugo/server/http_api/#presence
+Read more at https://centrifugal.dev/docs/server/server_api#presence
 HELP
             )
         ;

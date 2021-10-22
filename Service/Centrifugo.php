@@ -121,9 +121,9 @@ class Centrifugo implements CentrifugoInterface
     /**
      * {@inheritdoc}
      */
-    public function channels(): array
+    public function channels(?string $pattern = null): array
     {
-        return (array) $this->doSendCommand(new Model\ChannelsCommand());
+        return (array) $this->doSendCommand(new Model\ChannelsCommand($pattern));
     }
 
     /**

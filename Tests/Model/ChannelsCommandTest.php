@@ -50,13 +50,32 @@ final class ChannelsCommandTest extends TestCase
         self::assertEquals([], $this->command->getChannels());
     }
 
-    public function testSerialization(): void
+    public function testSerializationWithoutPattern(): void
     {
         self::assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
                     "method": "channels",
-                    "params": []
+                    "params": {
+                        "pattern": null
+                    }
+                }
+            JSON,
+            \json_encode($this->command, JSON_THROW_ON_ERROR)
+        );
+    }
+
+    public function testSerializationWithPattern(): void
+    {
+        $this->command = new ChannelsCommand('abc');
+
+        self::assertJsonStringEqualsJsonString(
+            <<<'JSON'
+                {
+                    "method": "channels",
+                    "params": {
+                        "pattern": "abc"
+                    }
                 }
             JSON,
             \json_encode($this->command, JSON_THROW_ON_ERROR)

@@ -71,9 +71,11 @@ interface CentrifugoInterface
     public function historyRemove(string $channel): void;
 
     /**
+     * @param string|null $pattern
+     *
      * @return array
      */
-    public function channels(): array;
+    public function channels(?string $pattern = null): array;
 
     /**
      * @return array

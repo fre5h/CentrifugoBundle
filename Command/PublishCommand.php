@@ -33,7 +33,7 @@ final class PublishCommand extends AbstractCommand
     protected static $defaultName = 'centrifugo:publish';
 
     /** @var string */
-    protected static $defaultDescription = 'Publish data into channel';
+    protected static $defaultDescription = 'Publish data into a channel';
 
     /**
      * @param CentrifugoInterface $centrifugo
@@ -61,11 +61,11 @@ final class PublishCommand extends AbstractCommand
             )
             ->setHelp(
                 <<<'HELP'
-The <info>%command.name%</info> command allows to publish data into channel:
+The <info>%command.name%</info> command allows to publish data into a channel:
 
 <info>%command.full_name%</info> <comment>'{"foo":"bar"}'</comment> <comment>channelAbc</comment>
 
-Read more at https://centrifugal.github.io/centrifugo/server/http_api/#publish
+Read more at https://centrifugal.dev/docs/server/server_api#publish
 HELP
             )
         ;

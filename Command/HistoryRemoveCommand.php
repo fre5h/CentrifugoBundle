@@ -32,7 +32,7 @@ final class HistoryRemoveCommand extends AbstractCommand
     protected static $defaultName = 'centrifugo:history-remove';
 
     /** @var string */
-    protected static $defaultDescription = 'Remove history for channel';
+    protected static $defaultDescription = 'Remove publications in channel history';
 
     /**
      * @param CentrifugoInterface $centrifugo
@@ -59,9 +59,11 @@ final class HistoryRemoveCommand extends AbstractCommand
             )
             ->setHelp(
                 <<<'HELP'
-The <info>%command.name%</info> command allows to remove history for channel:
+The <info>%command.name%</info> command allows to remove publications in channel history:
 
 <info>%command.full_name%</info> <comment>channelAbc</comment>
+
+Read more at https://centrifugal.dev/docs/server/server_api#history_remove
 HELP
             )
         ;

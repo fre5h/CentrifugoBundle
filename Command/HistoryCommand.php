@@ -63,7 +63,7 @@ The <info>%command.name%</info> command allows to get channel history informatio
 
 <info>%command.full_name%</info> <comment>channelAbc</comment>
 
-Read more at https://centrifugal.github.io/centrifugo/server/http_api/#history
+Read more at https://centrifugal.dev/docs/server/server_api#history
 HELP
             )
         ;

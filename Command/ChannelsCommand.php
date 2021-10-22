@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Command;
 
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -23,10 +25,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 final class ChannelsCommand extends AbstractCommand
 {
+    use ArgumentPatternTrait;
+
     protected static $defaultName = 'centrifugo:channels';
 
     /** @var string */
-    protected static $defaultDescription = 'Get list of active (with one or more subscribers) channels';
+    protected static $defaultDescription = 'Return active channels (with one or more active subscribers in it)';
 
     /**
      * {@inheritdoc}
@@ -35,14 +39,35 @@ final class ChannelsCommand extends AbstractCommand
     {
         $this
             ->setDescription(self::$defaultDescription)
+            ->setDefinition(
+                new InputDefinition([
+                    new InputArgument('pattern', InputArgument::OPTIONAL, 'Pattern'),
+                ])
+            )
             ->setHelp(
                 <<<'HELP'
-The <info>%command.name%</info> command allows to get list of active (with one or more subscribers) channels:
+The <info>%command.name%</info> command returns active channels (with one or more active subscribers in it):
 
-Read more at https://centrifugal.github.io/centrifugo/server/http_api/#channels
+    <info>bin/console %command.name%</info>
+    
+You can optionally specify the <comment>pattern</comment> to filter channels by names:
+
+    <info>bin/console %command.name% abc</info>    
+
+Read more at https://centrifugal.dev/docs/server/server_api#channels
 HELP
             )
         ;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function initialize(InputInterface $input, OutputInterface $output): void
+    {
+        parent::initialize($input, $output);
+
+        $this->initializePatternArgument($input);
     }
 
     /**
@@ -53,7 +78,7 @@ HELP
         $io = new SymfonyStyle($input, $output);
 
         try {
-            $data = $this->centrifugo->channels();
+            $data = $this->centrifugo->channels($this->pattern);
 
             if (!empty($data['channels'])) {
                 $io->title('Channels');

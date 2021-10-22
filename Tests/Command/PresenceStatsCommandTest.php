@@ -57,7 +57,7 @@ final class PresenceStatsCommandTest extends TestCase
         );
     }
 
-    public function testSuccessfulExecute(): void
+    public function testSuccessfulExecution(): void
     {
         $this->centrifugo
             ->expects(self::once())

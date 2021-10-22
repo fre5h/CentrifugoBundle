@@ -39,7 +39,7 @@ final class InfoCommand extends AbstractCommand
                 <<<'HELP'
 The <info>%command.name%</info> command allows to get information about running Centrifugo nodes:
 
-Read more at https://centrifugal.github.io/centrifugo/server/http_api/#info
+Read more at https://centrifugal.dev/docs/server/server_api#info
 HELP
             )
         ;

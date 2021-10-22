@@ -20,10 +20,15 @@ namespace Fresh\CentrifugoBundle\Model;
 final class ChannelsCommand extends AbstractCommand implements ResultableCommandInterface
 {
     /**
-     * Constructor.
+     * @param string|null $pattern
      */
-    public function __construct()
+    public function __construct(?string $pattern = null)
     {
-        parent::__construct(Method::CHANNELS, []);
+        parent::__construct(
+            Method::CHANNELS,
+            [
+                'pattern' => $pattern,
+            ]
+        );
     }
 }

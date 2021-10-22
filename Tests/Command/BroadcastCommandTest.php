@@ -59,7 +59,7 @@ final class BroadcastCommandTest extends TestCase
         );
     }
 
-    public function testSuccessfulExecute(): void
+    public function testSuccessfulExecution(): void
     {
         $this->centrifugo
             ->expects(self::once())

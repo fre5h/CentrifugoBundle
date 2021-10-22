@@ -63,7 +63,7 @@ The <info>%command.name%</info> command allows to get short channel presence inf
 
 <info>%command.full_name%</info> <comment>channelAbc</comment>
 
-Read more at https://centrifugal.github.io/centrifugo/server/http_api/#presence_stats
+Read more at https://centrifugal.dev/docs/server/server_api#presence_stats
 HELP
             )
         ;

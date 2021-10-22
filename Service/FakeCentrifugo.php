@@ -86,7 +86,7 @@ class FakeCentrifugo implements CentrifugoInterface
     /**
      * {@inheritdoc}
      */
-    public function channels(): array
+    public function channels(?string $pattern = null): array
     {
         return [];
     }

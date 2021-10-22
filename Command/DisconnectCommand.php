@@ -50,7 +50,7 @@ The <info>%command.name%</info> command allows to disconnect user by ID:
 
 <info>%command.full_name%</info> <comment>user123</comment>
 
-Read more at https://centrifugal.github.io/centrifugo/server/http_api/#disconnect
+Read more at https://centrifugal.dev/docs/server/server_api#disconnect
 HELP
             )
         ;

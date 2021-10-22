@@ -33,7 +33,7 @@ final class UnsubscribeCommand extends AbstractCommand
     protected static $defaultName = 'centrifugo:unsubscribe';
 
     /** @var string */
-    protected static $defaultDescription = 'Unsubscribe user from channel';
+    protected static $defaultDescription = 'Unsubscribe user from a channel';
 
     /**
      * @param CentrifugoInterface $centrifugo
@@ -61,11 +61,11 @@ final class UnsubscribeCommand extends AbstractCommand
             )
             ->setHelp(
                 <<<'HELP'
-The <info>%command.name%</info> command allows to unsubscribe user from channel:
+The <info>%command.name%</info> command allows to unsubscribe user from a channel:
 
 <info>%command.full_name%</info> <comment>user123</comment> <comment>channelAbc</comment>
 
-Read more at https://centrifugal.github.io/centrifugo/server/http_api/#unsubscribe
+Read more at https://centrifugal.dev/docs/server/server_api#unsubscribe
 HELP
             )
         ;
