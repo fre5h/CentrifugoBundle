@@ -49,10 +49,10 @@ final class ChannelsCommand extends AbstractCommand
 The <info>%command.name%</info> command returns active channels (with one or more active subscribers in it):
 
     <info>bin/console %command.name%</info>
-    
+
 You can optionally specify the <comment>pattern</comment> to filter channels by names:
 
-    <info>bin/console %command.name% abc</info>    
+    <info>bin/console %command.name% abc</info>
 
 Read more at https://centrifugal.dev/docs/server/server_api#channels
 HELP
