@@ -89,7 +89,6 @@ jobs:
                     - '7.4'
                     - '8.0'
                     - '8.1'
-            mode: experimental
                 symfony-version:
                     - '5.3'
         steps:
