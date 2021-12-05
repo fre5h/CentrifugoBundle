@@ -23,7 +23,7 @@ final class JwtPayloadForPrivateChannel extends AbstractJwtPayload
 {
     private string $client;
     private string $channel;
-    private ?bool $eto = null;
+    private ?bool $eto;
 
     /**
      * @param string      $client
