@@ -22,7 +22,7 @@
 
 ## Requirements 🧐
 
-* PHP 7.4, 8.0, 8.1
+* PHP => 8.0
 * Symfony 5.4, 6.0
 
 ## Installation 🌱
@@ -100,8 +100,10 @@ class YourService
 
 * `centrifugo:publish`
 * `centrifugo:broadcast`
+* `centrifugo:subscribe`
 * `centrifugo:unsubscribe`
 * `centrifugo:disconnect`
+* `centrifugo:refresh`
 * `centrifugo:presence`
 * `centrifugo:presence-stats`
 * `centrifugo:history`

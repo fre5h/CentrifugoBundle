@@ -23,9 +23,13 @@ final class Method
 
     public const BROADCAST = 'broadcast';
 
+    public const SUBSCRIBE = 'subscribe';
+
     public const UNSUBSCRIBE = 'unsubscribe';
 
     public const DISCONNECT = 'disconnect';
+
+    public const REFRESH = 'refresh';
 
     public const PRESENCE = 'presence';
 

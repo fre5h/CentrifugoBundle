@@ -21,7 +21,7 @@ use Symfony\Component\Console\Input\InputInterface;
  */
 trait ArgumentPatternTrait
 {
-    protected ?string $pattern;
+    protected ?string $pattern = null;
 
     /**
      * @param InputInterface $input

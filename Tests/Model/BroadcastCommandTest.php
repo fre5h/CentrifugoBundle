@@ -29,7 +29,7 @@ final class BroadcastCommandTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->command = new BroadcastCommand(['baz' => 'qux'], ['foo', 'bar']);
+        $this->command = new BroadcastCommand(['baz' => 'qux'], ['foo', 'bar'], true);
     }
 
     protected function tearDown(): void
@@ -46,7 +46,7 @@ final class BroadcastCommandTest extends TestCase
     public function testGetters(): void
     {
         self::assertEquals(Method::BROADCAST, $this->command->getMethod());
-        self::assertEquals(['channels' => ['foo', 'bar'], 'data' => ['baz' => 'qux']], $this->command->getParams());
+        self::assertEquals(['channels' => ['foo', 'bar'], 'data' => ['baz' => 'qux'], 'skip_history' => true], $this->command->getParams());
         self::assertEquals(['foo', 'bar'], $this->command->getChannels());
     }
 
@@ -60,7 +60,8 @@ final class BroadcastCommandTest extends TestCase
                         "channels": ["foo", "bar"],
                         "data": {
                             "baz": "qux"
-                        }
+                        },
+                        "skip_history": true
                     }
                 }
             JSON,
