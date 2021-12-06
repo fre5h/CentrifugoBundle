@@ -86,6 +86,7 @@ HELP
         $this->initializeDataArgument($input);
 
         try {
+            /** @var array<string> $channels */
             $channels = (array) $input->getArgument('channels');
             foreach ($channels as $channel) {
                 $this->centrifugoChecker->assertValidChannelName($channel);
@@ -109,7 +110,7 @@ HELP
         } catch (\Throwable $e) {
             $io->error($e->getMessage());
 
-            return $e->getCode();
+            return self::FAILURE;
         }
 
         return self::SUCCESS;

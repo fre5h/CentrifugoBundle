@@ -109,14 +109,14 @@ HELP
         } catch (\Throwable $e) {
             $io->error($e->getMessage());
 
-            return $e->getCode();
+            return self::FAILURE;
         }
 
         return self::SUCCESS;
     }
 
     /**
-     * @param array $connInfo
+     * @param array<mixed> $connInfo
      *
      * @return string
      */

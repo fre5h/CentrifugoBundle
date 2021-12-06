@@ -22,10 +22,10 @@ final class RefreshCommand extends AbstractCommand
     private string $user;
 
     /**
-     * @param string    $user
-     * @param string|null    $client
-     * @param bool|null $expired
-     * @param int|null  $expireAt
+     * @param string      $user
+     * @param string|null $client
+     * @param bool|null   $expired
+     * @param int|null    $expireAt
      */
     public function __construct(string $user, ?string $client = null, ?bool $expired = null, ?int $expireAt = null)
     {

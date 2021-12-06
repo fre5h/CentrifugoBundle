@@ -57,7 +57,7 @@ abstract class AbstractCommand implements SerializableCommandInterface
     }
 
     /**
-     * @return array
+     * @return array<string, mixed>
      */
     public function jsonSerialize(): array
     {

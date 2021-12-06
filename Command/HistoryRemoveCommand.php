@@ -92,7 +92,7 @@ HELP
         } catch (\Throwable $e) {
             $io->error($e->getMessage());
 
-            return $e->getCode();
+            return self::FAILURE;
         }
 
         return self::SUCCESS;

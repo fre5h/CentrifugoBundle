@@ -23,9 +23,9 @@ final class BroadcastCommand extends AbstractCommand
     private array $channels;
 
     /**
-     * @param array     $data
-     * @param string[]  $channels
-     * @param bool|null $skipHistory
+     * @param array<string, mixed> $data
+     * @param string[]             $channels
+     * @param bool|null            $skipHistory
      */
     public function __construct(array $data, array $channels, ?bool $skipHistory = null)
     {

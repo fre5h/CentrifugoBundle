@@ -22,8 +22,8 @@ final class PublishCommand extends AbstractCommand
     use ChannelCommandTrait;
 
     /**
-     * @param array  $data
-     * @param string $channel
+     * @param array<string, mixed> $data
+     * @param string               $channel
      */
     public function __construct(array $data, string $channel)
     {

@@ -21,6 +21,7 @@ use Fresh\CentrifugoBundle\Model\CommandInterface;
  */
 class CommandHistoryLogger
 {
+    /** @var array<array> */
     private array $commandHistory = [];
     private int $requestsCount = 0;
     private int $commandsCount = 0;
@@ -28,9 +29,9 @@ class CommandHistoryLogger
     private int $failedCommandsCount = 0;
 
     /**
-     * @param CommandInterface $command
-     * @param bool             $success
-     * @param array|null       $result
+     * @param CommandInterface  $command
+     * @param bool              $success
+     * @param array<array>|null $result
      */
     public function logCommand(CommandInterface $command, bool $success, ?array $result): void
     {

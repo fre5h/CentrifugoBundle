@@ -22,14 +22,14 @@ use Fresh\CentrifugoBundle\Model\CommandInterface;
 interface CentrifugoInterface
 {
     /**
-     * @param array  $data
-     * @param string $channel
+     * @param array<string, mixed> $data
+     * @param string               $channel
      */
     public function publish(array $data, string $channel): void;
 
     /**
-     * @param array    $data
-     * @param string[] $channels
+     * @param array<string, mixed> $data
+     * @param string[]             $channels
      */
     public function broadcast(array $data, array $channels): void;
 
