@@ -18,6 +18,14 @@ $ bin/console centrifugo:broadcast '{"foo":"bar"}' channelAbc channelDef
 [OK] DONE
 ```
 
+### `centrifugo:subscribe`
+
+```bash
+$ bin/console centrifugo:subscribe @todo Finish
+
+[OK] DONE
+```
+
 ### `centrifugo:unsubscribe`
 
 ```bash
@@ -30,6 +38,14 @@ $ bin/console centrifugo:unsubscribe user123 channelAbc
 
 ```bash
 $ bin/console centrifugo:disconnect user123
+
+[OK] DONE
+```
+
+### `centrifugo:refresh`
+
+```bash
+$ bin/console centrifugo:refresh @todo Finish
 
 [OK] DONE
 ```
