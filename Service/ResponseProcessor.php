@@ -100,6 +100,7 @@ class ResponseProcessor
     private function decodeAndProcessResponseResult(CommandInterface $command, string $content): ?array
     {
         try {
+            /** @var array<string, mixed> $data */
             $data = \json_decode($content, true, 512, \JSON_THROW_ON_ERROR);
         } catch (\Exception $e) {
             throw new CentrifugoException('Centrifugo response payload is not a valid JSON');
@@ -108,7 +109,7 @@ class ResponseProcessor
         $successfulCommand = true;
         $result = null;
 
-        if (isset($data['error'])) {
+        if (\is_array($data) && isset($data['error'])) {
             if (empty($this->centrifugoError)) {
                 $this->centrifugoError = [
                     'message' => $data['error']['message'],

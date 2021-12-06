@@ -27,11 +27,11 @@ final class JwtPayload extends AbstractJwtPayload
     private array $channels;
 
     /**
-     * @param string      $subject
-     * @param array       $info
-     * @param int|null    $expirationTime
-     * @param string|null $base64info
-     * @param string[]    $channels
+     * @param string               $subject
+     * @param array<string, mixed> $info
+     * @param int|null             $expirationTime
+     * @param string|null          $base64info
+     * @param array<string>        $channels
      */
     public function __construct(string $subject, array $info = [], ?int $expirationTime = null, ?string $base64info = null, array $channels = [])
     {
@@ -50,7 +50,7 @@ final class JwtPayload extends AbstractJwtPayload
     }
 
     /**
-     * @return array
+     * @return array<string>
      */
     public function getChannels(): array
     {
@@ -58,7 +58,7 @@ final class JwtPayload extends AbstractJwtPayload
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function getPayloadData(): array
     {

@@ -67,7 +67,7 @@ final class JwtPayloadForPrivateChannel extends AbstractJwtPayload
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function getPayloadData(): array
     {
