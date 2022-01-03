@@ -91,6 +91,10 @@ jobs:
                     - '8.1'                    
                 symfony-version:
                     - '5.4'
+                    - '6.0'
+                exclude:
+                    - php-version: '7.4'
+                      symfony-version: '6.0'
         steps:
             -   name: 'Checkout Code'
                 uses: actions/checkout@v2
