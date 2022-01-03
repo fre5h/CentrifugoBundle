@@ -100,10 +100,8 @@ class YourService
 
 * `centrifugo:publish`
 * `centrifugo:broadcast`
-* `centrifugo:subscribe`
 * `centrifugo:unsubscribe`
 * `centrifugo:disconnect`
-* `centrifugo:refresh`
 * `centrifugo:presence`
 * `centrifugo:presence-stats`
 * `centrifugo:history`
