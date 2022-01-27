@@ -23,7 +23,7 @@ class JwtGenerator
 {
     private const HMAC_ALGORITHM = 'sha256';
 
-    private string $secret;
+    private readonly string $secret;
 
     /**
      * @param string $centrifugoSecret

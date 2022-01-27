@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Model;
 
+use JetBrains\PhpStorm\Pure;
+
 /**
  * PresenceCommand.
  *
@@ -24,6 +26,7 @@ final class PresenceCommand extends AbstractCommand implements ResultableCommand
     /**
      * @param string $channel
      */
+    #[Pure]
     public function __construct(string $channel)
     {
         $this->channel = $channel;

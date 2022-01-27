@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Model;
 
+use JetBrains\PhpStorm\Pure;
+
 /**
  * PublishCommand.
  *
@@ -25,6 +27,7 @@ final class PublishCommand extends AbstractCommand
      * @param array<string, mixed> $data
      * @param string               $channel
      */
+    #[Pure]
     public function __construct(array $data, string $channel)
     {
         $this->channel = $channel;

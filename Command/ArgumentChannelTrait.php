@@ -24,7 +24,7 @@ use Symfony\Component\Console\Input\InputInterface;
 trait ArgumentChannelTrait
 {
     protected string $channel;
-    protected CentrifugoChecker $centrifugoChecker;
+    protected readonly CentrifugoChecker $centrifugoChecker;
 
     /**
      * @param InputInterface $input

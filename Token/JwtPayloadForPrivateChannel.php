@@ -12,6 +12,9 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Token;
 
+use JetBrains\PhpStorm\ArrayShape;
+use JetBrains\PhpStorm\Pure;
+
 /**
  * JwtPayloadForPrivateChannel.
  *
@@ -21,9 +24,9 @@ namespace Fresh\CentrifugoBundle\Token;
  */
 final class JwtPayloadForPrivateChannel extends AbstractJwtPayload
 {
-    private string $client;
-    private string $channel;
-    private ?bool $eto;
+    private readonly string $client;
+    private readonly string $channel;
+    private readonly ?bool $eto;
 
     /**
      * @param string      $client
@@ -33,6 +36,7 @@ final class JwtPayloadForPrivateChannel extends AbstractJwtPayload
      * @param string|null $base64info
      * @param bool        $eto
      */
+    #[Pure]
     public function __construct(string $client, string $channel, array $info = [], ?int $expirationTime = null, ?string $base64info = null, bool $eto = null)
     {
         $this->client = $client;
@@ -69,6 +73,15 @@ final class JwtPayloadForPrivateChannel extends AbstractJwtPayload
     /**
      * {@inheritdoc}
      */
+    #[Pure]
+    #[ArrayShape([
+        'client' => 'string',
+        'channel' => 'string',
+        'eto' => 'bool|null',
+        'b64info' => 'null|string',
+        'info' => 'mixed',
+        'exp' => 'int|null'
+    ])]
     public function getPayloadData(): array
     {
         $data = [

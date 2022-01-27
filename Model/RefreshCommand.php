@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Model;
 
+use JetBrains\PhpStorm\Pure;
+
 /**
  * RefreshCommand.
  *
@@ -27,6 +29,7 @@ final class RefreshCommand extends AbstractCommand
      * @param bool|null   $expired
      * @param int|null    $expireAt
      */
+    #[Pure]
     public function __construct(string $user, ?string $client = null, ?bool $expired = null, ?int $expireAt = null)
     {
         $this->user = $user;

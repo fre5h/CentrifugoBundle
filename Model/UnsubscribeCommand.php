@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Model;
 
+use JetBrains\PhpStorm\Pure;
+
 /**
  * UnsubscribeCommand.
  *
@@ -25,6 +27,7 @@ final class UnsubscribeCommand extends AbstractCommand
      * @param string $user
      * @param string $channel
      */
+    #[Pure]
     public function __construct(string $user, string $channel)
     {
         $this->channel = $channel;

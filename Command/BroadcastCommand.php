@@ -35,7 +35,7 @@ final class BroadcastCommand extends AbstractCommand
     /** @var string */
     protected static $defaultDescription = 'Publish data into many channels';
 
-    private CentrifugoChecker $centrifugoChecker;
+    private readonly CentrifugoChecker $centrifugoChecker;
 
     /** @var string[] */
     private array $channels;

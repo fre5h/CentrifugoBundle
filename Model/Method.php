@@ -19,27 +19,27 @@ namespace Fresh\CentrifugoBundle\Model;
  */
 final class Method
 {
-    public const PUBLISH = 'publish';
+    public final const PUBLISH = 'publish';
 
-    public const BROADCAST = 'broadcast';
+    public final const BROADCAST = 'broadcast';
 
-    public const SUBSCRIBE = 'subscribe';
+    public final const SUBSCRIBE = 'subscribe';
 
-    public const UNSUBSCRIBE = 'unsubscribe';
+    public final const UNSUBSCRIBE = 'unsubscribe';
 
-    public const DISCONNECT = 'disconnect';
+    public final const DISCONNECT = 'disconnect';
 
-    public const REFRESH = 'refresh';
+    public final const REFRESH = 'refresh';
 
-    public const PRESENCE = 'presence';
+    public final const PRESENCE = 'presence';
 
-    public const PRESENCE_STATS = 'presence_stats';
+    public final const PRESENCE_STATS = 'presence_stats';
 
-    public const HISTORY = 'history';
+    public final const HISTORY = 'history';
 
-    public const HISTORY_REMOVE = 'history_remove';
+    public final const HISTORY_REMOVE = 'history_remove';
 
-    public const CHANNELS = 'channels';
+    public final const CHANNELS = 'channels';
 
-    public const INFO = 'info';
+    public final const INFO = 'info';
 }

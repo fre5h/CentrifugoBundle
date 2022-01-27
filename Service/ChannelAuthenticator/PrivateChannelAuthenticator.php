@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Fresh\CentrifugoBundle\Service\ChannelAuthenticator;
 
 use Fresh\CentrifugoBundle\Service\Credentials\CredentialsGenerator;
+use JetBrains\PhpStorm\ArrayShape;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
@@ -43,6 +44,7 @@ class PrivateChannelAuthenticator
      *
      * @return array
      */
+    #[ArrayShape(['channels' => 'array'])]
     public function authChannelsForClientFromRequest(Request $request): array
     {
         $authData = [];

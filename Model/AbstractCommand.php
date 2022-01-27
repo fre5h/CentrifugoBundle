@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Model;
 
+use JetBrains\PhpStorm\ArrayShape;
+
 /**
  * AbstractCentrifugoCommand.
  *
@@ -59,6 +61,7 @@ abstract class AbstractCommand implements SerializableCommandInterface
     /**
      * @return array<string, mixed>
      */
+    #[ArrayShape(['method' => 'string', 'params' => 'array'])]
     public function jsonSerialize(): array
     {
         return [

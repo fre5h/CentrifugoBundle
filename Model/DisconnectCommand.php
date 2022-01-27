@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Model;
 
+use JetBrains\PhpStorm\Pure;
+
 /**
  * DisconnectCommand.
  *
@@ -22,6 +24,7 @@ final class DisconnectCommand extends AbstractCommand
     /**
      * @param string $user
      */
+    #[Pure]
     public function __construct(string $user)
     {
         parent::__construct(

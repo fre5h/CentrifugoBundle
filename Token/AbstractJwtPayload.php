@@ -19,9 +19,9 @@ namespace Fresh\CentrifugoBundle\Token;
  */
 abstract class AbstractJwtPayload implements JwtPayloadInterface
 {
-    private ?int $expirationTime;
-    private array $info;
-    private ?string $base64info; // phpcs:ignore
+    private readonly ?int $expirationTime;
+    private readonly array $info;
+    private readonly ?string $base64info; // phpcs:ignore
 
     /**
      * @param array       $info

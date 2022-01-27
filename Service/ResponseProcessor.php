@@ -29,9 +29,9 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
  */
 class ResponseProcessor
 {
-    private CentrifugoChecker $centrifugoChecker;
-    private bool $profilerEnabled;
-    private CommandHistoryLogger $commandHistoryLogger;
+    private readonly CentrifugoChecker $centrifugoChecker;
+    private readonly bool $profilerEnabled;
+    private readonly CommandHistoryLogger $commandHistoryLogger;
     private array $centrifugoError = [];
 
     /**
