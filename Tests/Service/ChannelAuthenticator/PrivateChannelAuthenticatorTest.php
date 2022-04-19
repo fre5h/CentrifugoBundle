@@ -28,13 +28,13 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 final class PrivateChannelAuthenticatorTest extends TestCase
 {
     /** @var Request|MockObject */
-    private $request;
+    private Request|MockObject $request;
 
     /** @var ChannelAuthenticatorInterface|MockObject */
-    private $customerChannelAuthenticator;
+    private ChannelAuthenticatorInterface|MockObject $customerChannelAuthenticator;
 
     /** @var CredentialsGenerator|MockObject */
-    private $credentialsGenerator;
+    private CredentialsGenerator|MockObject $credentialsGenerator;
 
     private PrivateChannelAuthenticator $privateChannelAuthenticator;
 

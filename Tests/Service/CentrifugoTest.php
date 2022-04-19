@@ -31,22 +31,22 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 final class CentrifugoTest extends TestCase
 {
     /** @var HttpClientInterface|MockObject */
-    private $httpClient;
+    private HttpClientInterface|MockObject $httpClient;
 
     /** @var ResponseInterface|MockObject */
-    private $response;
+    private ResponseInterface|MockObject $response;
 
     /** @var ResponseProcessor|MockObject */
-    private $responseProcessor;
+    private ResponseProcessor|MockObject $responseProcessor;
 
     /** @var CommandHistoryLogger|MockObject */
-    private $commandHistoryLogger;
+    private CommandHistoryLogger|MockObject $commandHistoryLogger;
 
     /** @var CentrifugoChecker|MockObject */
-    private $centrifugoChecker;
+    private CentrifugoChecker|MockObject $centrifugoChecker;
 
     /** @var Profiler|MockObject */
-    private $profiler;
+    private Profiler|MockObject $profiler;
 
     private Centrifugo $centrifugo;
 
