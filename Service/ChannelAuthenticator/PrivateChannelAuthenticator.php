@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Fresh\CentrifugoBundle\Service\ChannelAuthenticator;
 
 use Fresh\CentrifugoBundle\Service\Credentials\CredentialsGenerator;
+use JetBrains\PhpStorm\ArrayShape;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
@@ -43,6 +44,7 @@ class PrivateChannelAuthenticator
      *
      * @return array
      */
+    #[ArrayShape(['channels' => 'array'])]
     public function authChannelsForClientFromRequest(Request $request): array
     {
         $authData = [];
@@ -110,8 +112,9 @@ class PrivateChannelAuthenticator
     private function processRequest(Request $request): array
     {
         try {
+            /** @var array $content */
             $content = \json_decode((string) $request->getContent(), true, 512, \JSON_THROW_ON_ERROR);
-        } catch (\JsonException $e) {
+        } catch (\JsonException) {
             throw new BadRequestHttpException('Invalid JSON.');
         } catch (\Exception $e) {
             throw $e;

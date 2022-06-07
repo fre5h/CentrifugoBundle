@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,14 +24,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
+#[AsCommand(name: 'centrifugo:disconnect', description: 'Disconnect user by ID')]
 final class DisconnectCommand extends AbstractCommand
 {
     use ArgumentUserTrait;
-
-    protected static $defaultName = 'centrifugo:disconnect';
-
-    /** @var string */
-    protected static $defaultDescription = 'Disconnect user by ID';
 
     /**
      * {@inheritdoc}
@@ -38,7 +35,6 @@ final class DisconnectCommand extends AbstractCommand
     protected function configure(): void
     {
         $this
-            ->setDescription(self::$defaultDescription)
             ->setDefinition(
                 new InputDefinition([
                     new InputArgument('user', InputArgument::REQUIRED, 'User ID'),

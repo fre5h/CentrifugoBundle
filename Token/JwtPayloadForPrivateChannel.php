@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Token;
 
+use JetBrains\PhpStorm\ArrayShape;
+
 /**
  * JwtPayloadForPrivateChannel.
  *
@@ -23,7 +25,7 @@ final class JwtPayloadForPrivateChannel extends AbstractJwtPayload
 {
     private string $client;
     private string $channel;
-    private ?bool $eto = null;
+    private ?bool $eto;
 
     /**
      * @param string      $client
@@ -69,6 +71,14 @@ final class JwtPayloadForPrivateChannel extends AbstractJwtPayload
     /**
      * @return array
      */
+    #[ArrayShape([
+        'client' => 'string',
+        'channel' => 'string',
+        'eto' => 'bool|null',
+        'b64info' => 'null|string',
+        'info' => 'array',
+        'exp' => 'int|null',
+    ])]
     public function getPayloadData(): array
     {
         $data = [

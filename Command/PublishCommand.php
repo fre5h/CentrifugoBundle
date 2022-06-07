@@ -14,6 +14,7 @@ namespace Fresh\CentrifugoBundle\Command;
 
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
@@ -25,15 +26,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
+#[AsCommand(name: 'centrifugo:publish', description: 'Publish data into channel')]
 final class PublishCommand extends AbstractCommand
 {
     use ArgumentChannelTrait;
     use ArgumentDataTrait;
-
-    protected static $defaultName = 'centrifugo:publish';
-
-    /** @var string */
-    protected static $defaultDescription = 'Publish data into channel';
 
     /**
      * @param CentrifugoInterface $centrifugo
@@ -52,7 +49,6 @@ final class PublishCommand extends AbstractCommand
     protected function configure(): void
     {
         $this
-            ->setDescription(self::$defaultDescription)
             ->setDefinition(
                 new InputDefinition([
                     new InputArgument('data', InputArgument::REQUIRED, 'Data in JSON format'),
