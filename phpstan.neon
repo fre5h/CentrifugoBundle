@@ -8,7 +8,6 @@ parameters:
     excludePaths:
         - '%rootDir%/../../../DependencyInjection/Configuration'
         - '%rootDir%/../../../Tests/*'
-        - '%rootDir%/../../../tests/*'
         - '%rootDir%/../../../vendor/*'
     fileExtensions:
         - 'php'

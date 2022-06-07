@@ -22,7 +22,7 @@ use Symfony\Component\Console\Input\InputInterface;
  */
 trait ArgumentDataTrait
 {
-    /** @var array[] */
+    /** @var mixed[] */
     protected array $data = [];
 
     /**

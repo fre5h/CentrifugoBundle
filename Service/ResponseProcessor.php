@@ -98,6 +98,7 @@ class ResponseProcessor
     private function decodeAndProcessResponseResult(CommandInterface $command, string $content): ?array
     {
         try {
+            /** @var array $data */
             $data = \json_decode($content, true, 512, \JSON_THROW_ON_ERROR);
         } catch (\Exception) {
             throw new CentrifugoException('Centrifugo response payload is not a valid JSON');
