@@ -77,11 +77,11 @@ HELP
     /**
      * @param SymfonyStyle $io
      * @param string       $key
-     * @param array|mixed  $value
+     * @param array|string $value
      * @param int          $padding
      * @param bool         $last
      */
-    private function writeParameter(SymfonyStyle $io, string $key, $value, int $padding = 0, bool $last = false): void
+    private function writeParameter(SymfonyStyle $io, string $key, array|string $value, int $padding = 0, bool $last = false): void
     {
         $formattedKey = $key;
         if ($padding > 0) {
@@ -91,7 +91,7 @@ HELP
         }
 
         if (!\is_array($value)) {
-            $text = \sprintf('<info>%s</info>: %s', $formattedKey, (string) $value);
+            $text = \sprintf('<info>%s</info>: %s', $formattedKey, $value);
             $io->text($text);
         } else {
             $io->text(\sprintf('<info>%s</info>', $formattedKey));
