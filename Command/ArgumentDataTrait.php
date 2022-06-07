@@ -22,7 +22,7 @@ use Symfony\Component\Console\Input\InputInterface;
  */
 trait ArgumentDataTrait
 {
-    /** @var mixed[] */
+    /** @var array */
     protected array $data = [];
 
     /**
@@ -39,7 +39,9 @@ trait ArgumentDataTrait
         }
 
         try {
-            $this->data = \json_decode($data, true, 512, \JSON_THROW_ON_ERROR);
+            /** @var array $decodedData */
+            $decodedData = \json_decode($data, true, 512, \JSON_THROW_ON_ERROR);
+            $this->data = $decodedData;
         } catch (\JsonException) {
             throw new InvalidArgumentException('Argument "data" is not a valid JSON.');
         }
