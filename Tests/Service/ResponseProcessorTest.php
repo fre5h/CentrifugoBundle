@@ -37,16 +37,16 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 final class ResponseProcessorTest extends TestCase
 {
     /** @var ResponseInterface|MockObject */
-    private $response;
+    private ResponseInterface|MockObject $response;
 
     /** @var CentrifugoChecker|MockObject */
-    private $centrifugoChecker;
+    private CentrifugoChecker|MockObject $centrifugoChecker;
 
     /** @var CommandHistoryLogger|MockObject */
-    private $commandHistoryLogger;
+    private CommandHistoryLogger|MockObject $commandHistoryLogger;
 
     /** @var Profiler|MockObject */
-    private $profiler;
+    private Profiler|MockObject $profiler;
 
     private ResponseProcessor $responseProcessor;
 

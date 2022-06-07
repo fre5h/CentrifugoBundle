@@ -24,7 +24,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 final class ArgumentUserTraitTest extends TestCase
 {
     /** @var CentrifugoInterface|MockObject */
-    private $centrifugo;
+    private CentrifugoInterface|MockObject $centrifugo;
 
     private Command $command;
     private Application $application;

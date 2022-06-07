@@ -25,10 +25,10 @@ use Symfony\Component\Console\Tester\CommandTester;
 final class ArgumentDataTraitTest extends TestCase
 {
     /** @var CentrifugoInterface|MockObject */
-    private $centrifugo;
+    private CentrifugoInterface|MockObject $centrifugo;
 
     /** @var CentrifugoChecker|MockObject */
-    private $centrifugoChecker;
+    private CentrifugoChecker|MockObject $centrifugoChecker;
 
     private Command $command;
     private Application $application;

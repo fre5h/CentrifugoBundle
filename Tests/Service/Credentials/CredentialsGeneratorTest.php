@@ -29,10 +29,10 @@ use PHPUnit\Framework\TestCase;
 final class CredentialsGeneratorTest extends TestCase
 {
     /** @var JwtGenerator|MockObject */
-    private $jwtGenerator;
+    private JwtGenerator|MockObject $jwtGenerator;
 
     /** @var DateTimeHelper|MockObject */
-    private $dateTimeHelper;
+    private DateTimeHelper|MockObject $dateTimeHelper;
 
     private CredentialsGenerator $credentialsGenerator;
 

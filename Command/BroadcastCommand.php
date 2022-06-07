@@ -14,6 +14,7 @@ namespace Fresh\CentrifugoBundle\Command;
 
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
@@ -26,14 +27,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
+#[AsCommand(name: 'centrifugo:broadcast', description: 'Publish same data into many channels')]
 final class BroadcastCommand extends AbstractCommand
 {
     use ArgumentDataTrait;
-
-    protected static $defaultName = 'centrifugo:broadcast';
-
-    /** @var string */
-    protected static $defaultDescription = 'Publish same data into many channels';
 
     private CentrifugoChecker $centrifugoChecker;
 
@@ -57,7 +54,6 @@ final class BroadcastCommand extends AbstractCommand
     protected function configure(): void
     {
         $this
-            ->setDescription(self::$defaultDescription)
             ->setDefinition(
                 new InputDefinition([
                     new InputArgument('data', InputArgument::REQUIRED, 'Data in JSON format'),

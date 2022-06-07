@@ -14,6 +14,7 @@ namespace Fresh\CentrifugoBundle\Command;
 
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
@@ -25,14 +26,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
+#[AsCommand(name: 'centrifugo:history-remove', description: 'Remove history for channel')]
 final class HistoryRemoveCommand extends AbstractCommand
 {
     use ArgumentChannelTrait;
-
-    protected static $defaultName = 'centrifugo:history-remove';
-
-    /** @var string */
-    protected static $defaultDescription = 'Remove history for channel';
 
     /**
      * @param CentrifugoInterface $centrifugo
@@ -51,7 +48,6 @@ final class HistoryRemoveCommand extends AbstractCommand
     protected function configure(): void
     {
         $this
-            ->setDescription(self::$defaultDescription)
             ->setDefinition(
                 new InputDefinition([
                     new InputArgument('channel', InputArgument::REQUIRED, 'Channel name'),

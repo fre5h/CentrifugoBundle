@@ -14,6 +14,7 @@ namespace Fresh\CentrifugoBundle\Command;
 
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
@@ -25,15 +26,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
+#[AsCommand(name: 'centrifugo:unsubscribe', description: 'Unsubscribe user from channel')]
 final class UnsubscribeCommand extends AbstractCommand
 {
     use ArgumentChannelTrait;
     use ArgumentUserTrait;
-
-    protected static $defaultName = 'centrifugo:unsubscribe';
-
-    /** @var string */
-    protected static $defaultDescription = 'Unsubscribe user from channel';
 
     /**
      * @param CentrifugoInterface $centrifugo
@@ -52,7 +49,6 @@ final class UnsubscribeCommand extends AbstractCommand
     protected function configure(): void
     {
         $this
-            ->setDescription(self::$defaultDescription)
             ->setDefinition(
                 new InputDefinition([
                     new InputArgument('user', InputArgument::REQUIRED, 'User ID'),

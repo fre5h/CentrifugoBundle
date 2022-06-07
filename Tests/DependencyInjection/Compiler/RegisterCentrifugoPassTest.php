@@ -29,7 +29,7 @@ use Symfony\Component\DependencyInjection\Definition;
 final class RegisterCentrifugoPassTest extends TestCase
 {
     /** @var ContainerBuilder|MockObject */
-    private $containerBuilder;
+    private ContainerBuilder|MockObject $containerBuilder;
 
     private RegisterCentrifugoPass $registerCentrifugoPass;
 

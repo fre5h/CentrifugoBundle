@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -21,20 +22,15 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
+#[AsCommand(name: 'centrifugo:info', description: 'Get information about running Centrifugo nodes')]
 final class InfoCommand extends AbstractCommand
 {
-    protected static $defaultName = 'centrifugo:info';
-
-    /** @var string */
-    protected static $defaultDescription = 'Get information about running Centrifugo nodes';
-
     /**
      * {@inheritdoc}
      */
     protected function configure(): void
     {
         $this
-            ->setDescription(self::$defaultDescription)
             ->setHelp(
                 <<<'HELP'
 The <info>%command.name%</info> command allows to get information about running Centrifugo nodes:

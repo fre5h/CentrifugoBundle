@@ -14,6 +14,7 @@ namespace Fresh\CentrifugoBundle\Command;
 
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
@@ -25,14 +26,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
+#[AsCommand(name: 'centrifugo:history', description: 'Get channel history information (list of last messages published into channel)')]
 final class HistoryCommand extends AbstractCommand
 {
     use ArgumentChannelTrait;
-
-    protected static $defaultName = 'centrifugo:history';
-
-    /** @var string */
-    protected static $defaultDescription = 'Get channel history information (list of last messages published into channel)';
 
     /**
      * @param CentrifugoInterface $centrifugo
@@ -51,7 +48,6 @@ final class HistoryCommand extends AbstractCommand
     protected function configure(): void
     {
         $this
-            ->setDescription(self::$defaultDescription)
             ->setDefinition(
                 new InputDefinition([
                     new InputArgument('channel', InputArgument::REQUIRED, 'Channel name'),
