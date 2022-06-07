@@ -114,4 +114,28 @@ final class InfoCommandTest extends TestCase
         $output = $this->commandTester->getDisplay();
         self::assertStringContainsString('test', $output);
     }
+
+    public function testUnexpectedValueException(): void
+    {
+        $this->centrifugo
+            ->expects(self::once())
+            ->method('info')
+            ->willReturn(
+                [
+                    'nodes' => [
+                        [
+                            'name' => 'Test',
+                            'bar' => new \stdClass(),
+                        ],
+                    ],
+                ]
+            )
+        ;
+
+        $result = $this->commandTester->execute(['command' => $this->command->getName()]);
+        self::assertSame(4, $result);
+
+        $output = $this->commandTester->getDisplay();
+        self::assertStringContainsString('Value is not an array, nor a string', $output);
+    }
 }

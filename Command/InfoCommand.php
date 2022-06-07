@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Command;
 
+use Fresh\CentrifugoBundle\Exception\UnexpectedValueException;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -77,11 +78,13 @@ HELP
     /**
      * @param SymfonyStyle $io
      * @param string       $key
-     * @param array|string $value
+     * @param mixed        $value
      * @param int          $padding
      * @param bool         $last
+     *
+     * @throws UnexpectedValueException
      */
-    private function writeParameter(SymfonyStyle $io, string $key, array|string $value, int $padding = 0, bool $last = false): void
+    private function writeParameter(SymfonyStyle $io, string $key, mixed $value, int $padding = 0, bool $last = false): void
     {
         $formattedKey = $key;
         if ($padding > 0) {
@@ -91,6 +94,10 @@ HELP
         }
 
         if (!\is_array($value)) {
+            if (!\is_scalar($value)) {
+                throw new UnexpectedValueException('Value is not an array, nor a string', 4);
+            }
+
             $text = \sprintf('<info>%s</info>: %s', $formattedKey, $value);
             $io->text($text);
         } else {
