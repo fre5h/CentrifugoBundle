@@ -61,8 +61,6 @@ class ResponseProcessor
         $this->centrifugoChecker->assertValidResponseHeaders($response);
         $this->centrifugoChecker->assertValidResponseContentType($response);
 
-        $this->centrifugoError = [];
-
         $content = $response->getContent();
 
         if ($command instanceof BatchRequest) {
@@ -101,7 +99,7 @@ class ResponseProcessor
     {
         try {
             $data = \json_decode($content, true, 512, \JSON_THROW_ON_ERROR);
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             throw new CentrifugoException('Centrifugo response payload is not a valid JSON');
         }
 
