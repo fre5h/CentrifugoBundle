@@ -77,7 +77,7 @@ final class JwtPayloadForPrivateChannel extends AbstractJwtPayload
         'eto' => 'bool|null',
         'b64info' => 'null|string',
         'info' => 'array',
-        'exp' => 'int|null'
+        'exp' => 'int|null',
     ])]
     public function getPayloadData(): array
     {
