@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Token;
 
+use JetBrains\PhpStorm\ArrayShape;
+
 /**
  * JwtPayload.
  *
@@ -21,23 +23,15 @@ namespace Fresh\CentrifugoBundle\Token;
  */
 final class JwtPayload extends AbstractJwtPayload
 {
-    private string $subject;
-
-    /** @var array<string> */
-    private array $channels;
-
     /**
-     * @param string      $subject
-     * @param array       $info
-     * @param int|null    $expirationTime
-     * @param string|null $base64info
-     * @param string[]    $channels
+     * @param string        $subject
+     * @param array         $info
+     * @param int|null      $expirationTime
+     * @param string|null   $base64info
+     * @param array<string> $channels
      */
-    public function __construct(string $subject, array $info = [], ?int $expirationTime = null, ?string $base64info = null, array $channels = [])
+    public function __construct(private readonly string $subject, array $info = [], ?int $expirationTime = null, ?string $base64info = null, private readonly array $channels = [])
     {
-        $this->subject = $subject;
-        $this->channels = $channels;
-
         parent::__construct($info, $expirationTime, $base64info);
     }
 
@@ -60,6 +54,13 @@ final class JwtPayload extends AbstractJwtPayload
     /**
      * @return array
      */
+    #[ArrayShape([
+        'sub' => 'string',
+        'channels' => 'string[]',
+        'b64info' => 'null|string',
+        'info' => 'array',
+        'exp' => 'int|null'
+    ])]
     public function getPayloadData(): array
     {
         $data = [

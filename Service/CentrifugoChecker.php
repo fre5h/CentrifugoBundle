@@ -24,14 +24,11 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
  */
 class CentrifugoChecker
 {
-    private int $channelMaxLength;
-
     /**
-     * @param int $centrifugoChannelMaxLength
+     * @param int $channelMaxLength
      */
-    public function __construct(int $centrifugoChannelMaxLength)
+    public function __construct(private readonly int $channelMaxLength)
     {
-        $this->channelMaxLength = $centrifugoChannelMaxLength;
     }
 
     /**

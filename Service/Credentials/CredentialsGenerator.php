@@ -25,20 +25,13 @@ use Fresh\DateTime\DateTimeHelper;
  */
 class CredentialsGenerator
 {
-    private JwtGenerator $jwtGenerator;
-    private DateTimeHelper $dateTimeHelper;
-    private ?int $centrifugoJwtTtl;
-
     /**
      * @param JwtGenerator   $jwtGenerator
      * @param DateTimeHelper $dateTimeHelper
      * @param int|null       $centrifugoJwtTtl
      */
-    public function __construct(JwtGenerator $jwtGenerator, DateTimeHelper $dateTimeHelper, ?int $centrifugoJwtTtl = null)
+    public function __construct(private readonly JwtGenerator $jwtGenerator, private readonly DateTimeHelper $dateTimeHelper, private readonly ?int $centrifugoJwtTtl = null)
     {
-        $this->jwtGenerator = $jwtGenerator;
-        $this->dateTimeHelper = $dateTimeHelper;
-        $this->centrifugoJwtTtl = $centrifugoJwtTtl;
     }
 
     /**
