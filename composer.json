@@ -56,5 +56,11 @@
         "psr-4": {
             "Fresh\\CentrifugoBundle\\Tests\\": "Tests/"
         }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "symfony/flex": true
+        }
     }
 }
