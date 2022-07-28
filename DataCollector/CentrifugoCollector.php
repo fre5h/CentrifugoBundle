@@ -25,14 +25,11 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
  */
 class CentrifugoCollector extends DataCollector
 {
-    private CommandHistoryLogger $commandHistoryLogger;
-
     /**
      * @param CommandHistoryLogger $commandHistoryLogger
      */
-    public function __construct(CommandHistoryLogger $commandHistoryLogger)
+    public function __construct(private CommandHistoryLogger $commandHistoryLogger)
     {
-        $this->commandHistoryLogger = $commandHistoryLogger;
         $this->reset();
     }
 

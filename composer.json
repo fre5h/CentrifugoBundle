@@ -32,13 +32,12 @@
         "symfony/http-foundation": "~6.1",
         "symfony/http-kernel": "~6.1",
         "symfony/security-core": "~6.1",
-        "symfony/validator": "~6.1",
-        "symfony/yaml": "~6.1"
+        "symfony/validator": "~6.1"
     },
     "require-dev": {
         "escapestudios/symfony2-coding-standard": "^3.12",
         "jetbrains/phpstorm-attributes": "^1.0",
-        "phpstan/phpstan": "^1.7",
+        "phpstan/phpstan": "^1.8",
         "phpstan/phpstan-deprecation-rules": "^1.0",
         "phpstan/phpstan-phpunit": "^1.1",
         "phpstan/phpstan-symfony": "^1.2",
