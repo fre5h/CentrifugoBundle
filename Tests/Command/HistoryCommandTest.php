@@ -101,7 +101,7 @@ JSON,
         $this->centrifugo
             ->expects(self::once())
             ->method('history')
-            ->willThrowException(new \Exception('test', 5))
+            ->willThrowException(new \Exception('test'))
         ;
 
         $result = $this->commandTester->execute(
@@ -110,7 +110,7 @@ JSON,
                 'channel' => 'channelA',
             ]
         );
-        self::assertSame(5, $result);
+        self::assertSame(1, $result);
 
         $output = $this->commandTester->getDisplay();
         self::assertStringContainsString('test', $output);
