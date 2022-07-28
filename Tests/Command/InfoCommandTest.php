@@ -133,7 +133,7 @@ final class InfoCommandTest extends TestCase
         ;
 
         $result = $this->commandTester->execute(['command' => $this->command->getName()]);
-        self::assertSame(4, $result);
+        self::assertSame(1, $result);
 
         $output = $this->commandTester->getDisplay();
         self::assertStringContainsString('Value is not an array, nor a string', $output);
