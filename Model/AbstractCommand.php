@@ -21,17 +21,12 @@ use JetBrains\PhpStorm\ArrayShape;
  */
 abstract class AbstractCommand implements SerializableCommandInterface
 {
-    private string $method;
-    private array $params;
-
     /**
      * @param string $method
      * @param array  $params
      */
-    public function __construct(string $method, array $params)
+    public function __construct(private readonly string $method, private readonly array $params)
     {
-        $this->method = $method;
-        $this->params = $params;
     }
 
     /**

@@ -20,7 +20,7 @@ namespace Fresh\CentrifugoBundle\Token;
 interface JwtPayloadInterface
 {
     /**
-     * @return array
+     * @return array<string, mixed>
      */
     public function getPayloadData(): array;
 }

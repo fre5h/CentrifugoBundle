@@ -23,14 +23,11 @@ class JwtGenerator
 {
     private const HMAC_ALGORITHM = 'sha256';
 
-    private string $secret;
-
     /**
      * @param string $centrifugoSecret
      */
-    public function __construct(string $centrifugoSecret)
+    public function __construct(private readonly string $centrifugoSecret)
     {
-        $this->secret = $centrifugoSecret;
     }
 
     /**
@@ -85,7 +82,7 @@ class JwtGenerator
     private function buildSignaturePart(string $headerPartDecoded, string $payloadPartDecoded): string
     {
         $data = $headerPartDecoded.'.'.$payloadPartDecoded;
-        $hash = \hash_hmac(self::HMAC_ALGORITHM, $data, $this->secret, true);
+        $hash = \hash_hmac(self::HMAC_ALGORITHM, $data, $this->centrifugoSecret, true);
 
         return $this->base64EncodeUrlSafe($hash);
     }

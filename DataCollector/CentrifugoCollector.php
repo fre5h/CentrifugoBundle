@@ -28,7 +28,7 @@ class CentrifugoCollector extends DataCollector
     /**
      * @param CommandHistoryLogger $commandHistoryLogger
      */
-    public function __construct(private CommandHistoryLogger $commandHistoryLogger)
+    public function __construct(private readonly CommandHistoryLogger $commandHistoryLogger)
     {
         $this->reset();
     }

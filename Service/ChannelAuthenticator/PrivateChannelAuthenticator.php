@@ -24,19 +24,12 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  */
 class PrivateChannelAuthenticator
 {
-    private CredentialsGenerator $credentialsGenerator;
-
-    /** @var ChannelAuthenticatorInterface[]|iterable */
-    private iterable $channelAuthenticators;
-
     /**
      * @param CredentialsGenerator                     $credentialsGenerator
      * @param ChannelAuthenticatorInterface[]|iterable $channelAuthenticators
      */
-    public function __construct(CredentialsGenerator $credentialsGenerator, iterable $channelAuthenticators)
+    public function __construct(private readonly CredentialsGenerator $credentialsGenerator, private readonly iterable $channelAuthenticators)
     {
-        $this->credentialsGenerator = $credentialsGenerator;
-        $this->channelAuthenticators = $channelAuthenticators;
     }
 
     /**
@@ -116,8 +109,6 @@ class PrivateChannelAuthenticator
             $content = \json_decode((string) $request->getContent(), true, 512, \JSON_THROW_ON_ERROR);
         } catch (\JsonException) {
             throw new BadRequestHttpException('Invalid JSON.');
-        } catch (\Exception $e) {
-            throw $e;
         }
 
         $result = [];

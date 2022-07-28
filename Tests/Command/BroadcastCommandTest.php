@@ -85,7 +85,7 @@ final class BroadcastCommandTest extends TestCase
         $this->centrifugo
             ->expects(self::once())
             ->method('broadcast')
-            ->willThrowException(new \Exception('test', 5))
+            ->willThrowException(new \Exception('test'))
         ;
 
         $result = $this->commandTester->execute(
@@ -95,7 +95,7 @@ final class BroadcastCommandTest extends TestCase
                 'channels' => ['channelA', 'channelB'],
             ]
         );
-        self::assertSame(5, $result);
+        self::assertSame(1, $result);
 
         $output = $this->commandTester->getDisplay();
         self::assertStringContainsString('test', $output);

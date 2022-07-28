@@ -83,7 +83,7 @@ final class PublishCommandTest extends TestCase
         $this->centrifugo
             ->expects(self::once())
             ->method('publish')
-            ->willThrowException(new \Exception('test', 5))
+            ->willThrowException(new \Exception('test'))
         ;
 
         $result = $this->commandTester->execute(
@@ -93,7 +93,7 @@ final class PublishCommandTest extends TestCase
                 'channel' => 'channelA',
             ]
         );
-        self::assertSame(5, $result);
+        self::assertSame(1, $result);
 
         $output = $this->commandTester->getDisplay();
         self::assertStringContainsString('test', $output);

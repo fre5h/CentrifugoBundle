@@ -19,17 +19,12 @@ namespace Fresh\CentrifugoBundle\Model;
  */
 final class BroadcastCommand extends AbstractCommand
 {
-    /** @var string[] */
-    private array $channels;
-
     /**
      * @param array    $data
      * @param string[] $channels
      */
-    public function __construct(array $data, array $channels)
+    public function __construct(array $data, private readonly array $channels)
     {
-        $this->channels = $channels;
-
         parent::__construct(
             Method::BROADCAST,
             [
