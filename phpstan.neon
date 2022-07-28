@@ -1,7 +1,6 @@
 includes:
     - 'vendor/phpstan/phpstan-phpunit/extension.neon'
     - 'vendor/phpstan/phpstan-phpunit/rules.neon'
-    - 'vendor/phpstan/phpstan-doctrine/extension.neon'
     - 'vendor/phpstan/phpstan-symfony/extension.neon'
     - 'vendor/slam/phpstan-extensions/conf/slam-rules.neon'
 parameters:
@@ -9,8 +8,7 @@ parameters:
     excludePaths:
         - '%rootDir%/../../../DependencyInjection/Configuration'
         - '%rootDir%/../../../Tests/*'
-        - '%rootDir%/../../../Tests/*'
         - '%rootDir%/../../../vendor/*'
     fileExtensions:
         - 'php'
-    checkGenericClassInNonGenericObjectType: false
+    checkMissingIterableValueType: false

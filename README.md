@@ -22,8 +22,8 @@
 
 ## Requirements 🧐
 
-* PHP => 8.1
-* Symfony 5.4, 6.0
+* PHP 8.1
+* Symfony 6.1
 
 ## Installation 🌱
 

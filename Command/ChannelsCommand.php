@@ -14,6 +14,7 @@ namespace Fresh\CentrifugoBundle\Command;
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -23,22 +24,15 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
+#[AsCommand(name: 'centrifugo:channels', description: 'Get list of active (with one or more subscribers) channels')]
 final class ChannelsCommand extends AbstractCommand
 {
-    use ArgumentPatternTrait;
-
-    protected static $defaultName = 'centrifugo:channels';
-
-    /** @var string */
-    protected static $defaultDescription = 'Return active channels (with one or more active subscribers in it)';
-
     /**
      * {@inheritdoc}
      */
     protected function configure(): void
     {
         $this
-            ->setDescription(self::$defaultDescription)
             ->setDefinition(
                 new InputDefinition([
                     new InputArgument('pattern', InputArgument::OPTIONAL, 'Pattern'),

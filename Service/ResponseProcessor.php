@@ -102,7 +102,7 @@ class ResponseProcessor
         try {
             /** @var array<string, mixed> $data */
             $data = \json_decode($content, true, 512, \JSON_THROW_ON_ERROR);
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             throw new CentrifugoException('Centrifugo response payload is not a valid JSON');
         }
 

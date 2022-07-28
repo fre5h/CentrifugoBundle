@@ -14,6 +14,7 @@ namespace Fresh\CentrifugoBundle\Tests\Logger;
 
 use Fresh\CentrifugoBundle\DataCollector\CentrifugoCollector;
 use Fresh\CentrifugoBundle\Logger\CommandHistoryLogger;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,7 +26,9 @@ use Symfony\Component\HttpFoundation\Response;
  */
 final class CommandCollectorTest extends TestCase
 {
-    private CommandHistoryLogger $commandHistoryLogger;
+    /** @var CommandHistoryLogger|MockObject  */
+    private CommandHistoryLogger|MockObject $commandHistoryLogger;
+
     private CentrifugoCollector $centrifugoCollector;
 
     protected function setUp(): void

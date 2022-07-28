@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Command;
 
+use Fresh\CentrifugoBundle\Exception\UnexpectedValueException;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -21,20 +23,15 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
+#[AsCommand(name: 'centrifugo:info', description: 'Get information about running Centrifugo nodes')]
 final class InfoCommand extends AbstractCommand
 {
-    protected static $defaultName = 'centrifugo:info';
-
-    /** @var string */
-    protected static $defaultDescription = 'Get information about running Centrifugo nodes';
-
     /**
      * {@inheritdoc}
      */
     protected function configure(): void
     {
         $this
-            ->setDescription(self::$defaultDescription)
             ->setHelp(
                 <<<'HELP'
 The <info>%command.name%</info> command allows to get information about running Centrifugo nodes:
@@ -81,11 +78,13 @@ HELP
     /**
      * @param SymfonyStyle $io
      * @param string       $key
-     * @param array|mixed  $value
+     * @param mixed        $value
      * @param int          $padding
      * @param bool         $last
+     *
+     * @throws UnexpectedValueException
      */
-    private function writeParameter(SymfonyStyle $io, string $key, $value, int $padding = 0, bool $last = false): void
+    private function writeParameter(SymfonyStyle $io, string $key, mixed $value, int $padding = 0, bool $last = false): void
     {
         $formattedKey = $key;
         if ($padding > 0) {
@@ -95,7 +94,11 @@ HELP
         }
 
         if (!\is_array($value)) {
-            $text = \sprintf('<info>%s</info>: %s', $formattedKey, (string) $value);
+            if (!\is_scalar($value)) {
+                throw new UnexpectedValueException('Value is not an array, nor a string', 4);
+            }
+
+            $text = \sprintf('<info>%s</info>: %s', $formattedKey, $value);
             $io->text($text);
         } else {
             $io->text(\sprintf('<info>%s</info>', $formattedKey));
