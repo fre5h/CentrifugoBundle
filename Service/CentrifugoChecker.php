@@ -24,14 +24,11 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
  */
 class CentrifugoChecker
 {
-    private readonly int $channelMaxLength;
-
     /**
      * @param int $centrifugoChannelMaxLength
      */
-    public function __construct(int $centrifugoChannelMaxLength)
+    public function __construct(private readonly int $centrifugoChannelMaxLength)
     {
-        $this->channelMaxLength = $centrifugoChannelMaxLength;
     }
 
     /**
@@ -47,8 +44,8 @@ class CentrifugoChecker
             throw new InvalidArgumentException('Invalid channel name. Only ASCII symbols must be used in channel string.');
         }
 
-        if (\strlen($channelName) > $this->channelMaxLength) {
-            throw new InvalidArgumentException(\sprintf('Invalid channel name length. Maximum allowed length is %d.', $this->channelMaxLength));
+        if (\strlen($channelName) > $this->centrifugoChannelMaxLength) {
+            throw new InvalidArgumentException(\sprintf('Invalid channel name length. Maximum allowed length is %d.', $this->centrifugoChannelMaxLength));
         }
 
         return true;

@@ -26,13 +26,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  */
 class Centrifugo implements CentrifugoInterface
 {
-    private readonly string $endpoint;
-    private readonly string $apiKey;
-    private readonly HttpClientInterface $httpClient;
-    private readonly ResponseProcessor $responseProcessor;
-    private readonly CommandHistoryLogger $commandHistoryLogger;
-    private readonly CentrifugoChecker $centrifugoChecker;
-    private readonly bool $profilerEnabled;
+    private bool $profilerEnabled;
 
     /**
      * @param string               $endpoint
@@ -43,14 +37,8 @@ class Centrifugo implements CentrifugoInterface
      * @param CentrifugoChecker    $centrifugoChecker
      * @param Profiler|null        $profiler
      */
-    public function __construct(string $endpoint, string $apiKey, HttpClientInterface $httpClient, ResponseProcessor $responseProcessor, CommandHistoryLogger $commandHistoryLogger, CentrifugoChecker $centrifugoChecker, ?Profiler $profiler)
+    public function __construct(private readonly string $endpoint, private readonly string $apiKey, private readonly HttpClientInterface $httpClient, private readonly ResponseProcessor $responseProcessor, private readonly CommandHistoryLogger $commandHistoryLogger, private readonly CentrifugoChecker $centrifugoChecker, ?Profiler $profiler)
     {
-        $this->endpoint = $endpoint;
-        $this->apiKey = $apiKey;
-        $this->httpClient = $httpClient;
-        $this->responseProcessor = $responseProcessor;
-        $this->commandHistoryLogger = $commandHistoryLogger;
-        $this->centrifugoChecker = $centrifugoChecker;
         $this->profilerEnabled = $profiler instanceof Profiler;
     }
 

@@ -24,25 +24,16 @@ use JetBrains\PhpStorm\Pure;
  */
 final class JwtPayloadForPrivateChannel extends AbstractJwtPayload
 {
-    private readonly string $client;
-    private readonly string $channel;
-    private readonly ?bool $eto;
-
     /**
      * @param string      $client
      * @param string      $channel
      * @param array       $info
      * @param int|null    $expirationTime
      * @param string|null $base64info
-     * @param bool        $eto
+     * @param bool|null   $eto
      */
-    #[Pure]
-    public function __construct(string $client, string $channel, array $info = [], ?int $expirationTime = null, ?string $base64info = null, bool $eto = null)
+    public function __construct(private readonly string $client, private readonly string $channel, array $info = [], ?int $expirationTime = null, ?string $base64info = null, private readonly ?bool $eto = null)
     {
-        $this->client = $client;
-        $this->channel = $channel;
-        $this->eto = $eto;
-
         parent::__construct($info, $expirationTime, $base64info);
     }
 

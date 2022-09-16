@@ -12,8 +12,6 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Model;
 
-use JetBrains\PhpStorm\Pure;
-
 /**
  * BroadcastCommand.
  *
@@ -21,19 +19,13 @@ use JetBrains\PhpStorm\Pure;
  */
 final class BroadcastCommand extends AbstractCommand
 {
-    /** @var string[] */
-    private array $channels;
-
     /**
      * @param array<string, mixed> $data
      * @param string[]             $channels
      * @param bool|null            $skipHistory
      */
-    #[Pure]
-    public function __construct(array $data, array $channels, ?bool $skipHistory = null)
+    public function __construct(array $data, private readonly array $channels, ?bool $skipHistory = null)
     {
-        $this->channels = $channels;
-
         $params = [
             'channels' => $channels,
             'data' => $data,
