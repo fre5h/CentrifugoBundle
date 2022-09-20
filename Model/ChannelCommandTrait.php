@@ -19,7 +19,7 @@ namespace Fresh\CentrifugoBundle\Model;
  */
 trait ChannelCommandTrait
 {
-    private string $channel;
+    private readonly string $channel;
 
     /**
      * @return string[]

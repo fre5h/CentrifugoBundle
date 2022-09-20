@@ -32,14 +32,8 @@ final class PublishCommand extends AbstractCommand
     use ArgumentChannelTrait;
     use ArgumentDataTrait;
 
-    /**
-     * @param CentrifugoInterface $centrifugo
-     * @param CentrifugoChecker   $centrifugoChecker
-     */
-    public function __construct(CentrifugoInterface $centrifugo, CentrifugoChecker $centrifugoChecker)
+    public function __construct(protected readonly CentrifugoInterface $centrifugo, protected readonly CentrifugoChecker $centrifugoChecker)
     {
-        $this->centrifugoChecker = $centrifugoChecker;
-
         parent::__construct($centrifugo);
     }
 
