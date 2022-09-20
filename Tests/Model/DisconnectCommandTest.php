@@ -25,33 +25,24 @@ use PHPUnit\Framework\TestCase;
  */
 final class DisconnectCommandTest extends TestCase
 {
-    private DisconnectCommand $command;
-
-    protected function setUp(): void
-    {
-        $this->command = new DisconnectCommand('foo');
-    }
-
-    protected function tearDown(): void
-    {
-        unset($this->command);
-    }
-
     public function testInterfaces(): void
     {
-        self::assertInstanceOf(SerializableCommandInterface::class, $this->command);
-        self::assertInstanceOf(CommandInterface::class, $this->command);
+        $command = new DisconnectCommand(user: 'foo');
+        self::assertInstanceOf(SerializableCommandInterface::class, $command);
+        self::assertInstanceOf(CommandInterface::class, $command);
     }
 
-    public function testGetters(): void
+    public function testConstructor(): void
     {
-        self::assertEquals(Method::DISCONNECT, $this->command->getMethod());
-        self::assertEquals(['user' => 'foo'], $this->command->getParams());
-        self::assertEquals([], $this->command->getChannels());
+        $command = new DisconnectCommand(user: 'foo');
+        self::assertEquals(Method::DISCONNECT, $command->getMethod());
+        self::assertEquals(['user' => 'foo'], $command->getParams());
+        self::assertEquals([], $command->getChannels());
     }
 
     public function testSerialization(): void
     {
+        $command = new DisconnectCommand(user: 'foo');
         self::assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
@@ -61,7 +52,7 @@ final class DisconnectCommandTest extends TestCase
                     }
                 }
             JSON,
-            \json_encode($this->command, JSON_THROW_ON_ERROR)
+            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
         );
     }
 }

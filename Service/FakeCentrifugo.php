@@ -22,7 +22,7 @@ class FakeCentrifugo implements CentrifugoInterface
     /**
      * {@inheritdoc}
      */
-    public function publish(array $data, string $channel, bool $skipHistory = false, array $tags = [], string $b64data = ''): void
+    public function publish(array $data, string $channel, bool $skipHistory = false, array $tags = [], string $base64data = ''): void
     {
         // noop
     }
@@ -30,7 +30,7 @@ class FakeCentrifugo implements CentrifugoInterface
     /**
      * {@inheritdoc}
      */
-    public function broadcast(array $data, array $channels, bool $skipHistory = false, array $tags = [], string $b64data = ''): void
+    public function broadcast(array $data, array $channels, bool $skipHistory = false, array $tags = [], string $base64data = ''): void
     {
         // noop
     }
@@ -38,7 +38,7 @@ class FakeCentrifugo implements CentrifugoInterface
     /**
      * {@inheritdoc}
      */
-    public function unsubscribe(string $user, string $channel): void
+    public function unsubscribe(string $user, string $channel, string $client = '', string $session = ''): void
     {
         // noop
     }
@@ -70,7 +70,7 @@ class FakeCentrifugo implements CentrifugoInterface
     /**
      * {@inheritdoc}
      */
-    public function history(string $channel): array
+    public function history(string $channel, bool $reverse = false, ?int $limit = null, ?int $offset = null, ?string $epoch = null): array
     {
         return [];
     }

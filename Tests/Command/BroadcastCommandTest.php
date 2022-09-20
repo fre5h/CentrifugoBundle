@@ -23,6 +23,11 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Tester\CommandTester;
 
+/**
+ * BroadcastCommandTest.
+ *
+ * @author Artem Henvald <genvaldartem@gmail.com>
+ */
 final class BroadcastCommandTest extends TestCase
 {
     /** @var CentrifugoInterface|MockObject */
@@ -59,7 +64,7 @@ final class BroadcastCommandTest extends TestCase
         );
     }
 
-    public function testSuccessfulExecution(): void
+    public function testSuccessfulExecutionWithRequiredParameters(): void
     {
         $this->centrifugo
             ->expects(self::once())
@@ -72,6 +77,30 @@ final class BroadcastCommandTest extends TestCase
                 'command' => $this->command->getName(),
                 'data' => '{"foo":"bar"}',
                 'channels' => ['channelA', 'channelB'],
+            ]
+        );
+        self::assertSame(0, $result);
+
+        $output = $this->commandTester->getDisplay();
+        self::assertStringContainsString('DONE', $output);
+    }
+
+    public function testSuccessfulExecutionWithAllParameters(): void
+    {
+        $this->centrifugo
+            ->expects(self::once())
+            ->method('broadcast')
+            ->with(['foo' => 'bar'], ['channelA', 'channelB'], true, ['env' => 'test'], 'SGVsbG8gd29ybGQ=')
+        ;
+
+        $result = $this->commandTester->execute(
+            [
+                'command' => $this->command->getName(),
+                'data' => '{"foo":"bar"}',
+                'channels' => ['channelA', 'channelB'],
+                '--tags' => '{"env":"test"}',
+                '--skipHistory' => true,
+                '--base64data' => 'SGVsbG8gd29ybGQ=',
             ]
         );
         self::assertSame(0, $result);

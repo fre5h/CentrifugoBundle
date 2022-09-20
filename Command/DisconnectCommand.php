@@ -13,10 +13,13 @@ declare(strict_types=1);
 namespace Fresh\CentrifugoBundle\Command;
 
 use Fresh\CentrifugoBundle\Command\Argument\ArgumentUserTrait;
+use Fresh\CentrifugoBundle\Command\Option\OptionClientTrait;
+use Fresh\CentrifugoBundle\Command\Option\OptionSessionTrait;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -25,10 +28,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-#[AsCommand(name: 'centrifugo:disconnect', description: 'Disconnect user by ID')]
+#[AsCommand(name: 'centrifugo:disconnect', description: 'Disconnect a user by ID')]
 final class DisconnectCommand extends AbstractCommand
 {
     use ArgumentUserTrait;
+    use OptionClientTrait;
+    use OptionSessionTrait;
 
     /**
      * {@inheritdoc}
@@ -38,7 +43,9 @@ final class DisconnectCommand extends AbstractCommand
         $this
             ->setDefinition(
                 new InputDefinition([
-                    new InputArgument('user', InputArgument::REQUIRED, 'User ID'),
+                    new InputArgument('user', InputArgument::REQUIRED, 'User ID to disconnect'),
+                    new InputOption('client', 'c', InputOption::VALUE_OPTIONAL, 'Specific client ID to disconnect (user still required to be set)'),
+                    new InputOption('session', 's', InputOption::VALUE_OPTIONAL, 'Specific client session to disconnect (user still required to be set)'),
                 ])
             )
             ->setHelp(

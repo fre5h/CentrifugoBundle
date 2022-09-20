@@ -12,8 +12,6 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Model;
 
-use JetBrains\PhpStorm\Pure;
-
 /**
  * PublishCommand.
  *
@@ -28,13 +26,10 @@ final class PublishCommand extends AbstractCommand
      * @param string               $channel
      * @param bool                 $skipHistory
      * @param array<string, mixed> $tags
-     * @param string               $b64data
+     * @param string               $base64data
      */
-    #[Pure]
-    public function __construct(array $data, string $channel, bool $skipHistory = false, array $tags = [], string $b64data = '')
+    public function __construct(readonly array $data, protected readonly string $channel, readonly bool $skipHistory = false, readonly array $tags = [], readonly string $base64data = '')
     {
-        $this->channel = $channel;
-
         $params = [
             'channel' => $channel,
             'data' => $data,
@@ -48,8 +43,8 @@ final class PublishCommand extends AbstractCommand
             $params['tags'] = $tags;
         }
 
-        if (!empty($b64data)) {
-            $params['b64data'] = $b64data;
+        if (!empty($base64data)) {
+            $params['base64data'] = $base64data;
         }
 
         parent::__construct(Method::PUBLISH, $params);

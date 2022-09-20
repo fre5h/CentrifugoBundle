@@ -21,6 +21,11 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
+/**
+ * HistoryCommandTest.
+ *
+ * @author Artem Henvald <genvaldartem@gmail.com>
+ */
 final class HistoryCommandTest extends TestCase
 {
     /** @var CentrifugoInterface|MockObject */
@@ -57,7 +62,7 @@ final class HistoryCommandTest extends TestCase
         );
     }
 
-    public function testSuccessfulExecution(): void
+    public function testSuccessfulExecutionWithRequiredParameters(): void
     {
         $this->centrifugo
             ->expects(self::once())
@@ -72,6 +77,8 @@ final class HistoryCommandTest extends TestCase
                             ],
                         ],
                     ],
+                    'offset' => 0,
+                    'epoch' => 'test',
                 ]
             )
         ;
@@ -94,6 +101,55 @@ final class HistoryCommandTest extends TestCase
 JSON,
             $output
         );
+        self::assertStringContainsString('Offset: 0', $output);
+        self::assertStringContainsString('Epoch: test', $output);
+    }
+
+    public function testSuccessfulExecutionWithAllParameters(): void
+    {
+        $this->centrifugo
+            ->expects(self::once())
+            ->method('history')
+            ->with('channelA', true, 10, 5, 'test')
+            ->willReturn(
+                [
+                    'publications' => [
+                        [
+                            'data' => [
+                                'foo' => 'bar',
+                            ],
+                        ],
+                    ],
+                    'offset' => 0,
+                    'epoch' => 'test',
+                ]
+            )
+        ;
+
+        $result = $this->commandTester->execute(
+            [
+                'command' => $this->command->getName(),
+                'channel' => 'channelA',
+                '--limit' => 10,
+                '--offset' => 5,
+                '--epoch' => 'test',
+                '--reverse' => true,
+            ]
+        );
+        self::assertSame(0, $result);
+
+        $output = $this->commandTester->getDisplay();
+        self::assertStringContainsString('Publications', $output);
+        self::assertStringContainsString(
+            <<<'JSON'
+{
+    "foo": "bar"
+}
+JSON,
+            $output
+        );
+        self::assertStringContainsString('Offset: 0', $output);
+        self::assertStringContainsString('Epoch: test', $output);
     }
 
     public function testException(): void

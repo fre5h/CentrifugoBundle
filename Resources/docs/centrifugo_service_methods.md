@@ -14,9 +14,6 @@ use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
 
 class YourService
 {
-    /**
-     * @param CentrifugoInterface $centrifugo
-     */
     public function __construct(private readonly CentrifugoInterface $centrifugo)
     {
     }
@@ -27,21 +24,60 @@ class YourService
 
 ```php
 // With only required parameters
-$this->centrifugo->publish(data: ['foo' => 'bar'], channel: 'channelA');
+$this->centrifugo->publish(
+    data: ['foo' => 'bar'],
+    channel: 'channelA',
+);
+
 // With all optional parameters
-$this->centrifugo->publish(data: ['foo' => 'bar'], channel: 'channelA', skipHistory: true, tags: ['tag' => 'value'], b64data: 'SGVsbG8gd29ybGQ=');
+$this->centrifugo->publish(
+    data: ['foo' => 'bar'],
+    channel: 'channelA',
+    skipHistory: true,
+    tags: ['tag' => 'value'],
+    base64data: 'SGVsbG8gd29ybGQ=',
+);
 ```
 
 ### Publish same data into many channels
 
 ```php
-$this->centrifugo->broadcast(['foo' => 'bar'], ['channelA', 'channelB']);
+// With only required parameters
+$this->centrifugo->broadcast(
+    data: ['foo' => 'bar'],
+    channels: ['channelA', 'channelB']
+);
+```
+
+```php
+// With all optional parameters
+$this->centrifugo->broadcast(
+    data: ['foo' => 'bar'],
+    channels: ['channelA', 'channelB'],
+    skipHistory: true,
+    tags: ['tag' => 'value'],
+    base64data: 'SGVsbG8gd29ybGQ=',
+);
 ```
 
 ### Unsubscribe user from channel
 
 ```php
-$this->centrifugo->unsubscribe('user1', 'channelA');
+// With only required parameters
+$this->centrifugo->unsubscribe(
+    user: 'user1',
+    channel: 'channelA',
+);
+```
+
+```php
+// With all optional parameters
+$this->centrifugo->unsubscribe(
+    user: 'user1',
+    channel: 'channelA',
+    client: 'client',
+    session: 'session',
+);
 ```
 
 ### Disconnect user by ID
@@ -53,7 +89,7 @@ $this->centrifugo->disconnect('user1');
 ### Get channel presence information (all clients currently subscribed on this channel)
 
 ```php
-$data = $this->centrifugo->presence('channelA');
+$data = $this->centrifugo->presence(channel: 'channelA');
 
 /*
  * print_r($data);
@@ -64,8 +100,16 @@ $data = $this->centrifugo->presence('channelA');
  *         (
  *             [c54313b2-0442-499a-a70c-051f8588020f] => Array
  *                 (
- *                     [client] => c54313b2-0442-499a-a70c-051f8588020f
- *                     [user] => 42
+ *                     [user] => 8ea9a26f-e5b3-4d61-b652-7e51e8cf78e3
+ *                     [client] => 5533ab25-6899-4084-809f-090d87eb6e6f
+ *                     [conn_info] => Array
+ *                         (
+ *                             [username] => user1@test.com
+ *                         )
+ *                     [chan_info] => Array
+ *                         (
+ *                             [foo] => bar
+ *                         )
  *                 )
  *             [adad13b1-0442-499a-a70c-051f858802da] => Array
  *                 (
@@ -96,7 +140,8 @@ $data = $this->centrifugo->presenceStats('channelA');
 ### Get channel history information (list of last messages published into channel)
 
 ```php
-$data = $this->centrifugo->history('channelA');
+// With only required parameters
+$data = $this->centrifugo->history(channel: 'channelA');
 
 /*
  * print_r($data);
@@ -120,6 +165,46 @@ $data = $this->centrifugo->history('channelA');
  *                         )
  *                 )
  *         )
+ *     [offset] => 10
+ *     [epoch] => ABCD
+ * )
+ */
+```
+
+```php
+// With all optional parameters
+$data = $this->centrifugo->history(
+    channel: 'channelA',
+    reverse: true,
+    limit: 10,
+    offset: 5,
+    epoch: 'EFGH',
+);
+
+/*
+ * print_r($data);
+ *
+ * Array
+ * (
+ *     [publications] => Array
+ *         (
+ *             [0] => Array
+ *                 (
+ *                     [data] => Array
+ *                         (
+ *                             [text] => hi!
+ *                         )
+ *                 )
+ *             [1] => Array
+ *                 (
+ *                     [data] => Array
+ *                         (
+ *                             [text] => hello
+ *                         )
+ *                 )
+ *         )
+ *     [offset] => 5
+ *     [epoch] => EFGH
  * )
  */
 ```
@@ -133,6 +218,7 @@ $this->centrifugo->historyRemove('channelA');
 ### Get list of active (with one or more subscribers) channels
 
 ```php
+// Without pattern (all channels)
 $data = $this->centrifugo->channels();
 
 /*
@@ -142,8 +228,34 @@ $data = $this->centrifugo->channels();
  * (
  *     [channels] => Array
  *         (
- *             [0] => channelA
- *             [1] => channelB
+ *             [channelA] => Array
+ *                 (
+ *                     [num_clients] => 25
+ *                 )
+ *             [channelB] => Array
+ *                 (
+ *                     [num_clients] => 33
+ *                 )
+ *         )
+ * )
+ */
+```
+
+```php
+// With pattern
+$data = $this->centrifugo->channels(pattern: 'channelA');
+
+/*
+ * print_r($data);
+ *
+ * Array
+ * (
+ *     [channels] => Array
+ *         (
+ *             [channelA] => Array
+ *                 (
+ *                     [num_clients] => 25
+ *                 )
  *         )
  * )
  */
@@ -161,17 +273,18 @@ $data = $this->centrifugo->info();
  * (
  *     [nodes] => Array
  *         (
- *             [name] => Alexanders-MacBook-Pro.local_8000
+ *             [name] => 89673488918c_8000
  *             [num_channels] => 0
  *             [num_clients] => 0
  *             [num_users] => 0
- *             [uid] => f844a2ed-5edf-4815-b83c-271974003db9
- *             [uptime] => 0
- *             [version] => 
+ *             [uid] => 3cb0e756-5818-4cb1-9a4a-6fba4a369de6
+ *             [uptime] => 31214
+ *             [version] => 4.0.1
  *             [metrics] => Array
  *                 (
  *                     ...
  *                 )
+ *             [num_subs:] => 0
  *         )
  * )
  */

@@ -10,28 +10,24 @@
 
 declare(strict_types=1);
 
-namespace Fresh\CentrifugoBundle\Command\Argument;
+namespace Fresh\CentrifugoBundle\Command\Option;
 
 use Symfony\Component\Console\Input\InputInterface;
 
 /**
- * ArgumentPatternTrait.
+ * OptionReverseTrait.
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-trait ArgumentPatternTrait
+trait OptionReverseTrait
 {
-    protected ?string $pattern = null;
+    protected bool $reverse = false;
 
     /**
      * @param InputInterface $input
      */
-    protected function initializePatternArgument(InputInterface $input): void
+    protected function initializeReverseOption(InputInterface $input): void
     {
-        $pattern = $input->getArgument('pattern');
-
-        if (\is_string($pattern) && !empty($pattern)) {
-            $this->pattern = $pattern;
-        }
+        $this->reverse = $input->hasParameterOption(['--reverse', '-r']);
     }
 }

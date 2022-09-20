@@ -63,7 +63,7 @@ class CommandHistoryLogger
     }
 
     /**
-     * @return CommandInterface[]
+     * @return array<array>
      */
     public function getCommandHistory(): array
     {

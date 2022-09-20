@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Fresh\CentrifugoBundle\Command\Argument;
+namespace Fresh\CentrifugoBundle\Command\Option;
 
 use Symfony\Component\Console\Input\InputInterface;
 

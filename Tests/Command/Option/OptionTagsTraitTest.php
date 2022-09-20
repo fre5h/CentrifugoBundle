@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Fresh\CentrifugoBundle\Tests\Command\Argument;
+namespace Fresh\CentrifugoBundle\Tests\Command\Option;
 
 use Fresh\CentrifugoBundle\Command\PublishCommand;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
@@ -19,10 +19,15 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Exception\InvalidArgumentException;
+use Symfony\Component\Console\Exception\InvalidOptionException;
 use Symfony\Component\Console\Tester\CommandTester;
 
-final class ArgumentTagsTraitTest extends TestCase
+/**
+ * OptionTagsTraitTest.
+ *
+ * @author Artem Henvald <genvaldartem@gmail.com>
+ */
+final class OptionTagsTraitTest extends TestCase
 {
     /** @var CentrifugoInterface|MockObject */
     private CentrifugoInterface|MockObject $centrifugo;
@@ -65,15 +70,35 @@ final class ArgumentTagsTraitTest extends TestCase
             ->method('publish')
         ;
 
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Argument "tags" is not a valid JSON.');
+        $this->expectException(InvalidOptionException::class);
+        $this->expectExceptionMessage('Option "--tags, -t" is not a valid JSON.');
 
         $this->commandTester->execute(
             [
                 'command' => $this->command->getName(),
                 'data' => '{"foo":"bar"}',
                 'channel' => 'channelName',
-                'tags' => 'invalid json',
+                '--tags' => 'invalid json',
+            ]
+        );
+    }
+
+    public function testTagsIsNotArray(): void
+    {
+        $this->centrifugo
+            ->expects(self::never())
+            ->method('publish')
+        ;
+
+        $this->expectException(InvalidOptionException::class);
+        $this->expectExceptionMessage('Option "--tags, -t" should be an associative array of strings.');
+
+        $this->commandTester->execute(
+            [
+                'command' => $this->command->getName(),
+                'data' => '{"foo":"bar"}',
+                'channel' => 'channelName',
+                '--tags' => 'true',
             ]
         );
     }
@@ -85,15 +110,15 @@ final class ArgumentTagsTraitTest extends TestCase
             ->method('publish')
         ;
 
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Argument "tags" should be an associative array of strings.');
+        $this->expectException(InvalidOptionException::class);
+        $this->expectExceptionMessage('Option "--tags, -t" should be an associative array of strings.');
 
         $this->commandTester->execute(
             [
                 'command' => $this->command->getName(),
                 'data' => '{"foo":"bar"}',
                 'channel' => 'channelName',
-                'tags' => '{"foo":123}',
+                '-t' => '{"foo":123}',
             ]
         );
     }
@@ -110,7 +135,7 @@ final class ArgumentTagsTraitTest extends TestCase
                 'command' => $this->command->getName(),
                 'data' => '{"foo":"bar"}',
                 'channel' => 'channelName',
-                'tags' => '{"env":"test"}',
+                '-t' => '{"env":"test"}',
             ]
         );
     }

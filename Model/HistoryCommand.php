@@ -12,8 +12,6 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Model;
 
-use JetBrains\PhpStorm\Pure;
-
 /**
  * HistoryCommand.
  *
@@ -24,18 +22,34 @@ final class HistoryCommand extends AbstractCommand implements ResultableCommandI
     use ChannelCommandTrait;
 
     /**
-     * @param string $channel
+     * @param string      $channel
+     * @param bool        $reverse
+     * @param int|null    $limit
+     * @param int|null    $offset
+     * @param string|null $epoch
      */
-    #[Pure]
-    public function __construct(string $channel)
+    public function __construct(protected readonly string $channel, bool $reverse = false, ?int $limit = null, ?int $offset = null, ?string $epoch = null)
     {
-        $this->channel = $channel;
+        $params = [
+            'channel' => $channel,
+        ];
 
-        parent::__construct(
-            Method::HISTORY,
-            [
-                'channel' => $channel,
-            ]
-        );
+        if ($reverse) {
+            $params['reverse'] = $reverse;
+        }
+
+        if (\is_int($limit) && $limit > 0) {
+            $params['limit'] = $limit;
+        }
+
+        if (\is_int($offset) && $offset > 0) {
+            $params['since']['offset'] = $offset;
+        }
+
+        if (\is_string($epoch) && !empty($epoch)) {
+            $params['since']['epoch'] = $epoch;
+        }
+
+        parent::__construct(Method::HISTORY, $params);
     }
 }

@@ -13,6 +13,9 @@ declare(strict_types=1);
 namespace Fresh\CentrifugoBundle\Command;
 
 use Fresh\CentrifugoBundle\Command\Argument\ArgumentDataTrait;
+use Fresh\CentrifugoBundle\Command\Option\OptionBase64DataTrait;
+use Fresh\CentrifugoBundle\Command\Option\OptionSkipHistoryTrait;
+use Fresh\CentrifugoBundle\Command\Option\OptionTagsTrait;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -20,6 +23,7 @@ use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -32,8 +36,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 final class BroadcastCommand extends AbstractCommand
 {
     use ArgumentDataTrait;
-
-    private CentrifugoChecker $centrifugoChecker;
+    use OptionBase64DataTrait;
+    use OptionSkipHistoryTrait;
+    use OptionTagsTrait;
 
     /** @var string[] */
     private array $channels;
@@ -42,10 +47,8 @@ final class BroadcastCommand extends AbstractCommand
      * @param CentrifugoInterface $centrifugo
      * @param CentrifugoChecker   $centrifugoChecker
      */
-    public function __construct(CentrifugoInterface $centrifugo, CentrifugoChecker $centrifugoChecker)
+    public function __construct(CentrifugoInterface $centrifugo, protected readonly CentrifugoChecker $centrifugoChecker)
     {
-        $this->centrifugoChecker = $centrifugoChecker;
-
         parent::__construct($centrifugo);
     }
 
@@ -58,14 +61,38 @@ final class BroadcastCommand extends AbstractCommand
             ->setDefinition(
                 new InputDefinition([
                     new InputArgument('data', InputArgument::REQUIRED, 'Data in JSON format'),
-                    new InputArgument('channels', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'Channel names'),
+                    new InputArgument('channels', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'List of channels to publish data to'),
+                    new InputOption('tags', 't', InputOption::VALUE_OPTIONAL, 'Publication tags - map with arbitrary string keys and values which is attached to publication and will be delivered to clients'),
+                    new InputOption('skipHistory', 's', InputOption::VALUE_NONE, 'Skip adding publication to history for this request'),
+                    new InputOption('base64data', 'b', InputOption::VALUE_OPTIONAL, 'Custom binary data to publish into a channel encoded to base64 so it\'s possible to use HTTP API to send binary to clients. Centrifugo will decode it from base64 before publishing.'),
                 ])
             )
             ->setHelp(
                 <<<'HELP'
-The <info>%command.name%</info> command allows to publish data into many channels:
+The <info>%command.name%</info> command allows to publish same data into many channels:
 
-<info>%command.full_name%</info> <comment>'{"foo":"bar"}'</comment> </comment>channelName</comment> </comment>channelDef</comment>
+<info>%command.full_name%</info> <comment>'{"foo":"bar"}'</comment> </comment>channelName1</comment> </comment>channelName2</comment>
+
+You can skip adding publication to history for this request:
+
+<info>%command.full_name%</info> <comment>'{"foo":"bar"}'</comment> </comment>channelName1</comment> </comment>channelName2</comment> <comment>--skipHistory</comment>
+or
+<info>%command.full_name%</info> <comment>'{"foo":"bar"}'</comment> </comment>channelName1</comment> </comment>channelName2</comment> <comment>-s</comment>
+
+You can add tags which are attached to publication and will be delivered to clients:
+
+<info>%command.full_name%</info> <comment>'{"foo":"bar"}'</comment> </comment>channelName1</comment> </comment>channelName2</comment> <comment>--tags '{"tag1":"value1","tag2":"value2"}'</comment>
+or
+<info>%command.full_name%</info> <comment>'{"foo":"bar"}'</comment> </comment>channelName1</comment> </comment>channelName2</comment> <comment>--t '{"tag1":"value1","tag2":"value2"}'</comment>
+
+You can add custom binary data to publish into a channel encoded to base64, so it's possible to use
+HTTP API to send binary to clients. Centrifugo will decode it from base64 before publishing:
+
+<info>%command.full_name%</info> <comment>'{"foo":"bar"}'</comment> </comment>channelName1</comment> </comment>channelName2</comment> <comment>--base64data SGVsbG8gd29ybGQ=</comment>
+or
+<info>%command.full_name%</info> <comment>'{"foo":"bar"}'</comment> </comment>channelName1</comment> </comment>channelName2</comment> <comment>--b SGVsbG8gd29ybGQ=</comment>
+
+Where <comment>SGVsbG8gd29ybGQ=</comment> is base64 encoded version of <comment>Hello world</comment>
 
 Read more at https://centrifugal.dev/docs/server/server_api#broadcast
 HELP
@@ -81,6 +108,9 @@ HELP
         parent::initialize($input, $output);
 
         $this->initializeDataArgument($input);
+        $this->initializeTagsOption($input);
+        $this->initializeSkipHistoryOption($input);
+        $this->initializeB64DataOption($input);
 
         try {
             /** @var string[] $channels */
@@ -102,7 +132,13 @@ HELP
         $io = new SymfonyStyle($input, $output);
 
         try {
-            $this->centrifugo->broadcast($this->data, $this->channels);
+            $this->centrifugo->broadcast(
+                data: $this->data,
+                channels: $this->channels,
+                skipHistory: $this->skipHistory,
+                tags: $this->tags,
+                base64data: $this->base64data,
+            );
             $io->success('DONE');
         } catch (\Throwable $e) {
             $io->error($e->getMessage());

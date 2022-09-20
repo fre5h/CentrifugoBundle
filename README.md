@@ -80,7 +80,7 @@ class YourService
 
     public function example(): void
     {
-        $this->centrifugo->publish(['foo' => 'bar'], 'channelA');
+        $this->centrifugo->publish(['foo' => 'bar'], 'channelName');
     }
 }
 ```

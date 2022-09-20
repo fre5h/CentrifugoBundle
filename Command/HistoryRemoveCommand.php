@@ -27,7 +27,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-#[AsCommand(name: 'centrifugo:history-remove', description: 'Remove history for channel')]
+#[AsCommand(name: 'centrifugo:history-remove', description: 'Remove publications in channel history')]
 final class HistoryRemoveCommand extends AbstractCommand
 {
     use ArgumentChannelTrait;
@@ -36,10 +36,8 @@ final class HistoryRemoveCommand extends AbstractCommand
      * @param CentrifugoInterface $centrifugo
      * @param CentrifugoChecker   $centrifugoChecker
      */
-    public function __construct(CentrifugoInterface $centrifugo, CentrifugoChecker $centrifugoChecker)
+    public function __construct(CentrifugoInterface $centrifugo, protected readonly CentrifugoChecker $centrifugoChecker)
     {
-        $this->centrifugoChecker = $centrifugoChecker;
-
         parent::__construct($centrifugo);
     }
 
@@ -51,7 +49,7 @@ final class HistoryRemoveCommand extends AbstractCommand
         $this
             ->setDefinition(
                 new InputDefinition([
-                    new InputArgument('channel', InputArgument::REQUIRED, 'Channel name'),
+                    new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to remove history'),
                 ])
             )
             ->setHelp(

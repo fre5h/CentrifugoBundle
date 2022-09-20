@@ -10,28 +10,28 @@
 
 declare(strict_types=1);
 
-namespace Fresh\CentrifugoBundle\Command\Argument;
+namespace Fresh\CentrifugoBundle\Command\Option;
 
 use Symfony\Component\Console\Input\InputInterface;
 
 /**
- * ArgumentPatternTrait.
+ * OptionEpochTrait.
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-trait ArgumentPatternTrait
+trait OptionEpochTrait
 {
-    protected ?string $pattern = null;
+    protected string $epoch = '';
 
     /**
      * @param InputInterface $input
      */
-    protected function initializePatternArgument(InputInterface $input): void
+    protected function initializeEpochOption(InputInterface $input): void
     {
-        $pattern = $input->getArgument('pattern');
+        $epoch = $input->getParameterOption(['--epoch', '-ep'], null);
 
-        if (\is_string($pattern) && !empty($pattern)) {
-            $this->pattern = $pattern;
+        if (\is_string($epoch) && !empty($epoch)) {
+            $this->epoch = $epoch;
         }
     }
 }

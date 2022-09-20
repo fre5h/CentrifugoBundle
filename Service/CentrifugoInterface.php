@@ -26,24 +26,26 @@ interface CentrifugoInterface
      * @param string               $channel
      * @param bool                 $skipHistory
      * @param array<string, mixed> $tags
-     * @param string               $b64data
+     * @param string               $base64data
      */
-    public function publish(array $data, string $channel, bool $skipHistory = false, array $tags = [], string $b64data = ''): void;
+    public function publish(array $data, string $channel, bool $skipHistory = false, array $tags = [], string $base64data = ''): void;
 
     /**
      * @param array<string, mixed> $data
      * @param string[]             $channels
      * @param bool                 $skipHistory
      * @param array<string, mixed> $tags
-     * @param string               $b64data
+     * @param string               $base64data
      */
-    public function broadcast(array $data, array $channels, bool $skipHistory = false, array $tags = [], string $b64data = ''): void;
+    public function broadcast(array $data, array $channels, bool $skipHistory = false, array $tags = [], string $base64data = ''): void;
 
     /**
      * @param string $user
      * @param string $channel
+     * @param string $client
+     * @param string $session
      */
-    public function unsubscribe(string $user, string $channel): void;
+    public function unsubscribe(string $user, string $channel, string $client = '', string $session = ''): void;
 
     /**
      * @param string $user
@@ -65,11 +67,15 @@ interface CentrifugoInterface
     public function presenceStats(string $channel): array;
 
     /**
-     * @param string $channel
+     * @param string      $channel
+     * @param bool        $reverse
+     * @param int|null    $limit
+     * @param int|null    $offset
+     * @param string|null $epoch
      *
      * @return array
      */
-    public function history(string $channel): array;
+    public function history(string $channel, bool $reverse = false, ?int $limit = null, ?int $offset = null, ?string $epoch = null): array;
 
     /**
      * @param string $channel

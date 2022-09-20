@@ -10,28 +10,28 @@
 
 declare(strict_types=1);
 
-namespace Fresh\CentrifugoBundle\Command\Argument;
+namespace Fresh\CentrifugoBundle\Command\Option;
 
 use Symfony\Component\Console\Input\InputInterface;
 
 /**
- * ArgumentPatternTrait.
+ * OptionClientTrait.
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-trait ArgumentPatternTrait
+trait OptionClientTrait
 {
-    protected ?string $pattern = null;
+    protected string $client = '';
 
     /**
      * @param InputInterface $input
      */
-    protected function initializePatternArgument(InputInterface $input): void
+    protected function initializeClientOption(InputInterface $input): void
     {
-        $pattern = $input->getArgument('pattern');
+        $client = $input->getParameterOption(['--client', '-c'], null);
 
-        if (\is_string($pattern) && !empty($pattern)) {
-            $this->pattern = $pattern;
+        if (\is_string($client) && !empty($client)) {
+            $this->client = $client;
         }
     }
 }

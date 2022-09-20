@@ -21,6 +21,11 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Tester\CommandTester;
 
+/**
+ * ArgumentUserTraitTest.
+ *
+ * @author Artem Henvald <genvaldartem@gmail.com>
+ */
 final class ArgumentUserTraitTest extends TestCase
 {
     /** @var CentrifugoInterface|MockObject */

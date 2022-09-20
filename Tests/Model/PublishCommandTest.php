@@ -27,14 +27,20 @@ final class PublishCommandTest extends TestCase
 {
     public function testInterfaces(): void
     {
-        $command = new PublishCommand(['bar' => 'baz'], 'foo');
+        $command = new PublishCommand(
+            data: ['bar' => 'baz'],
+            channel: 'foo',
+        );
         self::assertInstanceOf(SerializableCommandInterface::class, $command);
         self::assertInstanceOf(CommandInterface::class, $command);
     }
 
     public function testConstructor(): void
     {
-        $command = new PublishCommand(['bar' => 'baz'], 'foo');
+        $command = new PublishCommand(
+            data: ['bar' => 'baz'],
+            channel: 'foo',
+        );
         self::assertEquals(Method::PUBLISH, $command->getMethod());
         self::assertEquals(['channel' => 'foo', 'data' => ['bar' => 'baz']], $command->getParams());
         self::assertEquals(['foo'], $command->getChannels());
@@ -42,7 +48,10 @@ final class PublishCommandTest extends TestCase
 
     public function testSerializationRequiredData(): void
     {
-        $command = new PublishCommand(['bar' => 'baz'], 'foo');
+        $command = new PublishCommand(
+            data: ['bar' => 'baz'],
+            channel: 'foo',
+        );
         self::assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
@@ -55,13 +64,19 @@ final class PublishCommandTest extends TestCase
                     }
                 }
             JSON,
-            \json_encode($command, JSON_THROW_ON_ERROR)
+            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
         );
     }
 
     public function testSerializationAllData(): void
     {
-        $command = new PublishCommand(['bar' => 'baz'], 'foo', true, ['tag' => 'value'], 'qwerty');
+        $command = new PublishCommand(
+            data: ['bar' => 'baz'],
+            channel: 'foo',
+            skipHistory: true,
+            tags: ['tag' => 'value'],
+            base64data: 'qwerty',
+        );
         self::assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
@@ -75,11 +90,11 @@ final class PublishCommandTest extends TestCase
                         "tags": {
                             "tag": "value"
                         },
-                        "b64data": "qwerty"
+                        "base64data": "qwerty"
                     }
                 }
             JSON,
-            \json_encode($command, JSON_THROW_ON_ERROR)
+            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
         );
     }
 }

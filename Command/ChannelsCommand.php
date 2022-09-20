@@ -13,9 +13,9 @@ declare(strict_types=1);
 namespace Fresh\CentrifugoBundle\Command;
 
 use Fresh\CentrifugoBundle\Command\Argument\ArgumentPatternTrait;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
-use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -38,18 +38,18 @@ final class ChannelsCommand extends AbstractCommand
         $this
             ->setDefinition(
                 new InputDefinition([
-                    new InputArgument('pattern', InputArgument::OPTIONAL, 'Pattern'),
+                    new InputArgument('pattern', InputArgument::OPTIONAL, 'Pattern to filter channels'),
                 ])
             )
             ->setHelp(
                 <<<'HELP'
 The <info>%command.name%</info> command returns active channels (with one or more active subscribers in it):
 
-    <info>bin/console %command.name%</info>
+<info>bin/console %command.name%</info>
 
 You can optionally specify the <comment>pattern</comment> to filter channels by names:
 
-    <info>bin/console %command.name% abc</info>
+<info>bin/console %command.name% <comment>channelName</comment></info>
 
 Read more at https://centrifugal.dev/docs/server/server_api#channels
 HELP
@@ -75,12 +75,16 @@ HELP
         $io = new SymfonyStyle($input, $output);
 
         try {
-            $data = $this->centrifugo->channels($this->pattern);
+            $data = $this->centrifugo->channels(pattern: $this->pattern);
 
             if (!empty($data['channels'])) {
-                $io->title('Channels');
-                $io->listing($data['channels']);
-                $io->text(\sprintf('<info>TOTAL</info>: %d', \count($data['channels'])));
+                $rows = [];
+                foreach ($data['channels'] as $channelName => $item) {
+                    $rows[] = [$channelName, $item['num_clients']];
+                }
+                $io->table(['Channel Name', 'Number Of Subscriptions'], $rows);
+
+                $io->text(\sprintf('<info>Total Channels</info>: %d', \count($data['channels'])));
             } else {
                 $io->success('NO DATA');
             }

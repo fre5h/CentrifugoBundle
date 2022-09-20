@@ -12,8 +12,6 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Model;
 
-use JetBrains\PhpStorm\Pure;
-
 /**
  * InfoCommand.
  *
@@ -24,7 +22,6 @@ final class InfoCommand extends AbstractCommand implements ResultableCommandInte
     /**
      * Constructor.
      */
-    #[Pure]
     public function __construct()
     {
         parent::__construct(Method::INFO, []);

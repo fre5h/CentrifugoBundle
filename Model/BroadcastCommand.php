@@ -22,17 +22,27 @@ final class BroadcastCommand extends AbstractCommand
     /**
      * @param array<string, mixed> $data
      * @param string[]             $channels
-     * @param bool|null            $skipHistory
+     * @param bool                 $skipHistory
+     * @param array<string, mixed> $tags
+     * @param string               $base64data
      */
-    public function __construct(array $data, private readonly array $channels, ?bool $skipHistory = null)
+    public function __construct(readonly array $data, private readonly array $channels, readonly bool $skipHistory = false, readonly array $tags = [], readonly string $base64data = '')
     {
         $params = [
             'channels' => $channels,
             'data' => $data,
         ];
 
-        if (null !== $skipHistory) {
+        if ($skipHistory) {
             $params['skip_history'] = $skipHistory;
+        }
+
+        if (!empty($tags)) {
+            $params['tags'] = $tags;
+        }
+
+        if (!empty($base64data)) {
+            $params['base64data'] = $base64data;
         }
 
         parent::__construct(Method::BROADCAST, $params);

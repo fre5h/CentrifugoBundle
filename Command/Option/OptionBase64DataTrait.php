@@ -10,19 +10,19 @@
 
 declare(strict_types=1);
 
-namespace Fresh\CentrifugoBundle\Command\Argument;
+namespace Fresh\CentrifugoBundle\Command\Option;
 
 use Symfony\Component\Console\Exception\InvalidOptionException;
 use Symfony\Component\Console\Input\InputInterface;
 
 /**
- * OptionB64DataTrait.
+ * OptionBase64DataTrait.
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-trait OptionB64DataTrait
+trait OptionBase64DataTrait
 {
-    protected string $b64data = '';
+    protected string $base64data = ''; // @codingStandardsIgnoreLine
 
     /**
      * @param InputInterface $input
@@ -31,13 +31,15 @@ trait OptionB64DataTrait
      */
     protected function initializeB64DataOption(InputInterface $input): void
     {
-        $this->b64data = $input->getParameterOption(['--b64data', '-b'], '');
+        $base64data = $input->getParameterOption(['--base64data', '-b'], null);
 
-        if (!empty($this->b64data)) {
-            $decodedData = \base64_decode($this->b64data, true);
+        if (\is_string($base64data) && !empty($base64data)) {
+            $decodedData = \base64_decode($base64data, true);
             if (false === $decodedData) {
-                throw new InvalidOptionException('Option "--b64data, -b" should be a valid base64 encoded string.');
+                throw new InvalidOptionException('Option "--base64data, -b" should be a valid base64 encoded string.');
             }
+
+            $this->base64data = $base64data;
         }
     }
 }

@@ -20,6 +20,11 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
+/**
+ * InfoCommandTest.
+ *
+ * @author Artem Henvald <genvaldartem@gmail.com>
+ */
 final class InfoCommandTest extends TestCase
 {
     /** @var CentrifugoInterface|MockObject */

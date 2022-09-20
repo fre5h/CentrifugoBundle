@@ -12,8 +12,6 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Model;
 
-use JetBrains\PhpStorm\Pure;
-
 /**
  * PresenceStatsCommand.
  *
@@ -26,11 +24,8 @@ final class PresenceStatsCommand extends AbstractCommand implements ResultableCo
     /**
      * @param string $channel
      */
-    #[Pure]
-    public function __construct(string $channel)
+    public function __construct(protected readonly string $channel)
     {
-        $this->channel = $channel;
-
         parent::__construct(
             Method::PRESENCE_STATS,
             [

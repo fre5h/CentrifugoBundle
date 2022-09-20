@@ -14,9 +14,9 @@ namespace Fresh\CentrifugoBundle\Command;
 
 use Fresh\CentrifugoBundle\Command\Argument\ArgumentChannelTrait;
 use Fresh\CentrifugoBundle\Command\Argument\ArgumentDataTrait;
-use Fresh\CentrifugoBundle\Command\Argument\ArgumentTagsTrait;
-use Fresh\CentrifugoBundle\Command\Argument\OptionB64DataTrait;
-use Fresh\CentrifugoBundle\Command\Argument\OptionSkipHistoryTrait;
+use Fresh\CentrifugoBundle\Command\Option\OptionBase64DataTrait;
+use Fresh\CentrifugoBundle\Command\Option\OptionSkipHistoryTrait;
+use Fresh\CentrifugoBundle\Command\Option\OptionTagsTrait;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -32,15 +32,19 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-#[AsCommand(name: 'centrifugo:publish', description: 'Publishes data into a channel')]
+#[AsCommand(name: 'centrifugo:publish', description: 'Publish data into a channel')]
 final class PublishCommand extends AbstractCommand
 {
     use ArgumentChannelTrait;
     use ArgumentDataTrait;
-    use ArgumentTagsTrait;
-    use OptionB64DataTrait;
+    use OptionBase64DataTrait;
     use OptionSkipHistoryTrait;
+    use OptionTagsTrait;
 
+    /**
+     * @param CentrifugoInterface $centrifugo
+     * @param CentrifugoChecker   $centrifugoChecker
+     */
     public function __construct(CentrifugoInterface $centrifugo, protected readonly CentrifugoChecker $centrifugoChecker)
     {
         parent::__construct($centrifugo);
@@ -54,11 +58,11 @@ final class PublishCommand extends AbstractCommand
         $this
             ->setDefinition(
                 new InputDefinition([
-                    new InputArgument('data', InputArgument::REQUIRED, 'Custom JSON data to publish into a channel'),
+                    new InputArgument('data', InputArgument::REQUIRED, 'Custom JSON data to publish into each channel'),
                     new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to publish'),
-                    new InputArgument('tags', InputArgument::OPTIONAL, 'Publication tags - map with arbitrary string keys and values which is attached to publication and will be delivered to clients'),
-                    new InputOption('skipHistory', 's', InputOption::VALUE_NONE, 'Skip adding publication to history for this request'),
-                    new InputOption('b64data', 'b', InputOption::VALUE_OPTIONAL, 'Custom binary data to publish into a channel encoded to base64 so it\'s possible to use HTTP API to send binary to clients. Centrifugo will decode it from base64 before publishing.'),
+                    new InputOption('tags', 't', InputOption::VALUE_OPTIONAL, 'Publication tags - map with arbitrary string keys and values which is attached to publication and will be delivered to clients'),
+                    new InputOption('skipHistory', 's', InputOption::VALUE_NONE, 'Skip adding publications to channels\' history for this request'),
+                    new InputOption('base64data', 'b', InputOption::VALUE_OPTIONAL, 'Custom binary data to publish into a channel encoded to base64 so it\'s possible to use HTTP API to send binary to clients. Centrifugo will decode it from base64 before publishing.'),
                 ])
             )
             ->setHelp(
@@ -75,12 +79,14 @@ or
 
 You can add tags which are attached to publication and will be delivered to clients:
 
-<info>%command.full_name%</info> <comment>'{"foo":"bar"}'</comment> <comment>channelName</comment> <comment>'{"tag1":"value1","tag2":"value2"}'</comment>
+<info>%command.full_name%</info> <comment>'{"foo":"bar"}'</comment> <comment>channelName</comment> <comment>--tags '{"tag1":"value1","tag2":"value2"}'</comment>
+or
+<info>%command.full_name%</info> <comment>'{"foo":"bar"}'</comment> <comment>channelName</comment> <comment>--t '{"tag1":"value1","tag2":"value2"}'</comment>
 
-You can add custom binary data to publish into a channel encoded to base64, so it's possible to use HTTP API to send binary to clients.
-Centrifugo will decode it from base64 before publishing:
+You can add custom binary data to publish into a channel encoded to base64, so it's possible to use
+HTTP API to send binary to clients. Centrifugo will decode it from base64 before publishing:
 
-<info>%command.full_name%</info> <comment>'{"foo":"bar"}'</comment> <comment>channelName</comment> <comment>--b64data SGVsbG8gd29ybGQ=</comment>
+<info>%command.full_name%</info> <comment>'{"foo":"bar"}'</comment> <comment>channelName</comment> <comment>--base64data SGVsbG8gd29ybGQ=</comment>
 or
 <info>%command.full_name%</info> <comment>'{"foo":"bar"}'</comment> <comment>channelName</comment> <comment>--b SGVsbG8gd29ybGQ=</comment>
 
@@ -101,7 +107,7 @@ HELP
 
         $this->initializeDataArgument($input);
         $this->initializeChannelArgument($input);
-        $this->initializeTagsArgument($input);
+        $this->initializeTagsOption($input);
         $this->initializeSkipHistoryOption($input);
         $this->initializeB64DataOption($input);
     }
@@ -119,7 +125,7 @@ HELP
                 channel: $this->channel,
                 skipHistory: $this->skipHistory,
                 tags: $this->tags,
-                b64data: $this->b64data,
+                base64data: $this->base64data,
             );
             $io->success('DONE');
         } catch (\Throwable $e) {

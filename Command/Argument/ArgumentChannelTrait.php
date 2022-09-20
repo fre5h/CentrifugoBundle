@@ -35,6 +35,10 @@ trait ArgumentChannelTrait
     {
         $channel = $input->getArgument('channel');
 
+        if (null === $channel) {
+            throw new InvalidArgumentException('Argument "channel" is required.');
+        }
+
         if (!\is_string($channel)) {
             throw new InvalidArgumentException('Argument "channel" is not a string.');
         }

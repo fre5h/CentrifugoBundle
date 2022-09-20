@@ -23,6 +23,11 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Tester\CommandTester;
 
+/**
+ * ArgumentChannelTraitTest.
+ *
+ * @author Artem Henvald <genvaldartem@gmail.com>
+ */
 final class ArgumentChannelTraitTest extends TestCase
 {
     /** @var CentrifugoInterface|MockObject */
@@ -103,6 +108,29 @@ final class ArgumentChannelTraitTest extends TestCase
             [
                 'command' => $this->command->getName(),
                 'channel' => ['channelA'],
+            ]
+        );
+    }
+
+    public function testChannelNameIsMissed(): void
+    {
+        $this->centrifugoChecker
+            ->expects(self::never())
+            ->method('assertValidChannelName')
+        ;
+
+        $this->centrifugo
+            ->expects(self::never())
+            ->method('presence')
+        ;
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Argument "channel" is required.');
+
+        $this->commandTester->execute(
+            [
+                'command' => $this->command->getName(),
+                'channel' => null,
             ]
         );
     }

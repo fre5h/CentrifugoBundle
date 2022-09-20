@@ -12,8 +12,6 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Model;
 
-use JetBrains\PhpStorm\Pure;
-
 /**
  * ChannelsCommand.
  *
@@ -24,7 +22,6 @@ final class ChannelsCommand extends AbstractCommand implements ResultableCommand
     /**
      * @param string|null $pattern
      */
-    #[Pure]
     public function __construct(?string $pattern = null)
     {
         $params = [];

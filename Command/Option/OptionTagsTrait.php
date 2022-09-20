@@ -10,17 +10,17 @@
 
 declare(strict_types=1);
 
-namespace Fresh\CentrifugoBundle\Command\Argument;
+namespace Fresh\CentrifugoBundle\Command\Option;
 
-use Symfony\Component\Console\Exception\InvalidArgumentException;
+use Symfony\Component\Console\Exception\InvalidOptionException;
 use Symfony\Component\Console\Input\InputInterface;
 
 /**
- * ArgumentTagsTrait.
+ * OptionTagsTrait.
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-trait ArgumentTagsTrait
+trait OptionTagsTrait
 {
     /** @var array<string, mixed> */
     protected array $tags = [];
@@ -28,11 +28,11 @@ trait ArgumentTagsTrait
     /**
      * @param InputInterface $input
      *
-     * @throws InvalidArgumentException
+     * @throws InvalidOptionException
      */
-    protected function initializeTagsArgument(InputInterface $input): void
+    protected function initializeTagsOption(InputInterface $input): void
     {
-        $tags = $input->getArgument('tags');
+        $tags = $input->getParameterOption(['--tags', '-t'], null);
 
         if (\is_string($tags) && !empty($tags)) {
             try {
@@ -40,18 +40,18 @@ trait ArgumentTagsTrait
                 $decodedData = \json_decode($tags, true, 512, \JSON_THROW_ON_ERROR);
 
                 if (!\is_array($decodedData)) {
-                    throw new InvalidArgumentException('Argument "tags" should be an associative array of strings.');
+                    throw new InvalidOptionException('Option "--tags, -t" should be an associative array of strings.');
                 }
 
                 foreach ($decodedData as $tag => $value) {
                     if (!\is_string($tag) || !\is_string($value)) {
-                        throw new InvalidArgumentException('Argument "tags" should be an associative array of strings.');
+                        throw new InvalidOptionException('Option "--tags, -t" should be an associative array of strings.');
                     }
                 }
 
                 $this->tags = $decodedData;
             } catch (\JsonException) {
-                throw new InvalidArgumentException('Argument "tags" is not a valid JSON.');
+                throw new InvalidOptionException('Option "--tags, -t" is not a valid JSON.');
             }
         }
     }

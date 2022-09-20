@@ -45,15 +45,15 @@ class Centrifugo implements CentrifugoInterface
     /**
      * {@inheritdoc}
      */
-    public function publish(array $data, string $channel, bool $skipHistory = false, array $tags = [], string $b64data = ''): void
+    public function publish(array $data, string $channel, bool $skipHistory = false, array $tags = [], string $base64data = ''): void
     {
-        $this->doSendCommand(new Model\PublishCommand($data, $channel, $skipHistory, $tags, $b64data));
+        $this->doSendCommand(new Model\PublishCommand($data, $channel, $skipHistory, $tags, $base64data));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function broadcast(array $data, array $channels, bool $skipHistory = false, array $tags = [], string $b64data = ''): void
+    public function broadcast(array $data, array $channels, bool $skipHistory = false, array $tags = [], string $base64data = ''): void
     {
         $this->doSendCommand(new Model\BroadcastCommand($data, $channels));
     }
@@ -61,9 +61,9 @@ class Centrifugo implements CentrifugoInterface
     /**
      * {@inheritdoc}
      */
-    public function unsubscribe(string $user, string $channel): void
+    public function unsubscribe(string $user, string $channel, string $client = '', string $session = ''): void
     {
-        $this->doSendCommand(new Model\UnsubscribeCommand($user, $channel));
+        $this->doSendCommand(new Model\UnsubscribeCommand($user, $channel, $client, $session));
     }
 
     /**
@@ -93,9 +93,9 @@ class Centrifugo implements CentrifugoInterface
     /**
      * {@inheritdoc}
      */
-    public function history(string $channel): array
+    public function history(string $channel, bool $reverse = false, ?int $limit = null, ?int $offset = null, ?string $epoch = null): array
     {
-        return (array) $this->doSendCommand(new Model\HistoryCommand($channel));
+        return (array) $this->doSendCommand(new Model\HistoryCommand($channel, $reverse, $limit, $offset, $epoch));
     }
 
     /**
@@ -144,7 +144,7 @@ class Centrifugo implements CentrifugoInterface
         if ($command instanceof Model\BatchRequest) {
             $json = $command->prepareLineDelimitedJson();
         } else {
-            $json = \json_encode($command, \JSON_THROW_ON_ERROR);
+            $json = \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT);
         }
 
         if ($this->profilerEnabled) {

@@ -21,6 +21,11 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
+/**
+ * PresenceCommandTest.
+ *
+ * @author Artem Henvald <genvaldartem@gmail.com>
+ */
 final class PresenceCommandTest extends TestCase
 {
     /** @var CentrifugoInterface|MockObject */
@@ -72,6 +77,9 @@ final class PresenceCommandTest extends TestCase
                             'conn_info' => [
                                 'username' => 'user1@test.com',
                             ],
+                            'chan_info' => [
+                                'foo' => 'bar',
+                            ],
                         ],
                     ],
                 ]
@@ -91,6 +99,7 @@ final class PresenceCommandTest extends TestCase
         self::assertStringContainsString('client: c54313b2-0442-499a-a70c-051f8588020f', $output);
         self::assertStringContainsString('user: 42', $output);
         self::assertStringContainsString('conn_info', $output);
+        self::assertStringContainsString('chan_info', $output);
         self::assertStringContainsString('"username": "user1@test.com"', $output);
     }
 

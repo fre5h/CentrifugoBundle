@@ -30,9 +30,9 @@ final class BatchRequestTest extends TestCase
 
     protected function setUp(): void
     {
-        $publishCommand = new PublishCommand(['foo' => 'bar'], 'channelA');
-        $broadcastCommand = new BroadcastCommand(['baz' => 'qux'], ['channelB', 'channelC']);
-        $this->command = new BatchRequest([$publishCommand, $broadcastCommand]);
+        $publishCommand = new PublishCommand(data: ['foo' => 'bar'], channel: 'channelA');
+        $broadcastCommand = new BroadcastCommand(data: ['baz' => 'qux'], channels: ['channelB', 'channelC']);
+        $this->command = new BatchRequest(commands: [$publishCommand, $broadcastCommand]);
     }
 
     protected function tearDown(): void

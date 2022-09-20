@@ -27,7 +27,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-#[AsCommand(name: 'centrifugo:presence-stats', description: 'Get short channel presence information')]
+#[AsCommand(name: 'centrifugo:presence-stats', description: 'Get short channel presence information - number of clients and number of unique users (based on user ID)')]
 final class PresenceStatsCommand extends AbstractCommand
 {
     use ArgumentChannelTrait;
@@ -36,10 +36,8 @@ final class PresenceStatsCommand extends AbstractCommand
      * @param CentrifugoInterface $centrifugo
      * @param CentrifugoChecker   $centrifugoChecker
      */
-    public function __construct(CentrifugoInterface $centrifugo, CentrifugoChecker $centrifugoChecker)
+    public function __construct(CentrifugoInterface $centrifugo, protected readonly CentrifugoChecker $centrifugoChecker)
     {
-        $this->centrifugoChecker = $centrifugoChecker;
-
         parent::__construct($centrifugo);
     }
 
@@ -51,12 +49,12 @@ final class PresenceStatsCommand extends AbstractCommand
         $this
             ->setDefinition(
                 new InputDefinition([
-                    new InputArgument('channel', InputArgument::REQUIRED, 'Channel name'),
+                    new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to call presence from'),
                 ])
             )
             ->setHelp(
                 <<<'HELP'
-The <info>%command.name%</info> command allows to get short channel presence information:
+The <info>%command.name%</info> command allows to get short channel presence information - number of clients and number of unique users (based on user ID):
 
 <info>%command.full_name%</info> <comment>channelName</comment>
 
@@ -87,8 +85,8 @@ HELP
             $data = $this->centrifugo->presenceStats($this->channel);
 
             $io->title('Presence Stats');
-            $io->text(\sprintf('<info>num_clients</info>: <comment>%d</comment>', $data['num_clients']));
-            $io->text(\sprintf('<info>num_users</info>: <comment>%d</comment>', $data['num_users']));
+            $io->text(\sprintf('<info>Total number of clients in channel</info>: <comment>%d</comment>', $data['num_clients']));
+            $io->text(\sprintf('<info>Total number of unique users in channel</info>: <comment>%d</comment>', $data['num_users']));
             $io->newLine();
         } catch (\Throwable $e) {
             $io->error($e->getMessage());

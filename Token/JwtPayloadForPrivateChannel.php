@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Fresh\CentrifugoBundle\Token;
 
 use JetBrains\PhpStorm\ArrayShape;
-use JetBrains\PhpStorm\Pure;
 
 /**
  * JwtPayloadForPrivateChannel.
@@ -64,7 +63,6 @@ final class JwtPayloadForPrivateChannel extends AbstractJwtPayload
     /**
      * {@inheritdoc}
      */
-    #[Pure]
     #[ArrayShape([
         'client' => 'string',
         'channel' => 'string',

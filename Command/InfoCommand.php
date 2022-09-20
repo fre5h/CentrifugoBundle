@@ -23,7 +23,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-#[AsCommand(name: 'centrifugo:info', description: 'Get information about running Centrifugo nodes')]
+#[AsCommand(name: 'centrifugo:info', description: 'Gets information about running Centrifugo nodes')]
 final class InfoCommand extends AbstractCommand
 {
     /**
@@ -34,7 +34,7 @@ final class InfoCommand extends AbstractCommand
         $this
             ->setHelp(
                 <<<'HELP'
-The <info>%command.name%</info> command allows to get information about running Centrifugo nodes:
+The <info>%command.name%</info> command allows getting information about running Centrifugo nodes:
 
 Read more at https://centrifugal.dev/docs/server/server_api#info
 HELP

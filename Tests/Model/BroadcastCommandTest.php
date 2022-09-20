@@ -25,33 +25,58 @@ use PHPUnit\Framework\TestCase;
  */
 final class BroadcastCommandTest extends TestCase
 {
-    private BroadcastCommand $command;
-
-    protected function setUp(): void
-    {
-        $this->command = new BroadcastCommand(['baz' => 'qux'], ['foo', 'bar'], true);
-    }
-
-    protected function tearDown(): void
-    {
-        unset($this->command);
-    }
-
     public function testInterfaces(): void
     {
-        self::assertInstanceOf(SerializableCommandInterface::class, $this->command);
-        self::assertInstanceOf(CommandInterface::class, $this->command);
+        $command = new BroadcastCommand(
+            data: ['baz' => 'qux'],
+            channels: ['foo', 'bar'],
+        );
+        self::assertInstanceOf(SerializableCommandInterface::class, $command);
+        self::assertInstanceOf(CommandInterface::class, $command);
     }
 
-    public function testGetters(): void
+    public function testConstructor(): void
     {
-        self::assertEquals(Method::BROADCAST, $this->command->getMethod());
-        self::assertEquals(['channels' => ['foo', 'bar'], 'data' => ['baz' => 'qux'], 'skip_history' => true], $this->command->getParams());
-        self::assertEquals(['foo', 'bar'], $this->command->getChannels());
+        $command = new BroadcastCommand(
+            data: ['baz' => 'qux'],
+            channels: ['foo', 'bar'],
+        );
+        self::assertEquals(Method::BROADCAST, $command->getMethod());
+        self::assertEquals(['channels' => ['foo', 'bar'], 'data' => ['baz' => 'qux']], $command->getParams());
+        self::assertEquals(['foo', 'bar'], $command->getChannels());
     }
 
-    public function testSerialization(): void
+    public function testSerializationRequiredData(): void
     {
+        $command = new BroadcastCommand(
+            data: ['baz' => 'qux'],
+            channels: ['foo', 'bar'],
+        );
+        self::assertJsonStringEqualsJsonString(
+            <<<'JSON'
+                {
+                    "method": "broadcast",
+                    "params": {
+                        "channels": ["foo", "bar"],
+                        "data": {
+                            "baz": "qux"
+                        }
+                    }
+                }
+            JSON,
+            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
+        );
+    }
+
+    public function testSerializationAllData(): void
+    {
+        $command = new BroadcastCommand(
+            data: ['baz' => 'qux'],
+            channels: ['foo', 'bar'],
+            skipHistory: true,
+            tags: ['tag' => 'value'],
+            base64data: 'qwerty',
+        );
         self::assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
@@ -61,11 +86,15 @@ final class BroadcastCommandTest extends TestCase
                         "data": {
                             "baz": "qux"
                         },
-                        "skip_history": true
+                        "skip_history": true,
+                        "tags": {
+                            "tag": "value"
+                        },
+                        "base64data": "qwerty"
                     }
                 }
             JSON,
-            \json_encode($this->command, JSON_THROW_ON_ERROR)
+            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
         );
     }
 }

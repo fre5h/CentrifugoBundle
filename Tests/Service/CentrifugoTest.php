@@ -108,7 +108,13 @@ final class CentrifugoTest extends TestCase
             ->willReturn(null)
         ;
 
-        $this->centrifugo->publish(['foo' => 'bar'], 'channelA');
+        $this->centrifugo->publish(
+            data: ['foo' => 'bar'],
+            channel: 'channelA',
+            skipHistory: true,
+            tags: ['tag' => 'value'],
+            base64data: 'SGVsbG8gd29ybGQ=',
+        );
     }
 
     public function testBroadcastCommand(): void
@@ -137,7 +143,13 @@ final class CentrifugoTest extends TestCase
             ->willReturn(null)
         ;
 
-        $this->centrifugo->broadcast(['foo' => 'bar'], ['channelA', 'channelB']);
+        $this->centrifugo->broadcast(
+            data: ['foo' => 'bar'],
+            channels: ['channelA', 'channelB'],
+            skipHistory: true,
+            tags: ['tag' => 'value'],
+            base64data: 'SGVsbG8gd29ybGQ=',
+        );
     }
 
     public function testUnsubscribeCommand(): void
@@ -166,7 +178,12 @@ final class CentrifugoTest extends TestCase
             ->willReturn(null)
         ;
 
-        $this->centrifugo->unsubscribe('user123', 'channelA');
+        $this->centrifugo->unsubscribe(
+            user: 'user123',
+            channel: 'channelA',
+            client: 'client',
+            session: 'session',
+        );
     }
 
     public function testDisconnectCommand(): void
@@ -223,7 +240,7 @@ final class CentrifugoTest extends TestCase
             ->willReturn([])
         ;
 
-        $this->centrifugo->presence('channelA');
+        $this->centrifugo->presence(channel: 'channelA');
     }
 
     public function testPresenceStatsCommand(): void
@@ -252,7 +269,7 @@ final class CentrifugoTest extends TestCase
             ->willReturn([])
         ;
 
-        $this->centrifugo->presenceStats('channelA');
+        $this->centrifugo->presenceStats(channel: 'channelA');
     }
 
     public function testHistoryCommand(): void
@@ -281,7 +298,13 @@ final class CentrifugoTest extends TestCase
             ->willReturn([])
         ;
 
-        $this->centrifugo->history('channelA');
+        $this->centrifugo->history(
+            channel: 'channelA',
+            reverse: true,
+            limit: 10,
+            offset: 5,
+            epoch: 'test',
+        );
     }
 
     public function testHistoryRemoveCommand(): void
@@ -310,7 +333,7 @@ final class CentrifugoTest extends TestCase
             ->willReturn(null)
         ;
 
-        $this->centrifugo->historyRemove('channelA');
+        $this->centrifugo->historyRemove(channel: 'channelA');
     }
 
     public function testChannelsCommand(): void
@@ -338,7 +361,7 @@ final class CentrifugoTest extends TestCase
             ->willReturn([])
         ;
 
-        $this->centrifugo->channels('pattern');
+        $this->centrifugo->channels(pattern: 'pattern');
     }
 
     public function testInfoCommand(): void

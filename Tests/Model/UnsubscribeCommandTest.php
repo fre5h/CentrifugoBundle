@@ -25,33 +25,33 @@ use PHPUnit\Framework\TestCase;
  */
 final class UnsubscribeCommandTest extends TestCase
 {
-    private UnsubscribeCommand $command;
-
-    protected function setUp(): void
-    {
-        $this->command = new UnsubscribeCommand('bar', 'foo');
-    }
-
-    protected function tearDown(): void
-    {
-        unset($this->command);
-    }
-
     public function testInterfaces(): void
     {
-        self::assertInstanceOf(SerializableCommandInterface::class, $this->command);
-        self::assertInstanceOf(CommandInterface::class, $this->command);
+        $command = new UnsubscribeCommand(
+            user: 'bar',
+            channel: 'foo',
+        );
+        self::assertInstanceOf(SerializableCommandInterface::class, $command);
+        self::assertInstanceOf(CommandInterface::class, $command);
     }
 
-    public function testGetters(): void
+    public function testConstructor(): void
     {
-        self::assertEquals(Method::UNSUBSCRIBE, $this->command->getMethod());
-        self::assertEquals(['channel' => 'foo', 'user' => 'bar'], $this->command->getParams());
-        self::assertEquals(['foo'], $this->command->getChannels());
+        $command = new UnsubscribeCommand(
+            user: 'bar',
+            channel: 'foo',
+        );
+        self::assertEquals(Method::UNSUBSCRIBE, $command->getMethod());
+        self::assertEquals(['channel' => 'foo', 'user' => 'bar'], $command->getParams());
+        self::assertEquals(['foo'], $command->getChannels());
     }
 
-    public function testSerialization(): void
+    public function testSerializationRequiredData(): void
     {
+        $command = new UnsubscribeCommand(
+            user: 'bar',
+            channel: 'foo',
+        );
         self::assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
@@ -62,7 +62,31 @@ final class UnsubscribeCommandTest extends TestCase
                     }
                 }
             JSON,
-            \json_encode($this->command, JSON_THROW_ON_ERROR)
+            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
+        );
+    }
+
+    public function testSerializationAllData(): void
+    {
+        $command = new UnsubscribeCommand(
+            user: 'bar',
+            channel: 'foo',
+            client: 'abc',
+            session: 'qwerty',
+        );
+        self::assertJsonStringEqualsJsonString(
+            <<<'JSON'
+                {
+                    "method": "unsubscribe",
+                    "params": {
+                        "channel": "foo",
+                        "user": "bar",
+                        "client": "abc",
+                        "session": "qwerty"
+                    }
+                }
+            JSON,
+            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
         );
     }
 }

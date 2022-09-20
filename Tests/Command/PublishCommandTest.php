@@ -21,6 +21,11 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
+/**
+ * PublishCommandTest.
+ *
+ * @author Artem Henvald <genvaldartem@gmail.com>
+ */
 final class PublishCommandTest extends TestCase
 {
     /** @var CentrifugoInterface|MockObject */
@@ -91,9 +96,9 @@ final class PublishCommandTest extends TestCase
                 'command' => $this->command->getName(),
                 'data' => '{"foo":"bar"}',
                 'channel' => 'channelA',
-                'tags' => '{"env":"test"}',
+                '--tags' => '{"env":"test"}',
                 '--skipHistory' => true,
-                '--b64data' => 'SGVsbG8gd29ybGQ=',
+                '--base64data' => 'SGVsbG8gd29ybGQ=',
             ],
         );
         self::assertSame(0, $result);

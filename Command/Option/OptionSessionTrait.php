@@ -10,28 +10,28 @@
 
 declare(strict_types=1);
 
-namespace Fresh\CentrifugoBundle\Command\Argument;
+namespace Fresh\CentrifugoBundle\Command\Option;
 
 use Symfony\Component\Console\Input\InputInterface;
 
 /**
- * ArgumentPatternTrait.
+ * OptionSessionTrait.
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-trait ArgumentPatternTrait
+trait OptionSessionTrait
 {
-    protected ?string $pattern = null;
+    protected string $session = '';
 
     /**
      * @param InputInterface $input
      */
-    protected function initializePatternArgument(InputInterface $input): void
+    protected function initializeSessionOption(InputInterface $input): void
     {
-        $pattern = $input->getArgument('pattern');
+        $session = $input->getParameterOption(['--session', '-s'], null);
 
-        if (\is_string($pattern) && !empty($pattern)) {
-            $this->pattern = $pattern;
+        if (\is_string($session) && !empty($session)) {
+            $this->session = $session;
         }
     }
 }

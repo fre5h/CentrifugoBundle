@@ -21,6 +21,11 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
+/**
+ * PresenceStatsCommandTest.
+ *
+ * @author Artem Henvald <genvaldartem@gmail.com>
+ */
 final class PresenceStatsCommandTest extends TestCase
 {
     /** @var CentrifugoInterface|MockObject */
@@ -81,8 +86,8 @@ final class PresenceStatsCommandTest extends TestCase
 
         $output = $this->commandTester->getDisplay();
         self::assertStringContainsString('Presence Stats', $output);
-        self::assertStringContainsString('num_clients: 2', $output);
-        self::assertStringContainsString('num_users: 1', $output);
+        self::assertStringContainsString('Total number of clients in channel: 2', $output);
+        self::assertStringContainsString('Total number of unique users in channel: 1', $output);
     }
 
     public function testException(): void

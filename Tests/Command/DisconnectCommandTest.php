@@ -20,6 +20,11 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
+/**
+ * DisconnectCommandTest.
+ *
+ * @author Artem Henvald <genvaldartem@gmail.com>
+ */
 final class DisconnectCommandTest extends TestCase
 {
     /** @var CentrifugoInterface|MockObject */
