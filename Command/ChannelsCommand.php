@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Command;
 
+use Fresh\CentrifugoBundle\Command\Argument\ArgumentPatternTrait;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -27,6 +28,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 #[AsCommand(name: 'centrifugo:channels', description: 'Get list of active (with one or more subscribers) channels')]
 final class ChannelsCommand extends AbstractCommand
 {
+    use ArgumentPatternTrait;
+
     /**
      * {@inheritdoc}
      */

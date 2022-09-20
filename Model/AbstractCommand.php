@@ -22,17 +22,17 @@ use JetBrains\PhpStorm\ArrayShape;
 abstract class AbstractCommand implements SerializableCommandInterface
 {
     /**
-     * @param string $method
+     * @param Method $method
      * @param array  $params
      */
-    public function __construct(private readonly string $method, private readonly array $params)
+    public function __construct(private readonly Method $method, private readonly array $params)
     {
     }
 
     /**
-     * @return string
+     * @return Method
      */
-    public function getMethod(): string
+    public function getMethod(): Method
     {
         return $this->method;
     }
@@ -60,7 +60,7 @@ abstract class AbstractCommand implements SerializableCommandInterface
     public function jsonSerialize(): array
     {
         return [
-            'method' => $this->method,
+            'method' => $this->method->value,
             'params' => $this->params,
         ];
     }

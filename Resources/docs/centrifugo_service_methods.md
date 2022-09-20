@@ -14,14 +14,11 @@ use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
 
 class YourService
 {
-    private CentrifugoInterface $centrifugo;    
-
     /**
      * @param CentrifugoInterface $centrifugo
      */
-    public function __construct(CentrifugoInterface $centrifugo)
+    public function __construct(private readonly CentrifugoInterface $centrifugo)
     {
-        $this->centrifugo = $centrifugo;
     }
 }
 ```
@@ -29,7 +26,10 @@ class YourService
 ### Publish data into channel
 
 ```php
-$this->centrifugo->publish(['foo' => 'bar'], 'channelA');
+// With only required parameters
+$this->centrifugo->publish(data: ['foo' => 'bar'], channel: 'channelA');
+// With all optional parameters
+$this->centrifugo->publish(data: ['foo' => 'bar'], channel: 'channelA', skipHistory: true, tags: ['tag' => 'value'], b64data: 'SGVsbG8gd29ybGQ=');
 ```
 
 ### Publish same data into many channels

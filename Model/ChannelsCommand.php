@@ -27,11 +27,12 @@ final class ChannelsCommand extends AbstractCommand implements ResultableCommand
     #[Pure]
     public function __construct(?string $pattern = null)
     {
-        parent::__construct(
-            Method::CHANNELS,
-            [
-                'pattern' => $pattern,
-            ]
-        );
+        $params = [];
+
+        if (!empty($pattern)) {
+            $params['pattern'] = $pattern;
+        }
+
+        parent::__construct(Method::CHANNELS, $params);
     }
 }

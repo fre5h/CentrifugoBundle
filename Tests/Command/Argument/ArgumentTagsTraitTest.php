@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Fresh\CentrifugoBundle\Tests\Command;
+namespace Fresh\CentrifugoBundle\Tests\Command\Argument;
 
 use Fresh\CentrifugoBundle\Command\PublishCommand;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
@@ -19,9 +19,10 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Tester\CommandTester;
 
-final class PublishCommandTest extends TestCase
+final class ArgumentTagsTraitTest extends TestCase
 {
     /** @var CentrifugoInterface|MockObject */
     private CentrifugoInterface|MockObject $centrifugo;
@@ -57,69 +58,60 @@ final class PublishCommandTest extends TestCase
         );
     }
 
-    public function testSuccessfulExecutionWithRequiredParameters(): void
+    public function testTagsIsNotValidJson(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects(self::never())
             ->method('publish')
-            ->with(['foo' => 'bar'], 'channelA')
         ;
 
-        $result = $this->commandTester->execute(
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Argument "tags" is not a valid JSON.');
+
+        $this->commandTester->execute(
             [
                 'command' => $this->command->getName(),
                 'data' => '{"foo":"bar"}',
-                'channel' => 'channelA',
+                'channel' => 'channelName',
+                'tags' => 'invalid json',
             ]
         );
-        self::assertSame(0, $result);
-
-        $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('DONE', $output);
     }
 
-    public function testSuccessfulExecutionWithAllParameters(): void
+    public function testTagValueIsNotString(): void
+    {
+        $this->centrifugo
+            ->expects(self::never())
+            ->method('publish')
+        ;
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Argument "tags" should be an associative array of strings.');
+
+        $this->commandTester->execute(
+            [
+                'command' => $this->command->getName(),
+                'data' => '{"foo":"bar"}',
+                'channel' => 'channelName',
+                'tags' => '{"foo":123}',
+            ]
+        );
+    }
+
+    public function testValidTags(): void
     {
         $this->centrifugo
             ->expects(self::once())
             ->method('publish')
-            ->with(['foo' => 'bar'], 'channelA', true, ['env' => 'test'], 'SGVsbG8gd29ybGQ=')
         ;
 
-        $result = $this->commandTester->execute(
+        $this->commandTester->execute(
             [
                 'command' => $this->command->getName(),
                 'data' => '{"foo":"bar"}',
-                'channel' => 'channelA',
+                'channel' => 'channelName',
                 'tags' => '{"env":"test"}',
-                '--skipHistory' => true,
-                '--b64data' => 'SGVsbG8gd29ybGQ=',
-            ],
-        );
-        self::assertSame(0, $result);
-
-        $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('DONE', $output);
-    }
-
-    public function testException(): void
-    {
-        $this->centrifugo
-            ->expects(self::once())
-            ->method('publish')
-            ->willThrowException(new \Exception('test'))
-        ;
-
-        $result = $this->commandTester->execute(
-            [
-                'command' => $this->command->getName(),
-                'data' => '{"foo":"bar"}',
-                'channel' => 'channelA',
             ]
         );
-        self::assertSame(1, $result);
-
-        $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('test', $output);
     }
 }

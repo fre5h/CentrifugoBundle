@@ -26,18 +26,32 @@ final class PublishCommand extends AbstractCommand
     /**
      * @param array<string, mixed> $data
      * @param string               $channel
+     * @param bool                 $skipHistory
+     * @param array<string, mixed> $tags
+     * @param string               $b64data
      */
     #[Pure]
-    public function __construct(array $data, string $channel)
+    public function __construct(array $data, string $channel, bool $skipHistory = false, array $tags = [], string $b64data = '')
     {
         $this->channel = $channel;
 
-        parent::__construct(
-            Method::PUBLISH,
-            [
-                'channel' => $channel,
-                'data' => $data,
-            ]
-        );
+        $params = [
+            'channel' => $channel,
+            'data' => $data,
+        ];
+
+        if ($skipHistory) {
+            $params['skip_history'] = $skipHistory;
+        }
+
+        if (!empty($tags)) {
+            $params['tags'] = $tags;
+        }
+
+        if (!empty($b64data)) {
+            $params['b64data'] = $b64data;
+        }
+
+        parent::__construct(Method::PUBLISH, $params);
     }
 }

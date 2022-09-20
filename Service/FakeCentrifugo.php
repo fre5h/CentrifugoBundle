@@ -22,7 +22,7 @@ class FakeCentrifugo implements CentrifugoInterface
     /**
      * {@inheritdoc}
      */
-    public function publish(array $data, string $channel): void
+    public function publish(array $data, string $channel, bool $skipHistory = false, array $tags = [], string $b64data = ''): void
     {
         // noop
     }
@@ -30,7 +30,7 @@ class FakeCentrifugo implements CentrifugoInterface
     /**
      * {@inheritdoc}
      */
-    public function broadcast(array $data, array $channels): void
+    public function broadcast(array $data, array $channels, bool $skipHistory = false, array $tags = [], string $b64data = ''): void
     {
         // noop
     }

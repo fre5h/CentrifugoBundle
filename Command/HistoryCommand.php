@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Command;
 
+use Fresh\CentrifugoBundle\Command\Argument\ArgumentChannelTrait;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -57,7 +58,7 @@ final class HistoryCommand extends AbstractCommand
                 <<<'HELP'
 The <info>%command.name%</info> command allows to get channel history information (list of last messages published into channel):
 
-<info>%command.full_name%</info> <comment>channelAbc</comment>
+<info>%command.full_name%</info> <comment>channelName</comment>
 
 Read more at https://centrifugal.dev/docs/server/server_api#history
 HELP

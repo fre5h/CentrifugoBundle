@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Command;
 
+use Fresh\CentrifugoBundle\Command\Argument\ArgumentChannelTrait;
+use Fresh\CentrifugoBundle\Command\Argument\ArgumentUserTrait;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -59,7 +61,7 @@ final class UnsubscribeCommand extends AbstractCommand
                 <<<'HELP'
 The <info>%command.name%</info> command allows to unsubscribe user from a channel:
 
-<info>%command.full_name%</info> <comment>user123</comment> <comment>channelAbc</comment>
+<info>%command.full_name%</info> <comment>user123</comment> <comment>channelName</comment>
 
 Read more at https://centrifugal.dev/docs/server/server_api#unsubscribe
 HELP

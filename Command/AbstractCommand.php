@@ -22,15 +22,11 @@ use Symfony\Component\Console\Command\Command;
  */
 abstract class AbstractCommand extends Command
 {
-    protected readonly CentrifugoInterface $centrifugo;
-
     /**
      * @param CentrifugoInterface $centrifugo
      */
-    public function __construct(CentrifugoInterface $centrifugo)
+    public function __construct(protected readonly CentrifugoInterface $centrifugo)
     {
-        $this->centrifugo = $centrifugo;
-
         parent::__construct();
     }
 }

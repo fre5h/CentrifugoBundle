@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Fresh\CentrifugoBundle\Command;
+namespace Fresh\CentrifugoBundle\Command\Argument;
 
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Symfony\Component\Console\Exception\InvalidArgumentException;

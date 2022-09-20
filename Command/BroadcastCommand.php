@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Command;
 
+use Fresh\CentrifugoBundle\Command\Argument\ArgumentDataTrait;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -64,7 +65,7 @@ final class BroadcastCommand extends AbstractCommand
                 <<<'HELP'
 The <info>%command.name%</info> command allows to publish data into many channels:
 
-<info>%command.full_name%</info> <comment>'{"foo":"bar"}'</comment> </comment>channelAbc</comment> </comment>channelDef</comment>
+<info>%command.full_name%</info> <comment>'{"foo":"bar"}'</comment> </comment>channelName</comment> </comment>channelDef</comment>
 
 Read more at https://centrifugal.dev/docs/server/server_api#broadcast
 HELP

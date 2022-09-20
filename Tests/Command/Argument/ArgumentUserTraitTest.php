@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Fresh\CentrifugoBundle\Tests\Command;
+namespace Fresh\CentrifugoBundle\Tests\Command\Argument;
 
 use Fresh\CentrifugoBundle\Command\DisconnectCommand;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;

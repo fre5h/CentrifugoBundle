@@ -56,7 +56,7 @@ final class ChannelsCommandTest extends TestCase
             <<<'JSON'
                 {
                     "method": "channels",
-                    "params": {}
+                    "params": []
                 }
             JSON,
             \json_encode($this->command, JSON_THROW_ON_ERROR)

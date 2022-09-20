@@ -24,14 +24,20 @@ interface CentrifugoInterface
     /**
      * @param array<string, mixed> $data
      * @param string               $channel
+     * @param bool                 $skipHistory
+     * @param array<string, mixed> $tags
+     * @param string               $b64data
      */
-    public function publish(array $data, string $channel): void;
+    public function publish(array $data, string $channel, bool $skipHistory = false, array $tags = [], string $b64data = ''): void;
 
     /**
      * @param array<string, mixed> $data
      * @param string[]             $channels
+     * @param bool                 $skipHistory
+     * @param array<string, mixed> $tags
+     * @param string               $b64data
      */
-    public function broadcast(array $data, array $channels): void;
+    public function broadcast(array $data, array $channels, bool $skipHistory = false, array $tags = [], string $b64data = ''): void;
 
     /**
      * @param string $user
