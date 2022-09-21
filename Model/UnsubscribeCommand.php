@@ -27,7 +27,7 @@ final class UnsubscribeCommand extends AbstractCommand
      * @param string $client
      * @param string $session
      */
-    public function __construct(readonly string $user, protected readonly string $channel, readonly string $client = '', readonly string $session = '')
+    public function __construct(string $user, protected readonly string $channel, string $client = '', string $session = '')
     {
         $params = [
             'channel' => $channel,

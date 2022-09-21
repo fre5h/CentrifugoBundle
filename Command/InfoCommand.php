@@ -23,7 +23,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-#[AsCommand(name: 'centrifugo:info', description: 'Gets information about running Centrifugo nodes')]
+#[AsCommand(name: 'centrifugo:info', description: 'Get information about running Centrifugo nodes')]
 final class InfoCommand extends AbstractCommand
 {
     /**

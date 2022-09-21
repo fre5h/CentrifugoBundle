@@ -17,6 +17,7 @@ use JetBrains\PhpStorm\ArrayShape;
 /**
  * JwtPayloadForPrivateChannel.
  *
+ * @todo Set correct link
  * @see https://centrifugal.github.io/centrifugo/server/private_channels/#claims
  *
  * @author Artem Henvald <genvaldartem@gmail.com>

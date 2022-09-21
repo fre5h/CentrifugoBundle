@@ -28,7 +28,7 @@ final class PublishCommand extends AbstractCommand
      * @param array<string, mixed> $tags
      * @param string               $base64data
      */
-    public function __construct(readonly array $data, protected readonly string $channel, readonly bool $skipHistory = false, readonly array $tags = [], readonly string $base64data = '')
+    public function __construct(array $data, protected readonly string $channel, bool $skipHistory = false, array $tags = [], string $base64data = '')
     {
         $params = [
             'channel' => $channel,

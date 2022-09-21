@@ -20,15 +20,35 @@ namespace Fresh\CentrifugoBundle\Model;
 final class DisconnectCommand extends AbstractCommand
 {
     /**
-     * @param string $user
+     * @param string                $user
+     * @param string[]              $clientIdWhitelist
+     * @param string|null           $client
+     * @param string|null           $session
+     * @param DisconnectObject|null $disconnectObject
      */
-    public function __construct(string $user)
+    public function __construct(string $user, array $clientIdWhitelist = [], ?string $client = null, ?string $session = null, ?DisconnectObject $disconnectObject = null)
     {
-        parent::__construct(
-            Method::DISCONNECT,
-            [
-                'user' => $user,
-            ]
-        );
+        $params = [
+            'user' => $user,
+        ];
+
+        if (!empty($clientIdWhitelist)) {
+            $params['whitelist'] = $clientIdWhitelist;
+        }
+
+        if (\is_string($client) && !empty($client)) {
+            $params['client'] = $client;
+        }
+
+        if (\is_string($session) && !empty($session)) {
+            $params['session'] = $session;
+        }
+
+        if ($disconnectObject instanceof DisconnectObject) {
+            $params['disconnect']['code'] = $disconnectObject->getCode();
+            $params['disconnect']['reason'] = $disconnectObject->getReason();
+        }
+
+        parent::__construct(Method::DISCONNECT, $params);
     }
 }
