@@ -23,10 +23,10 @@ use Symfony\Component\Console\Input\InputInterface;
  */
 trait ArgumentChannelsTrait
 {
+    protected readonly CentrifugoChecker $centrifugoChecker;
+
     /** @var string[] */
     private array $channels;
-
-    protected readonly CentrifugoChecker $centrifugoChecker;
 
     /**
      * @param InputInterface $input

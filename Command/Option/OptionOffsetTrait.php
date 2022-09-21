@@ -33,7 +33,7 @@ trait OptionOffsetTrait
     protected function initializeOffsetOption(InputInterface $input): void
     {
         /** @var int|null $offset */
-        $offset = $input->getParameterOption("--offset", null);
+        $offset = $input->getParameterOption('--offset', null);
 
         if (null !== $offset) {
             $offset = (int) $offset;

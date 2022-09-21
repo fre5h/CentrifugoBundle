@@ -118,11 +118,14 @@ HELP
                 $disconnectObject = new DisconnectObject($this->disconnectCode, $this->disconnectReason);
             }
 
+            /** @var array<string> $whitelist */
+            $whitelist = (array) $input->getOption('whitelist');
+
             $this->centrifugo->disconnect(
-                user: $this->user,
-                whitelist: (array) $input->getOption('whitelist'),
-                client: $this->client,
-                session: $this->session,
+                user:             $this->user,
+                whitelist:        $whitelist,
+                client:           $this->client,
+                session:          $this->session,
                 disconnectObject: $disconnectObject,
             );
             $io->success('DONE');
