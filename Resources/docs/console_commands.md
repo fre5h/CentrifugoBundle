@@ -69,7 +69,19 @@ $ bin/console centrifugo:disconnect user123 --whitelist=clientID1 --client=clien
 ### `centrifugo:refresh`
 
 ```bash
-$ bin/console centrifugo:refresh @todo Finish
+$ bin/console centrifugo:refresh user123
+
+[OK] DONE
+```
+
+```bash
+$ bin/console centrifugo:refresh user123 --client=clientID2 --session=sessionID --expired
+
+[OK] DONE
+```
+
+```bash
+$ bin/console centrifugo:refresh user123 --expireAt=1234567890
 
 [OK] DONE
 ```

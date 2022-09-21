@@ -59,7 +59,7 @@ final class DisconnectCommand extends AbstractCommand
             )
             ->setHelp(
                 <<<'HELP'
-The <info>%command.name%</info> command allows to disconnect user by ID:
+The <info>%command.name%</info> command allows disconnecting a user by ID:
 
 <info>%command.full_name%</info> <comment>user123</comment>
 
