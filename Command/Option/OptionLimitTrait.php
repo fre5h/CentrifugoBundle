@@ -33,12 +33,12 @@ trait OptionLimitTrait
     protected function initializeLimitOption(InputInterface $input): void
     {
         /** @var int|null $limit */
-        $limit = $input->getParameterOption(['--limit', '-l'], null);
+        $limit = $input->getParameterOption('--limit', null);
 
         if (null !== $limit) {
             $limit = (int) $limit;
             if ($limit <= 0) {
-                throw new InvalidOptionException('Option "--limit, -l" should be a valid integer value greater than 0.');
+                throw new InvalidOptionException('Option "--limit" should be a valid integer value greater than 0.');
             }
 
             $this->limit = $limit;

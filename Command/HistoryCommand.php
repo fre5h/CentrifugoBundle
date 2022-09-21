@@ -59,10 +59,10 @@ final class HistoryCommand extends AbstractCommand
             ->setDefinition(
                 new InputDefinition([
                     new InputArgument('channel', InputArgument::REQUIRED, 'Channel name'),
-                    new InputOption('limit', 'l', InputOption::VALUE_OPTIONAL, 'Limit number of returned publications, if not set in request then only current stream position information will present in result (without any publications)', 10),
-                    new InputOption('offset', 'o', InputOption::VALUE_OPTIONAL, 'Offset in a stream'),
-                    new InputOption('epoch', 'ep', InputOption::VALUE_OPTIONAL, 'Stream epoch'),
-                    new InputOption('reverse', 'r', InputOption::VALUE_NONE, 'Iterate in reversed order (from latest to earliest)'),
+                    new InputOption('limit', null, InputOption::VALUE_OPTIONAL, 'Limit number of returned publications, if not set in request then only current stream position information will present in result (without any publications)', 10),
+                    new InputOption('offset', null, InputOption::VALUE_OPTIONAL, 'Offset in a stream'),
+                    new InputOption('epoch', null, InputOption::VALUE_OPTIONAL, 'Stream epoch'),
+                    new InputOption('reverse', null, InputOption::VALUE_NONE, 'Iterate in reversed order (from latest to earliest)'),
                 ])
             )
             ->setHelp(
@@ -73,21 +73,15 @@ The <info>%command.name%</info> command allows getting channel history informati
 
 You can limit number of returned publications:
 
-<info>%command.full_name%</info> <comment>channelName</comment> <comment>--limit</comment>
-or
-<info>%command.full_name%</info> <comment>channelName</comment> <comment>-l</comment>
+<info>%command.full_name%</info> <comment>channelName</comment> <comment>--limit=10</comment>
 
 You can iterate publications in reversed order:
 
 <info>%command.full_name%</info> <comment>channelName</comment> <comment>--reverse</comment>
-or
-<info>%command.full_name%</info> <comment>channelName</comment> <comment>-r</comment>
 
 You can set specific offset and epoch to iterate over publications:
 
-<info>%command.full_name%</info> <comment>channelName</comment> <comment>--offset 10 --epoch ABCD</comment>
-or
-<info>%command.full_name%</info> <comment>channelName</comment> <comment>-o 10 -ep ABCD</comment>
+<info>%command.full_name%</info> <comment>channelName</comment> <comment>--offset=10 --epoch=ABCD</comment>
 
 Read more at https://centrifugal.dev/docs/server/server_api#history
 HELP

@@ -32,7 +32,7 @@ trait OptionTagsTrait
      */
     protected function initializeTagsOption(InputInterface $input): void
     {
-        $tags = $input->getParameterOption(['--tags', '-t'], null);
+        $tags = $input->getParameterOption('--tags', null);
 
         if (\is_string($tags) && !empty($tags)) {
             try {
@@ -40,18 +40,18 @@ trait OptionTagsTrait
                 $decodedData = \json_decode($tags, true, 512, \JSON_THROW_ON_ERROR);
 
                 if (!\is_array($decodedData)) {
-                    throw new InvalidOptionException('Option "--tags, -t" should be an associative array of strings.');
+                    throw new InvalidOptionException('Option "--tags" should be an associative array of strings.');
                 }
 
                 foreach ($decodedData as $tag => $value) {
                     if (!\is_string($tag) || !\is_string($value)) {
-                        throw new InvalidOptionException('Option "--tags, -t" should be an associative array of strings.');
+                        throw new InvalidOptionException('Option "--tags" should be an associative array of strings.');
                     }
                 }
 
                 $this->tags = $decodedData;
             } catch (\JsonException) {
-                throw new InvalidOptionException('Option "--tags, -t" is not a valid JSON.');
+                throw new InvalidOptionException('Option "--tags" is not a valid JSON.');
             }
         }
     }

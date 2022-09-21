@@ -58,8 +58,8 @@ final class UnsubscribeCommand extends AbstractCommand
                 new InputDefinition([
                     new InputArgument('user', InputArgument::REQUIRED, 'User ID to unsubscribe'),
                     new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to unsubscribe user to'),
-                    new InputOption('client', 'c', InputOption::VALUE_OPTIONAL, 'Specific client ID to unsubscribe (user still required to be set)'),
-                    new InputOption('session', 's', InputOption::VALUE_OPTIONAL, 'Specific client session to disconnect (user still required to be set)'),
+                    new InputOption('client', null, InputOption::VALUE_OPTIONAL, 'Specific client ID to unsubscribe (user still required to be set)'),
+                    new InputOption('session', null, InputOption::VALUE_OPTIONAL, 'Specific client session to disconnect (user still required to be set)'),
                 ])
             )
             ->setHelp(
@@ -70,15 +70,11 @@ The <info>%command.name%</info> command allows unsubscribing user from a channel
 
 You can unsubscribe specific user from a channel by client ID:
 
-<info>%command.full_name%</info> <comment>user123</comment> <comment>channelName</comment> <comment>--client clientID</comment>
-or
-<info>%command.full_name%</info> <comment>user123</comment> <comment>channelName</comment> <comment>-c clientID</comment>
+<info>%command.full_name%</info> <comment>user123</comment> <comment>channelName</comment> <comment>--client=clientID</comment>
 
 You can unsubscribe specific user from a channel by session ID:
 
-<info>%command.full_name%</info> <comment>user123</comment> <comment>channelName</comment> <comment>--session sessionID</comment>
-or
-<info>%command.full_name%</info> <comment>user123</comment> <comment>channelName</comment> <comment>-s sessionID</comment>
+<info>%command.full_name%</info> <comment>user123</comment> <comment>channelName</comment> <comment>--session=sessionID</comment>
 
 Read more at https://centrifugal.dev/docs/server/server_api#unsubscribe
 HELP

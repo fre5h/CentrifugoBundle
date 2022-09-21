@@ -77,20 +77,4 @@ final class OptionReverseTraitTest extends TestCase
             ]
         );
     }
-
-    public function testValidOptionShortcut(): void
-    {
-        $this->centrifugo
-            ->expects(self::once())
-            ->method('history')
-        ;
-
-        $this->commandTester->execute(
-            [
-                'command' => $this->command->getName(),
-                'channel' => 'channelName',
-                '-r' => true,
-            ]
-        );
-    }
 }

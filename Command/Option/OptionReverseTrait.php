@@ -28,6 +28,6 @@ trait OptionReverseTrait
      */
     protected function initializeReverseOption(InputInterface $input): void
     {
-        $this->reverse = $input->hasParameterOption(['--reverse', '-r']);
+        $this->reverse = $input->hasParameterOption('--reverse');
     }
 }

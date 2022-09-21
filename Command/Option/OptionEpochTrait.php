@@ -28,7 +28,7 @@ trait OptionEpochTrait
      */
     protected function initializeEpochOption(InputInterface $input): void
     {
-        $epoch = $input->getParameterOption(['--epoch', '-ep'], null);
+        $epoch = $input->getParameterOption('--epoch', null);
 
         if (\is_string($epoch) && !empty($epoch)) {
             $this->epoch = $epoch;

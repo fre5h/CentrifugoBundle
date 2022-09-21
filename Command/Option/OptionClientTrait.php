@@ -28,7 +28,7 @@ trait OptionClientTrait
      */
     protected function initializeClientOption(InputInterface $input): void
     {
-        $client = $input->getParameterOption(['--client', '-c'], null);
+        $client = $input->getParameterOption('--client', null);
 
         if (\is_string($client) && !empty($client)) {
             $this->client = $client;

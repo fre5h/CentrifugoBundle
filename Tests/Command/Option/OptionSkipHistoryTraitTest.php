@@ -78,21 +78,4 @@ final class OptionSkipHistoryTraitTest extends TestCase
             ]
         );
     }
-
-    public function testValidOptionShortcut(): void
-    {
-        $this->centrifugo
-            ->expects(self::once())
-            ->method('publish')
-        ;
-
-        $this->commandTester->execute(
-            [
-                'command' => $this->command->getName(),
-                'data' => '{"foo":"bar"}',
-                'channel' => 'channelName',
-                '-s' => 'SGVsbG8gd29ybGQ=',
-            ]
-        );
-    }
 }

@@ -15,19 +15,23 @@ namespace Fresh\CentrifugoBundle\Command\Option;
 use Symfony\Component\Console\Input\InputInterface;
 
 /**
- * OptionSkipHistoryTrait.
+ * OptionDisconnectReasonTrait.
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-trait OptionSkipHistoryTrait
+trait OptionDisconnectReasonTrait
 {
-    protected bool $skipHistory = false;
+    protected string $disconnectReason = '';
 
     /**
      * @param InputInterface $input
      */
-    protected function initializeSkipHistoryOption(InputInterface $input): void
+    protected function initializeDisconnectReasonOption(InputInterface $input): void
     {
-        $this->skipHistory = $input->hasParameterOption('--skipHistory');
+        $disconnectReason = $input->getParameterOption('--disconnectReason', null);
+
+        if (\is_string($disconnectReason) && !empty($disconnectReason)) {
+            $this->disconnectReason = $disconnectReason;
+        }
     }
 }

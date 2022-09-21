@@ -28,7 +28,7 @@ trait OptionSessionTrait
      */
     protected function initializeSessionOption(InputInterface $input): void
     {
-        $session = $input->getParameterOption(['--session', '-s'], null);
+        $session = $input->getParameterOption('--session', null);
 
         if (\is_string($session) && !empty($session)) {
             $this->session = $session;

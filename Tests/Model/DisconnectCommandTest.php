@@ -14,6 +14,7 @@ namespace Fresh\CentrifugoBundle\Tests\Model;
 
 use Fresh\CentrifugoBundle\Model\CommandInterface;
 use Fresh\CentrifugoBundle\Model\DisconnectCommand;
+use Fresh\CentrifugoBundle\Model\DisconnectObject;
 use Fresh\CentrifugoBundle\Model\Method;
 use Fresh\CentrifugoBundle\Model\SerializableCommandInterface;
 use PHPUnit\Framework\TestCase;
@@ -40,7 +41,7 @@ final class DisconnectCommandTest extends TestCase
         self::assertEquals([], $command->getChannels());
     }
 
-    public function testSerialization(): void
+    public function testSerializationRequiredData(): void
     {
         $command = new DisconnectCommand(user: 'foo');
         self::assertJsonStringEqualsJsonString(
@@ -49,6 +50,35 @@ final class DisconnectCommandTest extends TestCase
                     "method": "disconnect",
                     "params": {
                         "user": "foo"
+                    }
+                }
+            JSON,
+            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
+        );
+    }
+
+    public function testSerializationAllData(): void
+    {
+        $command = new DisconnectCommand(
+            user: 'foo',
+            clientIdWhitelist: ['clientID1'],
+            client: 'clientID2',
+            session: 'sessionID1',
+            disconnectObject: new DisconnectObject(999, 'some reason'),
+        );
+        self::assertJsonStringEqualsJsonString(
+            <<<'JSON'
+                {
+                    "method": "disconnect",
+                    "params": {
+                        "user": "foo",
+                        "whitelist": ["clientID1"],
+                        "client": "clientID2",
+                        "session": "sessionID1",
+                        "disconnect": {
+                            "code": 999,
+                            "reason": "some reason"
+                        }
                     }
                 }
             JSON,

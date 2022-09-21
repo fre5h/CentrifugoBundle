@@ -211,7 +211,13 @@ final class CentrifugoTest extends TestCase
             ->willReturn(null)
         ;
 
-        $this->centrifugo->disconnect('user123');
+        $this->centrifugo->disconnect(
+            user:             'user123',
+            whitelist:        ['test'],
+            client:           'test',
+            session:          'test',
+            disconnectObject: new Model\DisconnectObject(999, 'test'),
+        );
     }
 
     public function testPresenceCommand(): void

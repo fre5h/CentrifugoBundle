@@ -71,7 +71,7 @@ final class OptionTagsTraitTest extends TestCase
         ;
 
         $this->expectException(InvalidOptionException::class);
-        $this->expectExceptionMessage('Option "--tags, -t" is not a valid JSON.');
+        $this->expectExceptionMessage('Option "--tags" is not a valid JSON.');
 
         $this->commandTester->execute(
             [
@@ -91,7 +91,7 @@ final class OptionTagsTraitTest extends TestCase
         ;
 
         $this->expectException(InvalidOptionException::class);
-        $this->expectExceptionMessage('Option "--tags, -t" should be an associative array of strings.');
+        $this->expectExceptionMessage('Option "--tags" should be an associative array of strings.');
 
         $this->commandTester->execute(
             [
@@ -111,14 +111,14 @@ final class OptionTagsTraitTest extends TestCase
         ;
 
         $this->expectException(InvalidOptionException::class);
-        $this->expectExceptionMessage('Option "--tags, -t" should be an associative array of strings.');
+        $this->expectExceptionMessage('Option "--tags" should be an associative array of strings.');
 
         $this->commandTester->execute(
             [
                 'command' => $this->command->getName(),
                 'data' => '{"foo":"bar"}',
                 'channel' => 'channelName',
-                '-t' => '{"foo":123}',
+                '--tags' => '{"foo":123}',
             ]
         );
     }
@@ -135,7 +135,7 @@ final class OptionTagsTraitTest extends TestCase
                 'command' => $this->command->getName(),
                 'data' => '{"foo":"bar"}',
                 'channel' => 'channelName',
-                '-t' => '{"env":"test"}',
+                '--tags' => '{"env":"test"}',
             ]
         );
     }

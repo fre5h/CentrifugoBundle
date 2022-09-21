@@ -60,9 +60,9 @@ final class PublishCommand extends AbstractCommand
                 new InputDefinition([
                     new InputArgument('data', InputArgument::REQUIRED, 'Custom JSON data to publish into each channel'),
                     new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to publish'),
-                    new InputOption('tags', 't', InputOption::VALUE_OPTIONAL, 'Publication tags - map with arbitrary string keys and values which is attached to publication and will be delivered to clients'),
-                    new InputOption('skipHistory', 's', InputOption::VALUE_NONE, 'Skip adding publications to channels\' history for this request'),
-                    new InputOption('base64data', 'b', InputOption::VALUE_OPTIONAL, 'Custom binary data to publish into a channel encoded to base64 so it\'s possible to use HTTP API to send binary to clients. Centrifugo will decode it from base64 before publishing.'),
+                    new InputOption('tags', null, InputOption::VALUE_OPTIONAL, 'Publication tags - map with arbitrary string keys and values which is attached to publication and will be delivered to clients'),
+                    new InputOption('skipHistory', null, InputOption::VALUE_NONE, 'Skip adding publications to channels\' history for this request'),
+                    new InputOption('base64data', null, InputOption::VALUE_OPTIONAL, 'Custom binary data to publish into a channel encoded to base64 so it\'s possible to use HTTP API to send binary to clients. Centrifugo will decode it from base64 before publishing.'),
                 ])
             )
             ->setHelp(
@@ -74,21 +74,15 @@ The <info>%command.name%</info> command allows to publish data into a channel:
 You can skip adding publication to history for this request:
 
 <info>%command.full_name%</info> <comment>'{"foo":"bar"}'</comment> <comment>channelName</comment> <comment>--skipHistory</comment>
-or
-<info>%command.full_name%</info> <comment>'{"foo":"bar"}'</comment> <comment>channelName</comment> <comment>-s</comment>
 
 You can add tags which are attached to publication and will be delivered to clients:
 
-<info>%command.full_name%</info> <comment>'{"foo":"bar"}'</comment> <comment>channelName</comment> <comment>--tags '{"tag1":"value1","tag2":"value2"}'</comment>
-or
-<info>%command.full_name%</info> <comment>'{"foo":"bar"}'</comment> <comment>channelName</comment> <comment>--t '{"tag1":"value1","tag2":"value2"}'</comment>
+<info>%command.full_name%</info> <comment>'{"foo":"bar"}'</comment> <comment>channelName</comment> <comment>--tags='{"tag1":"value1","tag2":"value2"}'</comment>
 
 You can add custom binary data to publish into a channel encoded to base64, so it's possible to use
 HTTP API to send binary to clients. Centrifugo will decode it from base64 before publishing:
 
-<info>%command.full_name%</info> <comment>'{"foo":"bar"}'</comment> <comment>channelName</comment> <comment>--base64data SGVsbG8gd29ybGQ=</comment>
-or
-<info>%command.full_name%</info> <comment>'{"foo":"bar"}'</comment> <comment>channelName</comment> <comment>--b SGVsbG8gd29ybGQ=</comment>
+<info>%command.full_name%</info> <comment>'{"foo":"bar"}'</comment> <comment>channelName</comment> <comment>--base64data=SGVsbG8gd29ybGQ=</comment>
 
 Where <comment>SGVsbG8gd29ybGQ=</comment> is base64 encoded version of <comment>Hello world</comment>
 

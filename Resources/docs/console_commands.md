@@ -11,7 +11,7 @@ $ bin/console centrifugo:publish '{"foo":"bar"}' channelName
 ```
 
 ```bash
-$ bin/console centrifugo:publish '{"foo":"bar"}' channelName -t '{"tag":"value"}' -b SGVsbG8gd29ybGQ= -s
+$ bin/console centrifugo:publish '{"foo":"bar"}' channelName --tags='{"tag":"value"}' --base64data=SGVsbG8gd29ybGQ= --skipHistory
 
 [OK] DONE
 ```
@@ -25,7 +25,7 @@ $ bin/console centrifugo:broadcast '{"foo":"bar"}' channelName1 channelName2
 ```
 
 ```bash
-$ bin/console centrifugo:broadcast '{"foo":"bar"}' channelName1 channelName2 -t '{"tag":"value"}' -b SGVsbG8gd29ybGQ= -s
+$ bin/console centrifugo:broadcast '{"foo":"bar"}' channelName1 channelName2 --tags='{"tag":"value"}' --base64data=SGVsbG8gd29ybGQ= --skipHistory
 
 [OK] DONE
 ```
@@ -47,7 +47,7 @@ $ bin/console centrifugo:unsubscribe user123 channelName
 ```
 
 ```bash
-$ bin/console centrifugo:unsubscribe user123 channelName -c client -s session
+$ bin/console centrifugo:unsubscribe user123 channelName --client=clientID --session=sessionID
 
 [OK] DONE
 ```
@@ -56,6 +56,12 @@ $ bin/console centrifugo:unsubscribe user123 channelName -c client -s session
 
 ```bash
 $ bin/console centrifugo:disconnect user123
+
+[OK] DONE
+```
+
+```bash
+$ bin/console centrifugo:disconnect user123 --whitelist=clientID1 --client=clientID2 --session=sessionID --disconnectCode=999 --disconnectReason=some reason
 
 [OK] DONE
 ```
@@ -128,7 +134,7 @@ Publications
 ```
 
 ```bash
-$ bin/console centrifugo:history channelName --limit 2 --offset 1 --epoch ABCD --reverse
+$ bin/console centrifugo:history channelName --limit=2 --offset=1 --epoch=ABCD --reverse
 
 Publications
 ============

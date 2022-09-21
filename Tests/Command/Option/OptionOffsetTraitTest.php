@@ -79,22 +79,6 @@ final class OptionOffsetTraitTest extends TestCase
         );
     }
 
-    public function testValidOptionShortcut(): void
-    {
-        $this->centrifugo
-            ->expects(self::once())
-            ->method('history')
-        ;
-
-        $this->commandTester->execute(
-            [
-                'command' => $this->command->getName(),
-                'channel' => 'channelName',
-                '-o' => 20,
-            ]
-        );
-    }
-
     public function testZeroValue(): void
     {
         $this->centrifugo
@@ -103,13 +87,13 @@ final class OptionOffsetTraitTest extends TestCase
         ;
 
         $this->expectException(InvalidOptionException::class);
-        $this->expectExceptionMessage('Option "--offset, -o" should be a valid integer value greater than 0.');
+        $this->expectExceptionMessage('Option "--offset" should be a valid integer value greater than 0.');
 
         $this->commandTester->execute(
             [
                 'command' => $this->command->getName(),
                 'channel' => 'channelName',
-                '-o' => 0,
+                '--offset' => 0,
             ]
         );
     }
@@ -122,13 +106,13 @@ final class OptionOffsetTraitTest extends TestCase
         ;
 
         $this->expectException(InvalidOptionException::class);
-        $this->expectExceptionMessage('Option "--offset, -o" should be a valid integer value greater than 0.');
+        $this->expectExceptionMessage('Option "--offset" should be a valid integer value greater than 0.');
 
         $this->commandTester->execute(
             [
                 'command' => $this->command->getName(),
                 'channel' => 'channelName',
-                '-o' => 'abcd',
+                '--offset' => 'abcd',
             ]
         );
     }

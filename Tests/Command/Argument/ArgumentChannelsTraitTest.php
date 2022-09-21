@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Fresh\CentrifugoBundle\Tests\Command;
+namespace Fresh\CentrifugoBundle\Tests\Command\Argument;
 
 use Fresh\CentrifugoBundle\Command\BroadcastCommand;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
@@ -19,14 +19,15 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
- * BroadcastCommandTest.
+ * ArgumentChannelsTraitTest.
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-final class BroadcastCommandTest extends TestCase
+final class ArgumentChannelsTraitTest extends TestCase
 {
     /** @var CentrifugoInterface|MockObject */
     private CentrifugoInterface|MockObject $centrifugo;
@@ -62,69 +63,29 @@ final class BroadcastCommandTest extends TestCase
         );
     }
 
-    public function testSuccessfulExecutionWithRequiredParameters(): void
+    public function testInvalidChannelName(): void
     {
-        $this->centrifugo
+        $this->centrifugoChecker
             ->expects(self::once())
-            ->method('broadcast')
-            ->with(['foo' => 'bar'], ['channelA', 'channelB'])
+            ->method('assertValidChannelName')
+            ->with('channelA')
+            ->willThrowException(new InvalidArgumentException('test'))
         ;
 
-        $result = $this->commandTester->execute(
+        $this->centrifugo
+            ->expects(self::never())
+            ->method('broadcast')
+        ;
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('test');
+
+        $this->commandTester->execute(
             [
                 'command' => $this->command->getName(),
                 'data' => '{"foo":"bar"}',
                 'channels' => ['channelA', 'channelB'],
             ]
         );
-        self::assertSame(0, $result);
-
-        $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('DONE', $output);
-    }
-
-    public function testSuccessfulExecutionWithAllParameters(): void
-    {
-        $this->centrifugo
-            ->expects(self::once())
-            ->method('broadcast')
-            ->with(['foo' => 'bar'], ['channelA', 'channelB'], true, ['env' => 'test'], 'SGVsbG8gd29ybGQ=')
-        ;
-
-        $result = $this->commandTester->execute(
-            [
-                'command' => $this->command->getName(),
-                'data' => '{"foo":"bar"}',
-                'channels' => ['channelA', 'channelB'],
-                '--tags' => '{"env":"test"}',
-                '--skipHistory' => true,
-                '--base64data' => 'SGVsbG8gd29ybGQ=',
-            ]
-        );
-        self::assertSame(0, $result);
-
-        $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('DONE', $output);
-    }
-
-    public function testException(): void
-    {
-        $this->centrifugo
-            ->expects(self::once())
-            ->method('broadcast')
-            ->willThrowException(new \Exception('test'))
-        ;
-
-        $result = $this->commandTester->execute(
-            [
-                'command' => $this->command->getName(),
-                'data' => '{"foo":"bar"}',
-                'channels' => ['channelA', 'channelB'],
-            ]
-        );
-        self::assertSame(1, $result);
-
-        $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('test', $output);
     }
 }

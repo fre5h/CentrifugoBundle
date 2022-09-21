@@ -13,11 +13,13 @@ declare(strict_types=1);
 namespace Fresh\CentrifugoBundle\Tests\Command;
 
 use Fresh\CentrifugoBundle\Command\DisconnectCommand;
+use Fresh\CentrifugoBundle\Model\DisconnectObject;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Exception\InvalidOptionException;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
@@ -56,7 +58,7 @@ final class DisconnectCommandTest extends TestCase
         );
     }
 
-    public function testSuccessfulExecution(): void
+    public function testSuccessfulExecutionWithRequiredParameters(): void
     {
         $this->centrifugo
             ->expects(self::once())
@@ -68,6 +70,83 @@ final class DisconnectCommandTest extends TestCase
             [
                 'command' => $this->command->getName(),
                 'user' => 'user123',
+            ]
+        );
+        self::assertSame(0, $result);
+
+        $output = $this->commandTester->getDisplay();
+        self::assertStringContainsString('DONE', $output);
+    }
+
+    public function testSuccessfulExecutionWithAllParameters(): void
+    {
+        $this->centrifugo
+            ->expects(self::once())
+            ->method('disconnect')
+            ->with('user123', ['clientID1'], 'clientID2', 'sessionID', self::isInstanceOf(DisconnectObject::class))
+        ;
+
+        $result = $this->commandTester->execute(
+            [
+                'command' => $this->command->getName(),
+                'user' => 'user123',
+                '--whitelist' => 'clientID1',
+                '--client' => 'clientID2',
+                '--session' => 'sessionID',
+                '--disconnectCode' => 999,
+                '--disconnectReason' => 'some reason',
+            ]
+        );
+        self::assertSame(0, $result);
+
+        $output = $this->commandTester->getDisplay();
+        self::assertStringContainsString('DONE', $output);
+    }
+
+    public function testExceptionForMissingDisconnectCode(): void
+    {
+        $this->centrifugo
+            ->expects(self::never())
+            ->method('disconnect')
+        ;
+
+        $this->expectException(InvalidOptionException::class);
+        $this->expectExceptionMessage('Options "--disconnectReason" and "--disconnectCode" should set be together.');
+
+        $result = $this->commandTester->execute(
+            [
+                'command' => $this->command->getName(),
+                'user' => 'user123',
+                '--whitelist' => 'clientID1',
+                '--client' => 'clientID2',
+                '--session' => 'sessionID',
+                '--disconnectReason' => 'some reason',
+            ]
+        );
+        self::assertSame(0, $result);
+
+        $output = $this->commandTester->getDisplay();
+        self::assertStringContainsString('DONE', $output);
+    }
+
+    public function testExceptionForMissingDisconnectReason(): void
+    {
+        $this->centrifugo
+            ->expects(self::never())
+            ->method('disconnect')
+        ;
+
+        $this->expectException(InvalidOptionException::class);
+        $this->expectExceptionMessage('Options "--disconnectReason" and "--disconnectCode" should set be together.');
+
+        $result = $this->commandTester->execute(
+            [
+                'command' => $this->command->getName(),
+                'user' => 'user123',
+                '--whitelist' => 'clientID1',
+                '--client' => 'clientID2',
+                '--session' => 'sessionID',
+                '--disconnectCode' => 999,
             ]
         );
         self::assertSame(0, $result);

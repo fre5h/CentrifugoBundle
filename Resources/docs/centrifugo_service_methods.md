@@ -83,7 +83,19 @@ $this->centrifugo->unsubscribe(
 ### Disconnect user by ID
 
 ```php
-$this->centrifugo->disconnect('user1');
+// With only required parameters
+$this->centrifugo->disconnect(user: 'user1');
+```
+
+```php
+// With all optional parameters
+$this->centrifugo->disconnect(
+    user: 'user1',
+    whitelist: ['clientID2'],
+    client: 'clientID2',
+    session: 'sessionID',
+    disconnectObject: new DisconnectObject(999, 'some reason'),
+);
 ```
 
 ### Get channel presence information (all clients currently subscribed on this channel)

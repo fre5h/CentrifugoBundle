@@ -33,12 +33,12 @@ trait OptionOffsetTrait
     protected function initializeOffsetOption(InputInterface $input): void
     {
         /** @var int|null $offset */
-        $offset = $input->getParameterOption(['--offset', '-o'], null);
+        $offset = $input->getParameterOption("--offset", null);
 
         if (null !== $offset) {
             $offset = (int) $offset;
             if ($offset <= 0) {
-                throw new InvalidOptionException('Option "--offset, -o" should be a valid integer value greater than 0.');
+                throw new InvalidOptionException('Option "--offset" should be a valid integer value greater than 0.');
             }
 
             $this->offset = $offset;

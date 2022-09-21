@@ -77,20 +77,4 @@ final class OptionEpochTraitTest extends TestCase
             ]
         );
     }
-
-    public function testValidOptionShortcut(): void
-    {
-        $this->centrifugo
-            ->expects(self::once())
-            ->method('history')
-        ;
-
-        $this->commandTester->execute(
-            [
-                'command' => $this->command->getName(),
-                'channel' => 'channelName',
-                '-ep' => 'ABCD',
-            ]
-        );
-    }
 }

@@ -14,8 +14,12 @@ namespace Fresh\CentrifugoBundle\Command;
 
 use Fresh\CentrifugoBundle\Command\Argument\ArgumentUserTrait;
 use Fresh\CentrifugoBundle\Command\Option\OptionClientTrait;
+use Fresh\CentrifugoBundle\Command\Option\OptionDisconnectCodeTrait;
+use Fresh\CentrifugoBundle\Command\Option\OptionDisconnectReasonTrait;
 use Fresh\CentrifugoBundle\Command\Option\OptionSessionTrait;
+use Fresh\CentrifugoBundle\Model\DisconnectObject;
 use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Exception\InvalidOptionException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
@@ -33,6 +37,8 @@ final class DisconnectCommand extends AbstractCommand
 {
     use ArgumentUserTrait;
     use OptionClientTrait;
+    use OptionDisconnectCodeTrait;
+    use OptionDisconnectReasonTrait;
     use OptionSessionTrait;
 
     /**
@@ -44,8 +50,11 @@ final class DisconnectCommand extends AbstractCommand
             ->setDefinition(
                 new InputDefinition([
                     new InputArgument('user', InputArgument::REQUIRED, 'User ID to disconnect'),
-                    new InputOption('client', 'c', InputOption::VALUE_OPTIONAL, 'Specific client ID to disconnect (user still required to be set)'),
-                    new InputOption('session', 's', InputOption::VALUE_OPTIONAL, 'Specific client session to disconnect (user still required to be set)'),
+                    new InputOption('whitelist', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL, 'Array of client IDs to keep', []),
+                    new InputOption('client', null, InputOption::VALUE_OPTIONAL, 'Specific client ID to disconnect (user still required to be set)'),
+                    new InputOption('session', null, InputOption::VALUE_OPTIONAL, 'Specific client session to disconnect (user still required to be set)'),
+                    new InputOption('disconnectCode', null, InputOption::VALUE_OPTIONAL, 'Disconnect code'),
+                    new InputOption('disconnectReason', null, InputOption::VALUE_OPTIONAL, 'Disconnect reason'),
                 ])
             )
             ->setHelp(
@@ -53,6 +62,22 @@ final class DisconnectCommand extends AbstractCommand
 The <info>%command.name%</info> command allows to disconnect user by ID:
 
 <info>%command.full_name%</info> <comment>user123</comment>
+
+You can set a whitelist of client IDs to keep:
+
+<info>%command.full_name%</info> <comment>user123</comment> <comment>--whitelist=clientID1 --whitelist=clientID2</comment>
+
+You can disconnect a specific user by their client ID:
+
+<info>%command.full_name%</info> <comment>user123</comment> <comment>--client=clientID</comment>
+
+You can disconnect a specific user by their session ID:
+
+<info>%command.full_name%</info> <comment>user123</comment> <comment>--session=sessionID</comment>
+
+You can set a specific disconnect code and reason:
+
+<info>%command.full_name%</info> <comment>user123</comment> <comment>--disconnectCode=999 --disconnectReason=some reason</comment>
 
 Read more at https://centrifugal.dev/docs/server/server_api#disconnect
 HELP
@@ -68,6 +93,16 @@ HELP
         parent::initialize($input, $output);
 
         $this->initializeUserArgument($input);
+        $this->initializeClientOption($input);
+        $this->initializeDisconnectCodeOption($input);
+        $this->initializeDisconnectReasonOption($input);
+        $this->initializeSessionOption($input);
+
+        $emptyDisconnectReason = \is_int($this->disconnectCode) && empty($this->disconnectReason);
+        $notSetDisconnectCode = null === $this->disconnectCode && !empty($this->disconnectReason);
+        if ($emptyDisconnectReason || $notSetDisconnectCode) {
+            throw new InvalidOptionException('Options "--disconnectReason" and "--disconnectCode" should set be together.');
+        }
     }
 
     /**
@@ -78,7 +113,18 @@ HELP
         $io = new SymfonyStyle($input, $output);
 
         try {
-            $this->centrifugo->disconnect($this->user);
+            $disconnectObject = null;
+            if (\is_int($this->disconnectCode) && !empty($this->disconnectReason)) {
+                $disconnectObject = new DisconnectObject($this->disconnectCode, $this->disconnectReason);
+            }
+
+            $this->centrifugo->disconnect(
+                user: $this->user,
+                whitelist: (array) $input->getOption('whitelist'),
+                client: $this->client,
+                session: $this->session,
+                disconnectObject: $disconnectObject,
+            );
             $io->success('DONE');
         } catch (\Throwable $e) {
             $io->error($e->getMessage());

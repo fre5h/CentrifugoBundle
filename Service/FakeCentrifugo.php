@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Service;
 
+use Fresh\CentrifugoBundle\Model\DisconnectObject;
+
 /**
  * FakeCentrifugo.
  *
@@ -46,7 +48,7 @@ class FakeCentrifugo implements CentrifugoInterface
     /**
      * {@inheritdoc}
      */
-    public function disconnect(string $user): void
+    public function disconnect(string $user, array $whitelist = [], ?string $client = null, ?string $session = null, ?DisconnectObject $disconnectObject = null): void
     {
         // noop
     }

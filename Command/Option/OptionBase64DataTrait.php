@@ -31,12 +31,12 @@ trait OptionBase64DataTrait
      */
     protected function initializeB64DataOption(InputInterface $input): void
     {
-        $base64data = $input->getParameterOption(['--base64data', '-b'], null);
+        $base64data = $input->getParameterOption('--base64data', null);
 
         if (\is_string($base64data) && !empty($base64data)) {
             $decodedData = \base64_decode($base64data, true);
             if (false === $decodedData) {
-                throw new InvalidOptionException('Option "--base64data, -b" should be a valid base64 encoded string.');
+                throw new InvalidOptionException('Option "--base64data" should be a valid base64 encoded string.');
             }
 
             $this->base64data = $base64data;
