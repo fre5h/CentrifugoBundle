@@ -19,26 +19,33 @@ namespace Fresh\CentrifugoBundle\Model;
  */
 final class RefreshCommand extends AbstractCommand
 {
-    private string $user;
-
     /**
      * @param string      $user
      * @param string|null $client
+     * @param string|null $session
      * @param bool|null   $expired
      * @param int|null    $expireAt
      */
-    public function __construct(string $user, ?string $client = null, ?bool $expired = null, ?int $expireAt = null)
+    public function __construct(string $user, ?string $client = null, ?string $session = null, ?bool $expired = null, ?int $expireAt = null)
     {
-        $this->user = $user;
+        $params = ['user' => $user];
 
-        parent::__construct(
-            Method::REFRESH,
-            [
-                'user' => $this->user,
-                'client' => $client,
-                'expired' => $expired,
-                'expire_at' => $expireAt,
-            ]
-        );
+        if (\is_string($client) && !empty($client)) {
+            $params['client'] = $client;
+        }
+
+        if (\is_string($client) && !empty($session)) {
+            $params['session'] = $session;
+        }
+
+        if (\is_bool($expired)) {
+            $params['expired'] = $expired;
+        }
+
+        if (\is_int($expireAt) && $expireAt > 0) {
+            $params['expire_at'] = $expireAt;
+        }
+
+        parent::__construct(Method::REFRESH, $params);
     }
 }

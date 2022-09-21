@@ -212,11 +212,45 @@ final class CentrifugoTest extends TestCase
         ;
 
         $this->centrifugo->disconnect(
-            user:             'user123',
-            whitelist:        ['test'],
-            client:           'test',
-            session:          'test',
+            user: 'user123',
+            whitelist: ['test'],
+            client: 'test',
+            session: 'test',
             disconnectObject: new Model\DisconnectObject(999, 'test'),
+        );
+    }
+
+    public function testRefreshCommand(): void
+    {
+        $this->centrifugoChecker
+            ->expects(self::never())
+            ->method('assertValidChannelName')
+        ;
+
+        $this->httpClient
+            ->expects(self::once())
+            ->method('request')
+            ->willReturn($this->response)
+        ;
+
+        $this->commandHistoryLogger
+            ->expects(self::once())
+            ->method('increaseRequestsCount')
+        ;
+
+        $this->responseProcessor
+            ->expects(self::once())
+            ->method('processResponse')
+            ->with(self::isInstanceOf(Model\RefreshCommand::class), $this->response)
+            ->willReturn(null)
+        ;
+
+        $this->centrifugo->refresh(
+            user: 'user123',
+            client: 'test',
+            session: 'test',
+            expired: true,
+            expireAt: 1234567890,
         );
     }
 

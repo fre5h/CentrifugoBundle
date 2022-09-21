@@ -78,6 +78,14 @@ class Centrifugo implements CentrifugoInterface
     /**
      * {@inheritdoc}
      */
+    public function refresh(string $user, ?string $client = null, ?string $session = null, ?bool $expired = null, ?int $expireAt = null): void
+    {
+        $this->doSendCommand(new Model\RefreshCommand($user, $client, $session, $expired, $expireAt));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function presence(string $channel): array
     {
         return (array) $this->doSendCommand(new Model\PresenceCommand($channel));

@@ -56,6 +56,14 @@ class FakeCentrifugo implements CentrifugoInterface
     /**
      * {@inheritdoc}
      */
+    public function refresh(string $user, ?string $client = null, ?string $session = null, ?bool $expired = null, ?int $expireAt = null): void
+    {
+        // noop
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function presence(string $channel): array
     {
         return [];

@@ -98,6 +98,24 @@ $this->centrifugo->disconnect(
 );
 ```
 
+### Refresh user connection
+
+```php
+// With only required parameters
+$this->centrifugo->refresh(user: 'user1');
+```
+
+```php
+// With all optional parameters
+$this->centrifugo->refresh(
+    user: 'user1',
+    client: 'test',
+    session: 'test',
+    expired: true,
+    expireAt: 1234567890,
+);
+```
+
 ### Get channel presence information (all clients currently subscribed on this channel)
 
 ```php

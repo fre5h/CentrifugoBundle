@@ -58,6 +58,15 @@ interface CentrifugoInterface
     public function disconnect(string $user, array $whitelist = [], ?string $client = null, ?string $session = null, ?DisconnectObject $disconnectObject = null): void;
 
     /**
+     * @param string      $user
+     * @param string|null $client
+     * @param string|null $session
+     * @param bool|null   $expired
+     * @param int|null    $expireAt
+     */
+    public function refresh(string $user, ?string $client = null, ?string $session = null, ?bool $expired = null, ?int $expireAt = null): void;
+
+    /**
      * @param string $channel
      *
      * @return array
