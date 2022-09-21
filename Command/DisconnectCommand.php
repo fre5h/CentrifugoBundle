@@ -122,10 +122,10 @@ HELP
             $whitelist = (array) $input->getOption('whitelist');
 
             $this->centrifugo->disconnect(
-                user:             $this->user,
-                whitelist:        $whitelist,
-                client:           $this->client,
-                session:          $this->session,
+                user: $this->user,
+                whitelist: $whitelist,
+                client: $this->client,
+                session: $this->session,
                 disconnectObject: $disconnectObject,
             );
             $io->success('DONE');
