@@ -77,7 +77,7 @@ You can disconnect a specific user by their session ID:
 
 You can set a specific disconnect code and reason:
 
-<info>%command.full_name%</info> <comment>user123</comment> <comment>--disconnectCode=999 --disconnectReason=some reason</comment>
+<info>%command.full_name%</info> <comment>user123</comment> <comment>--disconnectCode=999 --disconnectReason="some reason"</comment>
 
 Read more at https://centrifugal.dev/docs/server/server_api#disconnect
 HELP

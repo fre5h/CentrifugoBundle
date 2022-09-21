@@ -145,7 +145,7 @@ class Centrifugo implements CentrifugoInterface
         if ($command instanceof Model\BatchRequest) {
             $json = $command->prepareLineDelimitedJson();
         } else {
-            $json = \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT);
+            $json = \json_encode($command, \JSON_THROW_ON_ERROR);
         }
 
         if ($this->profilerEnabled) {

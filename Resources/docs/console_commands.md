@@ -61,7 +61,7 @@ $ bin/console centrifugo:disconnect user123
 ```
 
 ```bash
-$ bin/console centrifugo:disconnect user123 --whitelist=clientID1 --client=clientID2 --session=sessionID --disconnectCode=999 --disconnectReason=some reason
+$ bin/console centrifugo:disconnect user123 --whitelist=clientID1 --client=clientID2 --session=sessionID --disconnectCode=999 --disconnectReason="some reason"
 
 [OK] DONE
 ```
