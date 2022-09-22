@@ -123,4 +123,17 @@ final class ChannelsCommandTest extends TestCase
         $output = $this->commandTester->getDisplay();
         self::assertStringContainsString('test', $output);
     }
+
+    public function testAutocomplete(): void
+    {
+        $this->centrifugo
+            ->expects(self::once())
+            ->method('channels')
+            ->willReturn(['channels' => ['channel1' => [], 'channel2' => []]])
+        ;
+
+        $channels = $this->command->getChannelsForAutocompletion()();
+
+        self::assertSame(['channel1', 'channel2'], $channels);
+    }
 }
