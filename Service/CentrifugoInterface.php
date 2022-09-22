@@ -14,6 +14,7 @@ namespace Fresh\CentrifugoBundle\Service;
 
 use Fresh\CentrifugoBundle\Model\CommandInterface;
 use Fresh\CentrifugoBundle\Model\DisconnectObject;
+use Fresh\CentrifugoBundle\Model\StreamPosition;
 
 /**
  * CentrifugoInterface.
@@ -81,15 +82,14 @@ interface CentrifugoInterface
     public function presenceStats(string $channel): array;
 
     /**
-     * @param string      $channel
-     * @param bool        $reverse
-     * @param int|null    $limit
-     * @param int|null    $offset
-     * @param string|null $epoch
+     * @param string              $channel
+     * @param bool                $reverse
+     * @param int|null            $limit
+     * @param StreamPosition|null $streamPosition
      *
      * @return array
      */
-    public function history(string $channel, bool $reverse = false, ?int $limit = null, ?int $offset = null, ?string $epoch = null): array;
+    public function history(string $channel, bool $reverse = false, ?int $limit = null, ?StreamPosition $streamPosition = null): array;
 
     /**
      * @param string $channel

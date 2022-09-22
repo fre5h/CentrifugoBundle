@@ -22,13 +22,12 @@ final class HistoryCommand extends AbstractCommand implements ResultableCommandI
     use ChannelCommandTrait;
 
     /**
-     * @param string      $channel
-     * @param bool        $reverse
-     * @param int|null    $limit
-     * @param int|null    $offset
-     * @param string|null $epoch
+     * @param string              $channel
+     * @param bool                $reverse
+     * @param int|null            $limit
+     * @param StreamPosition|null $streamPosition
      */
-    public function __construct(protected readonly string $channel, bool $reverse = false, ?int $limit = null, ?int $offset = null, ?string $epoch = null)
+    public function __construct(protected readonly string $channel, bool $reverse = false, ?int $limit = null, ?StreamPosition $streamPosition = null)
     {
         $params = [
             'channel' => $channel,
@@ -42,12 +41,14 @@ final class HistoryCommand extends AbstractCommand implements ResultableCommandI
             $params['limit'] = $limit;
         }
 
-        if (\is_int($offset) && $offset > 0) {
-            $params['since']['offset'] = $offset;
-        }
+        if ($streamPosition instanceof StreamPosition) {
+            if (\is_int($streamPosition->getOffset()) && $streamPosition->getOffset() > 0) {
+                $params['since']['offset'] = $streamPosition->getOffset();
+            }
 
-        if (\is_string($epoch) && !empty($epoch)) {
-            $params['since']['epoch'] = $epoch;
+            if (\is_string($streamPosition->getEpoch()) && !empty($streamPosition->getEpoch())) {
+                $params['since']['epoch'] = $streamPosition->getEpoch();
+            }
         }
 
         parent::__construct(Method::HISTORY, $params);

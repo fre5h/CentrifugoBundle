@@ -16,6 +16,7 @@ use Fresh\CentrifugoBundle\Logger\CommandHistoryLogger;
 use Fresh\CentrifugoBundle\Model;
 use Fresh\CentrifugoBundle\Model\CommandInterface;
 use Fresh\CentrifugoBundle\Model\DisconnectObject;
+use Fresh\CentrifugoBundle\Model\StreamPosition;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Profiler\Profiler;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -102,9 +103,9 @@ class Centrifugo implements CentrifugoInterface
     /**
      * {@inheritdoc}
      */
-    public function history(string $channel, bool $reverse = false, ?int $limit = null, ?int $offset = null, ?string $epoch = null): array
+    public function history(string $channel, bool $reverse = false, ?int $limit = null, ?StreamPosition $streamPosition = null): array
     {
-        return (array) $this->doSendCommand(new Model\HistoryCommand($channel, $reverse, $limit, $offset, $epoch));
+        return (array) $this->doSendCommand(new Model\HistoryCommand($channel, $reverse, $limit, $streamPosition));
     }
 
     /**

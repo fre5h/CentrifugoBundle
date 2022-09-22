@@ -207,8 +207,7 @@ $data = $this->centrifugo->history(
     channel: 'channelA',
     reverse: true,
     limit: 10,
-    offset: 5,
-    epoch: 'EFGH',
+    streamPosition: new StreamPosition(5, 'EFGH'),
 );
 
 /*

@@ -17,6 +17,7 @@ use Fresh\CentrifugoBundle\Command\Option\OptionEpochTrait;
 use Fresh\CentrifugoBundle\Command\Option\OptionLimitTrait;
 use Fresh\CentrifugoBundle\Command\Option\OptionOffsetTrait;
 use Fresh\CentrifugoBundle\Command\Option\OptionReverseTrait;
+use Fresh\CentrifugoBundle\Model\StreamPosition;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -115,8 +116,7 @@ HELP
                 channel: $this->channel,
                 reverse: $this->reverse,
                 limit: $this->limit,
-                offset: $this->offset,
-                epoch: $this->epoch,
+                streamPosition: new StreamPosition($this->offset, $this->epoch),
             );
 
             if (!empty($data['publications'])) {
@@ -138,6 +138,7 @@ HELP
                 $io->success('NO DATA');
             }
         } catch (\Throwable $e) {
+            echo $e->getMessage();
             $io->error($e->getMessage());
 
             return self::FAILURE;

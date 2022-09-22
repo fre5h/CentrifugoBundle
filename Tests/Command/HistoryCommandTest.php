@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Fresh\CentrifugoBundle\Tests\Command;
 
 use Fresh\CentrifugoBundle\Command\HistoryCommand;
+use Fresh\CentrifugoBundle\Model\StreamPosition;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -110,7 +111,7 @@ JSON,
         $this->centrifugo
             ->expects(self::once())
             ->method('history')
-            ->with('channelA', true, 10, 5, 'test')
+            ->with('channelA', true, 10, self::isInstanceOf(StreamPosition::class))
             ->willReturn(
                 [
                     'publications' => [

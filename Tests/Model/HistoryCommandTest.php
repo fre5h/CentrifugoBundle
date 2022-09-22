@@ -16,6 +16,7 @@ use Fresh\CentrifugoBundle\Model\CommandInterface;
 use Fresh\CentrifugoBundle\Model\HistoryCommand;
 use Fresh\CentrifugoBundle\Model\Method;
 use Fresh\CentrifugoBundle\Model\SerializableCommandInterface;
+use Fresh\CentrifugoBundle\Model\StreamPosition;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -62,8 +63,7 @@ final class HistoryCommandTest extends TestCase
             channel: 'foo',
             reverse: true,
             limit: 10,
-            offset: 5,
-            epoch: 'test',
+            streamPosition: new StreamPosition(5, 'test'),
         );
         self::assertJsonStringEqualsJsonString(
             <<<'JSON'
@@ -90,8 +90,7 @@ final class HistoryCommandTest extends TestCase
             channel: 'foo',
             reverse: true,
             limit: 0,
-            offset: 0,
-            epoch: 'test',
+            streamPosition: new StreamPosition(null, null),
         );
         self::assertJsonStringEqualsJsonString(
             <<<'JSON'
@@ -99,10 +98,7 @@ final class HistoryCommandTest extends TestCase
                     "method": "history",
                     "params": {
                         "channel": "foo",
-                        "reverse": true,
-                        "since": {
-                            "epoch": "test"
-                        }
+                        "reverse": true
                     }
                 }
             JSON,

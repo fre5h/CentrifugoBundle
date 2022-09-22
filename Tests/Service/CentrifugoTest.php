@@ -14,6 +14,7 @@ namespace Fresh\CentrifugoBundle\Tests\Service;
 
 use Fresh\CentrifugoBundle\Logger\CommandHistoryLogger;
 use Fresh\CentrifugoBundle\Model;
+use Fresh\CentrifugoBundle\Model\StreamPosition;
 use Fresh\CentrifugoBundle\Service\Centrifugo;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\ResponseProcessor;
@@ -342,8 +343,7 @@ final class CentrifugoTest extends TestCase
             channel: 'channelA',
             reverse: true,
             limit: 10,
-            offset: 5,
-            epoch: 'test',
+            streamPosition: new StreamPosition(5, 'ABCD'),
         );
     }
 

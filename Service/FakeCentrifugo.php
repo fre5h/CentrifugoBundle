@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Fresh\CentrifugoBundle\Service;
 
 use Fresh\CentrifugoBundle\Model\DisconnectObject;
+use Fresh\CentrifugoBundle\Model\StreamPosition;
 
 /**
  * FakeCentrifugo.
@@ -80,7 +81,7 @@ class FakeCentrifugo implements CentrifugoInterface
     /**
      * {@inheritdoc}
      */
-    public function history(string $channel, bool $reverse = false, ?int $limit = null, ?int $offset = null, ?string $epoch = null): array
+    public function history(string $channel, bool $reverse = false, ?int $limit = null, ?StreamPosition $streamPosition = null): array
     {
         return [];
     }
