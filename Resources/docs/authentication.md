@@ -125,7 +125,7 @@ use Fresh\CentrifugoBundle\Service\ChannelAuthenticator\ChannelAuthenticatorInte
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-class AdminChannelAuthenticator implements ChannelAuthenticatorInterface
+class AdminsChannelAuthenticator implements ChannelAuthenticatorInterface
 {
     public function __construct(private readonly AuthorizationCheckerInterface $authorizationChecker)
     {

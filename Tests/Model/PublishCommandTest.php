@@ -90,7 +90,7 @@ final class PublishCommandTest extends TestCase
                         "tags": {
                             "tag": "value"
                         },
-                        "base64data": "qwerty"
+                        "b64data": "qwerty"
                     }
                 }
             JSON,
