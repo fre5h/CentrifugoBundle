@@ -49,7 +49,7 @@ final class HistoryRemoveCommand extends AbstractCommand
         $this
             ->setDefinition(
                 new InputDefinition([
-                    new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to remove history'),
+                                        new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to remove history', null, $this->getChannelsForAutocompletion()),
                 ])
             )
             ->setHelp(

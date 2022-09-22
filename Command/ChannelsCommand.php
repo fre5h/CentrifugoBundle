@@ -38,7 +38,7 @@ final class ChannelsCommand extends AbstractCommand
         $this
             ->setDefinition(
                 new InputDefinition([
-                    new InputArgument('pattern', InputArgument::OPTIONAL, 'Pattern to filter channels'),
+                    new InputArgument('pattern', InputArgument::OPTIONAL, 'Pattern to filter channels', null, $this->getChannelsForAutocompletion())
                 ])
             )
             ->setHelp(

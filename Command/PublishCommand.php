@@ -58,11 +58,11 @@ final class PublishCommand extends AbstractCommand
         $this
             ->setDefinition(
                 new InputDefinition([
-                    new InputArgument('data', InputArgument::REQUIRED, 'Custom JSON data to publish into each channel'),
-                    new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to publish'),
-                    new InputOption('tags', null, InputOption::VALUE_OPTIONAL, 'Publication tags - map with arbitrary string keys and values which is attached to publication and will be delivered to clients'),
-                    new InputOption('skipHistory', null, InputOption::VALUE_NONE, 'Skip adding publications to channels\' history for this request'),
-                    new InputOption('base64data', null, InputOption::VALUE_OPTIONAL, 'Custom binary data to publish into a channel encoded to base64 so it\'s possible to use HTTP API to send binary to clients. Centrifugo will decode it from base64 before publishing.'),
+                                        new InputArgument('data', InputArgument::REQUIRED, 'Custom JSON data to publish into each channel'),
+                                        new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to publish', null, $this->getChannelsForAutocompletion()),
+                                        new InputOption('tags', null, InputOption::VALUE_OPTIONAL, 'Publication tags - map with arbitrary string keys and values which is attached to publication and will be delivered to clients'),
+                                        new InputOption('skipHistory', null, InputOption::VALUE_NONE, 'Skip adding publications to channels\' history for this request'),
+                                        new InputOption('base64data', null, InputOption::VALUE_OPTIONAL, 'Custom binary data to publish into a channel encoded to base64 so it\'s possible to use HTTP API to send binary to clients. Centrifugo will decode it from base64 before publishing.'),
                 ])
             )
             ->setHelp(

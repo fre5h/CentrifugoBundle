@@ -56,10 +56,10 @@ final class UnsubscribeCommand extends AbstractCommand
         $this
             ->setDefinition(
                 new InputDefinition([
-                    new InputArgument('user', InputArgument::REQUIRED, 'User ID to unsubscribe'),
-                    new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to unsubscribe user to'),
-                    new InputOption('client', null, InputOption::VALUE_OPTIONAL, 'Specific client ID to unsubscribe (user still required to be set)'),
-                    new InputOption('session', null, InputOption::VALUE_OPTIONAL, 'Specific client session to disconnect (user still required to be set)'),
+                                        new InputArgument('user', InputArgument::REQUIRED, 'User ID to unsubscribe'),
+                                        new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to unsubscribe user to', null, $this->getChannelsForAutocompletion()),
+                                        new InputOption('client', null, InputOption::VALUE_OPTIONAL, 'Specific client ID to unsubscribe (user still required to be set)'),
+                                        new InputOption('session', null, InputOption::VALUE_OPTIONAL, 'Specific client session to disconnect (user still required to be set)'),
                 ])
             )
             ->setHelp(

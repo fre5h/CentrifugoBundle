@@ -29,4 +29,14 @@ abstract class AbstractCommand extends Command
     {
         parent::__construct();
     }
+
+    /**
+     * @return \Closure
+     */
+    protected function getChannelsForAutocompletion(): \Closure
+    {
+        return function () {
+            return \array_keys($this->centrifugo->channels()['channels']);
+        };
+    }
 }
