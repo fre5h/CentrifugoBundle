@@ -30,26 +30,41 @@ final class Override
     {
     }
 
+    /**
+     * @return bool
+     */
     public function isPresence(): bool
     {
         return $this->presence;
     }
 
+    /**
+     * @return bool
+     */
     public function isJoinLeave(): bool
     {
         return $this->joinLeave;
     }
 
+    /**
+     * @return bool
+     */
     public function isForcePushJoinLeave(): bool
     {
         return $this->forcePushJoinLeave;
     }
 
+    /**
+     * @return bool
+     */
     public function isForcePositioning(): bool
     {
         return $this->forcePositioning;
     }
 
+    /**
+     * @return bool
+     */
     public function isForceRecovery(): bool
     {
         return $this->forceRecovery;
