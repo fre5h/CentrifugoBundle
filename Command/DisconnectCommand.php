@@ -17,7 +17,7 @@ use Fresh\CentrifugoBundle\Command\Option\OptionClientTrait;
 use Fresh\CentrifugoBundle\Command\Option\OptionDisconnectCodeTrait;
 use Fresh\CentrifugoBundle\Command\Option\OptionDisconnectReasonTrait;
 use Fresh\CentrifugoBundle\Command\Option\OptionSessionTrait;
-use Fresh\CentrifugoBundle\Model\DisconnectObject;
+use Fresh\CentrifugoBundle\Model\Disconnect;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Exception\InvalidOptionException;
 use Symfony\Component\Console\Input\InputArgument;
@@ -115,7 +115,7 @@ HELP
         try {
             $disconnectObject = null;
             if (\is_int($this->disconnectCode) && !empty($this->disconnectReason)) {
-                $disconnectObject = new DisconnectObject($this->disconnectCode, $this->disconnectReason);
+                $disconnectObject = new Disconnect($this->disconnectCode, $this->disconnectReason);
             }
 
             /** @var array<string> $whitelist */

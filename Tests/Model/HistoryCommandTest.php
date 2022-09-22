@@ -63,7 +63,7 @@ final class HistoryCommandTest extends TestCase
             channel: 'foo',
             reverse: true,
             limit: 10,
-            streamPosition: new StreamPosition(5, 'test'),
+            streamPosition: new StreamPosition(offset: 5, epoch: 'test'),
         );
         self::assertJsonStringEqualsJsonString(
             <<<'JSON'
@@ -90,7 +90,7 @@ final class HistoryCommandTest extends TestCase
             channel: 'foo',
             reverse: true,
             limit: 0,
-            streamPosition: new StreamPosition(null, null),
+            streamPosition: new StreamPosition(offset: null, epoch: null),
         );
         self::assertJsonStringEqualsJsonString(
             <<<'JSON'

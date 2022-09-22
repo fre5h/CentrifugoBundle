@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Fresh\CentrifugoBundle\Service;
 
 use Fresh\CentrifugoBundle\Model\CommandInterface;
-use Fresh\CentrifugoBundle\Model\DisconnectObject;
+use Fresh\CentrifugoBundle\Model\Disconnect;
 use Fresh\CentrifugoBundle\Model\StreamPosition;
 
 /**
@@ -50,13 +50,13 @@ interface CentrifugoInterface
     public function unsubscribe(string $user, string $channel, string $client = '', string $session = ''): void;
 
     /**
-     * @param string                $user
-     * @param string[]              $whitelist
-     * @param string|null           $client
-     * @param string|null           $session
-     * @param DisconnectObject|null $disconnectObject
+     * @param string          $user
+     * @param string[]        $whitelist
+     * @param string|null     $client
+     * @param string|null     $session
+     * @param Disconnect|null $disconnectObject
      */
-    public function disconnect(string $user, array $whitelist = [], ?string $client = null, ?string $session = null, ?DisconnectObject $disconnectObject = null): void;
+    public function disconnect(string $user, array $whitelist = [], ?string $client = null, ?string $session = null, ?Disconnect $disconnectObject = null): void;
 
     /**
      * @param string      $user

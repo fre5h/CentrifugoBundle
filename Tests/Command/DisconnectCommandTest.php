@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Fresh\CentrifugoBundle\Tests\Command;
 
 use Fresh\CentrifugoBundle\Command\DisconnectCommand;
-use Fresh\CentrifugoBundle\Model\DisconnectObject;
+use Fresh\CentrifugoBundle\Model\Disconnect;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -83,7 +83,7 @@ final class DisconnectCommandTest extends TestCase
         $this->centrifugo
             ->expects(self::once())
             ->method('disconnect')
-            ->with('user123', ['clientID1'], 'clientID2', 'sessionID', self::isInstanceOf(DisconnectObject::class))
+            ->with('user123', ['clientID1'], 'clientID2', 'sessionID', self::isInstanceOf(Disconnect::class))
         ;
 
         $result = $this->commandTester->execute(

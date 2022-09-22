@@ -12,19 +12,19 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Tests\Model;
 
-use Fresh\CentrifugoBundle\Model\DisconnectObject;
+use Fresh\CentrifugoBundle\Model\Disconnect;
 use PHPUnit\Framework\TestCase;
 
 /**
- * DisconnectObjectTest.
+ * DisconnectTest.
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-final class DisconnectObjectTest extends TestCase
+final class DisconnectTest extends TestCase
 {
     public function testConstructor(): void
     {
-        $disconnectObject = new DisconnectObject(999, 'some reason');
+        $disconnectObject = new Disconnect(999, 'some reason');
         self::assertSame(999, $disconnectObject->getCode());
         self::assertSame('some reason', $disconnectObject->getReason());
     }

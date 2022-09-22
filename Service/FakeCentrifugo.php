@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Service;
 
-use Fresh\CentrifugoBundle\Model\DisconnectObject;
+use Fresh\CentrifugoBundle\Model\Disconnect;
 use Fresh\CentrifugoBundle\Model\StreamPosition;
 
 /**
@@ -49,7 +49,7 @@ class FakeCentrifugo implements CentrifugoInterface
     /**
      * {@inheritdoc}
      */
-    public function disconnect(string $user, array $whitelist = [], ?string $client = null, ?string $session = null, ?DisconnectObject $disconnectObject = null): void
+    public function disconnect(string $user, array $whitelist = [], ?string $client = null, ?string $session = null, ?Disconnect $disconnectObject = null): void
     {
         // noop
     }

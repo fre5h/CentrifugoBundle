@@ -14,7 +14,7 @@ namespace Fresh\CentrifugoBundle\Tests\Model;
 
 use Fresh\CentrifugoBundle\Model\CommandInterface;
 use Fresh\CentrifugoBundle\Model\DisconnectCommand;
-use Fresh\CentrifugoBundle\Model\DisconnectObject;
+use Fresh\CentrifugoBundle\Model\Disconnect;
 use Fresh\CentrifugoBundle\Model\Method;
 use Fresh\CentrifugoBundle\Model\SerializableCommandInterface;
 use PHPUnit\Framework\TestCase;
@@ -64,7 +64,7 @@ final class DisconnectCommandTest extends TestCase
             clientIdWhitelist: ['clientID1'],
             client: 'clientID2',
             session: 'sessionID1',
-            disconnectObject: new DisconnectObject(999, 'some reason'),
+            disconnectObject: new Disconnect(code: 999, reason: 'some reason'),
         );
         self::assertJsonStringEqualsJsonString(
             <<<'JSON'

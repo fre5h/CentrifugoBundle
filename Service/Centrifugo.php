@@ -15,7 +15,7 @@ namespace Fresh\CentrifugoBundle\Service;
 use Fresh\CentrifugoBundle\Logger\CommandHistoryLogger;
 use Fresh\CentrifugoBundle\Model;
 use Fresh\CentrifugoBundle\Model\CommandInterface;
-use Fresh\CentrifugoBundle\Model\DisconnectObject;
+use Fresh\CentrifugoBundle\Model\Disconnect;
 use Fresh\CentrifugoBundle\Model\StreamPosition;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Profiler\Profiler;
@@ -71,7 +71,7 @@ class Centrifugo implements CentrifugoInterface
     /**
      * {@inheritdoc}
      */
-    public function disconnect(string $user, array $whitelist = [], ?string $client = null, ?string $session = null, ?DisconnectObject $disconnectObject = null): void
+    public function disconnect(string $user, array $whitelist = [], ?string $client = null, ?string $session = null, ?Disconnect $disconnectObject = null): void
     {
         $this->doSendCommand(new Model\DisconnectCommand($user, $whitelist, $client, $session, $disconnectObject));
     }

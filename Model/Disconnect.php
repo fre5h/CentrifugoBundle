@@ -13,11 +13,11 @@ declare(strict_types=1);
 namespace Fresh\CentrifugoBundle\Model;
 
 /**
- * DisconnectObject.
+ * Disconnect.
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-final class DisconnectObject
+final class Disconnect
 {
     /**
      * @param int    $code

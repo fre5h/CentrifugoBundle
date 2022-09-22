@@ -19,17 +19,21 @@ namespace Fresh\CentrifugoBundle\Model;
  */
 final class SubscribeCommand extends AbstractCommand
 {
+    use ChannelCommandTrait;
+
     /**
-     * @param string      $user
-     * @param string      $channel
-     * @param array       $info
-     * @param string|null $base64Info
-     * @param string|null $client
-     * @param string|null $session
-     * @param array       $data
-     * @param string|null $base64Data
+     * @param string              $user
+     * @param string              $channel
+     * @param array               $info
+     * @param string|null         $base64Info
+     * @param string|null         $client
+     * @param string|null         $session
+     * @param array               $data
+     * @param string|null         $base64Data
+     * @param StreamPosition|null $recoverSince
+     * @param Override|null       $override
      */
-    public function __construct(string $user, string $channel, array $info = [], ?string $base64Info = null, ?string $client = null, ?string $session = null, array $data = [], ?string $base64Data = null)
+    public function __construct(string $user, protected readonly string $channel, array $info = [], ?string $base64Info = null, ?string $client = null, ?string $session = null, array $data = [], ?string $base64Data = null, ?StreamPosition $recoverSince = null, ?Override $override = null)
     {
         $params = [
             'user' => $user,
@@ -60,6 +64,24 @@ final class SubscribeCommand extends AbstractCommand
             $params['b64data'] = $base64Data;
         }
 
-        parent::__construct(Method::REFRESH, $params);
+        if ($recoverSince instanceof StreamPosition) {
+            if (\is_int($recoverSince->getOffset()) && $recoverSince->getOffset() > 0) {
+                $params['recover_since']['offset'] = $recoverSince->getOffset();
+            }
+
+            if (\is_string($recoverSince->getEpoch()) && !empty($recoverSince->getEpoch())) {
+                $params['recover_since']['epoch'] = $recoverSince->getEpoch();
+            }
+        }
+
+        if ($override instanceof Override) {
+            $params['override']['presence'] = $override->isPresence();
+            $params['override']['join_leave'] = $override->isJoinLeave();
+            $params['override']['force_push_join_leave'] = $override->isForcePushJoinLeave();
+            $params['override']['force_positioning'] = $override->isForcePositioning();
+            $params['override']['force_recovery'] = $override->isForceRecovery();
+        }
+
+        parent::__construct(Method::SUBSCRIBE, $params);
     }
 }

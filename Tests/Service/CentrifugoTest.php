@@ -217,7 +217,7 @@ final class CentrifugoTest extends TestCase
             whitelist: ['test'],
             client: 'test',
             session: 'test',
-            disconnectObject: new Model\DisconnectObject(999, 'test'),
+            disconnectObject: new Model\Disconnect(999, 'test'),
         );
     }
 
