@@ -110,13 +110,13 @@ class YourService
 
 ℹ️ [More examples of using console commands](./Resources/docs/console_commands.md "More examples of using console commands")
 
-### Autocomplete channels in console commands 🪄
-
-![example](https://github.com/fre5h/CentrifugoBundle/blob/centrifugo_v3/Resources/images/autocomplete_example.gif)
-
 ### Integration into Symfony Web-Profiler 🎛️
 
 ![](./Resources/images/profiler_example.png "Profiler example")
+
+### Autocomplete channels in console commands 🪄
+
+![example](https://github.com/fre5h/CentrifugoBundle/blob/centrifugo_v3/Resources/images/autocomplete_example.gif)
 
 ## Contributing 🤝
 
