@@ -49,7 +49,7 @@ final class PresenceCommand extends AbstractCommand
         $this
             ->setDefinition(
                 new InputDefinition([
-                                        new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to call presence from', null, $this->getChannelsForAutocompletion()),
+                    new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to call presence from', null, $this->getChannelsForAutocompletion()),
                 ])
             )
             ->setHelp(

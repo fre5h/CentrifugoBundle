@@ -58,11 +58,11 @@ final class BroadcastCommand extends AbstractCommand
         $this
             ->setDefinition(
                 new InputDefinition([
-                                        new InputArgument('data', InputArgument::REQUIRED, 'Data in JSON format'),
-                                        new InputArgument('channels', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'List of channels to publish data to', null, $this->getChannelsForAutocompletion()),
-                                        new InputOption('tags', null, InputOption::VALUE_OPTIONAL, 'Publication tags - map with arbitrary string keys and values which is attached to publication and will be delivered to clients'),
-                                        new InputOption('skipHistory', null, InputOption::VALUE_NONE, 'Skip adding publication to history for this request'),
-                                        new InputOption('base64data', null, InputOption::VALUE_OPTIONAL, 'Custom binary data to publish into a channel encoded to base64 so it\'s possible to use HTTP API to send binary to clients. Centrifugo will decode it from base64 before publishing.'),
+                    new InputArgument('data', InputArgument::REQUIRED, 'Data in JSON format'),
+                    new InputArgument('channels', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'List of channels to publish data to', null, $this->getChannelsForAutocompletion()),
+                    new InputOption('tags', null, InputOption::VALUE_OPTIONAL, 'Publication tags - map with arbitrary string keys and values which is attached to publication and will be delivered to clients'),
+                    new InputOption('skipHistory', null, InputOption::VALUE_NONE, 'Skip adding publication to history for this request'),
+                    new InputOption('base64data', null, InputOption::VALUE_OPTIONAL, 'Custom binary data to publish into a channel encoded to base64 so it\'s possible to use HTTP API to send binary to clients. Centrifugo will decode it from base64 before publishing.'),
                 ])
             )
             ->setHelp(
