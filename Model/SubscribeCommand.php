@@ -27,6 +27,7 @@ final class SubscribeCommand extends AbstractCommand
      * @param string|null $client
      * @param string|null $session
      * @param array       $data
+     * @param string|null $base64Data
      */
     public function __construct(string $user, string $channel, array $info = [], ?string $base64Info = null, ?string $client = null, ?string $session = null, array $data = [], ?string $base64Data = null)
     {
