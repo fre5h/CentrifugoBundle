@@ -14,6 +14,7 @@ namespace Fresh\CentrifugoBundle\Service;
 
 use Fresh\CentrifugoBundle\Model\CommandInterface;
 use Fresh\CentrifugoBundle\Model\Disconnect;
+use Fresh\CentrifugoBundle\Model\Override;
 use Fresh\CentrifugoBundle\Model\StreamPosition;
 
 /**
@@ -40,6 +41,20 @@ interface CentrifugoInterface
      * @param string               $base64data
      */
     public function broadcast(array $data, array $channels, bool $skipHistory = false, array $tags = [], string $base64data = ''): void;
+
+    /**
+     * @param string              $user
+     * @param string              $channel
+     * @param array               $info
+     * @param string|null         $base64Info
+     * @param string|null         $client
+     * @param string|null         $session
+     * @param array               $data
+     * @param string|null         $base64Data
+     * @param StreamPosition|null $recoverSince
+     * @param Override|null       $override
+     */
+    public function subscribe(string $user, string $channel, array $info = [], ?string $base64Info = null, ?string $client = null, ?string $session = null, array $data = [], ?string $base64Data = null, ?StreamPosition $recoverSince = null, ?Override $override = null): void;
 
     /**
      * @param string $user

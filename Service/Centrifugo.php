@@ -16,6 +16,7 @@ use Fresh\CentrifugoBundle\Logger\CommandHistoryLogger;
 use Fresh\CentrifugoBundle\Model;
 use Fresh\CentrifugoBundle\Model\CommandInterface;
 use Fresh\CentrifugoBundle\Model\Disconnect;
+use Fresh\CentrifugoBundle\Model\Override;
 use Fresh\CentrifugoBundle\Model\StreamPosition;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Profiler\Profiler;
@@ -58,6 +59,14 @@ class Centrifugo implements CentrifugoInterface
     public function broadcast(array $data, array $channels, bool $skipHistory = false, array $tags = [], string $base64data = ''): void
     {
         $this->doSendCommand(new Model\BroadcastCommand($data, $channels));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function subscribe(string $user, string $channel, array $info = [], ?string $base64Info = null, ?string $client = null, ?string $session = null, array $data = [], ?string $base64Data = null, ?StreamPosition $recoverSince = null, ?Override $override = null): void
+    {
+        $this->doSendCommand(new Model\SubscribeCommand($user, $channel, $info, $base64Info, $client, $session, $data, $base64Data, $recoverSince, $override));
     }
 
     /**

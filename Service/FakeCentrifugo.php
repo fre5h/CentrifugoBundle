@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Fresh\CentrifugoBundle\Service;
 
 use Fresh\CentrifugoBundle\Model\Disconnect;
+use Fresh\CentrifugoBundle\Model\Override;
 use Fresh\CentrifugoBundle\Model\StreamPosition;
 
 /**
@@ -34,6 +35,14 @@ class FakeCentrifugo implements CentrifugoInterface
      * {@inheritdoc}
      */
     public function broadcast(array $data, array $channels, bool $skipHistory = false, array $tags = [], string $base64data = ''): void
+    {
+        // noop
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function subscribe(string $user, string $channel, array $info = [], ?string $base64Info = null, ?string $client = null, ?string $session = null, array $data = [], ?string $base64Data = null, ?StreamPosition $recoverSince = null, ?Override $override = null): void
     {
         // noop
     }

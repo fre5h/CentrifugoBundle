@@ -14,6 +14,7 @@ namespace Fresh\CentrifugoBundle\Tests\Service;
 
 use Fresh\CentrifugoBundle\Logger\CommandHistoryLogger;
 use Fresh\CentrifugoBundle\Model;
+use Fresh\CentrifugoBundle\Model\Override;
 use Fresh\CentrifugoBundle\Model\StreamPosition;
 use Fresh\CentrifugoBundle\Service\Centrifugo;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
@@ -184,6 +185,52 @@ final class CentrifugoTest extends TestCase
             channel: 'channelA',
             client: 'client',
             session: 'session',
+        );
+    }
+
+    public function testSubscribeCommand(): void
+    {
+        $this->centrifugoChecker
+            ->expects(self::once())
+            ->method('assertValidChannelName')
+            ->with('channelA')
+        ;
+
+        $this->httpClient
+            ->expects(self::once())
+            ->method('request')
+            ->willReturn($this->response)
+        ;
+
+        $this->commandHistoryLogger
+            ->expects(self::once())
+            ->method('increaseRequestsCount')
+        ;
+
+        $this->responseProcessor
+            ->expects(self::once())
+            ->method('processResponse')
+            ->with(self::isInstanceOf(Model\SubscribeCommand::class), $this->response)
+            ->willReturn(null)
+        ;
+
+        $this->centrifugo->subscribe(
+            user: 'user123',
+            channel: 'channelA',
+            info: ['foo' => 'bar'],
+            base64Info: 'qwerty',
+            client: 'clientID',
+            session: 'sessionID',
+            data: ['abc' => 'def'],
+            base64Data: '12345',
+            recoverSince: new StreamPosition(offset: 5, epoch: 'test'),
+            override: new Override(
+                presence: true,
+                joinLeave: false,
+                forcePushJoinLeave: true,
+                forcePositioning: false,
+                forceRecovery: true,
+            ),
         );
     }
 
