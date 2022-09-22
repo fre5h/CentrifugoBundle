@@ -4,7 +4,7 @@
 
 ## Anonymous
 
-### Use `CredentialsGenerator` to receive an anonymous JWT token
+### Use `CredentialsGenerator` to generate an anonymous JWT token
 
 ```php
 <?php
@@ -18,12 +18,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CentrifugoAnonymousController
 {
-    private CredentialsGenerator $credentialsGenerator;
-
-    /**
-     * @Route("/centrifugo/credentials/anonymous", methods={"GET"}, name="get_centrifugo_credentials_for_anonymous")
-     */
-    public function __construct(CredentialsGenerator $credentialsGenerator)
+    #[Route(path: '/centrifugo/credentials/anonymous', name: 'get_centrifugo_credentials_for_anonymous', methods: [Request::METHOD_GET])]
+    public function __construct(private readonly CredentialsGenerator $credentialsGenerator)
     {
         $this->credentialsGenerator = $credentialsGenerator;
     }
@@ -92,13 +88,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CentrifugoCredentialsController
 {
-    private CredentialsGenerator $credentialsGenerator;
-    private TokenStorageInterface $tokenStorage;
-
-    /**
-     * @Route("/centrifugo/credentials/user", methods={"GET"}, name="get_centrifugo_credentials_for_current_user")
-     */
-    public function __construct(CredentialsGenerator $credentialsGenerator, TokenStorageInterface $tokenStorage)
+    #[Route(path: '/centrifugo/credentials/user', name: 'get_centrifugo_credentials_for_current_user', methods: [Request::METHOD_GET])]
+    public function __construct(private readonly CredentialsGenerator $credentialsGenerator, private readonly TokenStorageInterface $tokenStorage)
     {
         $this->credentialsGenerator = $credentialsGenerator;
         $this->tokenStorage = $tokenStorage;
@@ -136,9 +127,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class AdminChannelAuthenticator implements ChannelAuthenticatorInterface
 {
-    private AuthorizationCheckerInterface $authorizationChecker;
-
-    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
+    public function __construct(private readonly AuthorizationCheckerInterface $authorizationChecker)
     {
         $this->authorizationChecker = $authorizationChecker;
     }
@@ -171,16 +160,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CentrifugoSubscribeController
 {
-    private PrivateChannelAuthenticator $privateChannelAuthenticator;
-
-    public function __construct(PrivateChannelAuthenticator $privateChannelAuthenticator)
+    public function __construct(private readonly PrivateChannelAuthenticator $privateChannelAuthenticator)
     {
         $this->privateChannelAuthenticator = $privateChannelAuthenticator;
     }
 
-    /**
-     * @Route("/centrifugo/subscribe", methods={"POST"}, name="centrifugo_subscribe")
-     */
+    #[Route(path: '/centrifugo/subscribe', name: 'centrifugo_subscribe', methods: [Request::METHOD_POST])]
     public function centrifugoSubscribeAction(Request $request): JsonResponse
     {
         $data = $this->privateChannelAuthenticator->authChannelsForClientFromRequest($request);
