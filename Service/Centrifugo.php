@@ -15,6 +15,9 @@ namespace Fresh\CentrifugoBundle\Service;
 use Fresh\CentrifugoBundle\Logger\CommandHistoryLogger;
 use Fresh\CentrifugoBundle\Model;
 use Fresh\CentrifugoBundle\Model\CommandInterface;
+use Fresh\CentrifugoBundle\Model\Disconnect;
+use Fresh\CentrifugoBundle\Model\Override;
+use Fresh\CentrifugoBundle\Model\StreamPosition;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Profiler\Profiler;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -26,7 +29,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  */
 class Centrifugo implements CentrifugoInterface
 {
-    private bool $profilerEnabled;
+    private readonly bool $profilerEnabled;
 
     /**
      * @param string               $endpoint
@@ -45,15 +48,15 @@ class Centrifugo implements CentrifugoInterface
     /**
      * {@inheritdoc}
      */
-    public function publish(array $data, string $channel): void
+    public function publish(array $data, string $channel, bool $skipHistory = false, array $tags = [], string $base64data = ''): void
     {
-        $this->doSendCommand(new Model\PublishCommand($data, $channel));
+        $this->doSendCommand(new Model\PublishCommand($data, $channel, $skipHistory, $tags, $base64data));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function broadcast(array $data, array $channels): void
+    public function broadcast(array $data, array $channels, bool $skipHistory = false, array $tags = [], string $base64data = ''): void
     {
         $this->doSendCommand(new Model\BroadcastCommand($data, $channels));
     }
@@ -61,17 +64,33 @@ class Centrifugo implements CentrifugoInterface
     /**
      * {@inheritdoc}
      */
-    public function unsubscribe(string $user, string $channel): void
+    public function subscribe(string $user, string $channel, array $info = [], ?string $base64Info = null, ?string $client = null, ?string $session = null, array $data = [], ?string $base64Data = null, ?StreamPosition $recoverSince = null, ?Override $override = null): void
     {
-        $this->doSendCommand(new Model\UnsubscribeCommand($user, $channel));
+        $this->doSendCommand(new Model\SubscribeCommand($user, $channel, $info, $base64Info, $client, $session, $data, $base64Data, $recoverSince, $override));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function disconnect(string $user): void
+    public function unsubscribe(string $user, string $channel, string $client = '', string $session = ''): void
     {
-        $this->doSendCommand(new Model\DisconnectCommand($user));
+        $this->doSendCommand(new Model\UnsubscribeCommand($user, $channel, $client, $session));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function disconnect(string $user, array $whitelist = [], ?string $client = null, ?string $session = null, ?Disconnect $disconnectObject = null): void
+    {
+        $this->doSendCommand(new Model\DisconnectCommand($user, $whitelist, $client, $session, $disconnectObject));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function refresh(string $user, ?string $client = null, ?string $session = null, ?bool $expired = null, ?int $expireAt = null): void
+    {
+        $this->doSendCommand(new Model\RefreshCommand($user, $client, $session, $expired, $expireAt));
     }
 
     /**
@@ -93,9 +112,9 @@ class Centrifugo implements CentrifugoInterface
     /**
      * {@inheritdoc}
      */
-    public function history(string $channel): array
+    public function history(string $channel, bool $reverse = false, ?int $limit = null, ?StreamPosition $streamPosition = null): array
     {
-        return (array) $this->doSendCommand(new Model\HistoryCommand($channel));
+        return (array) $this->doSendCommand(new Model\HistoryCommand($channel, $reverse, $limit, $streamPosition));
     }
 
     /**
@@ -109,9 +128,9 @@ class Centrifugo implements CentrifugoInterface
     /**
      * {@inheritdoc}
      */
-    public function channels(): array
+    public function channels(?string $pattern = null): array
     {
-        return (array) $this->doSendCommand(new Model\ChannelsCommand());
+        return (array) $this->doSendCommand(new Model\ChannelsCommand($pattern));
     }
 
     /**

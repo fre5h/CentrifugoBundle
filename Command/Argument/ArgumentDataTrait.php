@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Fresh\CentrifugoBundle\Command;
+namespace Fresh\CentrifugoBundle\Command\Argument;
 
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputInterface;
@@ -22,7 +22,7 @@ use Symfony\Component\Console\Input\InputInterface;
  */
 trait ArgumentDataTrait
 {
-    /** @var array */
+    /** @var array<string, mixed> */
     protected array $data = [];
 
     /**

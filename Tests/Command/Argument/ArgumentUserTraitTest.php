@@ -10,10 +10,9 @@
 
 declare(strict_types=1);
 
-namespace Fresh\CentrifugoBundle\Tests\Command;
+namespace Fresh\CentrifugoBundle\Tests\Command\Argument;
 
-use Fresh\CentrifugoBundle\Command\BroadcastCommand;
-use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
+use Fresh\CentrifugoBundle\Command\DisconnectCommand;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -22,13 +21,15 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Tester\CommandTester;
 
-final class ArgumentDataTraitTest extends TestCase
+/**
+ * ArgumentUserTraitTest.
+ *
+ * @author Artem Henvald <genvaldartem@gmail.com>
+ */
+final class ArgumentUserTraitTest extends TestCase
 {
     /** @var CentrifugoInterface|MockObject */
     private CentrifugoInterface|MockObject $centrifugo;
-
-    /** @var CentrifugoChecker|MockObject */
-    private CentrifugoChecker|MockObject $centrifugoChecker;
 
     private Command $command;
     private Application $application;
@@ -37,13 +38,12 @@ final class ArgumentDataTraitTest extends TestCase
     protected function setUp(): void
     {
         $this->centrifugo = $this->createMock(CentrifugoInterface::class);
-        $this->centrifugoChecker = $this->createMock(CentrifugoChecker::class);
-        $command = new BroadcastCommand($this->centrifugo, $this->centrifugoChecker);
+        $command = new DisconnectCommand($this->centrifugo);
 
         $this->application = new Application();
         $this->application->add($command);
 
-        $this->command = $this->application->find('centrifugo:broadcast');
+        $this->command = $this->application->find('centrifugo:disconnect');
         $this->commandTester = new CommandTester($this->command);
     }
 
@@ -51,47 +51,26 @@ final class ArgumentDataTraitTest extends TestCase
     {
         unset(
             $this->centrifugo,
-            $this->centrifugoChecker,
             $this->command,
             $this->application,
             $this->commandTester,
         );
     }
 
-    public function testDataIsNotValidJson(): void
+    public function testInvalidUser(): void
     {
         $this->centrifugo
             ->expects(self::never())
-            ->method('broadcast')
+            ->method('disconnect')
         ;
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Argument "data" is not a valid JSON.');
+        $this->expectExceptionMessage('Argument "user" is not a string.');
 
         $this->commandTester->execute(
             [
                 'command' => $this->command->getName(),
-                'data' => 'invalid json',
-                'channels' => ['channelA', 'channelB'],
-            ]
-        );
-    }
-
-    public function testDataIsNotString(): void
-    {
-        $this->centrifugo
-            ->expects(self::never())
-            ->method('broadcast')
-        ;
-
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Argument "data" is not a string.');
-
-        $this->commandTester->execute(
-            [
-                'command' => $this->command->getName(),
-                'data' => ['foo'],
-                'channels' => ['channelA', 'channelB'],
+                'user' => ['user123'],
             ]
         );
     }

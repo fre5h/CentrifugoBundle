@@ -16,6 +16,7 @@ use Fresh\CentrifugoBundle\Model\CommandInterface;
 use Fresh\CentrifugoBundle\Model\HistoryCommand;
 use Fresh\CentrifugoBundle\Model\Method;
 use Fresh\CentrifugoBundle\Model\SerializableCommandInterface;
+use Fresh\CentrifugoBundle\Model\StreamPosition;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -25,33 +26,24 @@ use PHPUnit\Framework\TestCase;
  */
 final class HistoryCommandTest extends TestCase
 {
-    private HistoryCommand $command;
-
-    protected function setUp(): void
-    {
-        $this->command = new HistoryCommand('foo');
-    }
-
-    protected function tearDown(): void
-    {
-        unset($this->command);
-    }
-
     public function testInterfaces(): void
     {
-        self::assertInstanceOf(SerializableCommandInterface::class, $this->command);
-        self::assertInstanceOf(CommandInterface::class, $this->command);
+        $command = new HistoryCommand(channel: 'foo');
+        self::assertInstanceOf(SerializableCommandInterface::class, $command);
+        self::assertInstanceOf(CommandInterface::class, $command);
     }
 
-    public function testGetters(): void
+    public function testConstructor(): void
     {
-        self::assertEquals(Method::HISTORY, $this->command->getMethod());
-        self::assertEquals(['channel' => 'foo'], $this->command->getParams());
-        self::assertEquals(['foo'], $this->command->getChannels());
+        $command = new HistoryCommand(channel: 'foo');
+        self::assertEquals(Method::HISTORY, $command->getMethod());
+        self::assertEquals(['channel' => 'foo'], $command->getParams());
+        self::assertEquals(['foo'], $command->getChannels());
     }
 
-    public function testSerialization(): void
+    public function testSerializationRequiredData(): void
     {
+        $command = new HistoryCommand(channel: 'foo');
         self::assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
@@ -61,7 +53,56 @@ final class HistoryCommandTest extends TestCase
                     }
                 }
             JSON,
-            \json_encode($this->command, JSON_THROW_ON_ERROR)
+            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
+        );
+    }
+
+    public function testSerializationAllData(): void
+    {
+        $command = new HistoryCommand(
+            channel: 'foo',
+            reverse: true,
+            limit: 10,
+            streamPosition: new StreamPosition(offset: 5, epoch: 'test'),
+        );
+        self::assertJsonStringEqualsJsonString(
+            <<<'JSON'
+                {
+                    "method": "history",
+                    "params": {
+                        "channel": "foo",
+                        "reverse": true,
+                        "limit": 10,
+                        "since": {
+                            "offset": 5,
+                            "epoch": "test"
+                        }
+                    }
+                }
+            JSON,
+            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
+        );
+    }
+
+    public function testSerializationWithZeroValues(): void
+    {
+        $command = new HistoryCommand(
+            channel: 'foo',
+            reverse: true,
+            limit: 0,
+            streamPosition: new StreamPosition(offset: null, epoch: null),
+        );
+        self::assertJsonStringEqualsJsonString(
+            <<<'JSON'
+                {
+                    "method": "history",
+                    "params": {
+                        "channel": "foo",
+                        "reverse": true
+                    }
+                }
+            JSON,
+            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
         );
     }
 }

@@ -17,6 +17,8 @@ use JetBrains\PhpStorm\ArrayShape;
 /**
  * JwtPayloadForPrivateChannel.
  *
+ * @todo Set correct link
+ *
  * @see https://centrifugal.github.io/centrifugo/server/private_channels/#claims
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
@@ -61,14 +63,14 @@ final class JwtPayloadForPrivateChannel extends AbstractJwtPayload
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     #[ArrayShape([
         'client' => 'string',
         'channel' => 'string',
         'eto' => 'bool|null',
         'b64info' => 'null|string',
-        'info' => 'array',
+        'info' => 'mixed',
         'exp' => 'int|null',
     ])]
     public function getPayloadData(): array

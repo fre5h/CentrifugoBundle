@@ -25,33 +25,33 @@ use PHPUnit\Framework\TestCase;
  */
 final class PublishCommandTest extends TestCase
 {
-    private PublishCommand $command;
-
-    protected function setUp(): void
-    {
-        $this->command = new PublishCommand(['bar' => 'baz'], 'foo');
-    }
-
-    protected function tearDown(): void
-    {
-        unset($this->command);
-    }
-
     public function testInterfaces(): void
     {
-        self::assertInstanceOf(SerializableCommandInterface::class, $this->command);
-        self::assertInstanceOf(CommandInterface::class, $this->command);
+        $command = new PublishCommand(
+            data: ['bar' => 'baz'],
+            channel: 'foo',
+        );
+        self::assertInstanceOf(SerializableCommandInterface::class, $command);
+        self::assertInstanceOf(CommandInterface::class, $command);
     }
 
-    public function testGetters(): void
+    public function testConstructor(): void
     {
-        self::assertEquals(Method::PUBLISH, $this->command->getMethod());
-        self::assertEquals(['channel' => 'foo', 'data' => ['bar' => 'baz']], $this->command->getParams());
-        self::assertEquals(['foo'], $this->command->getChannels());
+        $command = new PublishCommand(
+            data: ['bar' => 'baz'],
+            channel: 'foo',
+        );
+        self::assertEquals(Method::PUBLISH, $command->getMethod());
+        self::assertEquals(['channel' => 'foo', 'data' => ['bar' => 'baz']], $command->getParams());
+        self::assertEquals(['foo'], $command->getChannels());
     }
 
-    public function testSerialization(): void
+    public function testSerializationRequiredData(): void
     {
+        $command = new PublishCommand(
+            data: ['bar' => 'baz'],
+            channel: 'foo',
+        );
         self::assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
@@ -64,7 +64,37 @@ final class PublishCommandTest extends TestCase
                     }
                 }
             JSON,
-            \json_encode($this->command, JSON_THROW_ON_ERROR)
+            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
+        );
+    }
+
+    public function testSerializationAllData(): void
+    {
+        $command = new PublishCommand(
+            data: ['bar' => 'baz'],
+            channel: 'foo',
+            skipHistory: true,
+            tags: ['tag' => 'value'],
+            base64data: 'qwerty',
+        );
+        self::assertJsonStringEqualsJsonString(
+            <<<'JSON'
+                {
+                    "method": "publish",
+                    "params": {
+                        "channel": "foo",
+                        "data": {
+                            "bar": "baz"
+                        },
+                        "skip_history": true,
+                        "tags": {
+                            "tag": "value"
+                        },
+                        "b64data": "qwerty"
+                    }
+                }
+            JSON,
+            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
         );
     }
 }
