@@ -110,7 +110,7 @@
                         <td class="nowrap font-normal">{{ loop.index }}</td>
                         <td class="font-normal command">
                             <span class="label status-{% if history.success %}success{% else %}error{% endif %} same-width">
-                                {{- history.command.method|upper -}}
+                                {{- history.command.method.value|upper -}}
                             </span>
                         </td>
                         <td class="font-normal request">
