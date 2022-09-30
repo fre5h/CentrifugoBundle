@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Command;
 
-use App\Kernel;
 use Fresh\CentrifugoBundle\Command\Argument\ArgumentPatternTrait;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -20,6 +19,7 @@ use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * ChannelsCommand.
