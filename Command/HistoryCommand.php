@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Command;
 
+use App\Kernel;
 use Fresh\CentrifugoBundle\Command\Argument\ArgumentChannelTrait;
 use Fresh\CentrifugoBundle\Command\Option\OptionEpochTrait;
 use Fresh\CentrifugoBundle\Command\Option\OptionLimitTrait;
@@ -56,10 +57,16 @@ final class HistoryCommand extends AbstractCommand
      */
     protected function configure(): void
     {
+        if (Kernel::MAJOR_VERSION >= 6) {
+            $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Channel name', null, $this->getChannelsForAutocompletion());
+        } else {
+            $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Channel name');
+        }
+
         $this
             ->setDefinition(
                 new InputDefinition([
-                    new InputArgument('channel', InputArgument::REQUIRED, 'Channel name', null, $this->getChannelsForAutocompletion()),
+                    $channelArgument,
                     new InputOption('limit', null, InputOption::VALUE_OPTIONAL, 'Limit number of returned publications, if not set in request then only current stream position information will present in result (without any publications)', 10),
                     new InputOption('offset', null, InputOption::VALUE_OPTIONAL, 'Offset in a stream'),
                     new InputOption('epoch', null, InputOption::VALUE_OPTIONAL, 'Stream epoch'),

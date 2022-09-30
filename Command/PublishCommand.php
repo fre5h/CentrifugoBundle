@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Command;
 
+use App\Kernel;
 use Fresh\CentrifugoBundle\Command\Argument\ArgumentChannelTrait;
 use Fresh\CentrifugoBundle\Command\Argument\ArgumentDataTrait;
 use Fresh\CentrifugoBundle\Command\Option\OptionBase64DataTrait;
@@ -55,11 +56,17 @@ final class PublishCommand extends AbstractCommand
      */
     protected function configure(): void
     {
+        if (Kernel::MAJOR_VERSION >= 6) {
+            $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to publish', null, $this->getChannelsForAutocompletion());
+        } else {
+            $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to publish');
+        }
+
         $this
             ->setDefinition(
                 new InputDefinition([
                     new InputArgument('data', InputArgument::REQUIRED, 'Custom JSON data to publish into each channel'),
-                    new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to publish', null, $this->getChannelsForAutocompletion()),
+                    $channelArgument,
                     new InputOption('tags', null, InputOption::VALUE_OPTIONAL, 'Publication tags - map with arbitrary string keys and values which is attached to publication and will be delivered to clients'),
                     new InputOption('skipHistory', null, InputOption::VALUE_NONE, 'Skip adding publications to channels\' history for this request'),
                     new InputOption('base64data', null, InputOption::VALUE_OPTIONAL, 'Custom binary data to publish into a channel encoded to base64 so it\'s possible to use HTTP API to send binary to clients. Centrifugo will decode it from base64 before publishing.'),

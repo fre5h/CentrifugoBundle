@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Command;
 
+use App\Kernel;
 use Fresh\CentrifugoBundle\Command\Argument\ArgumentChannelTrait;
 use Fresh\CentrifugoBundle\Command\Argument\ArgumentUserTrait;
 use Fresh\CentrifugoBundle\Command\Option\OptionClientTrait;
@@ -58,11 +59,17 @@ final class SubscribeCommand extends AbstractCommand
      */
     protected function configure(): void
     {
+        if (Kernel::MAJOR_VERSION >= 6) {
+            $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to subscribe user to', null, $this->getChannelsForAutocompletion());
+        } else {
+            $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to subscribe user to');
+        }
+
         $this
             ->setDefinition(
                 new InputDefinition([
                     new InputArgument('user', InputArgument::REQUIRED, 'User ID to subscribe'),
-                    new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to subscribe user to', null, $this->getChannelsForAutocompletion()),
+                    $channelArgument,
                     new InputOption('client', null, InputOption::VALUE_OPTIONAL, 'Specific client ID to subscribe (user still required to be set, will ignore other user connections with different client IDs)'),
                     new InputOption('session', null, InputOption::VALUE_OPTIONAL, 'Specific client session to subscribe (user still required to be set)'),
                     new InputOption('offset', null, InputOption::VALUE_OPTIONAL, 'Offset in a stream'),

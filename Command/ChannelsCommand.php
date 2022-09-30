@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Command;
 
+use App\Kernel;
 use Fresh\CentrifugoBundle\Command\Argument\ArgumentPatternTrait;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -35,10 +36,16 @@ final class ChannelsCommand extends AbstractCommand
      */
     protected function configure(): void
     {
+        if (Kernel::MAJOR_VERSION >= 6) {
+            $patternArgument = new InputArgument('pattern', InputArgument::OPTIONAL, 'Pattern to filter channels', null, $this->getChannelsForAutocompletion());
+        } else {
+            $patternArgument = new InputArgument('pattern', InputArgument::OPTIONAL, 'Pattern to filter channels');
+        }
+
         $this
             ->setDefinition(
                 new InputDefinition([
-                    new InputArgument('pattern', InputArgument::OPTIONAL, 'Pattern to filter channels', null, $this->getChannelsForAutocompletion()),
+                    $patternArgument,
                 ])
             )
             ->setHelp(
