@@ -26,6 +26,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * BroadcastCommand.
@@ -55,11 +56,19 @@ final class BroadcastCommand extends AbstractCommand
      */
     protected function configure(): void
     {
+        // @phpstan-ignore-next-line
+        if (Kernel::MAJOR_VERSION >= 6) {
+            // @phpstan-ignore-next-line
+            $channelsArgument = new InputArgument('channels', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'List of channels to publish data to', null, $this->getChannelsForAutocompletion());
+        } else {
+            $channelsArgument = new InputArgument('channels', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'List of channels to publish data to');
+        }
+
         $this
             ->setDefinition(
                 new InputDefinition([
                     new InputArgument('data', InputArgument::REQUIRED, 'Data in JSON format'),
-                    new InputArgument('channels', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'List of channels to publish data to', null, $this->getChannelsForAutocompletion()),
+                    $channelsArgument,
                     new InputOption('tags', null, InputOption::VALUE_OPTIONAL, 'Publication tags - map with arbitrary string keys and values which is attached to publication and will be delivered to clients'),
                     new InputOption('skipHistory', null, InputOption::VALUE_NONE, 'Skip adding publication to history for this request'),
                     new InputOption('base64data', null, InputOption::VALUE_OPTIONAL, 'Custom binary data to publish into a channel encoded to base64 so it\'s possible to use HTTP API to send binary to clients. Centrifugo will decode it from base64 before publishing.'),

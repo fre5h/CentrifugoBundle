@@ -28,6 +28,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * SubscribeCommand.
@@ -58,11 +59,19 @@ final class SubscribeCommand extends AbstractCommand
      */
     protected function configure(): void
     {
+        // @phpstan-ignore-next-line
+        if (Kernel::MAJOR_VERSION >= 6) {
+            // @phpstan-ignore-next-line
+            $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to subscribe user to', null, $this->getChannelsForAutocompletion());
+        } else {
+            $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to subscribe user to');
+        }
+
         $this
             ->setDefinition(
                 new InputDefinition([
                     new InputArgument('user', InputArgument::REQUIRED, 'User ID to subscribe'),
-                    new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to subscribe user to', null, $this->getChannelsForAutocompletion()),
+                    $channelArgument,
                     new InputOption('client', null, InputOption::VALUE_OPTIONAL, 'Specific client ID to subscribe (user still required to be set, will ignore other user connections with different client IDs)'),
                     new InputOption('session', null, InputOption::VALUE_OPTIONAL, 'Specific client session to subscribe (user still required to be set)'),
                     new InputOption('offset', null, InputOption::VALUE_OPTIONAL, 'Offset in a stream'),

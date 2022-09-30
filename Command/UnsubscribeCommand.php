@@ -25,6 +25,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * UnsubscribeCommand.
@@ -53,11 +54,19 @@ final class UnsubscribeCommand extends AbstractCommand
      */
     protected function configure(): void
     {
+        // @phpstan-ignore-next-line
+        if (Kernel::MAJOR_VERSION >= 6) {
+            // @phpstan-ignore-next-line
+            $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to unsubscribe user to', null, $this->getChannelsForAutocompletion());
+        } else {
+            $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to unsubscribe user to');
+        }
+
         $this
             ->setDefinition(
                 new InputDefinition([
                     new InputArgument('user', InputArgument::REQUIRED, 'User ID to unsubscribe'),
-                    new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to unsubscribe user to', null, $this->getChannelsForAutocompletion()),
+                    $channelArgument,
                     new InputOption('client', null, InputOption::VALUE_OPTIONAL, 'Specific client ID to unsubscribe (user still required to be set)'),
                     new InputOption('session', null, InputOption::VALUE_OPTIONAL, 'Specific client session to disconnect (user still required to be set)'),
                 ])

@@ -19,6 +19,7 @@ use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * ChannelsCommand.
@@ -35,10 +36,18 @@ final class ChannelsCommand extends AbstractCommand
      */
     protected function configure(): void
     {
+        // @phpstan-ignore-next-line
+        if (Kernel::MAJOR_VERSION >= 6) {
+            // @phpstan-ignore-next-line
+            $patternArgument = new InputArgument('pattern', InputArgument::OPTIONAL, 'Pattern to filter channels', null, $this->getChannelsForAutocompletion());
+        } else {
+            $patternArgument = new InputArgument('pattern', InputArgument::OPTIONAL, 'Pattern to filter channels');
+        }
+
         $this
             ->setDefinition(
                 new InputDefinition([
-                    new InputArgument('pattern', InputArgument::OPTIONAL, 'Pattern to filter channels', null, $this->getChannelsForAutocompletion()),
+                    $patternArgument,
                 ])
             )
             ->setHelp(
