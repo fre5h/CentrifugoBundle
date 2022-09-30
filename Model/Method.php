@@ -17,25 +17,18 @@ namespace Fresh\CentrifugoBundle\Model;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-final class Method
+enum Method: string
 {
-    public final const PUBLISH = 'publish';
-
-    public final const BROADCAST = 'broadcast';
-
-    public final const UNSUBSCRIBE = 'unsubscribe';
-
-    public final const DISCONNECT = 'disconnect';
-
-    public final const PRESENCE = 'presence';
-
-    public final const PRESENCE_STATS = 'presence_stats';
-
-    public final const HISTORY = 'history';
-
-    public final const HISTORY_REMOVE = 'history_remove';
-
-    public final const CHANNELS = 'channels';
-
-    public final const INFO = 'info';
+    case PUBLISH = 'publish';
+    case BROADCAST = 'broadcast';
+    case SUBSCRIBE = 'subscribe';
+    case UNSUBSCRIBE = 'unsubscribe';
+    case DISCONNECT = 'disconnect';
+    case REFRESH = 'refresh';
+    case PRESENCE = 'presence';
+    case PRESENCE_STATS = 'presence_stats';
+    case HISTORY = 'history';
+    case HISTORY_REMOVE = 'history_remove';
+    case CHANNELS = 'channels';
+    case INFO = 'info';
 }

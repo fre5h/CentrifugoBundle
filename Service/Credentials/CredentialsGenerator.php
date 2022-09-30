@@ -103,7 +103,7 @@ class CredentialsGenerator
         $expireAt = null;
 
         if (null !== $this->centrifugoJwtTtl) {
-            $now = $this->dateTimeHelper->getCurrentDatetime();
+            $now = $this->dateTimeHelper->getCurrentDatetimeUtc();
             $now->add(new \DateInterval("PT{$this->centrifugoJwtTtl}S"));
             $expireAt = $now->getTimestamp();
         }

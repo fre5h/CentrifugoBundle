@@ -20,6 +20,11 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
+/**
+ * ChannelsCommandTest.
+ *
+ * @author Artem Henvald <genvaldartem@gmail.com>
+ */
 final class ChannelsCommandTest extends TestCase
 {
     /** @var CentrifugoInterface|MockObject */
@@ -37,7 +42,7 @@ final class ChannelsCommandTest extends TestCase
         $this->application = new Application();
         $this->application->add($command);
 
-        $this->command = $this->application->find('centrifugo:channel');
+        $this->command = $this->application->find('centrifugo:channels');
         $this->commandTester = new CommandTester($this->command);
     }
 
@@ -51,22 +56,42 @@ final class ChannelsCommandTest extends TestCase
         );
     }
 
-    public function testSuccessfulExecute(): void
+    public function testSuccessfulExecutionWithoutPattern(): void
     {
         $this->centrifugo
             ->expects(self::once())
             ->method('channels')
-            ->willReturn(['channels' => ['channelA', 'channelB']])
+            ->willReturn(['channels' => ['channelA' => ['num_clients' => 33], 'channelB' => ['num_clients' => 25]]])
         ;
 
         $result = $this->commandTester->execute(['command' => $this->command->getName()]);
         self::assertSame(0, $result);
 
         $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('Channels', $output);
-        self::assertStringContainsString('* channelA', $output);
-        self::assertStringContainsString('* channelB', $output);
-        self::assertStringContainsString('TOTAL: 2', $output);
+        self::assertStringContainsString('channelA       33', $output);
+        self::assertStringContainsString('channelB       25', $output);
+        self::assertStringContainsString('Total Channels: 2', $output);
+    }
+
+    public function testSuccessfulExecutionWithPattern(): void
+    {
+        $this->centrifugo
+            ->expects(self::once())
+            ->method('channels')
+            ->willReturn(['channels' => ['channelA' => ['num_clients' => 33]]])
+        ;
+
+        $result = $this->commandTester->execute(
+            [
+                'command' => $this->command->getName(),
+                'pattern' => 'channelA'
+            ]
+        );
+        self::assertSame(0, $result);
+
+        $output = $this->commandTester->getDisplay();
+        self::assertStringContainsString('channelA       33', $output);
+        self::assertStringContainsString('Total Channels: 1', $output);
     }
 
     public function testNoData(): void
@@ -97,5 +122,18 @@ final class ChannelsCommandTest extends TestCase
 
         $output = $this->commandTester->getDisplay();
         self::assertStringContainsString('test', $output);
+    }
+
+    public function testAutocomplete(): void
+    {
+        $this->centrifugo
+            ->expects(self::once())
+            ->method('channels')
+            ->willReturn(['channels' => ['channel1' => [], 'channel2' => []]])
+        ;
+
+        $channels = $this->command->getChannelsForAutocompletion()();
+
+        self::assertSame(['channel1', 'channel2'], $channels);
     }
 }

@@ -10,20 +10,24 @@
 
 declare(strict_types=1);
 
-namespace Fresh\CentrifugoBundle\Tests\Command;
+namespace Fresh\CentrifugoBundle\Tests\Command\Option;
 
-use Fresh\CentrifugoBundle\Command\PresenceCommand;
-use Fresh\CentrifugoBundle\Exception\InvalidArgumentException as CentrifugoInvalidArgumentException;
+use Fresh\CentrifugoBundle\Command\HistoryCommand;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Exception\InvalidArgumentException;
+use Symfony\Component\Console\Exception\InvalidOptionException;
 use Symfony\Component\Console\Tester\CommandTester;
 
-final class ArgumentChannelTraitTest extends TestCase
+/**
+ * OptionLimitTraitTest.
+ *
+ * @author Artem Henvald <genvaldartem@gmail.com>
+ */
+final class OptionLimitTraitTest extends TestCase
 {
     /** @var CentrifugoInterface|MockObject */
     private CentrifugoInterface|MockObject $centrifugo;
@@ -39,12 +43,12 @@ final class ArgumentChannelTraitTest extends TestCase
     {
         $this->centrifugo = $this->createMock(CentrifugoInterface::class);
         $this->centrifugoChecker = $this->createMock(CentrifugoChecker::class);
-        $command = new PresenceCommand($this->centrifugo, $this->centrifugoChecker);
+        $command = new HistoryCommand($this->centrifugo, $this->centrifugoChecker);
 
         $this->application = new Application();
         $this->application->add($command);
 
-        $this->command = $this->application->find('centrifugo:presence');
+        $this->command = $this->application->find('centrifugo:history');
         $this->commandTester = new CommandTester($this->command);
     }
 
@@ -59,50 +63,56 @@ final class ArgumentChannelTraitTest extends TestCase
         );
     }
 
-    public function testInvalidChannelName(): void
+    public function testValidOption(): void
     {
-        $this->centrifugoChecker
-            ->expects(self::once())
-            ->method('assertValidChannelName')
-            ->with('channelA')
-            ->willThrowException(new CentrifugoInvalidArgumentException('test'))
-        ;
-
         $this->centrifugo
-            ->expects(self::never())
-            ->method('presence')
+            ->expects(self::once())
+            ->method('history')
         ;
-
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('test');
 
         $this->commandTester->execute(
             [
                 'command' => $this->command->getName(),
-                'channel' => 'channelA',
+                'channel' => 'channelName',
+                '--limit' => 20,
             ]
         );
     }
 
-    public function testChannelNameIsNotString(): void
+    public function testZeroValue(): void
     {
-        $this->centrifugoChecker
-            ->expects(self::never())
-            ->method('assertValidChannelName')
-        ;
-
         $this->centrifugo
             ->expects(self::never())
-            ->method('presence')
+            ->method('history')
         ;
 
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Argument "channel" is not a string.');
+        $this->expectException(InvalidOptionException::class);
+        $this->expectExceptionMessage('Option "--limit" should be a valid integer value greater than 0.');
 
         $this->commandTester->execute(
             [
                 'command' => $this->command->getName(),
-                'channel' => ['channelA'],
+                'channel' => 'channelName',
+                '--limit' => 0,
+            ]
+        );
+    }
+
+    public function testNonStringValue(): void
+    {
+        $this->centrifugo
+            ->expects(self::never())
+            ->method('history')
+        ;
+
+        $this->expectException(InvalidOptionException::class);
+        $this->expectExceptionMessage('Option "--limit" should be a valid integer value greater than 0.');
+
+        $this->commandTester->execute(
+            [
+                'command' => $this->command->getName(),
+                'channel' => 'channelName',
+                '--limit' => 'abcd',
             ]
         );
     }

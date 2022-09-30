@@ -37,7 +37,7 @@ class ResponseProcessor
      * @param CommandHistoryLogger $commandHistoryLogger
      * @param Profiler|null        $profiler
      */
-    public function __construct(private readonly CentrifugoChecker $centrifugoChecker, private readonly CommandHistoryLogger $commandHistoryLogger, ?Profiler $profiler)
+    public function __construct(private readonly CentrifugoChecker $centrifugoChecker, private readonly CommandHistoryLogger $commandHistoryLogger, readonly ?Profiler $profiler)
     {
         $this->profilerEnabled = $profiler instanceof Profiler;
     }
@@ -56,6 +56,8 @@ class ResponseProcessor
         $this->centrifugoChecker->assertValidResponseStatusCode($response);
         $this->centrifugoChecker->assertValidResponseHeaders($response);
         $this->centrifugoChecker->assertValidResponseContentType($response);
+
+        $this->centrifugoError = [];
 
         $content = $response->getContent();
 
@@ -76,7 +78,7 @@ class ResponseProcessor
             $result = $this->decodeAndProcessResponseResult($command, $content);
         }
 
-        if (isset($this->centrifugoError['message'], $this->centrifugoError['code'])) {
+        if (\array_key_exists('message', $this->centrifugoError) && \array_key_exists('code', $this->centrifugoError)) {
             throw new CentrifugoErrorException($this->centrifugoError['message'], $this->centrifugoError['code']);
         }
 
@@ -94,7 +96,7 @@ class ResponseProcessor
     private function decodeAndProcessResponseResult(CommandInterface $command, string $content): ?array
     {
         try {
-            /** @var array $data */
+            /** @var array<string, array<string, mixed>> $data */
             $data = \json_decode($content, true, 512, \JSON_THROW_ON_ERROR);
         } catch (\Exception) {
             throw new CentrifugoException('Centrifugo response payload is not a valid JSON');
@@ -103,7 +105,7 @@ class ResponseProcessor
         $successfulCommand = true;
         $result = null;
 
-        if (isset($data['error'])) {
+        if (\is_array($data) && isset($data['error'])) {
             if (empty($this->centrifugoError)) {
                 $this->centrifugoError = [
                     'message' => $data['error']['message'],

@@ -24,17 +24,24 @@ final class UnsubscribeCommand extends AbstractCommand
     /**
      * @param string $user
      * @param string $channel
+     * @param string $client
+     * @param string $session
      */
-    public function __construct(string $user, string $channel)
+    public function __construct(string $user, protected readonly string $channel, string $client = '', string $session = '')
     {
-        $this->channel = $channel;
+        $params = [
+            'channel' => $channel,
+            'user' => $user,
+        ];
 
-        parent::__construct(
-            Method::UNSUBSCRIBE,
-            [
-                'channel' => $channel,
-                'user' => $user,
-            ]
-        );
+        if (!empty($client)) {
+            $params['client'] = $client;
+        }
+
+        if (!empty($session)) {
+            $params['session'] = $session;
+        }
+
+        parent::__construct(Method::UNSUBSCRIBE, $params);
     }
 }

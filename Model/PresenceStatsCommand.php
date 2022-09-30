@@ -24,10 +24,8 @@ final class PresenceStatsCommand extends AbstractCommand implements ResultableCo
     /**
      * @param string $channel
      */
-    public function __construct(string $channel)
+    public function __construct(protected readonly string $channel)
     {
-        $this->channel = $channel;
-
         parent::__construct(
             Method::PRESENCE_STATS,
             [

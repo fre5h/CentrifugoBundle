@@ -25,41 +25,49 @@ use PHPUnit\Framework\TestCase;
  */
 final class ChannelsCommandTest extends TestCase
 {
-    private ChannelsCommand $command;
-
-    protected function setUp(): void
-    {
-        $this->command = new ChannelsCommand();
-    }
-
-    protected function tearDown(): void
-    {
-        unset($this->command);
-    }
-
     public function testInterfaces(): void
     {
-        self::assertInstanceOf(SerializableCommandInterface::class, $this->command);
-        self::assertInstanceOf(CommandInterface::class, $this->command);
+        $command = new ChannelsCommand();
+        self::assertInstanceOf(SerializableCommandInterface::class, $command);
+        self::assertInstanceOf(CommandInterface::class, $command);
     }
 
-    public function testGetters(): void
+    public function testConstructor(): void
     {
-        self::assertEquals(Method::CHANNELS, $this->command->getMethod());
-        self::assertEquals([], $this->command->getParams());
-        self::assertEquals([], $this->command->getChannels());
+        $command = new ChannelsCommand();
+        self::assertEquals(Method::CHANNELS, $command->getMethod());
+        self::assertEquals([], $command->getParams());
+        self::assertEquals([], $command->getChannels());
     }
 
-    public function testSerialization(): void
+    public function testSerializationWithoutPattern(): void
     {
+        $command = new ChannelsCommand();
         self::assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
                     "method": "channels",
-                    "params": []
+                    "params": {}
                 }
             JSON,
-            \json_encode($this->command, JSON_THROW_ON_ERROR)
+            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
+        );
+    }
+
+    public function testSerializationWithPattern(): void
+    {
+        $command = new ChannelsCommand(pattern: 'abc');
+
+        self::assertJsonStringEqualsJsonString(
+            <<<'JSON'
+                {
+                    "method": "channels",
+                    "params": {
+                        "pattern": "abc"
+                    }
+                }
+            JSON,
+            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
         );
     }
 }

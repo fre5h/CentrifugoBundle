@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Command;
 
+use Fresh\CentrifugoBundle\Command\Argument\ArgumentChannelTrait;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -26,7 +27,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-#[AsCommand(name: 'centrifugo:history-remove', description: 'Remove history for channel')]
+#[AsCommand(name: 'centrifugo:history-remove', description: 'Remove publications in channel history')]
 final class HistoryRemoveCommand extends AbstractCommand
 {
     use ArgumentChannelTrait;
@@ -35,10 +36,8 @@ final class HistoryRemoveCommand extends AbstractCommand
      * @param CentrifugoInterface $centrifugo
      * @param CentrifugoChecker   $centrifugoChecker
      */
-    public function __construct(CentrifugoInterface $centrifugo, CentrifugoChecker $centrifugoChecker)
+    public function __construct(CentrifugoInterface $centrifugo, protected readonly CentrifugoChecker $centrifugoChecker)
     {
-        $this->centrifugoChecker = $centrifugoChecker;
-
         parent::__construct($centrifugo);
     }
 
@@ -50,14 +49,16 @@ final class HistoryRemoveCommand extends AbstractCommand
         $this
             ->setDefinition(
                 new InputDefinition([
-                    new InputArgument('channel', InputArgument::REQUIRED, 'Channel name'),
+                    new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to remove history', null, $this->getChannelsForAutocompletion()),
                 ])
             )
             ->setHelp(
                 <<<'HELP'
-The <info>%command.name%</info> command allows to remove history for channel:
+The <info>%command.name%</info> command allows to remove publications in channel history:
 
-<info>%command.full_name%</info> <comment>channelAbc</comment>
+<info>%command.full_name%</info> <comment>channelName</comment>
+
+Read more at https://centrifugal.dev/docs/server/server_api#history_remove
 HELP
             )
         ;

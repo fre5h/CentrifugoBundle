@@ -57,7 +57,7 @@ final class CommandHistoryLoggerTest extends TestCase
         self::assertSame(0, $this->commandHistoryLogger->getRequestsCount());
     }
 
-    public function testAllFlow(): void
+    public function testFullFlow(): void
     {
         $command = new PublishCommand([], 'channelA');
         $this->commandHistoryLogger->logCommand($command, true, ['test']);

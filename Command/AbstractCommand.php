@@ -22,15 +22,21 @@ use Symfony\Component\Console\Command\Command;
  */
 abstract class AbstractCommand extends Command
 {
-    protected CentrifugoInterface $centrifugo;
-
     /**
      * @param CentrifugoInterface $centrifugo
      */
-    public function __construct(CentrifugoInterface $centrifugo)
+    public function __construct(protected readonly CentrifugoInterface $centrifugo)
     {
-        $this->centrifugo = $centrifugo;
-
         parent::__construct();
+    }
+
+    /**
+     * @return \Closure
+     */
+    public function getChannelsForAutocompletion(): \Closure
+    {
+        return function () {
+            return \array_keys($this->centrifugo->channels()['channels']);
+        };
     }
 }

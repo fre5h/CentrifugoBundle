@@ -15,24 +15,24 @@ namespace Fresh\CentrifugoBundle\Model;
 use JetBrains\PhpStorm\ArrayShape;
 
 /**
- * AbstractCentrifugoCommand.
+ * AbstractCommand.
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
 abstract class AbstractCommand implements SerializableCommandInterface
 {
     /**
-     * @param string $method
+     * @param Method $method
      * @param array  $params
      */
-    public function __construct(private readonly string $method, private readonly array $params)
+    public function __construct(private readonly Method $method, private readonly array $params)
     {
     }
 
     /**
-     * @return string
+     * @return Method
      */
-    public function getMethod(): string
+    public function getMethod(): Method
     {
         return $this->method;
     }
@@ -54,14 +54,19 @@ abstract class AbstractCommand implements SerializableCommandInterface
     }
 
     /**
-     * @return array
+     * @return array<string, mixed>
      */
     #[ArrayShape(['method' => 'string', 'params' => 'array'])]
     public function jsonSerialize(): array
     {
-        return [
-            'method' => $this->method,
-            'params' => $this->params,
-        ];
+        $data = ['method' => $this->method->value];
+
+        if (!empty($this->params)) {
+            $data['params'] = $this->params;
+        } else {
+            $data['params'] = new \stdClass(); // To have {} in json, restrictions of Centrifugo
+        }
+
+        return $data;
     }
 }

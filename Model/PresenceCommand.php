@@ -24,10 +24,8 @@ final class PresenceCommand extends AbstractCommand implements ResultableCommand
     /**
      * @param string $channel
      */
-    public function __construct(string $channel)
+    public function __construct(protected readonly string $channel)
     {
-        $this->channel = $channel;
-
         parent::__construct(
             Method::PRESENCE,
             [

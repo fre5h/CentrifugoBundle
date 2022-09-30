@@ -24,10 +24,8 @@ final class HistoryRemoveCommand extends AbstractCommand
     /**
      * @param string $channel
      */
-    public function __construct(string $channel)
+    public function __construct(protected readonly string $channel)
     {
-        $this->channel = $channel;
-
         parent::__construct(
             Method::HISTORY_REMOVE,
             [
