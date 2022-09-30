@@ -47,7 +47,9 @@ final class PresenceStatsCommand extends AbstractCommand
      */
     protected function configure(): void
     {
+        // @phpstan-ignore-next-line
         if (Kernel::MAJOR_VERSION >= 6) {
+            // @phpstan-ignore-next-line
             $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to call presence from', null, $this->getChannelsForAutocompletion());
         } else {
             $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to call presence from');

@@ -56,7 +56,9 @@ final class PublishCommand extends AbstractCommand
      */
     protected function configure(): void
     {
+        // @phpstan-ignore-next-line
         if (Kernel::MAJOR_VERSION >= 6) {
+            // @phpstan-ignore-next-line
             $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to publish', null, $this->getChannelsForAutocompletion());
         } else {
             $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to publish');
