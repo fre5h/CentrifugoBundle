@@ -96,6 +96,11 @@ The <info>%command.name%</info> command allows subscribing user to a channel:
 
 <info>%command.full_name%</info> <comment>user123</comment> <comment>channelName</comment>
 
+You can attach custom data to subscription in json or base64 format:
+
+<info>%command.full_name%</info> <comment>user123</comment> <comment>channelName</comment> <comment>--info='{"foo":"bar"}'</comment>
+<info>%command.full_name%</info> <comment>user123</comment> <comment>channelName</comment> <comment>--base64info=SGVsbG8gd29ybGQ=</comment>
+
 You can subscribe specific user to a channel by client ID (user still required to be set):
 
 <info>%command.full_name%</info> <comment>user123</comment> <comment>channelName</comment> <comment>--client=clientID</comment>
@@ -103,6 +108,15 @@ You can subscribe specific user to a channel by client ID (user still required t
 You can subscribe specific user to a channel by session ID (user still required to be set):
 
 <info>%command.full_name%</info> <comment>user123</comment> <comment>channelName</comment> <comment>--session=sessionID</comment>
+
+You can set custom subscription data in json or base64 format:
+
+<info>%command.full_name%</info> <comment>user123</comment> <comment>channelName</comment> <comment>--data='{"foo":"bar"}'</comment>
+<info>%command.full_name%</info> <comment>user123</comment> <comment>channelName</comment> <comment>--base64data=SGVsbG8gd29ybGQ=</comment>
+
+You can set a specific stream position to recover from:
+
+<info>%command.full_name%</info> <comment>user123</comment> <comment>channelName</comment> <comment>--offset=10 --epoch=ABCD</comment>
 
 Read more at https://centrifugal.dev/docs/server/server_api#history
 HELP
