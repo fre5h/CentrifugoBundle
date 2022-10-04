@@ -58,6 +58,9 @@ CENTRIFUGO_SECRET=secret
 ###< fresh/centrifugo-bundle ###
 ```
 
+`CENTRIFUGO_API_KEY` should be the same value as option `api_key` in your Centrifugo config file.  
+`CENTRIFUGO_SECRET` should be the same value as option `token_hmac_secret_key` in your Centrifugo config file.
+
 ℹ️ [Customize bundle configuration](./Resources/docs/configuration.md "Customize bundle configuration")
 
 ## Using 🧑‍🎓
