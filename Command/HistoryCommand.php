@@ -147,7 +147,6 @@ HELP
                 $io->success('NO DATA');
             }
         } catch (\Throwable $e) {
-            echo $e->getMessage();
             $io->error($e->getMessage());
 
             return self::FAILURE;

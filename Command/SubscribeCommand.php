@@ -14,8 +14,12 @@ namespace Fresh\CentrifugoBundle\Command;
 
 use Fresh\CentrifugoBundle\Command\Argument\ArgumentChannelTrait;
 use Fresh\CentrifugoBundle\Command\Argument\ArgumentUserTrait;
+use Fresh\CentrifugoBundle\Command\Option\OptionBase64DataTrait;
+use Fresh\CentrifugoBundle\Command\Option\OptionBase64InfoTrait;
 use Fresh\CentrifugoBundle\Command\Option\OptionClientTrait;
+use Fresh\CentrifugoBundle\Command\Option\OptionDataTrait;
 use Fresh\CentrifugoBundle\Command\Option\OptionEpochTrait;
+use Fresh\CentrifugoBundle\Command\Option\OptionInfoTrait;
 use Fresh\CentrifugoBundle\Command\Option\OptionOffsetTrait;
 use Fresh\CentrifugoBundle\Command\Option\OptionSessionTrait;
 use Fresh\CentrifugoBundle\Model\StreamPosition;
@@ -40,8 +44,12 @@ final class SubscribeCommand extends AbstractCommand
 {
     use ArgumentChannelTrait;
     use ArgumentUserTrait;
+    use OptionBase64DataTrait;
+    use OptionBase64InfoTrait;
     use OptionClientTrait;
+    use OptionDataTrait;
     use OptionEpochTrait;
+    use OptionInfoTrait;
     use OptionOffsetTrait;
     use OptionSessionTrait;
 
@@ -72,8 +80,12 @@ final class SubscribeCommand extends AbstractCommand
                 new InputDefinition([
                     new InputArgument('user', InputArgument::REQUIRED, 'User ID to subscribe'),
                     $channelArgument,
+                    new InputOption('info', null, InputOption::VALUE_OPTIONAL, 'Attach custom data to subscription (will be used in presence and join/leave messages)'),
+                    new InputOption('base64info', null, InputOption::VALUE_OPTIONAL, 'Info in base64 for binary mode (will be decoded by Centrifugo)'),
                     new InputOption('client', null, InputOption::VALUE_OPTIONAL, 'Specific client ID to subscribe (user still required to be set, will ignore other user connections with different client IDs)'),
                     new InputOption('session', null, InputOption::VALUE_OPTIONAL, 'Specific client session to subscribe (user still required to be set)'),
+                    new InputOption('data', null, InputOption::VALUE_OPTIONAL, 'Custom subscription data (will be sent to client in Subscribe push)'),
+                    new InputOption('base64data', null, InputOption::VALUE_OPTIONAL, 'Same as data but in base64 format (will be decoded by Centrifugo)'),
                     new InputOption('offset', null, InputOption::VALUE_OPTIONAL, 'Offset in a stream'),
                     new InputOption('epoch', null, InputOption::VALUE_OPTIONAL, 'Stream epoch'),
                 ])
@@ -107,7 +119,11 @@ HELP
 
         $this->initializeUserArgument($input);
         $this->initializeChannelArgument($input);
+        $this->initializeB64DataOption($input);
+        $this->initializeB64InfoOption($input);
         $this->initializeClientOption($input);
+        $this->initializeDataOption($input);
+        $this->initializeInfoOption($input);
         $this->initializeEpochOption($input);
         $this->initializeOffsetOption($input);
         $this->initializeSessionOption($input);
@@ -124,13 +140,16 @@ HELP
             $this->centrifugo->subscribe(
                 user: $this->user,
                 channel: $this->channel,
+                info: $this->info,
+                base64Info: $this->base64info,
                 client: $this->client,
                 session: $this->session,
+                data: $this->data,
+                base64Data: $this->base64data,
                 recoverSince: new StreamPosition($this->offset, $this->epoch),
             );
             $io->success('DONE');
         } catch (\Throwable $e) {
-            echo $e->getMessage();
             $io->error($e->getMessage());
 
             return self::FAILURE;

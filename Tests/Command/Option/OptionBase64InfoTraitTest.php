@@ -10,24 +10,24 @@
 
 declare(strict_types=1);
 
-namespace Fresh\CentrifugoBundle\Tests\Command;
+namespace Fresh\CentrifugoBundle\Tests\Command\Option;
 
 use Fresh\CentrifugoBundle\Command\SubscribeCommand;
-use Fresh\CentrifugoBundle\Model\StreamPosition;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Exception\InvalidOptionException;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
- * SubscribeCommandTest.
+ * OptionBase64InfoTraitTest.
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-final class SubscribeCommandTest extends TestCase
+final class OptionBase64InfoTraitTest extends TestCase
 {
     /** @var CentrifugoInterface|MockObject */
     private CentrifugoInterface|MockObject $centrifugo;
@@ -63,74 +63,40 @@ final class SubscribeCommandTest extends TestCase
         );
     }
 
-    public function testSuccessfulExecutionWithRequiredParameters(): void
+    public function testOptionIsNotValidBase64(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects(self::never())
             ->method('subscribe')
-            ->with('user123', 'channelA')
         ;
 
-        $result = $this->commandTester->execute(
+        $this->expectException(InvalidOptionException::class);
+        $this->expectExceptionMessage('Option "--base64info" should be a valid base64 encoded string.');
+
+        $this->commandTester->execute(
             [
                 'command' => $this->command->getName(),
                 'user' => 'user123',
-                'channel' => 'channelA',
+                'channel' => 'channelName',
+                '--base64info' => 'SGVsbG8gd29ybGQ=bla',
             ]
         );
-        self::assertSame(0, $result);
-
-        $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('DONE', $output);
     }
 
-    public function testSuccessfulExecutionWithAllParameters(): void
+    public function testValidOption(): void
     {
         $this->centrifugo
             ->expects(self::once())
             ->method('subscribe')
-            ->with('user123', 'channelA', ['foo1' => 'bar1'], 'SGVsbG8gd29ybGQ=', 'clientID', 'sessionID', ['foo2' => 'bar2'], 'QmxhIGJsYSBibGE=', self::isInstanceOf(StreamPosition::class))
         ;
 
-        $result = $this->commandTester->execute(
+        $this->commandTester->execute(
             [
                 'command' => $this->command->getName(),
                 'user' => 'user123',
-                'channel' => 'channelA',
-                '--info' => '{"foo1":"bar1"}',
+                'channel' => 'channelName',
                 '--base64info' => 'SGVsbG8gd29ybGQ=',
-                '--client' => 'clientID',
-                '--session' => 'sessionID',
-                '--data' => '{"foo2":"bar2"}',
-                '--base64data' => 'QmxhIGJsYSBibGE=',
-                '--offset' => 5,
-                '--epoch' => 'test',
             ]
         );
-        self::assertSame(0, $result);
-
-        $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('DONE', $output);
-    }
-
-    public function testException(): void
-    {
-        $this->centrifugo
-            ->expects(self::once())
-            ->method('subscribe')
-            ->willThrowException(new \Exception('test'))
-        ;
-
-        $result = $this->commandTester->execute(
-            [
-                'command' => $this->command->getName(),
-                'user' => 'user123',
-                'channel' => 'channelA',
-            ]
-        );
-        self::assertSame(1, $result);
-
-        $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('test', $output);
     }
 }
