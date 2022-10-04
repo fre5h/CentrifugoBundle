@@ -16,7 +16,7 @@ use Symfony\Component\Console\Exception\InvalidOptionException;
 use Symfony\Component\Console\Input\InputInterface;
 
 /**
- * OptionInfoTrait
+ * OptionInfoTrait.
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
