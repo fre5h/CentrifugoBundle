@@ -91,6 +91,7 @@ jobs:
           - '5.4'
           - '6.0'
           - '6.1'
+          - '6.2'
     steps:
       - name: 'Checkout Code'
         uses: actions/checkout@v2
