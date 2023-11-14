@@ -15,9 +15,9 @@ namespace Fresh\CentrifugoBundle\Tests\Service\Jwt;
 use Fresh\CentrifugoBundle\Service\ChannelAuthenticator\ChannelAuthenticatorInterface;
 use Fresh\CentrifugoBundle\Service\ChannelAuthenticator\PrivateChannelAuthenticator;
 use Fresh\CentrifugoBundle\Service\Credentials\CredentialsGenerator;
-use Fresh\CentrifugoBundle\Tests\ConsecutiveParamsTrait;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use SEEC\PhpUnit\Helper\ConsecutiveParams;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
@@ -28,7 +28,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  */
 final class PrivateChannelAuthenticatorTest extends TestCase
 {
-    use ConsecutiveParamsTrait;
+    use ConsecutiveParams;
 
     /** @var Request|MockObject */
     private Request|MockObject $request;
@@ -279,7 +279,7 @@ final class PrivateChannelAuthenticatorTest extends TestCase
             ->expects(self::exactly(2))
             ->method('supports')
             ->with(
-                ...$this->consecutiveParams(
+                ...self::withConsecutive(
                     ['avengers'],
                     ['marvel'],
                 )
@@ -291,7 +291,7 @@ final class PrivateChannelAuthenticatorTest extends TestCase
             ->expects(self::exactly(2))
             ->method('hasAccessToChannel')
             ->with(
-                ...$this->consecutiveParams(
+                ...self::withConsecutive(
                     ['avengers'],
                     ['marvel'],
                 )
@@ -303,7 +303,7 @@ final class PrivateChannelAuthenticatorTest extends TestCase
             ->expects(self::exactly(2))
             ->method('generateJwtTokenForPrivateChannel')
             ->with(
-                ...$this->consecutiveParams(
+                ...self::withConsecutive(
                     ['spiderman', 'avengers'],
                     ['spiderman', 'marvel'],
                 )
