@@ -22,17 +22,17 @@
         "issues": "https://github.com/fre5h/CentrifugoBundle/issues"
     },
     "require": {
-        "php": ">=8.1",
-        "fresh/datetime": "^2.0",
-        "symfony/console": "~5.4||~6.0",
-        "symfony/config": "~5.4||~6.0",
-        "symfony/dependency-injection": "~5.4||~6.0",
-        "symfony/framework-bundle": "~5.4||~6.0",
-        "symfony/http-client": "~5.4||~6.0",
-        "symfony/http-foundation": "~5.4||~6.0",
-        "symfony/http-kernel": "~5.4||~6.0",
-        "symfony/security-core": "~5.4||~6.0",
-        "symfony/validator": "~5.4||~6.0"
+        "php": ">=8.2",
+        "fresh/datetime": "^3.0",
+        "symfony/console": "~6.3",
+        "symfony/config": "~6.3",
+        "symfony/dependency-injection": "~6.3",
+        "symfony/framework-bundle": "~6.3",
+        "symfony/http-client": "~6.3",
+        "symfony/http-foundation": "~6.3",
+        "symfony/http-kernel": "~6.3",
+        "symfony/security-core": "~6.3",
+        "symfony/validator": "~6.3"
     },
     "require-dev": {
         "escapestudios/symfony2-coding-standard": "^3.13",
