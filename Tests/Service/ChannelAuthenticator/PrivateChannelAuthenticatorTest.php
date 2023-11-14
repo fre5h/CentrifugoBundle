@@ -15,6 +15,7 @@ namespace Fresh\CentrifugoBundle\Tests\Service\Jwt;
 use Fresh\CentrifugoBundle\Service\ChannelAuthenticator\ChannelAuthenticatorInterface;
 use Fresh\CentrifugoBundle\Service\ChannelAuthenticator\PrivateChannelAuthenticator;
 use Fresh\CentrifugoBundle\Service\Credentials\CredentialsGenerator;
+use Fresh\CentrifugoBundle\Tests\ConsecutiveParamsTrait;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,6 +28,8 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  */
 final class PrivateChannelAuthenticatorTest extends TestCase
 {
+    use ConsecutiveParamsTrait;
+
     /** @var Request|MockObject */
     private Request|MockObject $request;
 
@@ -275,21 +278,36 @@ final class PrivateChannelAuthenticatorTest extends TestCase
         $this->customerChannelAuthenticator
             ->expects(self::exactly(2))
             ->method('supports')
-            ->withConsecutive(['avengers'], ['marvel'])
+            ->with(
+                ...$this->consecutiveParams(
+                    ['avengers'],
+                    ['marvel'],
+                )
+            )
             ->willReturnOnConsecutiveCalls(true, true)
         ;
 
         $this->customerChannelAuthenticator
             ->expects(self::exactly(2))
             ->method('hasAccessToChannel')
-            ->withConsecutive(['avengers'], ['marvel'])
+            ->with(
+                ...$this->consecutiveParams(
+                    ['avengers'],
+                    ['marvel'],
+                )
+            )
             ->willReturnOnConsecutiveCalls(true, true)
         ;
 
         $this->credentialsGenerator
             ->expects(self::exactly(2))
             ->method('generateJwtTokenForPrivateChannel')
-            ->withConsecutive(['spiderman', 'avengers'], ['spiderman', 'marvel'])
+            ->with(
+                ...$this->consecutiveParams(
+                    ['spiderman', 'avengers'],
+                    ['spiderman', 'marvel'],
+                )
+            )
             ->willReturnOnConsecutiveCalls('test1', 'test2')
         ;
 

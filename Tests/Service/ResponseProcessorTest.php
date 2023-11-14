@@ -24,6 +24,7 @@ use Fresh\CentrifugoBundle\Model\PublishCommand;
 use Fresh\CentrifugoBundle\Model\ResultableCommandInterface;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\ResponseProcessor;
+use Fresh\CentrifugoBundle\Tests\ConsecutiveParamsTrait;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpKernel\Profiler\Profiler;
@@ -36,6 +37,8 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
  */
 final class ResponseProcessorTest extends TestCase
 {
+    use ConsecutiveParamsTrait;
+
     /** @var ResponseInterface|MockObject */
     private ResponseInterface|MockObject $response;
 
@@ -103,22 +106,28 @@ final class ResponseProcessorTest extends TestCase
             )
         ;
 
+        $commandA = new PublishCommand(['foo' => 'bar'], 'channelA');
+        $commandB = new BroadcastCommand(['foo' => 'bar'], ['channelA', 'channelB']);
+        $commandC = new ChannelsCommand();
+
         $this->commandHistoryLogger
             ->expects(self::exactly(3))
             ->method('logCommand')
-            ->withConsecutive(
-                [self::isInstanceOf(PublishCommand::class), true, null],
-                [self::isInstanceOf(BroadcastCommand::class), true, null],
-                [self::isInstanceOf(ChannelsCommand::class), true, ['channels' => ['chat', 'notification']]]
+            ->with(
+                ...$this->consecutiveParams(
+                    [$commandA, true, null],
+                    [$commandB, true, null],
+                    [$commandC, true, ['channels' => ['chat', 'notification']]],
+                )
             )
         ;
 
         $result = $this->responseProcessor->processResponse(
             new BatchRequest(
                 [
-                    new PublishCommand(['foo' => 'bar'], 'channelA'),
-                    new BroadcastCommand(['foo' => 'bar'], ['channelA', 'channelB']),
-                    new ChannelsCommand(),
+                    $commandA,
+                    $commandB,
+                    $commandC,
                 ]
             ),
             $this->response
@@ -303,10 +312,12 @@ final class ResponseProcessorTest extends TestCase
         $this->commandHistoryLogger
             ->expects(self::exactly(3))
             ->method('logCommand')
-            ->withConsecutive(
-                [self::isInstanceOf(PublishCommand::class), false, ['error' => ['message' => 'test message 2', 'code' => 456]]],
-                [self::isInstanceOf(BroadcastCommand::class), true, null],
-                [self::isInstanceOf(ChannelsCommand::class), true, ['channels' => ['chat', 'notification']]]
+            ->with(
+                ...$this->consecutiveParams(
+                    [self::isInstanceOf(PublishCommand::class), false, ['error' => ['message' => 'test message 2', 'code' => 456]]],
+                    [self::isInstanceOf(BroadcastCommand::class), true, null],
+                    [self::isInstanceOf(ChannelsCommand::class), true, ['channels' => ['chat', 'notification']]],
+                )
             )
         ;
 

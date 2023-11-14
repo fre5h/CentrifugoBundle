@@ -46,10 +46,7 @@ final class HistoryRemoveCommandTest extends TestCase
         self::assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
-                    "method": "history_remove",
-                    "params": {
-                        "channel": "foo"
-                    }
+                    "channel": "foo"
                 }
             JSON,
             \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)

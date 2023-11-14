@@ -96,11 +96,15 @@ final class BatchRequest implements CommandInterface
         $serializedCommands = [];
 
         foreach ($this->getCommands() as $command) {
-            $serializedCommands['commands'] = \json_encode($command, \JSON_THROW_ON_ERROR);
+            $serializedCommands[] = \sprintf(
+                '{"%s":%s}',
+                $command->getMethod()->value,
+                \json_encode($command, \JSON_THROW_ON_ERROR),
+            );
         }
 
         if (!empty($serializedCommands)) {
-            $json = \implode("\n", $serializedCommands);
+            $json = \sprintf('{"commands":[%s]}', \implode(',', $serializedCommands));
         } else {
             $json = '{}';
         }

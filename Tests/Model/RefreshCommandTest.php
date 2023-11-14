@@ -46,10 +46,7 @@ final class RefreshCommandTest extends TestCase
         self::assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
-                    "method": "refresh",
-                    "params": {
-                        "user": "foo"
-                    }
+                    "user": "foo"
                 }
             JSON,
             \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
@@ -68,14 +65,11 @@ final class RefreshCommandTest extends TestCase
         self::assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
-                    "method": "refresh",
-                    "params": {
-                        "user": "foo",
-                        "client": "clientID",
-                        "session": "sessionID",
-                        "expired": true,
-                        "expire_at": 1234567890
-                    }
+                    "user": "foo",
+                    "client": "clientID",
+                    "session": "sessionID",
+                    "expired": true,
+                    "expire_at": 1234567890
                 }
             JSON,
             \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
