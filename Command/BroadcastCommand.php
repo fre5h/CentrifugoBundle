@@ -58,7 +58,6 @@ final class BroadcastCommand extends AbstractCommand
     {
         // @phpstan-ignore-next-line
         if (Kernel::MAJOR_VERSION >= 6) {
-            // @phpstan-ignore-next-line
             $channelsArgument = new InputArgument('channels', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'List of channels to publish data to', null, $this->getChannelsForAutocompletion());
         } else {
             $channelsArgument = new InputArgument('channels', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'List of channels to publish data to');
