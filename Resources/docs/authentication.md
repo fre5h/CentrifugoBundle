@@ -150,6 +150,7 @@ class AdminsChannelAuthenticator implements ChannelAuthenticatorInterface
 
 ```php
 <?php
+declare(strict_types=1);
 
 namespace App\Controller;
 

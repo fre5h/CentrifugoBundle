@@ -31,4 +31,5 @@ enum Method: string
     case HISTORY_REMOVE = 'history_remove';
     case CHANNELS = 'channels';
     case INFO = 'info';
+    case BATCH = 'batch';
 }
