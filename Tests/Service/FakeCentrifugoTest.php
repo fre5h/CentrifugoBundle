@@ -48,6 +48,7 @@ final class FakeCentrifugoTest extends TestCase
         self::assertSame([], $this->centrifugo->history('channelA'));
         $this->centrifugo->historyRemove('channelA');
         self::assertSame([], $this->centrifugo->channels());
+        self::assertSame([], $this->centrifugo->channels('pattern'));
         self::assertSame([], $this->centrifugo->info());
         self::assertSame(
             [],

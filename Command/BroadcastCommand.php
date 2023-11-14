@@ -12,15 +12,21 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Command;
 
+use Fresh\CentrifugoBundle\Command\Argument\ArgumentChannelsTrait;
+use Fresh\CentrifugoBundle\Command\Argument\ArgumentDataTrait;
+use Fresh\CentrifugoBundle\Command\Option\OptionBase64DataTrait;
+use Fresh\CentrifugoBundle\Command\Option\OptionSkipHistoryTrait;
+use Fresh\CentrifugoBundle\Command\Option\OptionTagsTrait;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
-use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * BroadcastCommand.
@@ -30,21 +36,18 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 #[AsCommand(name: 'centrifugo:broadcast', description: 'Publish same data into many channels')]
 final class BroadcastCommand extends AbstractCommand
 {
+    use ArgumentChannelsTrait;
     use ArgumentDataTrait;
-
-    private CentrifugoChecker $centrifugoChecker;
-
-    /** @var string[] */
-    private array $channels;
+    use OptionBase64DataTrait;
+    use OptionSkipHistoryTrait;
+    use OptionTagsTrait;
 
     /**
      * @param CentrifugoInterface $centrifugo
      * @param CentrifugoChecker   $centrifugoChecker
      */
-    public function __construct(CentrifugoInterface $centrifugo, CentrifugoChecker $centrifugoChecker)
+    public function __construct(CentrifugoInterface $centrifugo, protected readonly CentrifugoChecker $centrifugoChecker)
     {
-        $this->centrifugoChecker = $centrifugoChecker;
-
         parent::__construct($centrifugo);
     }
 
@@ -53,20 +56,44 @@ final class BroadcastCommand extends AbstractCommand
      */
     protected function configure(): void
     {
+        if (Kernel::MAJOR_VERSION >= 6) { // @phpstan-ignore-line
+            $channelsArgument = new InputArgument('channels', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'List of channels to publish data to', null, $this->getChannelsForAutocompletion());
+        } else { // @phpstan-ignore-line
+            $channelsArgument = new InputArgument('channels', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'List of channels to publish data to');
+        }
+
         $this
             ->setDefinition(
                 new InputDefinition([
                     new InputArgument('data', InputArgument::REQUIRED, 'Data in JSON format'),
-                    new InputArgument('channels', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'Channel names'),
+                    $channelsArgument,
+                    new InputOption('tags', null, InputOption::VALUE_OPTIONAL, 'Publication tags - map with arbitrary string keys and values which is attached to publication and will be delivered to clients'),
+                    new InputOption('skipHistory', null, InputOption::VALUE_NONE, 'Skip adding publication to history for this request'),
+                    new InputOption('base64data', null, InputOption::VALUE_OPTIONAL, 'Custom binary data to publish into a channel encoded to base64 so it\'s possible to use HTTP API to send binary to clients. Centrifugo will decode it from base64 before publishing.'),
                 ])
             )
             ->setHelp(
                 <<<'HELP'
 The <info>%command.name%</info> command allows to publish same data into many channels:
 
-<info>%command.full_name%</info> <comment>'{"foo":"bar"}'</comment> </comment>channelAbc</comment> </comment>channelDef</comment>
+<info>%command.full_name%</info> <comment>'{"foo":"bar"}'</comment> </comment>channelName1</comment> </comment>channelName2</comment>
 
-Read more at https://centrifugal.github.io/centrifugo/server/http_api/#broadcast
+You can skip adding publication to history for this request:
+
+<info>%command.full_name%</info> <comment>'{"foo":"bar"}'</comment> </comment>channelName1</comment> </comment>channelName2</comment> <comment>--skipHistory</comment>
+
+You can add tags which are attached to publication and will be delivered to clients:
+
+<info>%command.full_name%</info> <comment>'{"foo":"bar"}'</comment> </comment>channelName1</comment> </comment>channelName2</comment> <comment>--tags='{"tag1":"value1","tag2":"value2"}'</comment>
+
+You can add custom binary data to publish into a channel encoded to base64, so it's possible to use
+HTTP API to send binary to clients. Centrifugo will decode it from base64 before publishing:
+
+<info>%command.full_name%</info> <comment>'{"foo":"bar"}'</comment> </comment>channelName1</comment> </comment>channelName2</comment> <comment>--base64data=SGVsbG8gd29ybGQ=</comment>
+
+Where <comment>SGVsbG8gd29ybGQ=</comment> is base64 encoded version of <comment>Hello world</comment>
+
+Read more at https://centrifugal.dev/docs/server/server_api#broadcast
 HELP
             )
         ;
@@ -79,18 +106,11 @@ HELP
     {
         parent::initialize($input, $output);
 
+        $this->initializeChannelsArgument($input);
         $this->initializeDataArgument($input);
-
-        try {
-            /** @var string[] $channels */
-            $channels = (array) $input->getArgument('channels');
-            foreach ($channels as $channel) {
-                $this->centrifugoChecker->assertValidChannelName($channel);
-            }
-            $this->channels = $channels;
-        } catch (\Throwable $e) {
-            throw new InvalidArgumentException($e->getMessage());
-        }
+        $this->initializeTagsOption($input);
+        $this->initializeSkipHistoryOption($input);
+        $this->initializeB64DataOption($input);
     }
 
     /**
@@ -101,7 +121,13 @@ HELP
         $io = new SymfonyStyle($input, $output);
 
         try {
-            $this->centrifugo->broadcast($this->data, $this->channels);
+            $this->centrifugo->broadcast(
+                data: $this->data,
+                channels: $this->channels,
+                skipHistory: $this->skipHistory,
+                tags: $this->tags,
+                base64data: $this->base64data,
+            );
             $io->success('DONE');
         } catch (\Throwable $e) {
             $io->error($e->getMessage());

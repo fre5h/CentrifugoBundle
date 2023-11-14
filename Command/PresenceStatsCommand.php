@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Command;
 
+use Fresh\CentrifugoBundle\Command\Argument\ArgumentChannelTrait;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -20,13 +21,14 @@ use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * PresenceStatsCommand.
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-#[AsCommand(name: 'centrifugo:presence-stats', description: 'Get short channel presence information')]
+#[AsCommand(name: 'centrifugo:presence-stats', description: 'Get short channel presence information - number of clients and number of unique users (based on user ID)')]
 final class PresenceStatsCommand extends AbstractCommand
 {
     use ArgumentChannelTrait;
@@ -35,10 +37,8 @@ final class PresenceStatsCommand extends AbstractCommand
      * @param CentrifugoInterface $centrifugo
      * @param CentrifugoChecker   $centrifugoChecker
      */
-    public function __construct(CentrifugoInterface $centrifugo, CentrifugoChecker $centrifugoChecker)
+    public function __construct(CentrifugoInterface $centrifugo, protected readonly CentrifugoChecker $centrifugoChecker)
     {
-        $this->centrifugoChecker = $centrifugoChecker;
-
         parent::__construct($centrifugo);
     }
 
@@ -47,19 +47,25 @@ final class PresenceStatsCommand extends AbstractCommand
      */
     protected function configure(): void
     {
+        if (Kernel::MAJOR_VERSION >= 6) { // @phpstan-ignore-line
+            $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to call presence from', null, $this->getChannelsForAutocompletion());
+        } else { // @phpstan-ignore-line
+            $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to call presence from');
+        }
+
         $this
             ->setDefinition(
                 new InputDefinition([
-                    new InputArgument('channel', InputArgument::REQUIRED, 'Channel name'),
+                    $channelArgument,
                 ])
             )
             ->setHelp(
                 <<<'HELP'
-The <info>%command.name%</info> command allows to get short channel presence information:
+The <info>%command.name%</info> command allows to get short channel presence information - number of clients and number of unique users (based on user ID):
 
-<info>%command.full_name%</info> <comment>channelAbc</comment>
+<info>%command.full_name%</info> <comment>channelName</comment>
 
-Read more at https://centrifugal.github.io/centrifugo/server/http_api/#presence_stats
+Read more at https://centrifugal.dev/docs/server/server_api#presence_stats
 HELP
             )
         ;
@@ -86,8 +92,8 @@ HELP
             $data = $this->centrifugo->presenceStats($this->channel);
 
             $io->title('Presence Stats');
-            $io->text(\sprintf('<info>num_clients</info>: <comment>%d</comment>', $data['num_clients']));
-            $io->text(\sprintf('<info>num_users</info>: <comment>%d</comment>', $data['num_users']));
+            $io->text(\sprintf('<info>Total number of clients in channel</info>: <comment>%d</comment>', $data['num_clients']));
+            $io->text(\sprintf('<info>Total number of unique users in channel</info>: <comment>%d</comment>', $data['num_users']));
             $io->newLine();
         } catch (\Throwable $e) {
             $io->error($e->getMessage());

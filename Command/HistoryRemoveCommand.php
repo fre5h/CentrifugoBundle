@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Command;
 
+use Fresh\CentrifugoBundle\Command\Argument\ArgumentChannelTrait;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -20,13 +21,14 @@ use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * HistoryRemoveCommand.
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-#[AsCommand(name: 'centrifugo:history-remove', description: 'Remove history for channel')]
+#[AsCommand(name: 'centrifugo:history-remove', description: 'Remove publications in channel history')]
 final class HistoryRemoveCommand extends AbstractCommand
 {
     use ArgumentChannelTrait;
@@ -35,10 +37,8 @@ final class HistoryRemoveCommand extends AbstractCommand
      * @param CentrifugoInterface $centrifugo
      * @param CentrifugoChecker   $centrifugoChecker
      */
-    public function __construct(CentrifugoInterface $centrifugo, CentrifugoChecker $centrifugoChecker)
+    public function __construct(CentrifugoInterface $centrifugo, protected readonly CentrifugoChecker $centrifugoChecker)
     {
-        $this->centrifugoChecker = $centrifugoChecker;
-
         parent::__construct($centrifugo);
     }
 
@@ -47,17 +47,25 @@ final class HistoryRemoveCommand extends AbstractCommand
      */
     protected function configure(): void
     {
+        if (Kernel::MAJOR_VERSION >= 6) { // @phpstan-ignore-line
+            $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to remove history', null, $this->getChannelsForAutocompletion());
+        } else { // @phpstan-ignore-line
+            $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to remove history');
+        }
+
         $this
             ->setDefinition(
                 new InputDefinition([
-                    new InputArgument('channel', InputArgument::REQUIRED, 'Channel name'),
+                    $channelArgument,
                 ])
             )
             ->setHelp(
                 <<<'HELP'
-The <info>%command.name%</info> command allows to remove history for channel:
+The <info>%command.name%</info> command allows to remove publications in channel history:
 
-<info>%command.full_name%</info> <comment>channelAbc</comment>
+<info>%command.full_name%</info> <comment>channelName</comment>
+
+Read more at https://centrifugal.dev/docs/server/server_api#history_remove
 HELP
             )
         ;

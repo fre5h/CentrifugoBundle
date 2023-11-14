@@ -34,9 +34,11 @@ final class InfoCommand extends AbstractCommand
         $this
             ->setHelp(
                 <<<'HELP'
-The <info>%command.name%</info> command allows to get information about running Centrifugo nodes:
+The <info>%command.name%</info> command allows getting information about running Centrifugo nodes:
 
-Read more at https://centrifugal.github.io/centrifugo/server/http_api/#info
+<info>%command.full_name%</info>
+
+Read more at https://centrifugal.dev/docs/server/server_api#info
 HELP
             )
         ;

@@ -21,6 +21,11 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
+/**
+ * UnsubscribeCommandTest.
+ *
+ * @author Artem Henvald <genvaldartem@gmail.com>
+ */
 final class UnsubscribeCommandTest extends TestCase
 {
     /** @var CentrifugoInterface|MockObject */
@@ -57,7 +62,7 @@ final class UnsubscribeCommandTest extends TestCase
         );
     }
 
-    public function testSuccessfulExecute(): void
+    public function testSuccessfulExecutionWithRequiredParameters(): void
     {
         $this->centrifugo
             ->expects(self::once())
@@ -70,6 +75,29 @@ final class UnsubscribeCommandTest extends TestCase
                 'command' => $this->command->getName(),
                 'user' => 'user123',
                 'channel' => 'channelA',
+            ]
+        );
+        self::assertSame(0, $result);
+
+        $output = $this->commandTester->getDisplay();
+        self::assertStringContainsString('DONE', $output);
+    }
+
+    public function testSuccessfulExecutionWithAllParameters(): void
+    {
+        $this->centrifugo
+            ->expects(self::once())
+            ->method('unsubscribe')
+            ->with('user123', 'channelA')
+        ;
+
+        $result = $this->commandTester->execute(
+            [
+                'command' => $this->command->getName(),
+                'user' => 'user123',
+                'channel' => 'channelA',
+                '--client' => 'clientID',
+                '--session' => 'sessionID',
             ]
         );
         self::assertSame(0, $result);

@@ -110,7 +110,7 @@
                         <td class="nowrap font-normal">{{ loop.index }}</td>
                         <td class="font-normal command">
                             <span class="label status-{% if history.success %}success{% else %}error{% endif %} same-width">
-                                {{- history.command.method|upper -}}
+                                {{- history.command.method.value|upper -}}
                             </span>
                         </td>
                         <td class="font-normal request">
@@ -138,7 +138,7 @@
     <h3>Additional Resources</h3>
     <ul>
         <li><a href="https://github.com/fre5h/CentrifugoBundle/issues">Report an issue</a></li>
-        <li><a href="https://centrifugal.github.io/centrifugo/">Centrifugo documentation</a></li>
+        <li><a href="https://centrifugal.dev">Centrifugo documentation</a></li>
         <li><a href="https://github.com/fre5h/CentrifugoBundle">CentrifugoBundle homepage</a></li>
     </ul>
 {% endblock panel %}

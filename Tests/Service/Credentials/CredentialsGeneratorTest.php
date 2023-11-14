@@ -56,8 +56,8 @@ final class CredentialsGeneratorTest extends TestCase
     {
         $this->dateTimeHelper
             ->expects(self::once())
-            ->method('getCurrentDatetime')
-            ->willReturn(new \DateTime('2000-01-01 00:00:00'))
+            ->method('getCurrentDatetimeUtc')
+            ->willReturn(new \DateTime('2000-01-01 00:00:00', new \DateTimeZone('UTC')))
         ;
 
         $this->jwtGenerator
@@ -81,8 +81,8 @@ final class CredentialsGeneratorTest extends TestCase
     {
         $this->dateTimeHelper
             ->expects(self::once())
-            ->method('getCurrentDatetime')
-            ->willReturn(new \DateTime('2000-02-02 00:00:00'))
+            ->method('getCurrentDatetimeUtc')
+            ->willReturn(new \DateTime('2000-02-02 00:00:00', new \DateTimeZone('UTC')))
         ;
 
         $user = $this->createMock(CentrifugoUserInterface::class);
@@ -123,8 +123,8 @@ final class CredentialsGeneratorTest extends TestCase
     {
         $this->dateTimeHelper
             ->expects(self::once())
-            ->method('getCurrentDatetime')
-            ->willReturn(new \DateTime('2000-03-03 00:00:00'))
+            ->method('getCurrentDatetimeUtc')
+            ->willReturn(new \DateTime('2000-03-03 00:00:00', new \DateTimeZone('UTC')))
         ;
 
         $this->jwtGenerator

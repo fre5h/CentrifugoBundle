@@ -1,6 +1,6 @@
 # CentrifugoBundle
 
-📦 Provides communication with web-socket server [Centrifugo](https://centrifugal.github.io/centrifugo/) in [Symfony](https://symfony.com/) applications.
+📦 Provides communication with web-socket server [Centrifugo](https://centrifugal.dev) in [Symfony](https://symfony.com) applications.
 
 [![Scrutinizer Quality Score](https://img.shields.io/scrutinizer/g/fre5h/CentrifugoBundle.svg?style=flat-square)](https://scrutinizer-ci.com/g/fre5h/CentrifugoBundle/)
 [![Build Status](https://img.shields.io/github/actions/workflow/status/fre5h/CentrifugoBundle/ci.yaml?branch=main&style=flat-square)](https://github.com/fre5h/CentrifugoBundle/actions?query=workflow%3ACI+branch%3Amain+)
@@ -13,8 +13,8 @@
 
 ## Features 🎁
 
-- [x] Compatible with latest [Centrifugo 2.8.6](https://github.com/centrifugal/centrifugo/releases/tag/v2.8.6) 🚀
-- [x] Wrapper over [Centrifugo HTTP API](https://centrifugal.github.io/centrifugo/server/http_api/) 🔌
+- [x] Compatible with [Centrifugo 4.1.5](https://github.com/centrifugal/centrifugo/releases/tag/v4.1.5) 🚀
+- [x] Wrapper over [Centrifugo HTTP API](https://centrifugal.dev/docs/server/server_api#http-api) 🔌
 - [X] Authentication with JWT token (HMAC algorithm) for [anonymous](./Resources/docs/authentication.md#anonymous), [authenticated user](./Resources/docs/authentication.md#authenticated-user) and [private channel](./Resources/docs/authentication.md#private-channel) 🗝️
 - [x] [Batch request](./Resources/docs/centrifugo_service_methods.md#batch-request) in [JSON streaming format](https://en.wikipedia.org/wiki/JSON_streaming) 💪
 - [x] [Console commands](./Resources/docs/console_commands.md "Console commands") ⚒️️
@@ -23,7 +23,7 @@
 ## Requirements 🧐
 
 * PHP 8.1
-* Symfony 6.1
+* Symfony 5.4, 6.0, 6.1, 6.2, 6.3, 6.4
 
 ## Installation 🌱
 
@@ -31,7 +31,7 @@
 $ composer req fresh/centrifugo-bundle
 ```
 
-By default, [Symfony Flex](https://flex.symfony.com/) adds this bundle to the `config/bundles.php` file and adds required environment variables into `.env` file.
+By default, [Symfony Flex](https://flex.symfony.com) adds this bundle to the `config/bundles.php` file and adds required environment variables into `.env` file.
 In case when you ignored `contrib-recipe` during bundle installation it would not be done. Then you have to do this manually.
 
 #### Check the `config/bundles.php` file
@@ -58,6 +58,9 @@ CENTRIFUGO_SECRET=secret
 ###< fresh/centrifugo-bundle ###
 ```
 
+`CENTRIFUGO_API_KEY` should be the same value as option `api_key` in your Centrifugo config file.  
+`CENTRIFUGO_SECRET` should be the same value as option `token_hmac_secret_key` in your Centrifugo config file.
+
 ℹ️ [Customize bundle configuration](./Resources/docs/configuration.md "Customize bundle configuration")
 
 ## Using 🧑‍🎓
@@ -74,16 +77,13 @@ use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
 
 class YourService
 {
-    private CentrifugoInterface $centrifugo;    
-
-    public function __construct(CentrifugoInterface $centrifugo)
+    public function __construct(private readonly CentrifugoInterface $centrifugo)
     {
-        $this->centrifugo = $centrifugo;
     }
 
     public function example(): void
     {
-        $this->centrifugo->publish(['foo' => 'bar'], 'channelA');
+        $this->centrifugo->publish(['foo' => 'bar'], 'channelName');
     }
 }
 ```
@@ -100,8 +100,10 @@ class YourService
 
 * `centrifugo:publish`
 * `centrifugo:broadcast`
+* `centrifugo:subscribe`
 * `centrifugo:unsubscribe`
 * `centrifugo:disconnect`
+* `centrifugo:refresh`
 * `centrifugo:presence`
 * `centrifugo:presence-stats`
 * `centrifugo:history`
@@ -114,6 +116,10 @@ class YourService
 ### Integration into Symfony Web-Profiler 🎛️
 
 ![](./Resources/images/profiler_example.png "Profiler example")
+
+### Autocomplete channels in console commands 🪄
+
+![example](https://github.com/fre5h/CentrifugoBundle/blob/centrifugo_v3/Resources/images/autocomplete_example.gif)
 
 ## Contributing 🤝
 

@@ -12,34 +12,40 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Command;
 
+use Fresh\CentrifugoBundle\Command\Argument\ArgumentChannelTrait;
+use Fresh\CentrifugoBundle\Command\Argument\ArgumentUserTrait;
+use Fresh\CentrifugoBundle\Command\Option\OptionClientTrait;
+use Fresh\CentrifugoBundle\Command\Option\OptionSessionTrait;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * UnsubscribeCommand.
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-#[AsCommand(name: 'centrifugo:unsubscribe', description: 'Unsubscribe user from channel')]
+#[AsCommand(name: 'centrifugo:unsubscribe', description: 'Unsubscribe user from a channel')]
 final class UnsubscribeCommand extends AbstractCommand
 {
     use ArgumentChannelTrait;
     use ArgumentUserTrait;
+    use OptionClientTrait;
+    use OptionSessionTrait;
 
     /**
      * @param CentrifugoInterface $centrifugo
      * @param CentrifugoChecker   $centrifugoChecker
      */
-    public function __construct(CentrifugoInterface $centrifugo, CentrifugoChecker $centrifugoChecker)
+    public function __construct(CentrifugoInterface $centrifugo, protected readonly CentrifugoChecker $centrifugoChecker)
     {
-        $this->centrifugoChecker = $centrifugoChecker;
-
         parent::__construct($centrifugo);
     }
 
@@ -48,20 +54,36 @@ final class UnsubscribeCommand extends AbstractCommand
      */
     protected function configure(): void
     {
+        if (Kernel::MAJOR_VERSION >= 6) { // @phpstan-ignore-line
+            $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to unsubscribe user to', null, $this->getChannelsForAutocompletion());
+        } else { // @phpstan-ignore-line
+            $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to unsubscribe user to');
+        }
+
         $this
             ->setDefinition(
                 new InputDefinition([
-                    new InputArgument('user', InputArgument::REQUIRED, 'User ID'),
-                    new InputArgument('channel', InputArgument::REQUIRED, 'Channel name'),
+                    new InputArgument('user', InputArgument::REQUIRED, 'User ID to unsubscribe'),
+                    $channelArgument,
+                    new InputOption('client', null, InputOption::VALUE_OPTIONAL, 'Specific client ID to unsubscribe (user still required to be set)'),
+                    new InputOption('session', null, InputOption::VALUE_OPTIONAL, 'Specific client session to disconnect (user still required to be set)'),
                 ])
             )
             ->setHelp(
                 <<<'HELP'
-The <info>%command.name%</info> command allows to unsubscribe user from channel:
+The <info>%command.name%</info> command allows unsubscribing user from a channel:
 
-<info>%command.full_name%</info> <comment>user123</comment> <comment>channelAbc</comment>
+<info>%command.full_name%</info> <comment>user123</comment> <comment>channelName</comment>
 
-Read more at https://centrifugal.github.io/centrifugo/server/http_api/#unsubscribe
+You can unsubscribe specific user from a channel by client ID:
+
+<info>%command.full_name%</info> <comment>user123</comment> <comment>channelName</comment> <comment>--client=clientID</comment>
+
+You can unsubscribe specific user from a channel by session ID:
+
+<info>%command.full_name%</info> <comment>user123</comment> <comment>channelName</comment> <comment>--session=sessionID</comment>
+
+Read more at https://centrifugal.dev/docs/server/server_api#unsubscribe
 HELP
             )
         ;
@@ -76,6 +98,8 @@ HELP
 
         $this->initializeUserArgument($input);
         $this->initializeChannelArgument($input);
+        $this->initializeClientOption($input);
+        $this->initializeSessionOption($input);
     }
 
     /**
@@ -86,7 +110,12 @@ HELP
         $io = new SymfonyStyle($input, $output);
 
         try {
-            $this->centrifugo->unsubscribe($this->user, $this->channel);
+            $this->centrifugo->unsubscribe(
+                user: $this->user,
+                channel: $this->channel,
+                client: $this->client,
+                session: $this->session,
+            );
             $io->success('DONE');
         } catch (\Throwable $e) {
             $io->error($e->getMessage());

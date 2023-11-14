@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Command;
 
+use Fresh\CentrifugoBundle\Command\Argument\ArgumentChannelTrait;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -20,13 +21,14 @@ use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * PresenceCommand.
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-#[AsCommand(name: 'centrifugo:presence', description: 'Get channel presence information')]
+#[AsCommand(name: 'centrifugo:presence', description: 'Get channel presence information (all clients currently subscribed on this channel)')]
 final class PresenceCommand extends AbstractCommand
 {
     use ArgumentChannelTrait;
@@ -35,10 +37,8 @@ final class PresenceCommand extends AbstractCommand
      * @param CentrifugoInterface $centrifugo
      * @param CentrifugoChecker   $centrifugoChecker
      */
-    public function __construct(CentrifugoInterface $centrifugo, CentrifugoChecker $centrifugoChecker)
+    public function __construct(CentrifugoInterface $centrifugo, protected readonly CentrifugoChecker $centrifugoChecker)
     {
-        $this->centrifugoChecker = $centrifugoChecker;
-
         parent::__construct($centrifugo);
     }
 
@@ -47,19 +47,25 @@ final class PresenceCommand extends AbstractCommand
      */
     protected function configure(): void
     {
+        if (Kernel::MAJOR_VERSION >= 6) { // @phpstan-ignore-line
+            $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to call presence from', null, $this->getChannelsForAutocompletion());
+        } else { // @phpstan-ignore-line
+            $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to call presence from');
+        }
+
         $this
             ->setDefinition(
                 new InputDefinition([
-                    new InputArgument('channel', InputArgument::REQUIRED, 'Channel name'),
+                    $channelArgument,
                 ])
             )
             ->setHelp(
                 <<<'HELP'
-The <info>%command.name%</info> command allows to get channel presence information:
+The <info>%command.name%</info> command allows to get channel presence information (all clients currently subscribed on this channel):
 
-<info>%command.full_name%</info> <comment>channelAbc</comment>
+<info>%command.full_name%</info> <comment>channelName</comment>
 
-Read more at https://centrifugal.github.io/centrifugo/server/http_api/#presence
+Read more at https://centrifugal.dev/docs/server/server_api#presence
 HELP
             )
         ;
@@ -93,7 +99,11 @@ HELP
                     $io->text(\sprintf('  ├ client: <comment>%s</comment>', $info['client']));
                     if (isset($info['conn_info'])) {
                         $io->text('  ├ conn_info:');
-                        $io->write($this->formatConnInfo($info['conn_info']));
+                        $io->write($this->formatInfo($info['conn_info']));
+                    }
+                    if (isset($info['chan_info'])) {
+                        $io->text('  ├ chan_info:');
+                        $io->write($this->formatInfo($info['chan_info']));
                     }
                     $io->text(\sprintf('  └ user: <comment>%s</comment>', $info['user']));
                 }
@@ -112,11 +122,11 @@ HELP
     }
 
     /**
-     * @param array $connInfo
+     * @param array<mixed> $connInfo
      *
      * @return string
      */
-    private function formatConnInfo(array $connInfo): string
+    private function formatInfo(array $connInfo): string
     {
         $json = \json_encode($connInfo, \JSON_PRETTY_PRINT | \JSON_THROW_ON_ERROR);
 

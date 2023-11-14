@@ -20,18 +20,32 @@ namespace Fresh\CentrifugoBundle\Model;
 final class BroadcastCommand extends AbstractCommand
 {
     /**
-     * @param array    $data
-     * @param string[] $channels
+     * @param array<string, mixed> $data
+     * @param string[]             $channels
+     * @param bool                 $skipHistory
+     * @param array<string, mixed> $tags
+     * @param string               $base64data
      */
-    public function __construct(array $data, private readonly array $channels)
+    public function __construct(array $data, private readonly array $channels, bool $skipHistory = false, array $tags = [], string $base64data = '')
     {
-        parent::__construct(
-            Method::BROADCAST,
-            [
-                'channels' => $channels,
-                'data' => $data,
-            ]
-        );
+        $params = [
+            'channels' => $channels,
+            'data' => $data,
+        ];
+
+        if ($skipHistory) {
+            $params['skip_history'] = $skipHistory;
+        }
+
+        if (!empty($tags)) {
+            $params['tags'] = $tags;
+        }
+
+        if (!empty($base64data)) {
+            $params['base64data'] = $base64data;
+        }
+
+        parent::__construct(Method::BROADCAST, $params);
     }
 
     /**

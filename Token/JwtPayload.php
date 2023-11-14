@@ -17,7 +17,7 @@ use JetBrains\PhpStorm\ArrayShape;
 /**
  * JwtPayload.
  *
- * @see https://centrifugal.github.io/centrifugo/server/authentication/#claims
+ * @see https://centrifugal.dev/docs/server/authentication#connection-jwt-claims
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
@@ -44,7 +44,7 @@ final class JwtPayload extends AbstractJwtPayload
     }
 
     /**
-     * @return array
+     * @return array<string>
      */
     public function getChannels(): array
     {

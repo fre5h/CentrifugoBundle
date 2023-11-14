@@ -25,41 +25,32 @@ use PHPUnit\Framework\TestCase;
  */
 final class InfoCommandTest extends TestCase
 {
-    private InfoCommand $command;
-
-    protected function setUp(): void
-    {
-        $this->command = new InfoCommand();
-    }
-
-    protected function tearDown(): void
-    {
-        unset($this->command);
-    }
-
     public function testInterfaces(): void
     {
-        self::assertInstanceOf(SerializableCommandInterface::class, $this->command);
-        self::assertInstanceOf(CommandInterface::class, $this->command);
+        $command = new InfoCommand();
+        self::assertInstanceOf(SerializableCommandInterface::class, $command);
+        self::assertInstanceOf(CommandInterface::class, $command);
     }
 
-    public function testGetters(): void
+    public function testConstructor(): void
     {
-        self::assertEquals(Method::INFO, $this->command->getMethod());
-        self::assertEquals([], $this->command->getParams());
-        self::assertEquals([], $this->command->getChannels());
+        $command = new InfoCommand();
+        self::assertEquals(Method::INFO, $command->getMethod());
+        self::assertEquals([], $command->getParams());
+        self::assertEquals([], $command->getChannels());
     }
 
     public function testSerialization(): void
     {
+        $command = new InfoCommand();
         self::assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
                     "method": "info",
-                    "params": []
+                    "params": {}
                 }
             JSON,
-            \json_encode($this->command, JSON_THROW_ON_ERROR)
+            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
         );
     }
 }

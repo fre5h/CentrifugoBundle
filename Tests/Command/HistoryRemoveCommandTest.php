@@ -21,6 +21,11 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
+/**
+ * HistoryRemoveCommandTest.
+ *
+ * @author Artem Henvald <genvaldartem@gmail.com>
+ */
 final class HistoryRemoveCommandTest extends TestCase
 {
     /** @var CentrifugoInterface|MockObject */
@@ -57,7 +62,7 @@ final class HistoryRemoveCommandTest extends TestCase
         );
     }
 
-    public function testSuccessfulExecute(): void
+    public function testSuccessfulExecution(): void
     {
         $this->centrifugo
             ->expects(self::once())

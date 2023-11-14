@@ -21,6 +21,11 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
+/**
+ * PublishCommandTest.
+ *
+ * @author Artem Henvald <genvaldartem@gmail.com>
+ */
 final class PublishCommandTest extends TestCase
 {
     /** @var CentrifugoInterface|MockObject */
@@ -57,7 +62,7 @@ final class PublishCommandTest extends TestCase
         );
     }
 
-    public function testSuccessfulExecute(): void
+    public function testSuccessfulExecutionWithRequiredParameters(): void
     {
         $this->centrifugo
             ->expects(self::once())
@@ -71,6 +76,30 @@ final class PublishCommandTest extends TestCase
                 'data' => '{"foo":"bar"}',
                 'channel' => 'channelA',
             ]
+        );
+        self::assertSame(0, $result);
+
+        $output = $this->commandTester->getDisplay();
+        self::assertStringContainsString('DONE', $output);
+    }
+
+    public function testSuccessfulExecutionWithAllParameters(): void
+    {
+        $this->centrifugo
+            ->expects(self::once())
+            ->method('publish')
+            ->with(['foo' => 'bar'], 'channelA', true, ['env' => 'test'], 'SGVsbG8gd29ybGQ=')
+        ;
+
+        $result = $this->commandTester->execute(
+            [
+                'command' => $this->command->getName(),
+                'data' => '{"foo":"bar"}',
+                'channel' => 'channelA',
+                '--tags' => '{"env":"test"}',
+                '--skipHistory' => true,
+                '--base64data' => 'SGVsbG8gd29ybGQ=',
+            ],
         );
         self::assertSame(0, $result);
 

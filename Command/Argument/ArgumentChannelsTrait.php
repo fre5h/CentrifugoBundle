@@ -10,38 +10,38 @@
 
 declare(strict_types=1);
 
-namespace Fresh\CentrifugoBundle\Command;
+namespace Fresh\CentrifugoBundle\Command\Argument;
 
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputInterface;
 
 /**
- * ArgumentChannelTrait.
+ * ArgumentChannelsTrait.
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-trait ArgumentChannelTrait
+trait ArgumentChannelsTrait
 {
-    protected string $channel;
-    protected CentrifugoChecker $centrifugoChecker;
+    protected readonly CentrifugoChecker $centrifugoChecker;
+
+    /** @var string[] */
+    private array $channels;
 
     /**
      * @param InputInterface $input
      *
      * @throws InvalidArgumentException
      */
-    protected function initializeChannelArgument(InputInterface $input): void
+    protected function initializeChannelsArgument(InputInterface $input): void
     {
-        $channel = $input->getArgument('channel');
-
-        if (!\is_string($channel)) {
-            throw new InvalidArgumentException('Argument "channel" is not a string.');
-        }
-
         try {
-            $this->centrifugoChecker->assertValidChannelName($channel);
-            $this->channel = $channel;
+            /** @var string[] $channels */
+            $channels = (array) $input->getArgument('channels');
+            foreach ($channels as $channel) {
+                $this->centrifugoChecker->assertValidChannelName($channel);
+            }
+            $this->channels = $channels;
         } catch (\Throwable $e) {
             throw new InvalidArgumentException($e->getMessage());
         }

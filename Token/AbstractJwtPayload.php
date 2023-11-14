@@ -37,7 +37,7 @@ abstract class AbstractJwtPayload implements JwtPayloadInterface
     }
 
     /**
-     * @return array
+     * @return array<string, mixed>
      */
     public function getInfo(): array
     {
