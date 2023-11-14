@@ -101,7 +101,7 @@ HELP
 
         $this->initializeChannelArgument($input);
         $this->initializeEpochOption($input);
-        $this->initializeLimitOption($input);
+        $this->initializeLimitOption($input, 10);
         $this->initializeOffsetOption($input);
         $this->initializeReverseOption($input);
     }
