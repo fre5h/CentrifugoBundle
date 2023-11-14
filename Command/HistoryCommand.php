@@ -57,11 +57,7 @@ final class HistoryCommand extends AbstractCommand
      */
     protected function configure(): void
     {
-        if (Kernel::MAJOR_VERSION >= 6) { // @phpstan-ignore-line
-            $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Channel name', null, $this->getChannelsForAutocompletion());
-        } else { // @phpstan-ignore-line
-            $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Channel name');
-        }
+        $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Channel name', null, $this->getChannelsForAutocompletion());
 
         $this
             ->setDefinition(

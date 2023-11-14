@@ -12,8 +12,6 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Model;
 
-use JetBrains\PhpStorm\ArrayShape;
-
 /**
  * AbstractCommand.
  *
@@ -56,15 +54,12 @@ abstract class AbstractCommand implements SerializableCommandInterface
     /**
      * @return array<string, mixed>
      */
-    #[ArrayShape(['method' => 'string', 'params' => 'array'])]
     public function jsonSerialize(): array
     {
-        $data = ['method' => $this->method->value];
-
         if (!empty($this->params)) {
-            $data['params'] = $this->params;
+            $data = $this->params;
         } else {
-            $data['params'] = new \stdClass(); // To have {} in json, restrictions of Centrifugo
+            $data = new \stdClass(); // To have {} in json, restrictions of Centrifugo
         }
 
         return $data;

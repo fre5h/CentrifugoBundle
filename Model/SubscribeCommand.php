@@ -33,7 +33,7 @@ final class SubscribeCommand extends AbstractCommand
      * @param StreamPosition|null $recoverSince
      * @param Override|null       $override
      */
-    public function __construct(string $user, protected readonly string $channel, array $info = [], ?string $base64Info = null, ?string $client = null, ?string $session = null, array $data = [], ?string $base64Data = null, ?StreamPosition $recoverSince = null, ?Override $override = null)
+    public function __construct(string $user, protected readonly string $channel, array $info = [], string $base64Info = null, string $client = null, string $session = null, array $data = [], string $base64Data = null, StreamPosition $recoverSince = null, Override $override = null)
     {
         $params = [
             'user' => $user,

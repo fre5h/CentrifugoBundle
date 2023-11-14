@@ -22,7 +22,7 @@ final class ChannelsCommand extends AbstractCommand implements ResultableCommand
     /**
      * @param string|null $pattern
      */
-    public function __construct(?string $pattern = null)
+    public function __construct(string $pattern = null)
     {
         $params = [];
 

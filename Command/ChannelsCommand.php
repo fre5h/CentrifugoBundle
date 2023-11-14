@@ -36,11 +36,7 @@ final class ChannelsCommand extends AbstractCommand
      */
     protected function configure(): void
     {
-        if (Kernel::MAJOR_VERSION >= 6) { // @phpstan-ignore-line
-            $patternArgument = new InputArgument('pattern', InputArgument::OPTIONAL, 'Pattern to filter channels', null, $this->getChannelsForAutocompletion());
-        } else { // @phpstan-ignore-line
-            $patternArgument = new InputArgument('pattern', InputArgument::OPTIONAL, 'Pattern to filter channels');
-        }
+        $patternArgument = new InputArgument('pattern', InputArgument::OPTIONAL, 'Pattern to filter channels', null, $this->getChannelsForAutocompletion());
 
         $this
             ->setDefinition(

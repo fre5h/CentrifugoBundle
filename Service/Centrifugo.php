@@ -172,10 +172,10 @@ class Centrifugo implements CentrifugoInterface
 
         $response = $this->httpClient->request(
             Request::METHOD_POST,
-            $this->endpoint,
+            \sprintf('%s/%s', $this->endpoint, $command->getMethod()),
             [
                 'headers' => [
-                    'Authorization' => 'apikey '.$this->apiKey,
+                    'X-API-Key' => $this->apiKey,
                     'Content-Type' => 'application/json',
                 ],
                 'body' => $json,

@@ -47,11 +47,7 @@ final class HistoryRemoveCommand extends AbstractCommand
      */
     protected function configure(): void
     {
-        if (Kernel::MAJOR_VERSION >= 6) { // @phpstan-ignore-line
-            $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to remove history', null, $this->getChannelsForAutocompletion());
-        } else { // @phpstan-ignore-line
-            $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to remove history');
-        }
+        $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to remove history', null, $this->getChannelsForAutocompletion());
 
         $this
             ->setDefinition(

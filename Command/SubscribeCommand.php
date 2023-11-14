@@ -67,11 +67,7 @@ final class SubscribeCommand extends AbstractCommand
      */
     protected function configure(): void
     {
-        if (Kernel::MAJOR_VERSION >= 6) { // @phpstan-ignore-line
-            $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to subscribe user to', null, $this->getChannelsForAutocompletion());
-        } else { // @phpstan-ignore-line
-            $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to subscribe user to');
-        }
+        $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to subscribe user to', null, $this->getChannelsForAutocompletion());
 
         $this
             ->setDefinition(
