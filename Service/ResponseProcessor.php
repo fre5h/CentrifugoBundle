@@ -61,40 +61,6 @@ class ResponseProcessor
 
         $content = $response->getContent();
 
-        if ($command instanceof BatchRequest) {
-            $contents = \explode("\n", \rtrim($content, "\n"));
-            $result = [];
-
-            if (\count($contents) !== $command->getNumberOfCommands()) {
-                throw new LogicException('Number of commands doesn\'t match number of responses');
-            }
-
-            $i = 0;
-            foreach ($command->getCommands() as $innerCommand) {
-                $result[] = $this->decodeAndProcessResponseResult($innerCommand, $contents[$i]);
-                ++$i;
-            }
-        } else {
-            $result = $this->decodeAndProcessResponseResult($command, $content);
-        }
-
-        if (\array_key_exists('message', $this->centrifugoError) && \array_key_exists('code', $this->centrifugoError)) {
-            throw new CentrifugoErrorException($this->centrifugoError['message'], $this->centrifugoError['code']);
-        }
-
-        return $result;
-    }
-
-    /**
-     * @param CommandInterface $command
-     * @param string           $content
-     *
-     * @throws CentrifugoException
-     *
-     * @return array|null
-     */
-    private function decodeAndProcessResponseResult(CommandInterface $command, string $content): ?array
-    {
         try {
             /** @var array<string, array<string, mixed>> $data */
             $data = \json_decode($content, true, 512, \JSON_THROW_ON_ERROR);
@@ -102,12 +68,55 @@ class ResponseProcessor
             throw new CentrifugoException('Centrifugo response payload is not a valid JSON');
         }
 
+        if ($command instanceof BatchRequest) {
+            $replies = $data['replies'];
+            $result = [];
+
+            if (\count($replies) !== $command->getNumberOfCommands()) {
+                throw new LogicException('Number of commands doesn\'t match number of responses');
+            }
+
+            $i = 0;
+            foreach ($command->getCommands() as $innerCommand) {
+                $result[] = $this->decodeAndProcessResponseResult($innerCommand, $replies[$i]);
+                ++$i;
+            }
+        } else {
+            $result = $this->decodeAndProcessResponseResult($command, $data);
+        }
+
+        if (\array_key_exists('command', $this->centrifugoError) && \array_key_exists('message', $this->centrifugoError)
+            && \array_key_exists('code', $this->centrifugoError)
+        ) {
+            $exception = new CentrifugoErrorException(
+                command: $this->centrifugoError['command'],
+                message: $this->centrifugoError['message'],
+                code: $this->centrifugoError['code'],
+            );
+
+            throw $exception;
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param CommandInterface $command
+     * @param array            $data
+     *
+     * @throws CentrifugoException
+     *
+     * @return array|null
+     */
+    private function decodeAndProcessResponseResult(CommandInterface $command, array $data): ?array
+    {
         $successfulCommand = true;
         $result = null;
 
-        if (\is_array($data) && isset($data['error'])) {
+        if (isset($data['error'])) {
             if (empty($this->centrifugoError)) {
                 $this->centrifugoError = [
+                    'command' => $command,
                     'message' => $data['error']['message'],
                     'code' => $data['error']['code'],
                 ];
@@ -116,7 +125,7 @@ class ResponseProcessor
             $result = $data;
             $successfulCommand = false;
         } elseif ($command instanceof ResultableCommandInterface) {
-            $result = $data['result'];
+            $result = $data[$command->getMethod()->value];
         }
 
         if ($this->profilerEnabled) {
