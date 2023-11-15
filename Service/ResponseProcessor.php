@@ -69,6 +69,7 @@ class ResponseProcessor
         }
 
         if ($command instanceof BatchRequest) {
+            /** @var array<int, array> $replies */
             $replies = $data['replies'];
             $result = [];
 
