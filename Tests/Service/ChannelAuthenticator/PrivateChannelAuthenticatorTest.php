@@ -17,6 +17,7 @@ use Fresh\CentrifugoBundle\Service\ChannelAuthenticator\PrivateChannelAuthentica
 use Fresh\CentrifugoBundle\Service\Credentials\CredentialsGenerator;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use SEEC\PhpUnit\Helper\ConsecutiveParams;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
@@ -27,6 +28,8 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  */
 final class PrivateChannelAuthenticatorTest extends TestCase
 {
+    use ConsecutiveParams;
+
     /** @var Request|MockObject */
     private Request|MockObject $request;
 
@@ -275,21 +278,36 @@ final class PrivateChannelAuthenticatorTest extends TestCase
         $this->customerChannelAuthenticator
             ->expects(self::exactly(2))
             ->method('supports')
-            ->withConsecutive(['avengers'], ['marvel'])
+            ->with(
+                ...self::withConsecutive(
+                    ['avengers'],
+                    ['marvel'],
+                )
+            )
             ->willReturnOnConsecutiveCalls(true, true)
         ;
 
         $this->customerChannelAuthenticator
             ->expects(self::exactly(2))
             ->method('hasAccessToChannel')
-            ->withConsecutive(['avengers'], ['marvel'])
+            ->with(
+                ...self::withConsecutive(
+                    ['avengers'],
+                    ['marvel'],
+                )
+            )
             ->willReturnOnConsecutiveCalls(true, true)
         ;
 
         $this->credentialsGenerator
             ->expects(self::exactly(2))
             ->method('generateJwtTokenForPrivateChannel')
-            ->withConsecutive(['spiderman', 'avengers'], ['spiderman', 'marvel'])
+            ->with(
+                ...self::withConsecutive(
+                    ['spiderman', 'avengers'],
+                    ['spiderman', 'marvel'],
+                )
+            )
             ->willReturnOnConsecutiveCalls('test1', 'test2')
         ;
 

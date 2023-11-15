@@ -64,7 +64,7 @@ final class BatchRequestTest extends TestCase
     public function testConstructorWithException(): void
     {
         $this->expectException(UnexpectedValueException::class);
-        $this->expectNoticeMessage('Invalid command for batch request. Only instances of Fresh\CentrifugoBundle\Model\CommandInterface are allowed.');
+        $this->expectExceptionMessage('Invalid command for batch request. Only instances of Fresh\CentrifugoBundle\Model\CommandInterface are allowed.');
 
         new BatchRequest([new \stdClass()]);
     }
@@ -89,36 +89,30 @@ final class BatchRequestTest extends TestCase
 
     public function testPrepareLineDelimitedJsonWithNonEmptyBatchRequest(): void
     {
-        $json = \explode("\n", $this->command->prepareLineDelimitedJson());
-
         self::assertJsonStringEqualsJsonString(
-            <<<'JSON'
+            expectedJson: <<<'JSON'
                 {
-                    "method": "publish",
-                    "params": {
-                        "channel": "channelA",
-                        "data": {
-                            "foo": "bar"
+                    "commands": [
+                        {
+                            "publish": {
+                                "channel": "channelA",
+                                "data": {
+                                    "foo": "bar"
+                                }
+                            }
+                        },
+                        {
+                            "broadcast": {
+                                "channels": ["channelB", "channelC"],
+                                "data": {
+                                    "baz": "qux"
+                                }
+                            }
                         }
-                    }
+                    ]
                 }
             JSON,
-            $json[0]
-        );
-
-        self::assertJsonStringEqualsJsonString(
-            <<<'JSON'
-                {
-                    "method": "broadcast",
-                    "params": {
-                        "channels": ["channelB", "channelC"],
-                        "data": {
-                            "baz": "qux"
-                        }
-                    }
-                }
-            JSON,
-            $json[1]
+            actualJson: $this->command->prepareLineDelimitedJson(),
         );
     }
 }

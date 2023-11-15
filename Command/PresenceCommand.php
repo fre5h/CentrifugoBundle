@@ -21,7 +21,6 @@ use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * PresenceCommand.
@@ -47,11 +46,7 @@ final class PresenceCommand extends AbstractCommand
      */
     protected function configure(): void
     {
-        if (Kernel::MAJOR_VERSION >= 6) { // @phpstan-ignore-line
-            $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to call presence from', null, $this->getChannelsForAutocompletion());
-        } else { // @phpstan-ignore-line
-            $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to call presence from');
-        }
+        $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to call presence from', null, $this->getChannelsForAutocompletion());
 
         $this
             ->setDefinition(

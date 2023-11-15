@@ -47,10 +47,7 @@ final class HistoryCommandTest extends TestCase
         self::assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
-                    "method": "history",
-                    "params": {
-                        "channel": "foo"
-                    }
+                    "channel": "foo"
                 }
             JSON,
             \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
@@ -68,15 +65,12 @@ final class HistoryCommandTest extends TestCase
         self::assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
-                    "method": "history",
-                    "params": {
-                        "channel": "foo",
-                        "reverse": true,
-                        "limit": 10,
-                        "since": {
-                            "offset": 5,
-                            "epoch": "test"
-                        }
+                    "channel": "foo",
+                    "reverse": true,
+                    "limit": 10,
+                    "since": {
+                        "offset": 5,
+                        "epoch": "test"
                     }
                 }
             JSON,
@@ -95,11 +89,8 @@ final class HistoryCommandTest extends TestCase
         self::assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
-                    "method": "history",
-                    "params": {
-                        "channel": "foo",
-                        "reverse": true
-                    }
+                    "channel": "foo",
+                    "reverse": true
                 }
             JSON,
             \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)

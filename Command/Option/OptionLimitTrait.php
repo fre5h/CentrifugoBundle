@@ -26,14 +26,15 @@ trait OptionLimitTrait
     protected ?int $limit = null;
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface                   $input
+     * @param string|bool|int|float|array|null $default
      *
      * @throws InvalidOptionException
      */
-    protected function initializeLimitOption(InputInterface $input): void
+    protected function initializeLimitOption(InputInterface $input, string|bool|int|float|array|null $default): void
     {
         /** @var int|null $limit */
-        $limit = $input->getParameterOption('--limit', null);
+        $limit = $input->getParameterOption('--limit', $default);
 
         if (null !== $limit) {
             $limit = (int) $limit;

@@ -18,6 +18,7 @@ use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
 use Fresh\CentrifugoBundle\Service\FakeCentrifugo;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use SEEC\PhpUnit\Helper\ConsecutiveParams;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
@@ -28,6 +29,8 @@ use Symfony\Component\DependencyInjection\Definition;
  */
 final class RegisterCentrifugoPassTest extends TestCase
 {
+    use ConsecutiveParams;
+
     /** @var ContainerBuilder|MockObject */
     private ContainerBuilder|MockObject $containerBuilder;
 
@@ -69,14 +72,16 @@ final class RegisterCentrifugoPassTest extends TestCase
 
     public function testProcessCentrifugo(): void
     {
+        $matcher = $this->exactly(3);
+
         $this->containerBuilder
-            ->expects(self::exactly(3))
+            ->expects($matcher)
             ->method('getParameter')
-            ->withConsecutive(
+            ->with(...self::withConsecutive(
                 ['centrifugo.fake_mode'],
                 ['centrifugo.api_endpoint'],
                 ['centrifugo.api_key'],
-            )
+            ))
             ->willReturnOnConsecutiveCalls(
                 false,
                 '%env(CENTRIFUGO_API_ENDPOINT)%',

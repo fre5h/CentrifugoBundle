@@ -44,6 +44,14 @@ final class BatchRequest implements CommandInterface
     }
 
     /**
+     * @return Method
+     */
+    public function getMethod(): Method
+    {
+        return Method::BATCH;
+    }
+
+    /**
      * @param CommandInterface $command
      */
     public function addCommand(CommandInterface $command): void
@@ -88,11 +96,15 @@ final class BatchRequest implements CommandInterface
         $serializedCommands = [];
 
         foreach ($this->getCommands() as $command) {
-            $serializedCommands[] = \json_encode($command, \JSON_THROW_ON_ERROR);
+            $serializedCommands[] = \sprintf(
+                '{"%s":%s}',
+                $command->getMethod()->value,
+                \json_encode($command, \JSON_THROW_ON_ERROR),
+            );
         }
 
         if (!empty($serializedCommands)) {
-            $json = \implode("\n", $serializedCommands);
+            $json = \sprintf('{"commands":[%s]}', \implode(',', $serializedCommands));
         } else {
             $json = '{}';
         }

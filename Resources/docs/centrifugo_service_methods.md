@@ -326,7 +326,7 @@ use Fresh\CentrifugoBundle\Model;
 
 $publish = new Model\PublishCommand(['foo' => 'bar'], 'channelA');
 $broadcast = new Model\BroadcastCommand(['baz' => 'qux'], ['channelB', 'channelC']);
-$channels = new Model\PresenceStatsCommand();
+$channels = new Model\PresenceStatsCommand('channelA');
 
 $data = $this->centrifugo->batchRequest([$publish, $broadcast, $channels]);
 

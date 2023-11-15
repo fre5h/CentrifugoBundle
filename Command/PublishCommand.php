@@ -26,7 +26,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * PublishCommand.
@@ -56,11 +55,7 @@ final class PublishCommand extends AbstractCommand
      */
     protected function configure(): void
     {
-        if (Kernel::MAJOR_VERSION >= 6) { // @phpstan-ignore-line
-            $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to publish', null, $this->getChannelsForAutocompletion());
-        } else { // @phpstan-ignore-line
-            $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to publish');
-        }
+        $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Name of channel to publish', null, $this->getChannelsForAutocompletion());
 
         $this
             ->setDefinition(

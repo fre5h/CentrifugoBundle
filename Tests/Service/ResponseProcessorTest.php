@@ -26,6 +26,7 @@ use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\ResponseProcessor;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use SEEC\PhpUnit\Helper\ConsecutiveParams;
 use Symfony\Component\HttpKernel\Profiler\Profiler;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
@@ -36,6 +37,8 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
  */
 final class ResponseProcessorTest extends TestCase
 {
+    use ConsecutiveParams;
+
     /** @var ResponseInterface|MockObject */
     private ResponseInterface|MockObject $response;
 
@@ -95,21 +98,27 @@ final class ResponseProcessorTest extends TestCase
         $this->response
             ->expects(self::once())
             ->method('getContent')
-            ->willReturn(<<<'LDJSON'
-                null
-                null
-                {"result":{"channels":["chat","notification"]}}
-            LDJSON
+            ->willReturn(<<<'JSON'
+                {
+                    "replies": [
+                        {"publish": {}},
+                        {"broadcast": {}},
+                        {"channels": ["chat", "notification"]}
+                    ]
+                }
+            JSON
             )
         ;
 
         $this->commandHistoryLogger
             ->expects(self::exactly(3))
             ->method('logCommand')
-            ->withConsecutive(
-                [self::isInstanceOf(PublishCommand::class), true, null],
-                [self::isInstanceOf(BroadcastCommand::class), true, null],
-                [self::isInstanceOf(ChannelsCommand::class), true, ['channels' => ['chat', 'notification']]]
+            ->with(
+                ...self::withConsecutive(
+                    [self::isInstanceOf(PublishCommand::class), true, null],
+                    [self::isInstanceOf(BroadcastCommand::class), true, null],
+                    [self::isInstanceOf(ChannelsCommand::class), true, ['chat', 'notification']],
+                )
             )
         ;
 
@@ -127,9 +136,7 @@ final class ResponseProcessorTest extends TestCase
             [
                 null,
                 null,
-                [
-                    'channels' => ['chat', 'notification'],
-                ],
+                ['chat', 'notification'],
             ],
             $result
         );
@@ -140,9 +147,13 @@ final class ResponseProcessorTest extends TestCase
         $this->response
             ->expects(self::once())
             ->method('getContent')
-            ->willReturn(<<<'LDJSON'
-                {"result":{"channels":["chat","notification"]}}
-            LDJSON
+            ->willReturn(<<<'JSON'
+                {
+                    "replies": {
+                        "result":{"channels":["chat","notification"]}
+                    }
+                }
+            JSON
             )
         ;
 
@@ -184,24 +195,22 @@ final class ResponseProcessorTest extends TestCase
             ->method('getContent')
             ->willReturn(<<<'JSON'
                 {
-                    "result": {
-                        "foo": "bar"
-                    }
+                    "channels": ["foo", "bar"]
                 }
             JSON
             )
         ;
 
-        $command = $this->createStub(ResultableCommandInterface::class);
+        $command = new ChannelsCommand();
 
         $this->commandHistoryLogger
             ->expects(self::once())
             ->method('logCommand')
-            ->with($command, true, ['foo' => 'bar'])
+            ->with($command, true, ['foo', 'bar'])
         ;
 
         $result = $this->responseProcessor->processResponse($command, $this->response);
-        self::assertSame(['foo' => 'bar'], $result);
+        self::assertSame(['foo', 'bar'], $result);
     }
 
     public function testProcessingNonResultableCommand(): void
@@ -227,15 +236,17 @@ final class ResponseProcessorTest extends TestCase
             ->method('getContent')
             ->willReturn(<<<'JSON'
                 {
-                    "result": {
-                        "foo": "bar"
-                    }
+                    "replies": [
+                        {
+                            "publish": {}
+                        }
+                    ]
                 }
             JSON
             )
         ;
 
-        $command = $this->createStub(CommandInterface::class);
+        $command = new PublishCommand(['foo' => 'bar'], 'test');
 
         $this->commandHistoryLogger
             ->expects(self::once())
@@ -292,21 +303,27 @@ final class ResponseProcessorTest extends TestCase
         $this->response
             ->expects(self::once())
             ->method('getContent')
-            ->willReturn(<<<'LDJSON'
-                {"error":{"message":"test message 2","code":456}}
-                null
-                {"result":{"channels":["chat","notification"]}}
-            LDJSON
+            ->willReturn(<<<'JSON'
+                {
+                    "replies": [
+                        {"error":{"message":"test message 2","code":456}},
+                        {"broadcast":{}},
+                        {"channels":["chat","notification"]}
+                    ]
+                }
+            JSON
             )
         ;
 
         $this->commandHistoryLogger
             ->expects(self::exactly(3))
             ->method('logCommand')
-            ->withConsecutive(
-                [self::isInstanceOf(PublishCommand::class), false, ['error' => ['message' => 'test message 2', 'code' => 456]]],
-                [self::isInstanceOf(BroadcastCommand::class), true, null],
-                [self::isInstanceOf(ChannelsCommand::class), true, ['channels' => ['chat', 'notification']]]
+            ->with(
+                ...self::withConsecutive(
+                    [self::isInstanceOf(PublishCommand::class), false, ['error' => ['message' => 'test message 2', 'code' => 456]]],
+                    [self::isInstanceOf(BroadcastCommand::class), true, null],
+                    [self::isInstanceOf(ChannelsCommand::class), true, ['chat', 'notification']],
+                )
             )
         ;
 

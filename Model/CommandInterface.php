@@ -23,4 +23,9 @@ interface CommandInterface
      * @return string[]
      */
     public function getChannels(): iterable;
+
+    /**
+     * @return Method
+     */
+    public function getMethod(): Method;
 }

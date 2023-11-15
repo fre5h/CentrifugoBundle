@@ -21,6 +21,7 @@ use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\ResponseProcessor;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use SEEC\PhpUnit\Helper\ConsecutiveParams;
 use Symfony\Component\HttpKernel\Profiler\Profiler;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
@@ -32,6 +33,8 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
  */
 final class CentrifugoTest extends TestCase
 {
+    use ConsecutiveParams;
+
     /** @var HttpClientInterface|MockObject */
     private HttpClientInterface|MockObject $httpClient;
 
@@ -124,7 +127,10 @@ final class CentrifugoTest extends TestCase
         $this->centrifugoChecker
             ->expects(self::exactly(2))
             ->method('assertValidChannelName')
-            ->withConsecutive(['channelA'], ['channelB'])
+            ->with(...self::withConsecutive(
+                ['channelA'],
+                ['channelB'],
+            ))
         ;
 
         $this->httpClient
@@ -484,7 +490,12 @@ final class CentrifugoTest extends TestCase
         $this->centrifugoChecker
             ->expects(self::exactly(2))
             ->method('assertValidChannelName')
-            ->withConsecutive(['channelA'], ['channelB'])
+            ->with(
+                ...self::withConsecutive(
+                    ['channelA'],
+                    ['channelB'],
+                )
+            )
         ;
 
         $this->httpClient

@@ -55,12 +55,9 @@ final class BroadcastCommandTest extends TestCase
         self::assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
-                    "method": "broadcast",
-                    "params": {
-                        "channels": ["foo", "bar"],
-                        "data": {
-                            "baz": "qux"
-                        }
+                    "channels": ["foo", "bar"],
+                    "data": {
+                        "baz": "qux"
                     }
                 }
             JSON,
@@ -80,18 +77,15 @@ final class BroadcastCommandTest extends TestCase
         self::assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
-                    "method": "broadcast",
-                    "params": {
-                        "channels": ["foo", "bar"],
-                        "data": {
-                            "baz": "qux"
-                        },
-                        "skip_history": true,
-                        "tags": {
-                            "tag": "value"
-                        },
-                        "base64data": "qwerty"
-                    }
+                    "channels": ["foo", "bar"],
+                    "data": {
+                        "baz": "qux"
+                    },
+                    "skip_history": true,
+                    "tags": {
+                        "tag": "value"
+                    },
+                    "base64data": "qwerty"
                 }
             JSON,
             \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)

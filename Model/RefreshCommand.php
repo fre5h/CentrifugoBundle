@@ -26,7 +26,7 @@ final class RefreshCommand extends AbstractCommand
      * @param bool|null   $expired
      * @param int|null    $expireAt
      */
-    public function __construct(string $user, ?string $client = null, ?string $session = null, ?bool $expired = null, ?int $expireAt = null)
+    public function __construct(string $user, string $client = null, string $session = null, bool $expired = null, int $expireAt = null)
     {
         $params = ['user' => $user];
 

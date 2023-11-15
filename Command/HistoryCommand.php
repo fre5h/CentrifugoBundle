@@ -27,7 +27,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * HistoryCommand.
@@ -57,11 +56,7 @@ final class HistoryCommand extends AbstractCommand
      */
     protected function configure(): void
     {
-        if (Kernel::MAJOR_VERSION >= 6) { // @phpstan-ignore-line
-            $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Channel name', null, $this->getChannelsForAutocompletion());
-        } else { // @phpstan-ignore-line
-            $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Channel name');
-        }
+        $channelArgument = new InputArgument('channel', InputArgument::REQUIRED, 'Channel name', null, $this->getChannelsForAutocompletion());
 
         $this
             ->setDefinition(
@@ -106,7 +101,7 @@ HELP
 
         $this->initializeChannelArgument($input);
         $this->initializeEpochOption($input);
-        $this->initializeLimitOption($input);
+        $this->initializeLimitOption($input, 10);
         $this->initializeOffsetOption($input);
         $this->initializeReverseOption($input);
     }

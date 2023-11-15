@@ -41,7 +41,7 @@ class CredentialsGenerator
      *
      * @return string
      */
-    public function generateJwtTokenForUser(CentrifugoUserInterface $user, ?string $base64info = null, array $channels = []): string
+    public function generateJwtTokenForUser(CentrifugoUserInterface $user, string $base64info = null, array $channels = []): string
     {
         $jwtPayload = new JwtPayload(
             $user->getCentrifugoSubject(),
@@ -60,7 +60,7 @@ class CredentialsGenerator
      *
      * @return string
      */
-    public function generateJwtTokenForAnonymous(?string $base64info = null, array $channels = []): string
+    public function generateJwtTokenForAnonymous(string $base64info = null, array $channels = []): string
     {
         $jwtPayload = new JwtPayload(
             '',
@@ -81,7 +81,7 @@ class CredentialsGenerator
      *
      * @return string
      */
-    public function generateJwtTokenForPrivateChannel(string $client, string $channel, ?string $base64info = null, ?bool $eto = null): string
+    public function generateJwtTokenForPrivateChannel(string $client, string $channel, string $base64info = null, bool $eto = null): string
     {
         $jwtPayload = new JwtPayloadForPrivateChannel(
             $client,
