@@ -43,6 +43,8 @@ final class FakeCentrifugoTest extends TestCase
         $this->centrifugo->broadcast(['foo' => 'bar'], ['channelA', 'channelB']);
         $this->centrifugo->unsubscribe('user123', 'channelA');
         $this->centrifugo->disconnect('user123');
+        $this->centrifugo->subscribe('user123', 'channelA');
+        $this->centrifugo->refresh('user123');
         self::assertSame([], $this->centrifugo->presence('channelA'));
         self::assertSame([], $this->centrifugo->presenceStats('channelA'));
         self::assertSame([], $this->centrifugo->history('channelA'));
