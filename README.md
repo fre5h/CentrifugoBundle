@@ -22,8 +22,8 @@
 
 ## Requirements 🧐
 
-* PHP 8.2
-* Symfony 6.3, 6.4, 7.0
+* PHP >= 8.2
+* Symfony >= 6.3
 
 ## Installation 🌱
 
@@ -119,7 +119,7 @@ class YourService
 
 ### Autocomplete channels in console commands 🪄
 
-![example](https://github.com/fre5h/CentrifugoBundle/blob/centrifugo_v3/Resources/images/autocomplete_example.gif)
+![](./Resources/images/autocomplete_example.gif)
 
 ## Contributing 🤝
 
