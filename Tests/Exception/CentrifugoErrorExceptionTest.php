@@ -15,6 +15,7 @@ namespace Fresh\CentrifugoBundle\Tests\Exception;
 use Fresh\CentrifugoBundle\Exception\CentrifugoErrorException;
 use Fresh\CentrifugoBundle\Exception\CentrifugoException;
 use Fresh\CentrifugoBundle\Exception\ExceptionInterface;
+use Fresh\CentrifugoBundle\Model\CommandInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -28,7 +29,7 @@ final class CentrifugoErrorExceptionTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->exception = new CentrifugoErrorException();
+        $this->exception = new CentrifugoErrorException($this->createMock(CommandInterface::class));
     }
 
     protected function tearDown(): void
