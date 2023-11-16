@@ -24,15 +24,15 @@
     "require": {
         "php": ">=8.2",
         "fresh/datetime": "^3.0",
-        "symfony/console": "~6.3||~7.0",
-        "symfony/config": "~6.3||~7.0",
-        "symfony/dependency-injection": "~6.3||~7.0",
-        "symfony/framework-bundle": "~6.3||~7.0",
-        "symfony/http-client": "~6.3||~7.0",
-        "symfony/http-foundation": "~6.3||~7.0",
-        "symfony/http-kernel": "~6.3||~7.0",
-        "symfony/security-core": "~6.3||~7.0",
-        "symfony/validator": "~6.3||~7.0"
+        "symfony/console": "~6.0",
+        "symfony/config": "~6.0",
+        "symfony/dependency-injection": "~6.0",
+        "symfony/framework-bundle": "~6.0",
+        "symfony/http-client": "~6.0",
+        "symfony/http-foundation": "~6.0",
+        "symfony/http-kernel": "~6.0",
+        "symfony/security-core": "~6.0",
+        "symfony/validator": "~6.0"
     },
     "require-dev": {
         "escapestudios/symfony2-coding-standard": "^3.13",
