@@ -15,6 +15,7 @@ namespace Fresh\CentrifugoBundle\Tests\Service\Credentials;
 use Fresh\CentrifugoBundle\Service\Credentials\CredentialsGenerator;
 use Fresh\CentrifugoBundle\Service\Jwt\JwtGenerator;
 use Fresh\CentrifugoBundle\Token\JwtPayload;
+use Fresh\CentrifugoBundle\Token\JwtPayloadForChannel;
 use Fresh\CentrifugoBundle\Token\JwtPayloadForPrivateChannel;
 use Fresh\CentrifugoBundle\User\CentrifugoUserInterface;
 use Fresh\DateTime\DateTimeHelper;
@@ -143,5 +144,43 @@ final class CredentialsGeneratorTest extends TestCase
         ;
 
         self::assertEquals('test3', $this->credentialsGenerator->generateJwtTokenForPrivateChannel('spiderman', 'avengers', null, true));
+    }
+
+    public function testGenerateJwtTokenForChannel(): void
+    {
+        $this->dateTimeHelper
+            ->expects(self::once())
+            ->method('getCurrentDatetimeUtc')
+            ->willReturn(new \DateTime('2000-03-03 00:00:00', new \DateTimeZone('UTC')))
+        ;
+
+        $user = $this->createMock(CentrifugoUserInterface::class);
+        $user
+            ->expects(self::once())
+            ->method('getCentrifugoSubject')
+            ->willReturn('spiderman')
+        ;
+
+        $this->jwtGenerator
+            ->expects(self::once())
+            ->method('generateToken')
+            ->with(self::callback(static function (JwtPayloadForChannel $jwtPayloadForChannel) {
+                return 'spiderman' === $jwtPayloadForChannel->getSubject()
+                    && 'avengers' === $jwtPayloadForChannel->getChannel()
+                    && [] === $jwtPayloadForChannel->getInfo()
+                    && 952041610 === $jwtPayloadForChannel->getExpirationTime() // 2000-03-03 00:00:10
+                    && null === $jwtPayloadForChannel->getBase64Info()
+                    && null === $jwtPayloadForChannel->getSubscriptionExpirationTime()
+                    && [] === $jwtPayloadForChannel->getAudiences()
+                    && null === $jwtPayloadForChannel->getIssuer()
+                    && null === $jwtPayloadForChannel->getIssuedAt()
+                    && null === $jwtPayloadForChannel->getJwtId()
+                    && null === $jwtPayloadForChannel->getOverride()
+                ;
+            }))
+            ->willReturn('test4')
+        ;
+
+        self::assertEquals('test4', $this->credentialsGenerator->generateJwtTokenForChannel($user, 'avengers'));
     }
 }

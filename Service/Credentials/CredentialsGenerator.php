@@ -14,6 +14,7 @@ namespace Fresh\CentrifugoBundle\Service\Credentials;
 
 use Fresh\CentrifugoBundle\Service\Jwt\JwtGenerator;
 use Fresh\CentrifugoBundle\Token\JwtPayload;
+use Fresh\CentrifugoBundle\Token\JwtPayloadForChannel;
 use Fresh\CentrifugoBundle\Token\JwtPayloadForPrivateChannel;
 use Fresh\CentrifugoBundle\User\CentrifugoUserInterface;
 use Fresh\DateTime\DateTimeHelper;
@@ -90,6 +91,27 @@ class CredentialsGenerator
             $this->getExpirationTime(),
             $base64info,
             $eto
+        );
+
+        return $this->jwtGenerator->generateToken($jwtPayload);
+    }
+
+    /**
+     * @param CentrifugoUserInterface $user
+     * @param string                  $channel
+     * @param array                   $info
+     * @param string|null             $base64info
+     *
+     * @return string
+     */
+    public function generateJwtTokenForChannel(CentrifugoUserInterface $user, string $channel, array $info = [], string $base64info = null): string
+    {
+        $jwtPayload = new JwtPayloadForChannel(
+            $user->getCentrifugoSubject(),
+            $channel,
+            $info,
+            $this->getExpirationTime(),
+            $base64info
         );
 
         return $this->jwtGenerator->generateToken($jwtPayload);
