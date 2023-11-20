@@ -14,6 +14,8 @@ namespace Fresh\CentrifugoBundle\Tests\Service\Jwt;
 
 use Fresh\CentrifugoBundle\Service\Jwt\JwtGenerator;
 use Fresh\CentrifugoBundle\Token\JwtPayload;
+use Fresh\CentrifugoBundle\Token\JwtPayloadForChannel;
+use Fresh\CentrifugoBundle\Token\JwtPayloadForChannelOverride;
 use Fresh\CentrifugoBundle\Token\JwtPayloadForPrivateChannel;
 use PHPUnit\Framework\TestCase;
 
@@ -92,6 +94,41 @@ final class JwtGeneratorTest extends TestCase
         self::assertSame(
             'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjbGllbnQiOiJzcGlkZXJtYW4iLCJjaGFubmVsIjoiYXZlbmdlcnMifQ.x2UWWlh823m_EelPCSuoIuik0s4DuYRX9_vRhXEVaeQ',
             $this->jwtGenerator->generateToken($jwtPayloadForPrivateChannel)
+        );
+    }
+
+    public function testGenerateTokenForChannelForAllClaims(): void
+    {
+        $jwtPayloadForChannel = new JwtPayloadForChannel(
+            'spiderman',
+            'avengers',
+            [
+                'name' => 'Peter Parker',
+                'email' => 'spiderman@marvel.com',
+            ],
+            123,
+            'test',
+            321,
+            ['audience'],
+            'issuer',
+            456,
+            'jwtId',
+            new JwtPayloadForChannelOverride(true, false, true, false, true)
+        );
+
+        self::assertEquals(
+            'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzcGlkZXJtYW4iLCJjaGFubmVsIjoiYXZlbmdlcnMiLCJpbmZvIjp7Im5hbWUiOiJQZXRlciBQYXJrZXIiLCJlbWFpbCI6InNwaWRlcm1hbkBtYXJ2ZWwuY29tIn0sImI2NGluZm8iOiJ0ZXN0IiwiZXhwIjoxMjMsImV4cGlyZV9hdCI6MzIxLCJhdWQiOlsiYXVkaWVuY2UiXSwiaXNzIjoiaXNzdWVyIiwiaWF0Ijo0NTYsImp0aSI6Imp3dElkIiwib3ZlcnJpZGUiOnsicHJlc2VuY2UiOnsidmFsdWUiOnRydWV9LCJqb2luX2xlYXZlIjp7InZhbHVlIjpmYWxzZX0sImZvcmNlX3B1c2hfam9pbl9sZWF2ZSI6eyJ2YWx1ZSI6dHJ1ZX0sImZvcmNlX3JlY292ZXJ5Ijp7InZhbHVlIjpmYWxzZX0sImZvcmNlX3Bvc3RpbmciOnsidmFsdWUiOnRydWV9fX0.ZOq57j6pESNCZtQmIRj36cbpKYjWPWoReekLv7ZChQE',
+            $this->jwtGenerator->generateToken($jwtPayloadForChannel)
+        );
+    }
+
+    public function testGenerateTokenForChannelForOnlyRequiredClaims(): void
+    {
+        $jwtPayloadForChannel = new JwtPayloadForChannel('spiderman', 'avengers');
+
+        self::assertSame(
+            'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzcGlkZXJtYW4iLCJjaGFubmVsIjoiYXZlbmdlcnMifQ.OYI-kcfDwuE-V06M-jkIX1-Rvdna1l9PXdMkmc_BTGY',
+            $this->jwtGenerator->generateToken($jwtPayloadForChannel)
         );
     }
 }
