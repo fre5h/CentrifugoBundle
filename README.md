@@ -13,7 +13,7 @@
 
 ## Features 🎁
 
-- [x] Compatible with latest [Centrifugo 5.1.1](https://github.com/centrifugal/centrifugo/releases/tag/v5.1.1) 🚀
+- [x] Compatible with latest [Centrifugo 5.1.2](https://github.com/centrifugal/centrifugo/releases/tag/v5.1.2) 🚀
 - [x] Wrapper over [Centrifugo HTTP API](https://centrifugal.dev/docs/server/server_api#http-api) 🔌
 - [X] Authentication with JWT token (HMAC algorithm) for [anonymous](./Resources/docs/authentication.md#anonymous), [authenticated user](./Resources/docs/authentication.md#authenticated-user) and [private channel](./Resources/docs/authentication.md#private-channel) 🗝️
 - [x] [Batch request](./Resources/docs/centrifugo_service_methods.md#batch-request) in [JSON streaming format](https://en.wikipedia.org/wiki/JSON_streaming) 💪
@@ -33,10 +33,10 @@ $ composer req fresh/centrifugo-bundle
 
 ##### Choose the version you need
 
-| Bundle Version (X.Y.Z) |   PHP    | Symfony | Comment             |
+| Bundle Version (X.Y.Z) |   PHP    | Symfony |       Comment       |
 |:----------------------:|:--------:|:-------:|:--------------------|
-|        `5.0.*`         | `>= 8.2` | `7.*`   | Previous version    |
-|        `4.1.*`         | `>= 8.2` | `6.*`   | **Current version** |
+|        `5.0.*`         | `>= 8.2` | `7.*`   | **Current version** |
+|        `4.1.*`         | `>= 8.2` | `6.*`   | Previous version    |
 
 By default, [Symfony Flex](https://flex.symfony.com) adds this bundle to the `config/bundles.php` file and adds required environment variables into `.env` file.
 In case when you ignored `contrib-recipe` during bundle installation it would not be done. Then you have to do this manually.
