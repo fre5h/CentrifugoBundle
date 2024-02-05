@@ -22,7 +22,7 @@
 
 ## Requirements 🧐
 
-* PHP >= 8.2
+* PHP >= 8.1
 * Symfony 6.0, 6.1, 6.2, 6.3, 6.4
 
 ## Installation 🌱
