@@ -14,7 +14,9 @@ namespace Fresh\CentrifugoBundle\Tests\Exception;
 
 use Fresh\CentrifugoBundle\Exception\CentrifugoException;
 use Fresh\CentrifugoBundle\Exception\ExceptionInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 /**
  * CentrifugoExceptionTest.
@@ -25,14 +27,23 @@ final class CentrifugoExceptionTest extends TestCase
 {
     private CentrifugoException $exception;
 
+    private ResponseInterface|MockObject $response;
+
     protected function setUp(): void
     {
-        $this->exception = new CentrifugoException();
+        $this->response = $this->createStub(ResponseInterface::class);
+
+        $this->exception = new CentrifugoException($this->response);
     }
 
     protected function tearDown(): void
     {
         unset($this->exception);
+    }
+
+    public function testGetResponse(): void
+    {
+        self::assertSame($this->response, $this->exception->getResponse());
     }
 
     public function testException(): void

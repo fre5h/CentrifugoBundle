@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Fresh\CentrifugoBundle\Exception;
 
 use Fresh\CentrifugoBundle\Model\CommandInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 /**
  * CentrifugoErrorException.
@@ -22,14 +23,15 @@ use Fresh\CentrifugoBundle\Model\CommandInterface;
 class CentrifugoErrorException extends CentrifugoException
 {
     /**
-     * @param CommandInterface $command
-     * @param string           $message
-     * @param int              $code
-     * @param \Throwable|null  $previous
+     * @param CommandInterface  $command
+     * @param ResponseInterface $response
+     * @param string            $message
+     * @param int               $code
+     * @param \Throwable|null   $previous
      */
-    public function __construct(private readonly CommandInterface $command, string $message = '', int $code = 0, \Throwable $previous = null)
+    public function __construct(private readonly CommandInterface $command, ResponseInterface $response, string $message = '', int $code = 0, \Throwable $previous = null)
     {
-        parent::__construct($message, $code, $previous);
+        parent::__construct($response, $message, $code, $previous);
     }
 
     /**
