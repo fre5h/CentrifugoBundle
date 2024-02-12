@@ -64,8 +64,8 @@ class ResponseProcessor
         try {
             /** @var array<string, array<string, mixed>> $data */
             $data = \json_decode($content, true, 512, \JSON_THROW_ON_ERROR);
-        } catch (\Exception) {
-            throw new CentrifugoException('Centrifugo response payload is not a valid JSON');
+        } catch (\Exception $parsingException) {
+            throw new CentrifugoException(response: $response, message: 'Centrifugo response payload is not a valid JSON', previous: $parsingException);
         }
 
         if ($command instanceof BatchRequest) {
@@ -79,18 +79,21 @@ class ResponseProcessor
 
             $i = 0;
             foreach ($command->getCommands() as $innerCommand) {
-                $result[] = $this->decodeAndProcessResponseResult($innerCommand, $replies[$i]);
+                $result[] = $this->decodeAndProcessResponseResult($innerCommand, $response, $replies[$i]);
                 ++$i;
             }
         } else {
-            $result = $this->decodeAndProcessResponseResult($command, $data);
+            $result = $this->decodeAndProcessResponseResult($command, $response, $data);
         }
 
-        if (\array_key_exists('command', $this->centrifugoError) && \array_key_exists('message', $this->centrifugoError)
+        if (\array_key_exists('command', $this->centrifugoError)
+            && \array_key_exists('response', $this->centrifugoError)
+            && \array_key_exists('message', $this->centrifugoError)
             && \array_key_exists('code', $this->centrifugoError)
         ) {
             $exception = new CentrifugoErrorException(
                 command: $this->centrifugoError['command'],
+                response: $this->centrifugoError['response'],
                 message: $this->centrifugoError['message'],
                 code: $this->centrifugoError['code'],
             );
@@ -102,14 +105,13 @@ class ResponseProcessor
     }
 
     /**
-     * @param CommandInterface $command
-     * @param array            $data
-     *
-     * @throws CentrifugoException
+     * @param CommandInterface  $command
+     * @param ResponseInterface $response
+     * @param array             $data
      *
      * @return array|null
      */
-    private function decodeAndProcessResponseResult(CommandInterface $command, array $data): ?array
+    private function decodeAndProcessResponseResult(CommandInterface $command, ResponseInterface $response, array $data): ?array
     {
         $successfulCommand = true;
         $result = null;
@@ -118,6 +120,7 @@ class ResponseProcessor
             if (empty($this->centrifugoError)) {
                 $this->centrifugoError = [
                     'command' => $command,
+                    'response' => $response,
                     'message' => $data['error']['message'],
                     'code' => $data['error']['code'],
                 ];

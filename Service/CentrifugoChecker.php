@@ -59,7 +59,7 @@ class CentrifugoChecker
     public function assertValidResponseStatusCode(ResponseInterface $response): void
     {
         if (Response::HTTP_OK !== $response->getStatusCode()) {
-            throw new CentrifugoException('Wrong status code for Centrifugo response');
+            throw new CentrifugoException($response, 'Wrong status code for Centrifugo response');
         }
     }
 
@@ -73,7 +73,7 @@ class CentrifugoChecker
         $headers = $response->getHeaders(false);
 
         if (!isset($headers['content-type'])) {
-            throw new CentrifugoException('Missing "content-type" header in Centrifugo response');
+            throw new CentrifugoException($response, 'Missing "content-type" header in Centrifugo response');
         }
     }
 
@@ -87,7 +87,7 @@ class CentrifugoChecker
         $headers = $response->getHeaders(false);
 
         if (!\in_array('application/json', $headers['content-type'], true)) {
-            throw new CentrifugoException('Unexpected content type for Centrifugo response');
+            throw new CentrifugoException($response, 'Unexpected content type for Centrifugo response');
         }
     }
 }

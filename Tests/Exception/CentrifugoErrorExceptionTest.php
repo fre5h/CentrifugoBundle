@@ -18,6 +18,7 @@ use Fresh\CentrifugoBundle\Exception\ExceptionInterface;
 use Fresh\CentrifugoBundle\Model\CommandInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 /**
  * CentrifugoErrorExceptionTest.
@@ -28,11 +29,14 @@ final class CentrifugoErrorExceptionTest extends TestCase
 {
     private CentrifugoErrorException $exception;
     private CommandInterface|MockObject $command;
+    private ResponseInterface|MockObject $response;
 
     protected function setUp(): void
     {
         $this->command = $this->createStub(CommandInterface::class);
-        $this->exception = new CentrifugoErrorException($this->command);
+        $this->response = $this->createStub(ResponseInterface::class);
+
+        $this->exception = new CentrifugoErrorException($this->command, $this->response);
     }
 
     protected function tearDown(): void
@@ -43,6 +47,11 @@ final class CentrifugoErrorExceptionTest extends TestCase
     public function testGetCommand(): void
     {
         self::assertSame($this->command, $this->exception->getCommand());
+    }
+
+    public function testGetResponse(): void
+    {
+        self::assertSame($this->response, $this->exception->getResponse());
     }
 
     public function testException(): void
