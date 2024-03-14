@@ -98,15 +98,11 @@ final class ResponseProcessorTest extends TestCase
         $this->response
             ->expects(self::once())
             ->method('getContent')
-            ->willReturn(<<<'JSON'
-                {
-                    "replies": [
-                        {"publish": {}},
-                        {"broadcast": {}},
-                        {"channels": ["chat", "notification"]}
-                    ]
-                }
-            JSON
+            ->willReturn(<<<'LDJSON'
+                null
+                null
+                {"result":{"channels":["chat","notification"]}}
+            LDJSON
             )
         ;
 
@@ -117,7 +113,7 @@ final class ResponseProcessorTest extends TestCase
                 ...self::withConsecutive(
                     [self::isInstanceOf(PublishCommand::class), true, null],
                     [self::isInstanceOf(BroadcastCommand::class), true, null],
-                    [self::isInstanceOf(ChannelsCommand::class), true, ['chat', 'notification']],
+                    [self::isInstanceOf(ChannelsCommand::class), true, ['channels' => ['chat', 'notification']]],
                 )
             )
         ;
@@ -136,7 +132,9 @@ final class ResponseProcessorTest extends TestCase
             [
                 null,
                 null,
-                ['chat', 'notification'],
+                [
+                    'channels' => ['chat', 'notification'],
+                ],
             ],
             $result
         );
@@ -147,13 +145,9 @@ final class ResponseProcessorTest extends TestCase
         $this->response
             ->expects(self::once())
             ->method('getContent')
-            ->willReturn(<<<'JSON'
-                {
-                    "replies": {
-                        "result":{"channels":["chat","notification"]}
-                    }
-                }
-            JSON
+            ->willReturn(<<<'LDJSON'
+                {"result":{"channels":["chat","notification"]}}
+            LDJSON
             )
         ;
 
@@ -195,22 +189,24 @@ final class ResponseProcessorTest extends TestCase
             ->method('getContent')
             ->willReturn(<<<'JSON'
                 {
-                    "channels": ["foo", "bar"]
+                    "result": {
+                        "foo": "bar"
+                    }
                 }
             JSON
             )
         ;
 
-        $command = new ChannelsCommand();
+        $command = $this->createStub(ResultableCommandInterface::class);
 
         $this->commandHistoryLogger
             ->expects(self::once())
             ->method('logCommand')
-            ->with($command, true, ['foo', 'bar'])
+            ->with($command, true, ['foo' => 'bar'])
         ;
 
         $result = $this->responseProcessor->processResponse($command, $this->response);
-        self::assertSame(['foo', 'bar'], $result);
+        self::assertSame(['foo' => 'bar'], $result);
     }
 
     public function testProcessingNonResultableCommand(): void
@@ -236,17 +232,15 @@ final class ResponseProcessorTest extends TestCase
             ->method('getContent')
             ->willReturn(<<<'JSON'
                 {
-                    "replies": [
-                        {
-                            "publish": {}
-                        }
-                    ]
+                    "result": {
+                        "foo": "bar"
+                    }
                 }
             JSON
             )
         ;
 
-        $command = new PublishCommand(['foo' => 'bar'], 'test');
+        $command = $this->createStub(CommandInterface::class);
 
         $this->commandHistoryLogger
             ->expects(self::once())
@@ -303,15 +297,11 @@ final class ResponseProcessorTest extends TestCase
         $this->response
             ->expects(self::once())
             ->method('getContent')
-            ->willReturn(<<<'JSON'
-                {
-                    "replies": [
-                        {"error":{"message":"test message 2","code":456}},
-                        {"broadcast":{}},
-                        {"channels":["chat","notification"]}
-                    ]
-                }
-            JSON
+            ->willReturn(<<<'LDJSON'
+                {"error":{"message":"test message 2","code":456}}
+                null
+                {"result":{"channels":["chat","notification"]}}
+            LDJSON
             )
         ;
 
@@ -322,7 +312,7 @@ final class ResponseProcessorTest extends TestCase
                 ...self::withConsecutive(
                     [self::isInstanceOf(PublishCommand::class), false, ['error' => ['message' => 'test message 2', 'code' => 456]]],
                     [self::isInstanceOf(BroadcastCommand::class), true, null],
-                    [self::isInstanceOf(ChannelsCommand::class), true, ['chat', 'notification']],
+                    [self::isInstanceOf(ChannelsCommand::class), true, ['channels' => ['chat', 'notification']]]
                 )
             )
         ;

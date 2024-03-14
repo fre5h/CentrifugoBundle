@@ -61,41 +61,25 @@ class ResponseProcessor
 
         $content = $response->getContent();
 
-        try {
-            /** @var array<string, array<string, mixed>> $data */
-            $data = \json_decode($content, true, 512, \JSON_THROW_ON_ERROR);
-        } catch (\Exception) {
-            throw new CentrifugoException('Centrifugo response payload is not a valid JSON');
-        }
-
         if ($command instanceof BatchRequest) {
-            /** @var array<int, array> $replies */
-            $replies = $data['replies'];
+            $contents = \explode("\n", \rtrim($content, "\n"));
             $result = [];
 
-            if (\count($replies) !== $command->getNumberOfCommands()) {
+            if (\count($contents) !== $command->getNumberOfCommands()) {
                 throw new LogicException('Number of commands doesn\'t match number of responses');
             }
 
             $i = 0;
             foreach ($command->getCommands() as $innerCommand) {
-                $result[] = $this->decodeAndProcessResponseResult($innerCommand, $replies[$i]);
+                $result[] = $this->decodeAndProcessResponseResult($innerCommand, $contents[$i]);
                 ++$i;
             }
         } else {
-            $result = $this->decodeAndProcessResponseResult($command, $data);
+            $result = $this->decodeAndProcessResponseResult($command, $content);
         }
 
-        if (\array_key_exists('command', $this->centrifugoError) && \array_key_exists('message', $this->centrifugoError)
-            && \array_key_exists('code', $this->centrifugoError)
-        ) {
-            $exception = new CentrifugoErrorException(
-                command: $this->centrifugoError['command'],
-                message: $this->centrifugoError['message'],
-                code: $this->centrifugoError['code'],
-            );
-
-            throw $exception;
+        if (\array_key_exists('message', $this->centrifugoError) && \array_key_exists('code', $this->centrifugoError)) {
+            throw new CentrifugoErrorException($this->centrifugoError['message'], $this->centrifugoError['code']);
         }
 
         return $result;
@@ -103,21 +87,27 @@ class ResponseProcessor
 
     /**
      * @param CommandInterface $command
-     * @param array            $data
+     * @param string           $content
      *
      * @throws CentrifugoException
      *
      * @return array|null
      */
-    private function decodeAndProcessResponseResult(CommandInterface $command, array $data): ?array
+    private function decodeAndProcessResponseResult(CommandInterface $command, string $content): ?array
     {
+        try {
+            /** @var array<string, array<string, mixed>> $data */
+            $data = \json_decode($content, true, 512, \JSON_THROW_ON_ERROR);
+        } catch (\Exception) {
+            throw new CentrifugoException('Centrifugo response payload is not a valid JSON');
+        }
+
         $successfulCommand = true;
         $result = null;
 
-        if (isset($data['error'])) {
+        if (\is_array($data) && isset($data['error'])) {
             if (empty($this->centrifugoError)) {
                 $this->centrifugoError = [
-                    'command' => $command,
                     'message' => $data['error']['message'],
                     'code' => $data['error']['code'],
                 ];

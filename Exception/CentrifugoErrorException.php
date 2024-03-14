@@ -12,8 +12,6 @@ declare(strict_types=1);
 
 namespace Fresh\CentrifugoBundle\Exception;
 
-use Fresh\CentrifugoBundle\Model\CommandInterface;
-
 /**
  * CentrifugoErrorException.
  *
@@ -21,22 +19,4 @@ use Fresh\CentrifugoBundle\Model\CommandInterface;
  */
 class CentrifugoErrorException extends CentrifugoException
 {
-    /**
-     * @param CommandInterface $command
-     * @param string           $message
-     * @param int              $code
-     * @param \Throwable|null  $previous
-     */
-    public function __construct(private readonly CommandInterface $command, string $message = '', int $code = 0, \Throwable $previous = null)
-    {
-        parent::__construct($message, $code, $previous);
-    }
-
-    /**
-     * @return CommandInterface
-     */
-    public function getCommand(): CommandInterface
-    {
-        return $this->command;
-    }
 }
