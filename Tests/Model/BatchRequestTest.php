@@ -89,39 +89,36 @@ final class BatchRequestTest extends TestCase
 
     public function testPrepareLineDelimitedJsonWithNonEmptyBatchRequest(): void
     {
+        $json = \explode("\n", $this->command->prepareLineDelimitedJson());
+
         self::assertJsonStringEqualsJsonString(
-            expectedJson: <<<'JSON'
+            <<<'JSON'
                 {
-                    "commands": [
-                        {
-                            "publish": {
-                                "method": "publish",
-                                "params": {
-                                    "channel": "channelA",
-                                    "data": {
-                                        "foo": "bar"
-                                    }
-                                }
-                            }
-                        },
-                        {
-                            "broadcast": {
-                                "method": "broadcast",
-                                "params": {
-                                    "channels": [
-                                        "channelB",
-                                        "channelC"
-                                    ],
-                                    "data": {
-                                        "baz": "qux"
-                                    }
-                                }
-                            }
+                    "method": "publish",
+                    "params": {
+                        "channel": "channelA",
+                        "data": {
+                            "foo": "bar"
                         }
-                    ]
+                    }
                 }
             JSON,
-            actualJson: $this->command->prepareLineDelimitedJson(),
+            $json[0]
+        );
+
+        self::assertJsonStringEqualsJsonString(
+            <<<'JSON'
+                {
+                    "method": "broadcast",
+                    "params": {
+                        "channels": ["channelB", "channelC"],
+                        "data": {
+                            "baz": "qux"
+                        }
+                    }
+                }
+            JSON,
+            $json[1]
         );
     }
 }
