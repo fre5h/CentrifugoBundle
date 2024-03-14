@@ -57,8 +57,11 @@ final class SubscribeCommandTest extends TestCase
         self::assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
-                    "user": "user123",
-                    "channel": "foo"
+                    "method": "subscribe",
+                    "params": {
+                        "channel": "foo",
+                        "user": "user123"
+                    }
                 }
             JSON,
             \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
@@ -88,28 +91,31 @@ final class SubscribeCommandTest extends TestCase
         self::assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
-                    "user": "user123",
-                    "channel": "foo",
-                    "info": {
-                        "foo": "bar"
-                    },
-                    "b64info": "qwerty",
-                    "client": "clientID",
-                    "session": "sessionID",
-                    "data": {
-                        "abc": "def"
-                    },
-                    "b64data": "12345",
-                    "recover_since": {
-                        "offset": 5,
-                        "epoch": "test"
-                    },
-                    "override": {
-                        "presence": true,
-                        "join_leave": false,
-                        "force_push_join_leave": true,
-                        "force_positioning": false,
-                        "force_recovery": true
+                    "method": "subscribe",
+                    "params": {
+                        "b64data": "12345",
+                        "b64info": "qwerty",
+                        "channel": "foo",
+                        "client": "clientID",
+                        "data": {
+                            "abc": "def"
+                        },
+                        "info": {
+                            "foo": "bar"
+                        },
+                        "override": {
+                            "force_positioning": false,
+                            "force_push_join_leave": true,
+                            "force_recovery": true,
+                            "join_leave": false,
+                            "presence": true
+                        },
+                        "recover_since": {
+                            "epoch": "test",
+                            "offset": 5
+                        },
+                        "session": "sessionID",
+                        "user": "user123"
                     }
                 }
             JSON,
@@ -133,15 +139,18 @@ final class SubscribeCommandTest extends TestCase
         self::assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
-                    "user": "user123",
-                    "channel": "foo",
-                    "info": {
-                        "foo": "bar"
-                    },
-                    "client": "clientID",
-                    "session": "sessionID",
-                    "data": {
-                        "abc": "def"
+                    "method": "subscribe",
+                    "params": {
+                        "channel": "foo",
+                        "client": "clientID",
+                        "data": {
+                            "abc": "def"
+                        },
+                        "info": {
+                            "foo": "bar"
+                        },
+                        "session": "sessionID",
+                        "user": "user123"
                     }
                 }
             JSON,

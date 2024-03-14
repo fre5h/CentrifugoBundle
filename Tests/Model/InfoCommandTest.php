@@ -45,7 +45,10 @@ final class InfoCommandTest extends TestCase
         $command = new InfoCommand();
         self::assertJsonStringEqualsJsonString(
             <<<'JSON'
-                {}
+                {
+                    "method": "info",
+                    "params": {}
+                }
             JSON,
             \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
         );

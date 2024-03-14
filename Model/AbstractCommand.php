@@ -52,14 +52,18 @@ abstract class AbstractCommand implements SerializableCommandInterface
     }
 
     /**
-     * @return array|\stdClass
+     * @return array<string, mixed>
      */
-    public function jsonSerialize(): array|\stdClass
+    public function jsonSerialize(): array
     {
+        $data = ['method' => $this->method->value];
+
         if (!empty($this->params)) {
-            return $this->params;
+            $data['params'] = $this->params;
+        } else {
+            $data['params'] = new \stdClass(); // To have {} in json, restrictions of Centrifugo
         }
 
-        return new \stdClass();
+        return $data;
     }
 }

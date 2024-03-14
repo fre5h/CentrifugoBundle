@@ -55,9 +55,12 @@ final class PublishCommandTest extends TestCase
         self::assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
-                    "channel": "foo",
-                    "data": {
-                        "bar": "baz"
+                    "method": "publish",
+                    "params": {
+                        "channel": "foo",
+                        "data": {
+                            "bar": "baz"
+                        }
                     }
                 }
             JSON,
@@ -77,15 +80,18 @@ final class PublishCommandTest extends TestCase
         self::assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
-                    "channel": "foo",
-                    "data": {
-                        "bar": "baz"
-                    },
-                    "skip_history": true,
-                    "tags": {
-                        "tag": "value"
-                    },
-                    "b64data": "qwerty"
+                    "method": "publish",
+                    "params": {
+                        "b64data": "qwerty",
+                        "channel": "foo",
+                        "data": {
+                            "bar": "baz"
+                        },
+                        "skip_history": true,
+                        "tags": {
+                            "tag": "value"
+                        }
+                    }
                 }
             JSON,
             \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)

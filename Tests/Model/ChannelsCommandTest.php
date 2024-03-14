@@ -45,7 +45,10 @@ final class ChannelsCommandTest extends TestCase
         $command = new ChannelsCommand();
         self::assertJsonStringEqualsJsonString(
             <<<'JSON'
-                {}
+                {
+                    "method": "channels",
+                    "params": {}
+                }
             JSON,
             \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
         );
@@ -58,7 +61,10 @@ final class ChannelsCommandTest extends TestCase
         self::assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
-                    "pattern": "abc"
+                    "method": "channels",
+                    "params": {
+                        "pattern": "abc"
+                    }
                 }
             JSON,
             \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)

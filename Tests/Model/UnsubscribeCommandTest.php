@@ -55,8 +55,11 @@ final class UnsubscribeCommandTest extends TestCase
         self::assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
-                    "channel": "foo",
-                    "user": "bar"
+                    "method": "unsubscribe",
+                    "params": {
+                        "channel": "foo",
+                        "user": "bar"
+                    }
                 }
             JSON,
             \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
@@ -74,10 +77,13 @@ final class UnsubscribeCommandTest extends TestCase
         self::assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
-                    "channel": "foo",
-                    "user": "bar",
-                    "client": "abc",
-                    "session": "qwerty"
+                    "method": "unsubscribe",
+                    "params": {
+                        "channel": "foo",
+                        "client": "abc",
+                        "session": "qwerty",
+                        "user": "bar"
+                    }
                 }
             JSON,
             \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)

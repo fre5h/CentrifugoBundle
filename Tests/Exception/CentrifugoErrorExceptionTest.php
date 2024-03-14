@@ -15,8 +15,6 @@ namespace Fresh\CentrifugoBundle\Tests\Exception;
 use Fresh\CentrifugoBundle\Exception\CentrifugoErrorException;
 use Fresh\CentrifugoBundle\Exception\CentrifugoException;
 use Fresh\CentrifugoBundle\Exception\ExceptionInterface;
-use Fresh\CentrifugoBundle\Model\CommandInterface;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -27,22 +25,15 @@ use PHPUnit\Framework\TestCase;
 final class CentrifugoErrorExceptionTest extends TestCase
 {
     private CentrifugoErrorException $exception;
-    private CommandInterface|MockObject $command;
 
     protected function setUp(): void
     {
-        $this->command = $this->createStub(CommandInterface::class);
-        $this->exception = new CentrifugoErrorException($this->command);
+        $this->exception = new CentrifugoErrorException();
     }
 
     protected function tearDown(): void
     {
         unset($this->exception);
-    }
-
-    public function testGetCommand(): void
-    {
-        self::assertSame($this->command, $this->exception->getCommand());
     }
 
     public function testException(): void

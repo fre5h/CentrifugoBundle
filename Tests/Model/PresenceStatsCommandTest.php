@@ -46,7 +46,10 @@ final class PresenceStatsCommandTest extends TestCase
         self::assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
-                    "channel": "foo"
+                    "method": "presence_stats",
+                    "params": {
+                        "channel": "foo"
+                    }
                 }
             JSON,
             \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
