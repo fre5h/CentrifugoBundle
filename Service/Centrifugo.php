@@ -163,7 +163,7 @@ class Centrifugo implements CentrifugoInterface
         if ($command instanceof Model\BatchRequest) {
             $json = $command->prepareLineDelimitedJson();
         } else {
-            $json = json_encode($command, \JSON_THROW_ON_ERROR);
+            $json = \json_encode($command, \JSON_THROW_ON_ERROR);
         }
 
         if ($this->profilerEnabled) {
@@ -172,10 +172,10 @@ class Centrifugo implements CentrifugoInterface
 
         $response = $this->httpClient->request(
             Request::METHOD_POST,
-            sprintf('%s/%s', $this->endpoint, $command->getMethod()->value),
+            $this->endpoint,
             [
                 'headers' => [
-                    'X-API-Key' => $this->apiKey,
+                    'Authorization' => 'apikey '.$this->apiKey,
                     'Content-Type' => 'application/json',
                 ],
                 'body' => $json,

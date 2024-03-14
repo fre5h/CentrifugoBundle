@@ -47,7 +47,10 @@ final class DisconnectCommandTest extends TestCase
         self::assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
-                    "user": "foo"
+                    "method": "disconnect",
+                    "params": {
+                        "user": "foo"
+                    }
                 }
             JSON,
             \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
@@ -66,13 +69,18 @@ final class DisconnectCommandTest extends TestCase
         self::assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
-                    "user": "foo",
-                    "whitelist": ["clientID1"],
-                    "client": "clientID2",
-                    "session": "sessionID1",
-                    "disconnect": {
-                        "code": 999,
-                        "reason": "some reason"
+                    "method": "disconnect",
+                    "params": {
+                        "client": "clientID2",
+                        "disconnect": {
+                            "code": 999,
+                            "reason": "some reason"
+                        },
+                        "session": "sessionID1",
+                        "user": "foo",
+                        "whitelist": [
+                            "clientID1"
+                        ]
                     }
                 }
             JSON,

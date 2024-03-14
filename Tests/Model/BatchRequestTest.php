@@ -95,17 +95,26 @@ final class BatchRequestTest extends TestCase
                     "commands": [
                         {
                             "publish": {
-                                "channel": "channelA",
-                                "data": {
-                                    "foo": "bar"
+                                "method": "publish",
+                                "params": {
+                                    "channel": "channelA",
+                                    "data": {
+                                        "foo": "bar"
+                                    }
                                 }
                             }
                         },
                         {
                             "broadcast": {
-                                "channels": ["channelB", "channelC"],
-                                "data": {
-                                    "baz": "qux"
+                                "method": "broadcast",
+                                "params": {
+                                    "channels": [
+                                        "channelB",
+                                        "channelC"
+                                    ],
+                                    "data": {
+                                        "baz": "qux"
+                                    }
                                 }
                             }
                         }

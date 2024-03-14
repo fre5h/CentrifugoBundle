@@ -126,7 +126,7 @@ class ResponseProcessor
             $result = $data;
             $successfulCommand = false;
         } elseif ($command instanceof ResultableCommandInterface) {
-            $result = $data[$command->getMethod()->value];
+            $result = $data['result'];
         }
 
         if ($this->profilerEnabled) {
