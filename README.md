@@ -13,7 +13,7 @@
 
 ## Features 🎁
 
-- [x] Compatible with latest [Centrifugo 5.2.2](https://github.com/centrifugal/centrifugo/releases/tag/v5.2.2) 🚀
+- [x] Compatible with latest [Centrifugo 5.3.2](https://github.com/centrifugal/centrifugo/releases/tag/v5.3.2) 🚀
 - [x] Wrapper over [Centrifugo HTTP API](https://centrifugal.dev/docs/server/server_api#http-api) 🔌
 - [X] Authentication with JWT token (HMAC algorithm) for [anonymous](./Resources/docs/authentication.md#anonymous), [authenticated user](./Resources/docs/authentication.md#authenticated-user) and [private channel](./Resources/docs/authentication.md#private-channel) 🗝️
 - [x] [Batch request](./Resources/docs/centrifugo_service_methods.md#batch-request) in [JSON streaming format](https://en.wikipedia.org/wiki/JSON_streaming) 💪
