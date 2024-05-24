@@ -16,6 +16,7 @@ use Fresh\CentrifugoBundle\DependencyInjection\Compiler\RegisterCentrifugoPass;
 use Fresh\CentrifugoBundle\Service\Centrifugo;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
 use Fresh\CentrifugoBundle\Service\FakeCentrifugo;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SEEC\PhpUnit\Helper\ConsecutiveParams;
@@ -50,7 +51,8 @@ final class RegisterCentrifugoPassTest extends TestCase
         );
     }
 
-    public function testProcessFakeCentrifugo(): void
+    #[Test]
+    public function processFakeCentrifugo(): void
     {
         $this->containerBuilder
             ->expects(self::once())
@@ -70,7 +72,8 @@ final class RegisterCentrifugoPassTest extends TestCase
         $this->registerCentrifugoPass->process($this->containerBuilder);
     }
 
-    public function testProcessCentrifugo(): void
+    #[Test]
+    public function processCentrifugo(): void
     {
         $matcher = $this->exactly(3);
 

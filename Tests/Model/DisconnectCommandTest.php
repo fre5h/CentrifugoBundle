@@ -17,6 +17,7 @@ use Fresh\CentrifugoBundle\Model\DisconnectCommand;
 use Fresh\CentrifugoBundle\Model\Disconnect;
 use Fresh\CentrifugoBundle\Model\Method;
 use Fresh\CentrifugoBundle\Model\SerializableCommandInterface;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -26,14 +27,16 @@ use PHPUnit\Framework\TestCase;
  */
 final class DisconnectCommandTest extends TestCase
 {
-    public function testInterfaces(): void
+    #[Test]
+    public function interfaces(): void
     {
         $command = new DisconnectCommand(user: 'foo');
         self::assertInstanceOf(SerializableCommandInterface::class, $command);
         self::assertInstanceOf(CommandInterface::class, $command);
     }
 
-    public function testConstructor(): void
+    #[Test]
+    public function constructor(): void
     {
         $command = new DisconnectCommand(user: 'foo');
         self::assertEquals(Method::DISCONNECT, $command->getMethod());
@@ -41,7 +44,8 @@ final class DisconnectCommandTest extends TestCase
         self::assertEquals([], $command->getChannels());
     }
 
-    public function testSerializationRequiredData(): void
+    #[Test]
+    public function serializationRequiredData(): void
     {
         $command = new DisconnectCommand(user: 'foo');
         self::assertJsonStringEqualsJsonString(
@@ -54,7 +58,8 @@ final class DisconnectCommandTest extends TestCase
         );
     }
 
-    public function testSerializationAllData(): void
+    #[Test]
+    public function serializationAllData(): void
     {
         $command = new DisconnectCommand(
             user: 'foo',

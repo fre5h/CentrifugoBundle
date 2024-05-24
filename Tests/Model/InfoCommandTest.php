@@ -16,6 +16,7 @@ use Fresh\CentrifugoBundle\Model\CommandInterface;
 use Fresh\CentrifugoBundle\Model\InfoCommand;
 use Fresh\CentrifugoBundle\Model\Method;
 use Fresh\CentrifugoBundle\Model\SerializableCommandInterface;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -25,14 +26,16 @@ use PHPUnit\Framework\TestCase;
  */
 final class InfoCommandTest extends TestCase
 {
-    public function testInterfaces(): void
+    #[Test]
+    public function interfaces(): void
     {
         $command = new InfoCommand();
         self::assertInstanceOf(SerializableCommandInterface::class, $command);
         self::assertInstanceOf(CommandInterface::class, $command);
     }
 
-    public function testConstructor(): void
+    #[Test]
+    public function constructor(): void
     {
         $command = new InfoCommand();
         self::assertEquals(Method::INFO, $command->getMethod());
@@ -40,7 +43,8 @@ final class InfoCommandTest extends TestCase
         self::assertEquals([], $command->getChannels());
     }
 
-    public function testSerialization(): void
+    #[Test]
+    public function serialization(): void
     {
         $command = new InfoCommand();
         self::assertJsonStringEqualsJsonString(

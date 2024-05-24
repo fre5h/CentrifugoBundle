@@ -16,6 +16,7 @@ use Fresh\CentrifugoBundle\Command\PresenceCommand;
 use Fresh\CentrifugoBundle\Exception\InvalidArgumentException as CentrifugoInvalidArgumentException;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
@@ -64,7 +65,8 @@ final class ArgumentChannelTraitTest extends TestCase
         );
     }
 
-    public function testInvalidChannelName(): void
+    #[Test]
+    public function invalidChannelName(): void
     {
         $this->centrifugoChecker
             ->expects(self::once())
@@ -89,7 +91,8 @@ final class ArgumentChannelTraitTest extends TestCase
         );
     }
 
-    public function testChannelNameIsNotString(): void
+    #[Test]
+    public function channelNameIsNotString(): void
     {
         $this->centrifugoChecker
             ->expects(self::never())
@@ -112,7 +115,8 @@ final class ArgumentChannelTraitTest extends TestCase
         );
     }
 
-    public function testChannelNameIsMissed(): void
+    #[Test]
+    public function channelNameIsMissed(): void
     {
         $this->centrifugoChecker
             ->expects(self::never())

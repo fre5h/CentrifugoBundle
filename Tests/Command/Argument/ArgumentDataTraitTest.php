@@ -15,6 +15,7 @@ namespace Fresh\CentrifugoBundle\Tests\Command\Argument;
 use Fresh\CentrifugoBundle\Command\BroadcastCommand;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
@@ -63,7 +64,8 @@ final class ArgumentDataTraitTest extends TestCase
         );
     }
 
-    public function testDataIsNotValidJson(): void
+    #[Test]
+    public function dataIsNotValidJson(): void
     {
         $this->centrifugo
             ->expects(self::never())
@@ -82,7 +84,8 @@ final class ArgumentDataTraitTest extends TestCase
         );
     }
 
-    public function testDataIsNotString(): void
+    #[Test]
+    public function dataIsNotString(): void
     {
         $this->centrifugo
             ->expects(self::never())

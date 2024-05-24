@@ -14,6 +14,7 @@ namespace Fresh\CentrifugoBundle\Tests\Logger;
 
 use Fresh\CentrifugoBundle\Logger\CommandHistoryLogger;
 use Fresh\CentrifugoBundle\Model\PublishCommand;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -35,7 +36,8 @@ final class CommandHistoryLoggerTest extends TestCase
         unset($this->commandHistoryLogger);
     }
 
-    public function testConstructor(): void
+    #[Test]
+    public function constructor(): void
     {
         self::assertCount(0, $this->commandHistoryLogger->getCommandHistory());
         self::assertSame(0, $this->commandHistoryLogger->getCommandsCount());
@@ -44,7 +46,8 @@ final class CommandHistoryLoggerTest extends TestCase
         self::assertSame(0, $this->commandHistoryLogger->getFailedCommandsCount());
     }
 
-    public function testRequestCount(): void
+    #[Test]
+    public function requestCount(): void
     {
         self::assertSame(0, $this->commandHistoryLogger->getRequestsCount());
         $this->commandHistoryLogger->increaseRequestsCount();
@@ -57,7 +60,8 @@ final class CommandHistoryLoggerTest extends TestCase
         self::assertSame(0, $this->commandHistoryLogger->getRequestsCount());
     }
 
-    public function testFullFlow(): void
+    #[Test]
+    public function fullFlow(): void
     {
         $command = new PublishCommand([], 'channelA');
         $this->commandHistoryLogger->logCommand($command, true, ['test']);

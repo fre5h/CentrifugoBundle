@@ -24,6 +24,7 @@ use Fresh\CentrifugoBundle\Model\PublishCommand;
 use Fresh\CentrifugoBundle\Model\ResultableCommandInterface;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\ResponseProcessor;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SEEC\PhpUnit\Helper\ConsecutiveParams;
@@ -77,7 +78,8 @@ final class ResponseProcessorTest extends TestCase
         );
     }
 
-    public function testProcessingBatchRequest(): void
+    #[Test]
+    public function processingBatchRequest(): void
     {
         $this->centrifugoChecker
             ->expects(self::once())
@@ -142,7 +144,8 @@ final class ResponseProcessorTest extends TestCase
         );
     }
 
-    public function testLogicException(): void
+    #[Test]
+    public function logicException(): void
     {
         $this->response
             ->expects(self::once())
@@ -172,7 +175,8 @@ final class ResponseProcessorTest extends TestCase
         );
     }
 
-    public function testProcessingResultableCommand(): void
+    #[Test]
+    public function processingResultableCommand(): void
     {
         $this->centrifugoChecker
             ->expects(self::once())
@@ -213,7 +217,8 @@ final class ResponseProcessorTest extends TestCase
         self::assertSame(['foo', 'bar'], $result);
     }
 
-    public function testProcessingNonResultableCommand(): void
+    #[Test]
+    public function processingNonResultableCommand(): void
     {
         $this->centrifugoChecker
             ->expects(self::once())
@@ -258,7 +263,8 @@ final class ResponseProcessorTest extends TestCase
         self::assertNull($result);
     }
 
-    public function testInvalidResponse(): void
+    #[Test]
+    public function invalidResponse(): void
     {
         $this->response
             ->expects(self::once())
@@ -275,7 +281,8 @@ final class ResponseProcessorTest extends TestCase
         );
     }
 
-    public function testProcessingCentrifugoErrorForSingleCommand(): void
+    #[Test]
+    public function processingCentrifugoErrorForSingleCommand(): void
     {
         $this->response
             ->expects(self::once())
@@ -298,7 +305,8 @@ final class ResponseProcessorTest extends TestCase
         $this->responseProcessor->processResponse($command, $this->response);
     }
 
-    public function testProcessingCentrifugoErrorForBatchRequest(): void
+    #[Test]
+    public function processingCentrifugoErrorForBatchRequest(): void
     {
         $this->response
             ->expects(self::once())

@@ -19,6 +19,7 @@ use Fresh\CentrifugoBundle\Token\JwtPayloadForChannel;
 use Fresh\CentrifugoBundle\Token\JwtPayloadForPrivateChannel;
 use Fresh\CentrifugoBundle\User\CentrifugoUserInterface;
 use Fresh\DateTime\DateTimeHelper;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -53,7 +54,8 @@ final class CredentialsGeneratorTest extends TestCase
         );
     }
 
-    public function testGenerateJwtTokenForAnonymous(): void
+    #[Test]
+    public function generateJwtTokenForAnonymous(): void
     {
         $this->dateTimeHelper
             ->expects(self::once())
@@ -78,7 +80,8 @@ final class CredentialsGeneratorTest extends TestCase
         self::assertEquals('test1', $this->credentialsGenerator->generateJwtTokenForAnonymous());
     }
 
-    public function testGenerateJwtTokenForUser(): void
+    #[Test]
+    public function generateJwtTokenForUser(): void
     {
         $this->dateTimeHelper
             ->expects(self::once())
@@ -120,7 +123,8 @@ final class CredentialsGeneratorTest extends TestCase
         self::assertEquals('test2', $this->credentialsGenerator->generateJwtTokenForUser($user, 'qwerty', ['channelA']));
     }
 
-    public function testGenerateJwtTokenForPrivateChannel(): void
+    #[Test]
+    public function generateJwtTokenForPrivateChannel(): void
     {
         $this->dateTimeHelper
             ->expects(self::once())
@@ -146,7 +150,8 @@ final class CredentialsGeneratorTest extends TestCase
         self::assertEquals('test3', $this->credentialsGenerator->generateJwtTokenForPrivateChannel('spiderman', 'avengers', null, true));
     }
 
-    public function testGenerateJwtTokenForChannel(): void
+    #[Test]
+    public function generateJwtTokenForChannel(): void
     {
         $this->dateTimeHelper
             ->expects(self::once())

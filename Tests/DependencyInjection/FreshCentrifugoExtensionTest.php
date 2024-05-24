@@ -16,6 +16,7 @@ use Fresh\CentrifugoBundle\DependencyInjection\FreshCentrifugoExtension;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
 use Fresh\CentrifugoBundle\Service\ResponseProcessor;
 use Fresh\DateTime\DateTimeHelper;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
@@ -45,7 +46,8 @@ final class FreshCentrifugoExtensionTest extends TestCase
         );
     }
 
-    public function testLoadExtension(): void
+    #[Test]
+    public function loadExtension(): void
     {
         $this->container->loadFromExtension($this->extension->getAlias());
         $this->container->compile();
@@ -72,7 +74,8 @@ final class FreshCentrifugoExtensionTest extends TestCase
         }
     }
 
-    public function testExceptionOnGettingPrivateService(): void
+    #[Test]
+    public function exceptionOnGettingPrivateService(): void
     {
         $this->container->loadFromExtension($this->extension->getAlias());
         $this->container->compile();

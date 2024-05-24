@@ -15,6 +15,7 @@ namespace Fresh\CentrifugoBundle\Tests\Command;
 use Fresh\CentrifugoBundle\Command\PresenceCommand;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
@@ -62,7 +63,8 @@ final class PresenceCommandTest extends TestCase
         );
     }
 
-    public function testSuccessfulExecution(): void
+    #[Test]
+    public function successfulExecution(): void
     {
         $this->centrifugo
             ->expects(self::once())
@@ -103,7 +105,8 @@ final class PresenceCommandTest extends TestCase
         self::assertStringContainsString('"username": "user1@test.com"', $output);
     }
 
-    public function testNoData(): void
+    #[Test]
+    public function noData(): void
     {
         $this->centrifugo
             ->expects(self::once())
@@ -124,7 +127,8 @@ final class PresenceCommandTest extends TestCase
         self::assertStringContainsString('NO DATA', $output);
     }
 
-    public function testException(): void
+    #[Test]
+    public function exception(): void
     {
         $this->centrifugo
             ->expects(self::once())

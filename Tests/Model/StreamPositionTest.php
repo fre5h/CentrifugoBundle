@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Fresh\CentrifugoBundle\Tests\Model;
 
 use Fresh\CentrifugoBundle\Model\StreamPosition;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -22,7 +23,8 @@ use PHPUnit\Framework\TestCase;
  */
 final class StreamPositionTest extends TestCase
 {
-    public function testConstructor(): void
+    #[Test]
+    public function constructor(): void
     {
         $streamPosition = new StreamPosition(5, 'ABCD');
         self::assertSame(5, $streamPosition->getOffset());

@@ -14,6 +14,7 @@ namespace Fresh\CentrifugoBundle\Tests\Command;
 
 use Fresh\CentrifugoBundle\Command\ChannelsCommand;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
@@ -56,7 +57,8 @@ final class ChannelsCommandTest extends TestCase
         );
     }
 
-    public function testSuccessfulExecutionWithoutPattern(): void
+    #[Test]
+    public function successfulExecutionWithoutPattern(): void
     {
         $this->centrifugo
             ->expects(self::once())
@@ -73,7 +75,8 @@ final class ChannelsCommandTest extends TestCase
         self::assertStringContainsString('Total Channels: 2', $output);
     }
 
-    public function testSuccessfulExecutionWithPattern(): void
+    #[Test]
+    public function successfulExecutionWithPattern(): void
     {
         $this->centrifugo
             ->expects(self::once())
@@ -94,7 +97,8 @@ final class ChannelsCommandTest extends TestCase
         self::assertStringContainsString('Total Channels: 1', $output);
     }
 
-    public function testNoData(): void
+    #[Test]
+    public function noData(): void
     {
         $this->centrifugo
             ->expects(self::once())
@@ -109,7 +113,8 @@ final class ChannelsCommandTest extends TestCase
         self::assertStringContainsString('NO DATA', $output);
     }
 
-    public function testException(): void
+    #[Test]
+    public function exception(): void
     {
         $this->centrifugo
             ->expects(self::once())
@@ -124,7 +129,8 @@ final class ChannelsCommandTest extends TestCase
         self::assertStringContainsString('test', $output);
     }
 
-    public function testAutocomplete(): void
+    #[Test]
+    public function autocomplete(): void
     {
         $this->centrifugo
             ->expects(self::once())

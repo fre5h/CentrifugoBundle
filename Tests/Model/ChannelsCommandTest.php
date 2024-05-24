@@ -16,6 +16,7 @@ use Fresh\CentrifugoBundle\Model\ChannelsCommand;
 use Fresh\CentrifugoBundle\Model\CommandInterface;
 use Fresh\CentrifugoBundle\Model\Method;
 use Fresh\CentrifugoBundle\Model\SerializableCommandInterface;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -25,14 +26,16 @@ use PHPUnit\Framework\TestCase;
  */
 final class ChannelsCommandTest extends TestCase
 {
-    public function testInterfaces(): void
+    #[Test]
+    public function interfaces(): void
     {
         $command = new ChannelsCommand();
         self::assertInstanceOf(SerializableCommandInterface::class, $command);
         self::assertInstanceOf(CommandInterface::class, $command);
     }
 
-    public function testConstructor(): void
+    #[Test]
+    public function constructor(): void
     {
         $command = new ChannelsCommand();
         self::assertEquals(Method::CHANNELS, $command->getMethod());
@@ -40,7 +43,8 @@ final class ChannelsCommandTest extends TestCase
         self::assertEquals([], $command->getChannels());
     }
 
-    public function testSerializationWithoutPattern(): void
+    #[Test]
+    public function serializationWithoutPattern(): void
     {
         $command = new ChannelsCommand();
         self::assertJsonStringEqualsJsonString(
@@ -51,7 +55,8 @@ final class ChannelsCommandTest extends TestCase
         );
     }
 
-    public function testSerializationWithPattern(): void
+    #[Test]
+    public function serializationWithPattern(): void
     {
         $command = new ChannelsCommand(pattern: 'abc');
 

@@ -15,6 +15,7 @@ namespace Fresh\CentrifugoBundle\Tests\Command\Option;
 use Fresh\CentrifugoBundle\Command\SubscribeCommand;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
@@ -63,7 +64,8 @@ final class OptionInfoTraitTest extends TestCase
         );
     }
 
-    public function testDataIsNotValidJson(): void
+    #[Test]
+    public function dataIsNotValidJson(): void
     {
         $this->centrifugo
             ->expects(self::never())
@@ -83,7 +85,8 @@ final class OptionInfoTraitTest extends TestCase
         );
     }
 
-    public function testValidOption(): void
+    #[Test]
+    public function validOption(): void
     {
         $this->centrifugo
             ->expects(self::once())

@@ -15,6 +15,8 @@ namespace Fresh\CentrifugoBundle\Tests\Service\Jwt;
 use Fresh\CentrifugoBundle\Service\ChannelAuthenticator\ChannelAuthenticatorInterface;
 use Fresh\CentrifugoBundle\Service\ChannelAuthenticator\PrivateChannelAuthenticator;
 use Fresh\CentrifugoBundle\Service\Credentials\CredentialsGenerator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SEEC\PhpUnit\Helper\ConsecutiveParams;
@@ -62,7 +64,8 @@ final class PrivateChannelAuthenticatorTest extends TestCase
         );
     }
 
-    public function testInvalidJsonRequest(): void
+    #[Test]
+    public function invalidJsonRequest(): void
     {
         $this->request
             ->expects(self::once())
@@ -81,11 +84,8 @@ final class PrivateChannelAuthenticatorTest extends TestCase
         self::assertEquals(['channels' => []], $this->privateChannelAuthenticator->authChannelsForClientFromRequest($this->request));
     }
 
-    /**
-     * @param string $content
-     *
-     * @dataProvider dataProviderForTestInvalidClientInRequest
-     */
+    #[Test]
+    #[DataProvider('dataProviderForTestInvalidClientInRequest')]
     public function testInvalidClientInRequest(string $content): void
     {
         $this->request
@@ -143,11 +143,7 @@ final class PrivateChannelAuthenticatorTest extends TestCase
         ];
     }
 
-    /**
-     * @param string $content
-     *
-     * @dataProvider dataProviderForTestInvalidChannelsInRequest
-     */
+    #[DataProvider('dataProviderForTestInvalidChannelsInRequest')]
     public function testInvalidChannelsInRequest(string $content): void
     {
         $this->request
@@ -196,7 +192,8 @@ final class PrivateChannelAuthenticatorTest extends TestCase
         ];
     }
 
-    public function testNonStringChannelInRequest(): void
+    #[Test]
+    public function nonStringChannelInRequest(): void
     {
         $this->request
             ->expects(self::once())
@@ -220,7 +217,8 @@ final class PrivateChannelAuthenticatorTest extends TestCase
         self::assertEquals(['channels' => []], $this->privateChannelAuthenticator->authChannelsForClientFromRequest($this->request));
     }
 
-    public function testExceptionOnGetContent(): void
+    #[Test]
+    public function exceptionOnGetContent(): void
     {
         $this->request
             ->expects(self::once())
@@ -239,7 +237,8 @@ final class PrivateChannelAuthenticatorTest extends TestCase
         self::assertEquals(['channels' => []], $this->privateChannelAuthenticator->authChannelsForClientFromRequest($this->request));
     }
 
-    public function testNoChannelAuthenticator(): void
+    #[Test]
+    public function noChannelAuthenticator(): void
     {
         $this->request
             ->expects(self::once())
@@ -262,7 +261,8 @@ final class PrivateChannelAuthenticatorTest extends TestCase
         self::assertEquals(['channels' => []], $this->privateChannelAuthenticator->authChannelsForClientFromRequest($this->request));
     }
 
-    public function testSuccessChannelAuthenticator(): void
+    #[Test]
+    public function successChannelAuthenticator(): void
     {
         $this->request
             ->expects(self::once())

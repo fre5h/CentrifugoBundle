@@ -17,6 +17,7 @@ use Fresh\CentrifugoBundle\Model\BatchRequest;
 use Fresh\CentrifugoBundle\Model\BroadcastCommand;
 use Fresh\CentrifugoBundle\Model\InfoCommand;
 use Fresh\CentrifugoBundle\Model\PublishCommand;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -40,7 +41,8 @@ final class BatchRequestTest extends TestCase
         unset($this->command);
     }
 
-    public function testGetCommands(): void
+    #[Test]
+    public function getCommands(): void
     {
         $commands = $this->command->getCommands();
         self::assertInstanceOf(PublishCommand::class, $commands->current());
@@ -49,7 +51,8 @@ final class BatchRequestTest extends TestCase
         self::assertInstanceOf(BroadcastCommand::class, $commands->current());
     }
 
-    public function testAddCommandAndGetNumberOfCommands(): void
+    #[Test]
+    public function addCommandAndGetNumberOfCommands(): void
     {
         self::assertEquals(2, $this->command->getNumberOfCommands());
         $this->command->addCommand(new InfoCommand());
@@ -61,7 +64,8 @@ final class BatchRequestTest extends TestCase
         self::assertInstanceOf(InfoCommand::class, $commands->current());
     }
 
-    public function testConstructorWithException(): void
+    #[Test]
+    public function constructorWithException(): void
     {
         $this->expectException(UnexpectedValueException::class);
         $this->expectExceptionMessage('Invalid command for batch request. Only instances of Fresh\CentrifugoBundle\Model\CommandInterface are allowed.');
@@ -69,7 +73,8 @@ final class BatchRequestTest extends TestCase
         new BatchRequest([new \stdClass()]);
     }
 
-    public function testGetChannels(): void
+    #[Test]
+    public function getChannels(): void
     {
         $channels = $this->command->getChannels();
         self::assertEquals('channelA', $channels->current());
@@ -81,13 +86,15 @@ final class BatchRequestTest extends TestCase
         self::assertEquals('channelC', $channels->current());
     }
 
-    public function testPrepareLineDelimitedJsonWithEmptyBatchRequest(): void
+    #[Test]
+    public function prepareLineDelimitedJsonWithEmptyBatchRequest(): void
     {
         $batchRequest = new BatchRequest();
         self::assertEquals('{}', $batchRequest->prepareLineDelimitedJson());
     }
 
-    public function testPrepareLineDelimitedJsonWithNonEmptyBatchRequest(): void
+    #[Test]
+    public function prepareLineDelimitedJsonWithNonEmptyBatchRequest(): void
     {
         self::assertJsonStringEqualsJsonString(
             expectedJson: <<<'JSON'

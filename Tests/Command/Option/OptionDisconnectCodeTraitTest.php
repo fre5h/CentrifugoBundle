@@ -14,6 +14,7 @@ namespace Fresh\CentrifugoBundle\Tests\Command\Option;
 
 use Fresh\CentrifugoBundle\Command\DisconnectCommand;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
@@ -57,7 +58,8 @@ final class OptionDisconnectCodeTraitTest extends TestCase
         );
     }
 
-    public function testValidOption(): void
+    #[Test]
+    public function validOption(): void
     {
         $this->centrifugo
             ->expects(self::once())
@@ -74,7 +76,8 @@ final class OptionDisconnectCodeTraitTest extends TestCase
         );
     }
 
-    public function testInvalidOption(): void
+    #[Test]
+    public function invalidOption(): void
     {
         $this->centrifugo
             ->expects(self::never())
