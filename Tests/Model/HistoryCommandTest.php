@@ -102,4 +102,16 @@ final class HistoryCommandTest extends TestCase
             \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
         );
     }
+
+    #[Test]
+    public function processResponse(): void
+    {
+        $command = new HistoryCommand(
+            channel: 'foo',
+            reverse: true,
+            limit: 0,
+            streamPosition: new StreamPosition(offset: null, epoch: null),
+        );
+        self::assertEquals(['foo' => 'bar'], $command->processResponse(['result' => ['foo' => 'bar']]));
+    }
 }

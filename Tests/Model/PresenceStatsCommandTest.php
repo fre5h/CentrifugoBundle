@@ -14,6 +14,7 @@ namespace Fresh\CentrifugoBundle\Tests\Model;
 
 use Fresh\CentrifugoBundle\Model\CommandInterface;
 use Fresh\CentrifugoBundle\Model\Method;
+use Fresh\CentrifugoBundle\Model\PresenceCommand;
 use Fresh\CentrifugoBundle\Model\PresenceStatsCommand;
 use Fresh\CentrifugoBundle\Model\SerializableCommandInterface;
 use PHPUnit\Framework\Attributes\Test;
@@ -55,5 +56,12 @@ final class PresenceStatsCommandTest extends TestCase
             JSON,
             \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
         );
+    }
+
+    #[Test]
+    public function processResponse(): void
+    {
+        $command = new PresenceStatsCommand(channel: 'foo');
+        self::assertEquals(['foo' => 'bar'], $command->processResponse(['result' => ['foo' => 'bar']]));
     }
 }

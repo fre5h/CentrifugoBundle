@@ -32,4 +32,9 @@ final class ChannelsCommand extends AbstractCommand implements ResultableCommand
 
         parent::__construct(Method::CHANNELS, $params);
     }
+
+    public function processResponse(array $data): array
+    {
+        return $data;
+    }
 }

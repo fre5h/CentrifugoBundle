@@ -69,4 +69,11 @@ final class ChannelsCommandTest extends TestCase
             \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
         );
     }
+
+    #[Test]
+    public function processResponse(): void
+    {
+        $command = new ChannelsCommand();
+        self::assertEquals(['foo' => 'bar'], $command->processResponse(['foo' => 'bar']));
+    }
 }

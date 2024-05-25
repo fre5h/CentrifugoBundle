@@ -19,4 +19,5 @@ namespace Fresh\CentrifugoBundle\Model;
  */
 interface ResultableCommandInterface extends CommandInterface
 {
+    public function processResponse(array $data): array;
 }

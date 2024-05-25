@@ -105,7 +105,7 @@ final class ResponseProcessorTest extends TestCase
                     "replies": [
                         {"publish": {}},
                         {"broadcast": {}},
-                        {"channels": ["chat", "notification"]}
+                        ["chat", "notification"]
                     ]
                 }
             JSON
@@ -153,7 +153,7 @@ final class ResponseProcessorTest extends TestCase
             ->willReturn(<<<'JSON'
                 {
                     "replies": {
-                        "result":{"channels":["chat","notification"]}
+                        "result":["chat","notification"]
                     }
                 }
             JSON
@@ -198,9 +198,7 @@ final class ResponseProcessorTest extends TestCase
             ->expects(self::once())
             ->method('getContent')
             ->willReturn(<<<'JSON'
-                {
-                    "channels": ["foo", "bar"]
-                }
+                ["foo", "bar"]
             JSON
             )
         ;
@@ -316,7 +314,7 @@ final class ResponseProcessorTest extends TestCase
                     "replies": [
                         {"error":{"message":"test message 2","code":456}},
                         {"broadcast":{}},
-                        {"channels":["chat","notification"]}
+                        ["chat","notification"]
                     ]
                 }
             JSON
