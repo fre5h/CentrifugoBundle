@@ -27,6 +27,9 @@ final class InfoCommand extends AbstractCommand implements ResultableCommandInte
         parent::__construct(Method::INFO, []);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function processResponse(array $data): array
     {
         return $data['result'];

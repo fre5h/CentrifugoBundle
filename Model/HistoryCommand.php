@@ -54,6 +54,9 @@ final class HistoryCommand extends AbstractCommand implements ResultableCommandI
         parent::__construct(Method::HISTORY, $params);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function processResponse(array $data): array
     {
         return $data['result'];
