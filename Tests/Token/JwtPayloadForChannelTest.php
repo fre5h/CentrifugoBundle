@@ -14,6 +14,7 @@ namespace Fresh\CentrifugoBundle\Tests\Token;
 
 use Fresh\CentrifugoBundle\Token\JwtPayloadForChannel;
 use Fresh\CentrifugoBundle\Token\JwtPayloadForChannelOverride;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -21,7 +22,8 @@ use PHPUnit\Framework\TestCase;
  */
 final class JwtPayloadForChannelTest extends TestCase
 {
-    public function testConstructor(): void
+    #[Test]
+    public function constructor(): void
     {
         $jwtPayloadForChannel = new JwtPayloadForChannel(
             'spiderman',
@@ -65,7 +67,8 @@ final class JwtPayloadForChannelTest extends TestCase
         self::assertTrue($jwtPayloadForChannel->getOverride()->getForcePosting());
     }
 
-    public function testGetPayloadDataWithAllClaims(): void
+    #[Test]
+    public function getPayloadDataWithAllClaims(): void
     {
         $jwtPayloadForChannel = new JwtPayloadForChannel(
             'spiderman',
@@ -121,7 +124,8 @@ final class JwtPayloadForChannelTest extends TestCase
         );
     }
 
-    public function testGetPayloadDataWithOnlyRequiredClaims(): void
+    #[Test]
+    public function getPayloadDataWithOnlyRequiredClaims(): void
     {
         $jwtPayloadForChannel = new JwtPayloadForChannel(
             'spiderman',

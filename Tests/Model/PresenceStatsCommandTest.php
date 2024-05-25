@@ -14,8 +14,10 @@ namespace Fresh\CentrifugoBundle\Tests\Model;
 
 use Fresh\CentrifugoBundle\Model\CommandInterface;
 use Fresh\CentrifugoBundle\Model\Method;
+use Fresh\CentrifugoBundle\Model\PresenceCommand;
 use Fresh\CentrifugoBundle\Model\PresenceStatsCommand;
 use Fresh\CentrifugoBundle\Model\SerializableCommandInterface;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -25,14 +27,16 @@ use PHPUnit\Framework\TestCase;
  */
 final class PresenceStatsCommandTest extends TestCase
 {
-    public function testInterfaces(): void
+    #[Test]
+    public function interfaces(): void
     {
         $command = new PresenceStatsCommand(channel: 'foo');
         self::assertInstanceOf(SerializableCommandInterface::class, $command);
         self::assertInstanceOf(CommandInterface::class, $command);
     }
 
-    public function testConstructor(): void
+    #[Test]
+    public function constructor(): void
     {
         $command = new PresenceStatsCommand(channel: 'foo');
         self::assertEquals(Method::PRESENCE_STATS, $command->getMethod());
@@ -40,7 +44,8 @@ final class PresenceStatsCommandTest extends TestCase
         self::assertEquals(['foo'], $command->getChannels());
     }
 
-    public function testSerialization(): void
+    #[Test]
+    public function serialization(): void
     {
         $command = new PresenceStatsCommand(channel: 'foo');
         self::assertJsonStringEqualsJsonString(
@@ -51,5 +56,12 @@ final class PresenceStatsCommandTest extends TestCase
             JSON,
             \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
         );
+    }
+
+    #[Test]
+    public function processResponse(): void
+    {
+        $command = new PresenceStatsCommand(channel: 'foo');
+        self::assertEquals(['foo' => 'bar'], $command->processResponse(['result' => ['foo' => 'bar']]));
     }
 }

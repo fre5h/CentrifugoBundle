@@ -14,6 +14,7 @@ namespace Fresh\CentrifugoBundle\Tests\Token;
 
 use Fresh\CentrifugoBundle\Token\AbstractJwtPayload;
 use Fresh\CentrifugoBundle\Token\JwtPayload;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -23,7 +24,8 @@ use PHPUnit\Framework\TestCase;
  */
 final class JwtPayloadTest extends TestCase
 {
-    public function testConstructor(): void
+    #[Test]
+    public function constructor(): void
     {
         $jwtPayload = new JwtPayload(
             'spiderman',
@@ -50,7 +52,8 @@ final class JwtPayloadTest extends TestCase
         self::assertSame(['avengers'], $jwtPayload->getChannels());
     }
 
-    public function testGetPayloadDataWithAllClaims(): void
+    #[Test]
+    public function getPayloadDataWithAllClaims(): void
     {
         $jwtPayload = new JwtPayload(
             'spiderman',
@@ -78,7 +81,8 @@ final class JwtPayloadTest extends TestCase
         );
     }
 
-    public function testGetPayloadDataWithOnlyRequiredClaims(): void
+    #[Test]
+    public function getPayloadDataWithOnlyRequiredClaims(): void
     {
         $jwtPayload = new JwtPayload(
             'spiderman'

@@ -19,6 +19,7 @@ use Fresh\CentrifugoBundle\Model\StreamPosition;
 use Fresh\CentrifugoBundle\Service\Centrifugo;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\ResponseProcessor;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SEEC\PhpUnit\Helper\ConsecutiveParams;
@@ -87,7 +88,8 @@ final class CentrifugoTest extends TestCase
         );
     }
 
-    public function testPublishCommand(): void
+    #[Test]
+    public function publishCommand(): void
     {
         $this->centrifugoChecker
             ->expects(self::once())
@@ -122,7 +124,8 @@ final class CentrifugoTest extends TestCase
         );
     }
 
-    public function testBroadcastCommand(): void
+    #[Test]
+    public function broadcastCommand(): void
     {
         $this->centrifugoChecker
             ->expects(self::exactly(2))
@@ -160,7 +163,8 @@ final class CentrifugoTest extends TestCase
         );
     }
 
-    public function testUnsubscribeCommand(): void
+    #[Test]
+    public function unsubscribeCommand(): void
     {
         $this->centrifugoChecker
             ->expects(self::once())
@@ -194,7 +198,8 @@ final class CentrifugoTest extends TestCase
         );
     }
 
-    public function testSubscribeCommand(): void
+    #[Test]
+    public function subscribeCommand(): void
     {
         $this->centrifugoChecker
             ->expects(self::once())
@@ -240,7 +245,8 @@ final class CentrifugoTest extends TestCase
         );
     }
 
-    public function testDisconnectCommand(): void
+    #[Test]
+    public function disconnectCommand(): void
     {
         $this->centrifugoChecker
             ->expects(self::never())
@@ -274,7 +280,8 @@ final class CentrifugoTest extends TestCase
         );
     }
 
-    public function testRefreshCommand(): void
+    #[Test]
+    public function refreshCommand(): void
     {
         $this->centrifugoChecker
             ->expects(self::never())
@@ -308,7 +315,8 @@ final class CentrifugoTest extends TestCase
         );
     }
 
-    public function testPresenceCommand(): void
+    #[Test]
+    public function presenceCommand(): void
     {
         $this->centrifugoChecker
             ->expects(self::once())
@@ -337,7 +345,8 @@ final class CentrifugoTest extends TestCase
         $this->centrifugo->presence(channel: 'channelA');
     }
 
-    public function testPresenceStatsCommand(): void
+    #[Test]
+    public function presenceStatsCommand(): void
     {
         $this->centrifugoChecker
             ->expects(self::once())
@@ -366,7 +375,8 @@ final class CentrifugoTest extends TestCase
         $this->centrifugo->presenceStats(channel: 'channelA');
     }
 
-    public function testHistoryCommand(): void
+    #[Test]
+    public function historyCommand(): void
     {
         $this->centrifugoChecker
             ->expects(self::once())
@@ -400,7 +410,8 @@ final class CentrifugoTest extends TestCase
         );
     }
 
-    public function testHistoryRemoveCommand(): void
+    #[Test]
+    public function historyRemoveCommand(): void
     {
         $this->centrifugoChecker
             ->expects(self::once())
@@ -429,7 +440,8 @@ final class CentrifugoTest extends TestCase
         $this->centrifugo->historyRemove(channel: 'channelA');
     }
 
-    public function testChannelsCommand(): void
+    #[Test]
+    public function channelsCommand(): void
     {
         $this->centrifugoChecker
             ->expects(self::never())
@@ -457,7 +469,8 @@ final class CentrifugoTest extends TestCase
         $this->centrifugo->channels(pattern: 'pattern');
     }
 
-    public function testInfoCommand(): void
+    #[Test]
+    public function infoCommand(): void
     {
         $this->centrifugoChecker
             ->expects(self::never())
@@ -485,7 +498,8 @@ final class CentrifugoTest extends TestCase
         $this->centrifugo->info();
     }
 
-    public function testBatchRequest(): void
+    #[Test]
+    public function batchRequest(): void
     {
         $this->centrifugoChecker
             ->expects(self::exactly(2))

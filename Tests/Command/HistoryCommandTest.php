@@ -16,6 +16,7 @@ use Fresh\CentrifugoBundle\Command\HistoryCommand;
 use Fresh\CentrifugoBundle\Model\StreamPosition;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
@@ -63,7 +64,8 @@ final class HistoryCommandTest extends TestCase
         );
     }
 
-    public function testSuccessfulExecutionWithRequiredParameters(): void
+    #[Test]
+    public function successfulExecutionWithRequiredParameters(): void
     {
         $this->centrifugo
             ->expects(self::once())
@@ -106,7 +108,8 @@ JSON,
         self::assertStringContainsString('Epoch: test', $output);
     }
 
-    public function testSuccessfulExecutionWithAllParameters(): void
+    #[Test]
+    public function successfulExecutionWithAllParameters(): void
     {
         $this->centrifugo
             ->expects(self::once())
@@ -153,7 +156,8 @@ JSON,
         self::assertStringContainsString('Epoch: test', $output);
     }
 
-    public function testException(): void
+    #[Test]
+    public function exception(): void
     {
         $this->centrifugo
             ->expects(self::once())

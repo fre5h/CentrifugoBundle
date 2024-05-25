@@ -15,6 +15,7 @@ namespace Fresh\CentrifugoBundle\Tests\Command\Argument;
 use Fresh\CentrifugoBundle\Command\BroadcastCommand;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
@@ -63,7 +64,8 @@ final class ArgumentChannelsTraitTest extends TestCase
         );
     }
 
-    public function testInvalidChannelName(): void
+    #[Test]
+    public function invalidChannelName(): void
     {
         $this->centrifugoChecker
             ->expects(self::once())

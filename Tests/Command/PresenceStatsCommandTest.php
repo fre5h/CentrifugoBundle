@@ -15,6 +15,7 @@ namespace Fresh\CentrifugoBundle\Tests\Command;
 use Fresh\CentrifugoBundle\Command\PresenceStatsCommand;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
@@ -62,7 +63,8 @@ final class PresenceStatsCommandTest extends TestCase
         );
     }
 
-    public function testSuccessfulExecution(): void
+    #[Test]
+    public function successfulExecution(): void
     {
         $this->centrifugo
             ->expects(self::once())
@@ -90,7 +92,8 @@ final class PresenceStatsCommandTest extends TestCase
         self::assertStringContainsString('Total number of unique users in channel: 1', $output);
     }
 
-    public function testException(): void
+    #[Test]
+    public function exception(): void
     {
         $this->centrifugo
             ->expects(self::once())

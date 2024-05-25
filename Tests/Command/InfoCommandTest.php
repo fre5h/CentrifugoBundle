@@ -14,6 +14,7 @@ namespace Fresh\CentrifugoBundle\Tests\Command;
 
 use Fresh\CentrifugoBundle\Command\InfoCommand;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
@@ -56,7 +57,8 @@ final class InfoCommandTest extends TestCase
         );
     }
 
-    public function testSuccessfulExecution(): void
+    #[Test]
+    public function successfulExecution(): void
     {
         $this->centrifugo
             ->expects(self::once())
@@ -90,7 +92,8 @@ final class InfoCommandTest extends TestCase
         self::assertStringContainsString('    └ process.virtual.memory_max_bytes: -1', $output);
     }
 
-    public function testNoData(): void
+    #[Test]
+    public function noData(): void
     {
         $this->centrifugo
             ->expects(self::once())
@@ -105,7 +108,8 @@ final class InfoCommandTest extends TestCase
         self::assertStringContainsString('NO DATA', $output);
     }
 
-    public function testException(): void
+    #[Test]
+    public function exception(): void
     {
         $this->centrifugo
             ->expects(self::once())
@@ -120,7 +124,8 @@ final class InfoCommandTest extends TestCase
         self::assertStringContainsString('test', $output);
     }
 
-    public function testUnexpectedValueException(): void
+    #[Test]
+    public function unexpectedValueException(): void
     {
         $this->centrifugo
             ->expects(self::once())

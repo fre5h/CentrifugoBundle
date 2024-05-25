@@ -17,6 +17,7 @@ use Fresh\CentrifugoBundle\Token\JwtPayload;
 use Fresh\CentrifugoBundle\Token\JwtPayloadForChannel;
 use Fresh\CentrifugoBundle\Token\JwtPayloadForChannelOverride;
 use Fresh\CentrifugoBundle\Token\JwtPayloadForPrivateChannel;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -38,7 +39,8 @@ final class JwtGeneratorTest extends TestCase
         unset($this->jwtGenerator);
     }
 
-    public function testGenerateTokenForAllClaims(): void
+    #[Test]
+    public function generateTokenForAllClaims(): void
     {
         $jwtPayload = new JwtPayload(
             'spiderman',
@@ -57,7 +59,8 @@ final class JwtGeneratorTest extends TestCase
         );
     }
 
-    public function testGenerateTokenForOnlyRequiredClaims(): void
+    #[Test]
+    public function generateTokenForOnlyRequiredClaims(): void
     {
         $jwtPayload = new JwtPayload('spiderman');
 
@@ -67,7 +70,8 @@ final class JwtGeneratorTest extends TestCase
         );
     }
 
-    public function testGenerateTokenForPrivateChannelForAllClaims(): void
+    #[Test]
+    public function generateTokenForPrivateChannelForAllClaims(): void
     {
         $jwtPayloadForPrivateChannel = new JwtPayloadForPrivateChannel(
             'spiderman',
@@ -87,7 +91,8 @@ final class JwtGeneratorTest extends TestCase
         );
     }
 
-    public function testGenerateTokenForPrivateChannelForOnlyRequiredClaims(): void
+    #[Test]
+    public function generateTokenForPrivateChannelForOnlyRequiredClaims(): void
     {
         $jwtPayloadForPrivateChannel = new JwtPayloadForPrivateChannel('spiderman', 'avengers');
 
@@ -97,7 +102,8 @@ final class JwtGeneratorTest extends TestCase
         );
     }
 
-    public function testGenerateTokenForChannelForAllClaims(): void
+    #[Test]
+    public function generateTokenForChannelForAllClaims(): void
     {
         $jwtPayloadForChannel = new JwtPayloadForChannel(
             'spiderman',
@@ -122,7 +128,8 @@ final class JwtGeneratorTest extends TestCase
         );
     }
 
-    public function testGenerateTokenForChannelForOnlyRequiredClaims(): void
+    #[Test]
+    public function generateTokenForChannelForOnlyRequiredClaims(): void
     {
         $jwtPayloadForChannel = new JwtPayloadForChannel('spiderman', 'avengers');
 

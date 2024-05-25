@@ -14,6 +14,7 @@ namespace Fresh\CentrifugoBundle\Tests;
 
 use Fresh\CentrifugoBundle\DependencyInjection\Compiler\RegisterCentrifugoPass;
 use Fresh\CentrifugoBundle\FreshCentrifugoBundle;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -24,7 +25,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 final class FreshCentrifugoBundleTest extends TestCase
 {
-    public function testBuild(): void
+    #[Test]
+    public function build(): void
     {
         $containerBuilder = $this->createMock(ContainerBuilder::class);
         $containerBuilder

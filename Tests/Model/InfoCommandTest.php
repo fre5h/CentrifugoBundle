@@ -13,9 +13,12 @@ declare(strict_types=1);
 namespace Fresh\CentrifugoBundle\Tests\Model;
 
 use Fresh\CentrifugoBundle\Model\CommandInterface;
+use Fresh\CentrifugoBundle\Model\HistoryCommand;
 use Fresh\CentrifugoBundle\Model\InfoCommand;
 use Fresh\CentrifugoBundle\Model\Method;
 use Fresh\CentrifugoBundle\Model\SerializableCommandInterface;
+use Fresh\CentrifugoBundle\Model\StreamPosition;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -25,14 +28,16 @@ use PHPUnit\Framework\TestCase;
  */
 final class InfoCommandTest extends TestCase
 {
-    public function testInterfaces(): void
+    #[Test]
+    public function interfaces(): void
     {
         $command = new InfoCommand();
         self::assertInstanceOf(SerializableCommandInterface::class, $command);
         self::assertInstanceOf(CommandInterface::class, $command);
     }
 
-    public function testConstructor(): void
+    #[Test]
+    public function constructor(): void
     {
         $command = new InfoCommand();
         self::assertEquals(Method::INFO, $command->getMethod());
@@ -40,7 +45,8 @@ final class InfoCommandTest extends TestCase
         self::assertEquals([], $command->getChannels());
     }
 
-    public function testSerialization(): void
+    #[Test]
+    public function serialization(): void
     {
         $command = new InfoCommand();
         self::assertJsonStringEqualsJsonString(
@@ -49,5 +55,12 @@ final class InfoCommandTest extends TestCase
             JSON,
             \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
         );
+    }
+
+    #[Test]
+    public function processResponse(): void
+    {
+        $command = new InfoCommand();
+        self::assertEquals(['foo' => 'bar'], $command->processResponse(['result' => ['foo' => 'bar']]));
     }
 }

@@ -14,6 +14,7 @@ namespace Fresh\CentrifugoBundle\Tests\Service;
 
 use Fresh\CentrifugoBundle\Model;
 use Fresh\CentrifugoBundle\Service\FakeCentrifugo;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -37,7 +38,8 @@ final class FakeCentrifugoTest extends TestCase
         );
     }
 
-    public function testAllMethods(): void
+    #[Test]
+    public function allMethods(): void
     {
         $this->centrifugo->publish(['foo' => 'bar'], 'channelA');
         $this->centrifugo->broadcast(['foo' => 'bar'], ['channelA', 'channelB']);

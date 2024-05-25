@@ -14,6 +14,7 @@ namespace Fresh\CentrifugoBundle\Tests\Token;
 
 use Fresh\CentrifugoBundle\Token\AbstractJwtPayload;
 use Fresh\CentrifugoBundle\Token\JwtPayloadForPrivateChannel;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -23,7 +24,8 @@ use PHPUnit\Framework\TestCase;
  */
 final class JwtPayloadForPrivateChannelTest extends TestCase
 {
-    public function testConstructor(): void
+    #[Test]
+    public function constructor(): void
     {
         $jwtPayloadForPrivateChannel = new JwtPayloadForPrivateChannel(
             'spiderman',
@@ -52,7 +54,8 @@ final class JwtPayloadForPrivateChannelTest extends TestCase
         self::assertTrue($jwtPayloadForPrivateChannel->isEto());
     }
 
-    public function testGetPayloadDataWithAllClaims(): void
+    #[Test]
+    public function getPayloadDataWithAllClaims(): void
     {
         $jwtPayloadForPrivateChannel = new JwtPayloadForPrivateChannel(
             'spiderman',
@@ -82,7 +85,8 @@ final class JwtPayloadForPrivateChannelTest extends TestCase
         );
     }
 
-    public function testGetPayloadDataWithOnlyRequiredClaims(): void
+    #[Test]
+    public function getPayloadDataWithOnlyRequiredClaims(): void
     {
         $jwtPayloadForPrivateChannel = new JwtPayloadForPrivateChannel(
             'spiderman',

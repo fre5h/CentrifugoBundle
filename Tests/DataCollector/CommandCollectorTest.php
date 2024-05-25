@@ -14,6 +14,7 @@ namespace Fresh\CentrifugoBundle\Tests\Logger;
 
 use Fresh\CentrifugoBundle\DataCollector\CentrifugoCollector;
 use Fresh\CentrifugoBundle\Logger\CommandHistoryLogger;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -45,7 +46,8 @@ final class CommandCollectorTest extends TestCase
         );
     }
 
-    public function testConstructor(): void
+    #[Test]
+    public function constructor(): void
     {
         self::assertEquals(0, $this->centrifugoCollector->getCommandsCount());
         self::assertEquals(0, $this->centrifugoCollector->getRequestsCount());
@@ -55,7 +57,8 @@ final class CommandCollectorTest extends TestCase
         self::assertSame('centrifugo', $this->centrifugoCollector->getName());
     }
 
-    public function testCollectAndReset(): void
+    #[Test]
+    public function collectAndReset(): void
     {
         $this->commandHistoryLogger
             ->expects(self::exactly(2))

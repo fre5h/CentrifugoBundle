@@ -14,6 +14,7 @@ namespace Fresh\CentrifugoBundle\Tests\Command\Argument;
 
 use Fresh\CentrifugoBundle\Command\DisconnectCommand;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
@@ -57,7 +58,8 @@ final class ArgumentUserTraitTest extends TestCase
         );
     }
 
-    public function testInvalidUser(): void
+    #[Test]
+    public function invalidUser(): void
     {
         $this->centrifugo
             ->expects(self::never())

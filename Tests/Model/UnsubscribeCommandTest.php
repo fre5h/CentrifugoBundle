@@ -16,6 +16,7 @@ use Fresh\CentrifugoBundle\Model\CommandInterface;
 use Fresh\CentrifugoBundle\Model\Method;
 use Fresh\CentrifugoBundle\Model\SerializableCommandInterface;
 use Fresh\CentrifugoBundle\Model\UnsubscribeCommand;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -25,7 +26,8 @@ use PHPUnit\Framework\TestCase;
  */
 final class UnsubscribeCommandTest extends TestCase
 {
-    public function testInterfaces(): void
+    #[Test]
+    public function interfaces(): void
     {
         $command = new UnsubscribeCommand(
             user: 'bar',
@@ -35,7 +37,8 @@ final class UnsubscribeCommandTest extends TestCase
         self::assertInstanceOf(CommandInterface::class, $command);
     }
 
-    public function testConstructor(): void
+    #[Test]
+    public function constructor(): void
     {
         $command = new UnsubscribeCommand(
             user: 'bar',
@@ -46,7 +49,8 @@ final class UnsubscribeCommandTest extends TestCase
         self::assertEquals(['foo'], $command->getChannels());
     }
 
-    public function testSerializationRequiredData(): void
+    #[Test]
+    public function serializationRequiredData(): void
     {
         $command = new UnsubscribeCommand(
             user: 'bar',
@@ -63,7 +67,8 @@ final class UnsubscribeCommandTest extends TestCase
         );
     }
 
-    public function testSerializationAllData(): void
+    #[Test]
+    public function serializationAllData(): void
     {
         $command = new UnsubscribeCommand(
             user: 'bar',

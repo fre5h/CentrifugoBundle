@@ -16,6 +16,7 @@ use Fresh\CentrifugoBundle\Model\BroadcastCommand;
 use Fresh\CentrifugoBundle\Model\CommandInterface;
 use Fresh\CentrifugoBundle\Model\Method;
 use Fresh\CentrifugoBundle\Model\SerializableCommandInterface;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -25,7 +26,8 @@ use PHPUnit\Framework\TestCase;
  */
 final class BroadcastCommandTest extends TestCase
 {
-    public function testInterfaces(): void
+    #[Test]
+    public function interfaces(): void
     {
         $command = new BroadcastCommand(
             data: ['baz' => 'qux'],
@@ -35,7 +37,8 @@ final class BroadcastCommandTest extends TestCase
         self::assertInstanceOf(CommandInterface::class, $command);
     }
 
-    public function testConstructor(): void
+    #[Test]
+    public function constructor(): void
     {
         $command = new BroadcastCommand(
             data: ['baz' => 'qux'],
@@ -46,7 +49,8 @@ final class BroadcastCommandTest extends TestCase
         self::assertEquals(['foo', 'bar'], $command->getChannels());
     }
 
-    public function testSerializationRequiredData(): void
+    #[Test]
+    public function serializationRequiredData(): void
     {
         $command = new BroadcastCommand(
             data: ['baz' => 'qux'],
@@ -65,7 +69,8 @@ final class BroadcastCommandTest extends TestCase
         );
     }
 
-    public function testSerializationAllData(): void
+    #[Test]
+    public function serializationAllData(): void
     {
         $command = new BroadcastCommand(
             data: ['baz' => 'qux'],

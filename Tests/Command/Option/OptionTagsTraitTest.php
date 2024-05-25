@@ -15,6 +15,7 @@ namespace Fresh\CentrifugoBundle\Tests\Command\Option;
 use Fresh\CentrifugoBundle\Command\PublishCommand;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
@@ -63,7 +64,8 @@ final class OptionTagsTraitTest extends TestCase
         );
     }
 
-    public function testTagsIsNotValidJson(): void
+    #[Test]
+    public function tagsIsNotValidJson(): void
     {
         $this->centrifugo
             ->expects(self::never())
@@ -83,7 +85,8 @@ final class OptionTagsTraitTest extends TestCase
         );
     }
 
-    public function testTagsIsNotArray(): void
+    #[Test]
+    public function tagsIsNotArray(): void
     {
         $this->centrifugo
             ->expects(self::never())
@@ -103,7 +106,8 @@ final class OptionTagsTraitTest extends TestCase
         );
     }
 
-    public function testTagValueIsNotString(): void
+    #[Test]
+    public function tagValueIsNotString(): void
     {
         $this->centrifugo
             ->expects(self::never())
@@ -123,7 +127,8 @@ final class OptionTagsTraitTest extends TestCase
         );
     }
 
-    public function testValidTags(): void
+    #[Test]
+    public function validTags(): void
     {
         $this->centrifugo
             ->expects(self::once())

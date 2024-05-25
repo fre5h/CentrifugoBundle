@@ -15,6 +15,7 @@ namespace Fresh\CentrifugoBundle\Tests\Service;
 use Fresh\CentrifugoBundle\Exception\CentrifugoException;
 use Fresh\CentrifugoBundle\Exception\InvalidArgumentException;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\HttpClient\ResponseInterface;
@@ -45,7 +46,8 @@ final class CentrifugoCheckerTest extends TestCase
         );
     }
 
-    public function testInvalidChannelName(): void
+    #[Test]
+    public function invalidChannelName(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid channel name. Only ASCII symbols must be used in channel string.');
@@ -53,7 +55,8 @@ final class CentrifugoCheckerTest extends TestCase
         $this->centrifugoChecker->assertValidChannelName('Hallöchen');
     }
 
-    public function testInvalidChannelNameLength(): void
+    #[Test]
+    public function invalidChannelNameLength(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid channel name length. Maximum allowed length is 10.');
@@ -61,12 +64,14 @@ final class CentrifugoCheckerTest extends TestCase
         $this->centrifugoChecker->assertValidChannelName('ABCDEFGHIJK');
     }
 
-    public function testValidChannelName(): void
+    #[Test]
+    public function validChannelName(): void
     {
         self::assertTrue($this->centrifugoChecker->assertValidChannelName('1234567890'));
     }
 
-    public function testInvalidResponseStatusCode(): void
+    #[Test]
+    public function invalidResponseStatusCode(): void
     {
         $this->response
             ->expects(self::once())
@@ -80,7 +85,8 @@ final class CentrifugoCheckerTest extends TestCase
         $this->centrifugoChecker->assertValidResponseStatusCode($this->response);
     }
 
-    public function testValidResponseStatusCode(): void
+    #[Test]
+    public function validResponseStatusCode(): void
     {
         $this->response
             ->expects(self::once())
@@ -91,7 +97,8 @@ final class CentrifugoCheckerTest extends TestCase
         $this->centrifugoChecker->assertValidResponseStatusCode($this->response);
     }
 
-    public function testInvalidResponseHeaders(): void
+    #[Test]
+    public function invalidResponseHeaders(): void
     {
         $this->response
             ->expects(self::once())
@@ -106,7 +113,8 @@ final class CentrifugoCheckerTest extends TestCase
         $this->centrifugoChecker->assertValidResponseHeaders($this->response);
     }
 
-    public function testValidResponseHeaders(): void
+    #[Test]
+    public function validResponseHeaders(): void
     {
         $this->response
             ->expects(self::once())
@@ -118,7 +126,8 @@ final class CentrifugoCheckerTest extends TestCase
         $this->centrifugoChecker->assertValidResponseHeaders($this->response);
     }
 
-    public function testInvalidResponseContentType(): void
+    #[Test]
+    public function invalidResponseContentType(): void
     {
         $this->response
             ->expects(self::once())
@@ -133,7 +142,8 @@ final class CentrifugoCheckerTest extends TestCase
         $this->centrifugoChecker->assertValidResponseContentType($this->response);
     }
 
-    public function testValidResponseContentType(): void
+    #[Test]
+    public function validResponseContentType(): void
     {
         $this->response
             ->expects(self::once())
