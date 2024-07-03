@@ -48,6 +48,9 @@ final class JwtGeneratorTest extends TestCase
                 'name' => 'Peter Parker',
                 'email' => 'spiderman@marvel.com',
             ],
+            [
+                'foo' => 'bar',
+            ],
             123,
             'test',
             ['avengers']
@@ -80,6 +83,9 @@ final class JwtGeneratorTest extends TestCase
                 'name' => 'Peter Parker',
                 'email' => 'spiderman@marvel.com',
             ],
+            [
+                'foo' => 'bar',
+            ],
             123,
             'test',
             true
@@ -111,6 +117,9 @@ final class JwtGeneratorTest extends TestCase
             [
                 'name' => 'Peter Parker',
                 'email' => 'spiderman@marvel.com',
+            ],
+            [
+                'foo' => 'bar',
             ],
             123,
             'test',
