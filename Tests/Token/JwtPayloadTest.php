@@ -38,7 +38,7 @@ final class JwtPayloadTest extends TestCase
             ],
             123,
             'test',
-            ['avengers']
+            ['avengers'],
         );
 
         self::assertInstanceOf(AbstractJwtPayload::class, $jwtPayload);
@@ -48,13 +48,13 @@ final class JwtPayloadTest extends TestCase
                 'name' => 'Peter Parker',
                 'email' => 'spiderman@marvel.com',
             ],
-            $jwtPayload->getInfo()
+            $jwtPayload->getInfo(),
         );
         self::assertSame(
             [
                 'foo' => 'bar',
             ],
-            $jwtPayload->getMeta()
+            $jwtPayload->getMeta(),
         );
         self::assertSame(123, $jwtPayload->getExpirationTime());
         self::assertSame('test', $jwtPayload->getBase64Info());
@@ -75,7 +75,7 @@ final class JwtPayloadTest extends TestCase
             ],
             123,
             'test',
-            ['avengers']
+            ['avengers'],
         );
 
         self::assertEquals(
@@ -92,7 +92,7 @@ final class JwtPayloadTest extends TestCase
                 'b64info' => 'test',
                 'channels' => ['avengers'],
             ],
-            $jwtPayload->getPayloadData()
+            $jwtPayload->getPayloadData(),
         );
     }
 
@@ -107,7 +107,7 @@ final class JwtPayloadTest extends TestCase
             [
                 'sub' => 'spiderman',
             ],
-            $jwtPayload->getPayloadData()
+            $jwtPayload->getPayloadData(),
         );
     }
 }

@@ -50,13 +50,13 @@ final class JwtPayloadForPrivateChannelTest extends TestCase
                 'name' => 'Peter Parker',
                 'email' => 'spiderman@marvel.com',
             ],
-            $jwtPayloadForPrivateChannel->getInfo()
+            $jwtPayloadForPrivateChannel->getInfo(),
         );
         self::assertSame(
             [
                 'foo' => 'bar',
             ],
-            $jwtPayloadForPrivateChannel->getMeta()
+            $jwtPayloadForPrivateChannel->getMeta(),
         );
         self::assertSame(123, $jwtPayloadForPrivateChannel->getExpirationTime());
         self::assertSame('test', $jwtPayloadForPrivateChannel->getBase64Info());
@@ -96,7 +96,7 @@ final class JwtPayloadForPrivateChannelTest extends TestCase
                 'b64info' => 'test',
                 'eto' => true,
             ],
-            $jwtPayloadForPrivateChannel->getPayloadData()
+            $jwtPayloadForPrivateChannel->getPayloadData(),
         );
     }
 
@@ -113,7 +113,7 @@ final class JwtPayloadForPrivateChannelTest extends TestCase
                 'client' => 'spiderman',
                 'channel' => 'avengers',
             ],
-            $jwtPayloadForPrivateChannel->getPayloadData()
+            $jwtPayloadForPrivateChannel->getPayloadData(),
         );
     }
 }
