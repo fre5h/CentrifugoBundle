@@ -25,6 +25,7 @@ final class JwtPayloadForChannel extends AbstractJwtPayload
      * @param string                            $subject
      * @param string                            $channel
      * @param array                             $info
+     * @param array                             $meta
      * @param int|null                          $expirationTime
      * @param string|null                       $base64info
      * @param int|null                          $subscriptionExpirationTime
@@ -34,9 +35,9 @@ final class JwtPayloadForChannel extends AbstractJwtPayload
      * @param string|null                       $jwtId
      * @param JwtPayloadForChannelOverride|null $override
      */
-    public function __construct(private readonly string $subject, private readonly string $channel, array $info = [], ?int $expirationTime = null, ?string $base64info = null, private readonly ?int $subscriptionExpirationTime = null, private readonly array $audiences = [], private readonly ?string $issuer = null, private readonly ?int $issuedAt = null, private readonly ?string $jwtId = null, private readonly ?JwtPayloadForChannelOverride $override = null)
+    public function __construct(private readonly string $subject, private readonly string $channel, array $info = [], array $meta = [], ?int $expirationTime = null, ?string $base64info = null, private readonly ?int $subscriptionExpirationTime = null, private readonly array $audiences = [], private readonly ?string $issuer = null, private readonly ?int $issuedAt = null, private readonly ?string $jwtId = null, private readonly ?JwtPayloadForChannelOverride $override = null)
     {
-        parent::__construct($info, $expirationTime, $base64info);
+        parent::__construct($info, $meta, $expirationTime, $base64info);
     }
 
     /**
@@ -110,6 +111,7 @@ final class JwtPayloadForChannel extends AbstractJwtPayload
         'sub' => 'string',
         'channel' => 'string',
         'info' => 'mixed',
+        'meta' => 'mixed',
         'b64info' => 'string|null',
         'exp' => 'int|null',
         'expire_at' => 'int|null',
@@ -128,6 +130,10 @@ final class JwtPayloadForChannel extends AbstractJwtPayload
 
         if ([] !== $this->getInfo()) {
             $data['info'] = $this->getInfo();
+        }
+
+        if ([] !== $this->getMeta()) {
+            $data['meta'] = $this->getMeta();
         }
 
         if (null !== $this->getBase64Info()) {

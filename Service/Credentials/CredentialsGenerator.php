@@ -17,6 +17,7 @@ use Fresh\CentrifugoBundle\Token\JwtPayload;
 use Fresh\CentrifugoBundle\Token\JwtPayloadForChannel;
 use Fresh\CentrifugoBundle\Token\JwtPayloadForPrivateChannel;
 use Fresh\CentrifugoBundle\User\CentrifugoUserInterface;
+use Fresh\CentrifugoBundle\User\CentrifugoUserMetaInterface;
 use Fresh\DateTime\DateTimeHelper;
 
 /**
@@ -36,20 +37,21 @@ class CredentialsGenerator
     }
 
     /**
-     * @param CentrifugoUserInterface $user
-     * @param string|null             $base64info
-     * @param array                   $channels
+     * @param CentrifugoUserInterface|CentrifugoUserMetaInterface $user
+     * @param string|null                                         $base64info
+     * @param array                                               $channels
      *
      * @return string
      */
-    public function generateJwtTokenForUser(CentrifugoUserInterface $user, string $base64info = null, array $channels = []): string
+    public function generateJwtTokenForUser(CentrifugoUserInterface|CentrifugoUserMetaInterface $user, ?string $base64info = null, array $channels = []): string
     {
         $jwtPayload = new JwtPayload(
-            $user->getCentrifugoSubject(),
-            $user->getCentrifugoUserInfo(),
-            $this->getExpirationTime(),
-            $base64info,
-            $channels
+            subject: $user->getCentrifugoSubject(),
+            info: $user->getCentrifugoUserInfo(),
+            meta: $user instanceof CentrifugoUserMetaInterface ? $user->getCentrifugoUserMeta() : [],
+            expirationTime: $this->getExpirationTime(),
+            base64info: $base64info,
+            channels: $channels,
         );
 
         return $this->jwtGenerator->generateToken($jwtPayload);
@@ -61,14 +63,15 @@ class CredentialsGenerator
      *
      * @return string
      */
-    public function generateJwtTokenForAnonymous(string $base64info = null, array $channels = []): string
+    public function generateJwtTokenForAnonymous(?string $base64info = null, array $channels = []): string
     {
         $jwtPayload = new JwtPayload(
-            '',
-            [],
-            $this->getExpirationTime(),
-            $base64info,
-            $channels
+            subject: '',
+            info: [],
+            meta: [],
+            expirationTime: $this->getExpirationTime(),
+            base64info: $base64info,
+            channels: $channels
         );
 
         return $this->jwtGenerator->generateToken($jwtPayload);
@@ -82,36 +85,38 @@ class CredentialsGenerator
      *
      * @return string
      */
-    public function generateJwtTokenForPrivateChannel(string $client, string $channel, string $base64info = null, bool $eto = null): string
+    public function generateJwtTokenForPrivateChannel(string $client, string $channel, ?string $base64info = null, ?bool $eto = null): string
     {
         $jwtPayload = new JwtPayloadForPrivateChannel(
-            $client,
-            $channel,
-            [],
-            $this->getExpirationTime(),
-            $base64info,
-            $eto
+            client: $client,
+            channel: $channel,
+            info: [],
+            meta: [],
+            expirationTime: $this->getExpirationTime(),
+            base64info: $base64info,
+            eto: $eto,
         );
 
         return $this->jwtGenerator->generateToken($jwtPayload);
     }
 
     /**
-     * @param CentrifugoUserInterface $user
-     * @param string                  $channel
-     * @param array                   $info
-     * @param string|null             $base64info
+     * @param CentrifugoUserInterface|CentrifugoUserMetaInterface $user
+     * @param string                                              $channel
+     * @param array                                               $info
+     * @param string|null                                         $base64info
      *
      * @return string
      */
-    public function generateJwtTokenForChannel(CentrifugoUserInterface $user, string $channel, array $info = [], string $base64info = null): string
+    public function generateJwtTokenForChannel(CentrifugoUserInterface|CentrifugoUserMetaInterface $user, string $channel, array $info = [], ?string $base64info = null): string
     {
         $jwtPayload = new JwtPayloadForChannel(
-            $user->getCentrifugoSubject(),
-            $channel,
-            $info,
-            $this->getExpirationTime(),
-            $base64info
+            subject: $user->getCentrifugoSubject(),
+            channel: $channel,
+            info: $info,
+            meta: $user instanceof CentrifugoUserMetaInterface ? $user->getCentrifugoUserMeta() : [],
+            expirationTime: $this->getExpirationTime(),
+            base64info: $base64info,
         );
 
         return $this->jwtGenerator->generateToken($jwtPayload);

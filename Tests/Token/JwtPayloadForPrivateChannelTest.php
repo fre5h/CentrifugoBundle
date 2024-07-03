@@ -34,9 +34,12 @@ final class JwtPayloadForPrivateChannelTest extends TestCase
                 'name' => 'Peter Parker',
                 'email' => 'spiderman@marvel.com',
             ],
+            [
+                'foo' => 'bar',
+            ],
             123,
             'test',
-            true
+            true,
         );
 
         self::assertInstanceOf(AbstractJwtPayload::class, $jwtPayloadForPrivateChannel);
@@ -47,7 +50,13 @@ final class JwtPayloadForPrivateChannelTest extends TestCase
                 'name' => 'Peter Parker',
                 'email' => 'spiderman@marvel.com',
             ],
-            $jwtPayloadForPrivateChannel->getInfo()
+            $jwtPayloadForPrivateChannel->getInfo(),
+        );
+        self::assertSame(
+            [
+                'foo' => 'bar',
+            ],
+            $jwtPayloadForPrivateChannel->getMeta(),
         );
         self::assertSame(123, $jwtPayloadForPrivateChannel->getExpirationTime());
         self::assertSame('test', $jwtPayloadForPrivateChannel->getBase64Info());
@@ -64,9 +73,12 @@ final class JwtPayloadForPrivateChannelTest extends TestCase
                 'name' => 'Peter Parker',
                 'email' => 'spiderman@marvel.com',
             ],
+            [
+                'foo' => 'bar',
+            ],
             123,
             'test',
-            true
+            true,
         );
 
         self::assertEquals(
@@ -77,11 +89,14 @@ final class JwtPayloadForPrivateChannelTest extends TestCase
                     'name' => 'Peter Parker',
                     'email' => 'spiderman@marvel.com',
                 ],
+                'meta' => [
+                    'foo' => 'bar',
+                ],
                 'exp' => 123,
                 'b64info' => 'test',
                 'eto' => true,
             ],
-            $jwtPayloadForPrivateChannel->getPayloadData()
+            $jwtPayloadForPrivateChannel->getPayloadData(),
         );
     }
 
@@ -98,7 +113,7 @@ final class JwtPayloadForPrivateChannelTest extends TestCase
                 'client' => 'spiderman',
                 'channel' => 'avengers',
             ],
-            $jwtPayloadForPrivateChannel->getPayloadData()
+            $jwtPayloadForPrivateChannel->getPayloadData(),
         );
     }
 }

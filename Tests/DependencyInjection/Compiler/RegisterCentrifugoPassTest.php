@@ -88,7 +88,7 @@ final class RegisterCentrifugoPassTest extends TestCase
             ->willReturnOnConsecutiveCalls(
                 false,
                 '%env(CENTRIFUGO_API_ENDPOINT)%',
-                '%env(CENTRIFUGO_API_KEY)%'
+                '%env(CENTRIFUGO_API_KEY)%',
             )
         ;
 

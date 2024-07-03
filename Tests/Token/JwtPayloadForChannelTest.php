@@ -32,6 +32,9 @@ final class JwtPayloadForChannelTest extends TestCase
                 'name' => 'Peter Parker',
                 'email' => 'spiderman@marvel.com',
             ],
+            [
+                'foo' => 'bar',
+            ],
             123,
             'test',
             321,
@@ -39,7 +42,7 @@ final class JwtPayloadForChannelTest extends TestCase
             'issuer',
             456,
             'jwtId',
-            new JwtPayloadForChannelOverride(true, false, true, false, true)
+            new JwtPayloadForChannelOverride(true, false, true, false, true),
         );
 
         self::assertInstanceOf(JwtPayloadForChannel::class, $jwtPayloadForChannel);
@@ -50,7 +53,13 @@ final class JwtPayloadForChannelTest extends TestCase
                 'name' => 'Peter Parker',
                 'email' => 'spiderman@marvel.com',
             ],
-            $jwtPayloadForChannel->getInfo()
+            $jwtPayloadForChannel->getInfo(),
+        );
+        self::assertSame(
+            [
+                'foo' => 'bar',
+            ],
+            $jwtPayloadForChannel->getMeta(),
         );
         self::assertSame(123, $jwtPayloadForChannel->getExpirationTime());
         self::assertSame('test', $jwtPayloadForChannel->getBase64Info());
@@ -77,6 +86,9 @@ final class JwtPayloadForChannelTest extends TestCase
                 'name' => 'Peter Parker',
                 'email' => 'spiderman@marvel.com',
             ],
+            [
+                'foo' => 'bar',
+            ],
             123,
             'test',
             321,
@@ -84,7 +96,7 @@ final class JwtPayloadForChannelTest extends TestCase
             'issuer',
             456,
             'jwtId',
-            new JwtPayloadForChannelOverride(false, true, false, true, false)
+            new JwtPayloadForChannelOverride(false, true, false, true, false),
         );
 
         self::assertEquals(
@@ -94,6 +106,9 @@ final class JwtPayloadForChannelTest extends TestCase
                 'info' => [
                     'name' => 'Peter Parker',
                     'email' => 'spiderman@marvel.com',
+                ],
+                'meta' => [
+                    'foo' => 'bar',
                 ],
                 'b64info' => 'test',
                 'exp' => 123,
@@ -120,7 +135,7 @@ final class JwtPayloadForChannelTest extends TestCase
                     ],
                 ],
             ],
-            $jwtPayloadForChannel->getPayloadData()
+            $jwtPayloadForChannel->getPayloadData(),
         );
     }
 
@@ -137,7 +152,7 @@ final class JwtPayloadForChannelTest extends TestCase
                 'sub' => 'spiderman',
                 'channel' => 'avengers',
             ],
-            $jwtPayloadForChannel->getPayloadData()
+            $jwtPayloadForChannel->getPayloadData(),
         );
     }
 }
