@@ -18,6 +18,7 @@ use Fresh\CentrifugoBundle\Token\JwtPayload;
 use Fresh\CentrifugoBundle\Token\JwtPayloadForChannel;
 use Fresh\CentrifugoBundle\Token\JwtPayloadForPrivateChannel;
 use Fresh\CentrifugoBundle\User\CentrifugoUserInterface;
+use Fresh\CentrifugoBundle\User\CentrifugoUserMetaInterface;
 use Fresh\DateTime\DateTimeHelper;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -69,6 +70,7 @@ final class CredentialsGeneratorTest extends TestCase
             ->with(self::callback(static function (JwtPayload $jwtPayload) {
                 return '' === $jwtPayload->getSubject()
                     && [] === $jwtPayload->getInfo()
+                    && [] === $jwtPayload->getMeta()
                     && 946684810 === $jwtPayload->getExpirationTime() // 2000-01-01 00:00:10
                     && null === $jwtPayload->getBase64Info()
                     && [] === $jwtPayload->getChannels()
@@ -124,6 +126,59 @@ final class CredentialsGeneratorTest extends TestCase
     }
 
     #[Test]
+    public function generateJwtTokenForUserWithMeta(): void
+    {
+        $this->dateTimeHelper
+            ->expects(self::once())
+            ->method('getCurrentDatetimeUtc')
+            ->willReturn(new \DateTime('2000-02-02 00:00:00', new \DateTimeZone('UTC')))
+        ;
+
+        $user = $this->createMock(CentrifugoUserMetaInterface::class);
+        $user
+            ->expects(self::once())
+            ->method('getCentrifugoSubject')
+            ->willReturn('spiderman')
+        ;
+        $user
+            ->expects(self::once())
+            ->method('getCentrifugoUserInfo')
+            ->willReturn(
+                [
+                    'name' => 'Peter Parker',
+                    'email' => 'spiderman@marvel.com',
+                ]
+            )
+        ;
+        $user
+            ->expects(self::once())
+            ->method('getCentrifugoUserMeta')
+            ->willReturn(
+                [
+                    'foo' => 'bar',
+                ]
+            )
+        ;
+
+        $this->jwtGenerator
+            ->expects(self::once())
+            ->method('generateToken')
+            ->with(self::callback(static function (JwtPayload $jwtPayload) {
+                return 'spiderman' === $jwtPayload->getSubject()
+                    && ['name' => 'Peter Parker', 'email' => 'spiderman@marvel.com'] === $jwtPayload->getInfo()
+                    && ['foo' => 'bar'] === $jwtPayload->getMeta()
+                    && 949449610 === $jwtPayload->getExpirationTime() // 2000-02-02 00:00:10
+                    && 'qwerty' === $jwtPayload->getBase64Info()
+                    && ['channelA'] === $jwtPayload->getChannels()
+                ;
+            }))
+            ->willReturn('test2')
+        ;
+
+        self::assertEquals('test2', $this->credentialsGenerator->generateJwtTokenForUser($user, 'qwerty', ['channelA']));
+    }
+
+    #[Test]
     public function generateJwtTokenForPrivateChannel(): void
     {
         $this->dateTimeHelper
@@ -139,6 +194,7 @@ final class CredentialsGeneratorTest extends TestCase
                 return 'spiderman' === $jwtPayloadForPrivateChannel->getClient()
                     && 'avengers' === $jwtPayloadForPrivateChannel->getChannel()
                     && [] === $jwtPayloadForPrivateChannel->getInfo()
+                    && [] === $jwtPayloadForPrivateChannel->getMeta()
                     && 952041610 === $jwtPayloadForPrivateChannel->getExpirationTime() // 2000-03-03 00:00:10
                     && null === $jwtPayloadForPrivateChannel->getBase64Info()
                     && true === $jwtPayloadForPrivateChannel->isEto()
@@ -173,6 +229,7 @@ final class CredentialsGeneratorTest extends TestCase
                 return 'spiderman' === $jwtPayloadForChannel->getSubject()
                     && 'avengers' === $jwtPayloadForChannel->getChannel()
                     && [] === $jwtPayloadForChannel->getInfo()
+                    && [] === $jwtPayloadForChannel->getMeta()
                     && 952041610 === $jwtPayloadForChannel->getExpirationTime() // 2000-03-03 00:00:10
                     && null === $jwtPayloadForChannel->getBase64Info()
                     && null === $jwtPayloadForChannel->getSubscriptionExpirationTime()

@@ -17,7 +17,7 @@ namespace Fresh\CentrifugoBundle\User;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-interface CentrifugoUserMetaInterface
+interface CentrifugoUserMetaInterface extends CentrifugoUserInterface
 {
     /**
      * @return mixed[]

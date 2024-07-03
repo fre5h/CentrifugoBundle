@@ -73,6 +73,47 @@ class User implements CentrifugoUserInterface, UserInterface
 
 ```
 
+If you want to use `meta` JWT claim of Centrifugo which allows proxy calls, then use [`CentrifugoUserMetaInterface`](./../../User/CentrifugoUserMetaInterface.php) instead. This interface extends the [`CentrifugoUserInterface`](./../../User/CentrifugoUserInterface.php) and adds additional method to implement `getCentrifugoUserMeta()`. 
+
+```php
+<?php
+declare(strict_types=1);
+
+namespace App\Entity;
+
+use Fresh\CentrifugoBundle\User\CentrifugoUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+
+class User implements CentrifugoUserMetaInterface, UserInterface
+{
+    // ... implement methods from UserInterface
+
+    public function getCentrifugoSubject(): string
+    {
+        return $this->getUsername(); // or ->getId()
+    }
+
+    public function getCentrifugoUserInfo(): array
+    {
+        // User info is not required, you can return an empty array
+        // return [];
+
+        return [
+            'username' => $this->getUsername(), // Or some additional info, if you wish
+        ];
+    }
+    
+    public function getCentrifugoUserMeta(): array
+    {
+        return [
+            'foo' => 'bar', // Some payload you want to add to `meta` claim.
+        ];
+    }
+}
+
+```
+
+
 ### Use `CredentialsGenerator` to receive a JWT token for authenticated user
 
 ```php

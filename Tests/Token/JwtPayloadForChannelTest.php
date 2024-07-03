@@ -32,6 +32,9 @@ final class JwtPayloadForChannelTest extends TestCase
                 'name' => 'Peter Parker',
                 'email' => 'spiderman@marvel.com',
             ],
+            [
+                'foo' => 'bar',
+            ],
             123,
             'test',
             321,
@@ -51,6 +54,12 @@ final class JwtPayloadForChannelTest extends TestCase
                 'email' => 'spiderman@marvel.com',
             ],
             $jwtPayloadForChannel->getInfo()
+        );
+        self::assertSame(
+            [
+                'foo' => 'bar',
+            ],
+            $jwtPayloadForChannel->getMeta()
         );
         self::assertSame(123, $jwtPayloadForChannel->getExpirationTime());
         self::assertSame('test', $jwtPayloadForChannel->getBase64Info());
@@ -77,6 +86,9 @@ final class JwtPayloadForChannelTest extends TestCase
                 'name' => 'Peter Parker',
                 'email' => 'spiderman@marvel.com',
             ],
+            [
+                'foo' => 'bar',
+            ],
             123,
             'test',
             321,
@@ -94,6 +106,9 @@ final class JwtPayloadForChannelTest extends TestCase
                 'info' => [
                     'name' => 'Peter Parker',
                     'email' => 'spiderman@marvel.com',
+                ],
+                'meta' => [
+                    'foo' => 'bar',
                 ],
                 'b64info' => 'test',
                 'exp' => 123,

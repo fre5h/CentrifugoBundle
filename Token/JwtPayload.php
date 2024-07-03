@@ -26,13 +26,14 @@ final class JwtPayload extends AbstractJwtPayload
     /**
      * @param string        $subject
      * @param array         $info
+     * @param array         $meta
      * @param int|null      $expirationTime
      * @param string|null   $base64info
      * @param array<string> $channels
      */
-    public function __construct(private readonly string $subject, array $info = [], ?int $expirationTime = null, ?string $base64info = null, private readonly array $channels = [])
+    public function __construct(private readonly string $subject, array $info = [], array $meta = [], ?int $expirationTime = null, ?string $base64info = null, private readonly array $channels = [])
     {
-        parent::__construct($info, $expirationTime, $base64info);
+        parent::__construct($info, $meta, $expirationTime, $base64info);
     }
 
     /**
@@ -59,6 +60,7 @@ final class JwtPayload extends AbstractJwtPayload
         'channels' => 'string[]',
         'b64info' => 'null|string',
         'info' => 'array',
+        'meta' => 'array',
         'exp' => 'int|null',
     ])]
     public function getPayloadData(): array
@@ -73,6 +75,10 @@ final class JwtPayload extends AbstractJwtPayload
 
         if (!empty($this->getInfo())) {
             $data['info'] = $this->getInfo();
+        }
+
+        if (!empty($this->getMeta())) {
+            $data['meta'] = $this->getMeta();
         }
 
         if (null !== $this->getBase64Info()) {
