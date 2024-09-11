@@ -29,7 +29,7 @@ final class BroadcastCommand extends AbstractCommand
     public function __construct(array $data, private readonly array $channels, bool $skipHistory = false, array $tags = [], string $base64data = '')
     {
         $params = [
-            'channels' => $channels,
+            'channels' => \array_values($channels),
             'data' => $data,
         ];
 
