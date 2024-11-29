@@ -65,7 +65,7 @@ final class BroadcastCommandTest extends TestCase
                     }
                 }
             JSON,
-            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
+            \json_encode($command, \JSON_THROW_ON_ERROR),
         );
     }
 
@@ -93,7 +93,7 @@ final class BroadcastCommandTest extends TestCase
                     "base64data": "qwerty"
                 }
             JSON,
-            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
+            \json_encode($command, \JSON_THROW_ON_ERROR),
         );
     }
 }

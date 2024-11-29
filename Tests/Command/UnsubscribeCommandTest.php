@@ -29,12 +29,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class UnsubscribeCommandTest extends TestCase
 {
-    /** @var CentrifugoInterface|MockObject */
     private CentrifugoInterface|MockObject $centrifugo;
-
-    /** @var CentrifugoChecker|MockObject */
     private CentrifugoChecker|MockObject $centrifugoChecker;
-
     private Command $command;
     private Application $application;
     private CommandTester $commandTester;
@@ -77,7 +73,7 @@ final class UnsubscribeCommandTest extends TestCase
                 'command' => $this->command->getName(),
                 'user' => 'user123',
                 'channel' => 'channelA',
-            ]
+            ],
         );
         $this->assertSame(0, $result);
 
@@ -101,7 +97,7 @@ final class UnsubscribeCommandTest extends TestCase
                 'channel' => 'channelA',
                 '--client' => 'clientID',
                 '--session' => 'sessionID',
-            ]
+            ],
         );
         $this->assertSame(0, $result);
 
@@ -123,7 +119,7 @@ final class UnsubscribeCommandTest extends TestCase
                 'command' => $this->command->getName(),
                 'user' => 'user123',
                 'channel' => 'channelA',
-            ]
+            ],
         );
         $this->assertSame(1, $result);
 

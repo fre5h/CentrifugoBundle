@@ -31,12 +31,8 @@ use PHPUnit\Framework\TestCase;
  */
 final class CredentialsGeneratorTest extends TestCase
 {
-    /** @var JwtGenerator|MockObject */
     private JwtGenerator|MockObject $jwtGenerator;
-
-    /** @var DateTimeHelper|MockObject */
     private DateTimeHelper|MockObject $dateTimeHelper;
-
     private CredentialsGenerator $credentialsGenerator;
 
     protected function setUp(): void
@@ -104,7 +100,7 @@ final class CredentialsGeneratorTest extends TestCase
                 [
                     'name' => 'Peter Parker',
                     'email' => 'spiderman@marvel.com',
-                ]
+                ],
             )
         ;
 

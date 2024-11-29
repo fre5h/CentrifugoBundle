@@ -28,9 +28,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class InfoCommandTest extends TestCase
 {
-    /** @var CentrifugoInterface|MockObject */
     private CentrifugoInterface|MockObject $centrifugo;
-
     private Command $command;
     private Application $application;
     private CommandTester $commandTester;
@@ -76,7 +74,7 @@ final class InfoCommandTest extends TestCase
                             ],
                         ],
                     ],
-                ]
+                ],
             )
         ;
 
@@ -138,7 +136,7 @@ final class InfoCommandTest extends TestCase
                             'bar' => new \stdClass(),
                         ],
                     ],
-                ]
+                ],
             )
         ;
 

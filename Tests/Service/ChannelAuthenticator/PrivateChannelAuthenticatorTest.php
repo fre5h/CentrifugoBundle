@@ -32,15 +32,9 @@ final class PrivateChannelAuthenticatorTest extends TestCase
 {
     use ConsecutiveParams;
 
-    /** @var Request|MockObject */
     private Request|MockObject $request;
-
-    /** @var ChannelAuthenticatorInterface|MockObject */
     private ChannelAuthenticatorInterface|MockObject $customerChannelAuthenticator;
-
-    /** @var CredentialsGenerator|MockObject */
     private CredentialsGenerator|MockObject $credentialsGenerator;
-
     private PrivateChannelAuthenticator $privateChannelAuthenticator;
 
     protected function setUp(): void
@@ -50,7 +44,7 @@ final class PrivateChannelAuthenticatorTest extends TestCase
         $this->customerChannelAuthenticator = $this->createMock(ChannelAuthenticatorInterface::class);
         $this->privateChannelAuthenticator = new PrivateChannelAuthenticator(
             $this->credentialsGenerator,
-            [$this->customerChannelAuthenticator]
+            [$this->customerChannelAuthenticator],
         );
     }
 
@@ -279,7 +273,7 @@ final class PrivateChannelAuthenticatorTest extends TestCase
             ->expects($this->exactly(2))
             ->method('supports')
             ->with(
-                ...$this->withConsecutive(
+                ...self::withConsecutive(
                     ['avengers'],
                     ['marvel'],
                 )
@@ -291,7 +285,7 @@ final class PrivateChannelAuthenticatorTest extends TestCase
             ->expects($this->exactly(2))
             ->method('hasAccessToChannel')
             ->with(
-                ...$this->withConsecutive(
+                ...self::withConsecutive(
                     ['avengers'],
                     ['marvel'],
                 )
@@ -303,7 +297,7 @@ final class PrivateChannelAuthenticatorTest extends TestCase
             ->expects($this->exactly(2))
             ->method('generateJwtTokenForPrivateChannel')
             ->with(
-                ...$this->withConsecutive(
+                ...self::withConsecutive(
                     ['spiderman', 'avengers'],
                     ['spiderman', 'marvel'],
                 )

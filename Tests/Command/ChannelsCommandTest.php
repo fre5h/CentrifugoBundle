@@ -28,9 +28,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class ChannelsCommandTest extends TestCase
 {
-    /** @var CentrifugoInterface|MockObject */
     private CentrifugoInterface|MockObject $centrifugo;
-
     private Command $command;
     private Application $application;
     private CommandTester $commandTester;
@@ -88,7 +86,7 @@ final class ChannelsCommandTest extends TestCase
             [
                 'command' => $this->command->getName(),
                 'pattern' => 'channelA',
-            ]
+            ],
         );
         $this->assertSame(0, $result);
 

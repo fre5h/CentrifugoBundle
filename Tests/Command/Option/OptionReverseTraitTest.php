@@ -29,12 +29,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class OptionReverseTraitTest extends TestCase
 {
-    /** @var CentrifugoInterface|MockObject */
     private CentrifugoInterface|MockObject $centrifugo;
-
-    /** @var CentrifugoChecker|MockObject */
     private CentrifugoChecker|MockObject $centrifugoChecker;
-
     private Command $command;
     private Application $application;
     private CommandTester $commandTester;
@@ -76,7 +72,7 @@ final class OptionReverseTraitTest extends TestCase
                 'command' => $this->command->getName(),
                 'channel' => 'channelName',
                 '--reverse' => true,
-            ]
+            ],
         );
     }
 }

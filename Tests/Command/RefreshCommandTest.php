@@ -28,9 +28,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class RefreshCommandTest extends TestCase
 {
-    /** @var CentrifugoInterface|MockObject */
     private CentrifugoInterface|MockObject $centrifugo;
-
     private Command $command;
     private Application $application;
     private CommandTester $commandTester;
@@ -70,7 +68,7 @@ final class RefreshCommandTest extends TestCase
             [
                 'command' => $this->command->getName(),
                 'user' => 'user123',
-            ]
+            ],
         );
         $this->assertSame(0, $result);
 
@@ -95,7 +93,7 @@ final class RefreshCommandTest extends TestCase
                 '--session' => 'sessionID',
                 '--expired' => true,
                 '--expireAt' => 1234567890,
-            ]
+            ],
         );
         $this->assertSame(0, $result);
 
@@ -116,7 +114,7 @@ final class RefreshCommandTest extends TestCase
             [
                 'command' => $this->command->getName(),
                 'user' => 'user123',
-            ]
+            ],
         );
         $this->assertSame(1, $result);
 

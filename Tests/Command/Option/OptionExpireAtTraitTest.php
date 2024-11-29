@@ -29,9 +29,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class OptionExpireAtTraitTest extends TestCase
 {
-    /** @var CentrifugoInterface|MockObject */
     private CentrifugoInterface|MockObject $centrifugo;
-
     private Command $command;
     private Application $application;
     private CommandTester $commandTester;
@@ -71,7 +69,7 @@ final class OptionExpireAtTraitTest extends TestCase
                 'command' => $this->command->getName(),
                 'user' => 'user123',
                 '--expireAt' => 1234567890,
-            ]
+            ],
         );
     }
 
@@ -91,7 +89,7 @@ final class OptionExpireAtTraitTest extends TestCase
                 'command' => $this->command->getName(),
                 'user' => 'user123',
                 '--expireAt' => 0,
-            ]
+            ],
         );
     }
 
@@ -111,7 +109,7 @@ final class OptionExpireAtTraitTest extends TestCase
                 'command' => $this->command->getName(),
                 'user' => 'user123',
                 '--expireAt' => 'abcd',
-            ]
+            ],
         );
     }
 }

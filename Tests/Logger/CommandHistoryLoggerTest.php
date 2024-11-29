@@ -72,7 +72,7 @@ final class CommandHistoryLoggerTest extends TestCase
                 'result' => ['test'],
                 'success' => true,
             ],
-            $this->commandHistoryLogger->getCommandHistory()[0]
+            $this->commandHistoryLogger->getCommandHistory()[0],
         );
         $this->assertSame(1, $this->commandHistoryLogger->getCommandsCount());
         $this->assertSame(1, $this->commandHistoryLogger->getSuccessfulCommandsCount());

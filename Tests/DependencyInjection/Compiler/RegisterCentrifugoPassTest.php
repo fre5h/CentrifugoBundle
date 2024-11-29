@@ -32,9 +32,7 @@ final class RegisterCentrifugoPassTest extends TestCase
 {
     use ConsecutiveParams;
 
-    /** @var ContainerBuilder|MockObject */
     private ContainerBuilder|MockObject $containerBuilder;
-
     private RegisterCentrifugoPass $registerCentrifugoPass;
 
     protected function setUp(): void
@@ -80,7 +78,7 @@ final class RegisterCentrifugoPassTest extends TestCase
         $this->containerBuilder
             ->expects($matcher)
             ->method('getParameter')
-            ->with(...$this->withConsecutive(
+            ->with(...self::withConsecutive(
                 ['centrifugo.fake_mode'],
                 ['centrifugo.api_endpoint'],
                 ['centrifugo.api_key'],

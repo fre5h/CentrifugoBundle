@@ -27,9 +27,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 final class CommandCollectorTest extends TestCase
 {
-    /** @var CommandHistoryLogger|MockObject  */
     private CommandHistoryLogger|MockObject $commandHistoryLogger;
-
     private CentrifugoCollector $centrifugoCollector;
 
     protected function setUp(): void
@@ -99,7 +97,7 @@ final class CommandCollectorTest extends TestCase
 
         $this->centrifugoCollector->collect(
             $this->createStub(Request::class),
-            $this->createStub(Response::class)
+            $this->createStub(Response::class),
         );
 
         $this->assertEquals(2, $this->centrifugoCollector->getCommandsCount());

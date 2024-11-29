@@ -33,7 +33,7 @@ final class DisconnectCommand extends AbstractCommand
         ];
 
         if (!empty($clientIdWhitelist)) {
-            $params['whitelist'] = \array_values($clientIdWhitelist);
+            $params['whitelist'] = $clientIdWhitelist;
         }
 
         if (\is_string($client) && !empty($client)) {

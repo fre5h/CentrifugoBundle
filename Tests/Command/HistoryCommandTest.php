@@ -30,12 +30,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class HistoryCommandTest extends TestCase
 {
-    /** @var CentrifugoInterface|MockObject */
     private CentrifugoInterface|MockObject $centrifugo;
-
-    /** @var CentrifugoChecker|MockObject */
     private CentrifugoChecker|MockObject $centrifugoChecker;
-
     private Command $command;
     private Application $application;
     private CommandTester $commandTester;
@@ -82,7 +78,7 @@ final class HistoryCommandTest extends TestCase
                     ],
                     'offset' => 0,
                     'epoch' => 'test',
-                ]
+                ],
             )
         ;
 
@@ -90,7 +86,7 @@ final class HistoryCommandTest extends TestCase
             [
                 'command' => $this->command->getName(),
                 'channel' => 'channelA',
-            ]
+            ],
         );
         $this->assertSame(0, $result);
 
@@ -102,7 +98,7 @@ final class HistoryCommandTest extends TestCase
     "foo": "bar"
 }
 JSON,
-            $output
+            $output,
         );
         $this->assertStringContainsString('Offset: 0', $output);
         $this->assertStringContainsString('Epoch: test', $output);
@@ -126,7 +122,7 @@ JSON,
                     ],
                     'offset' => 0,
                     'epoch' => 'test',
-                ]
+                ],
             )
         ;
 
@@ -138,7 +134,7 @@ JSON,
                 '--offset' => 5,
                 '--epoch' => 'test',
                 '--reverse' => true,
-            ]
+            ],
         );
         $this->assertSame(0, $result);
 
@@ -150,7 +146,7 @@ JSON,
     "foo": "bar"
 }
 JSON,
-            $output
+            $output,
         );
         $this->assertStringContainsString('Offset: 0', $output);
         $this->assertStringContainsString('Epoch: test', $output);
@@ -169,7 +165,7 @@ JSON,
             [
                 'command' => $this->command->getName(),
                 'channel' => 'channelA',
-            ]
+            ],
         );
         $this->assertSame(1, $result);
 

@@ -30,12 +30,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class SubscribeCommandTest extends TestCase
 {
-    /** @var CentrifugoInterface|MockObject */
     private CentrifugoInterface|MockObject $centrifugo;
-
-    /** @var CentrifugoChecker|MockObject */
     private CentrifugoChecker|MockObject $centrifugoChecker;
-
     private Command $command;
     private Application $application;
     private CommandTester $commandTester;
@@ -78,7 +74,7 @@ final class SubscribeCommandTest extends TestCase
                 'command' => $this->command->getName(),
                 'user' => 'user123',
                 'channel' => 'channelA',
-            ]
+            ],
         );
         $this->assertSame(0, $result);
 
@@ -108,7 +104,7 @@ final class SubscribeCommandTest extends TestCase
                 '--base64data' => 'QmxhIGJsYSBibGE=',
                 '--offset' => 5,
                 '--epoch' => 'test',
-            ]
+            ],
         );
         $this->assertSame(0, $result);
 
@@ -130,7 +126,7 @@ final class SubscribeCommandTest extends TestCase
                 'command' => $this->command->getName(),
                 'user' => 'user123',
                 'channel' => 'channelA',
-            ]
+            ],
         );
         $this->assertSame(1, $result);
 

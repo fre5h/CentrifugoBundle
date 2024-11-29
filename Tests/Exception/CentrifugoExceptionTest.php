@@ -27,7 +27,6 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 final class CentrifugoExceptionTest extends TestCase
 {
     private CentrifugoException $exception;
-
     private ResponseInterface|MockObject $response;
 
     protected function setUp(): void

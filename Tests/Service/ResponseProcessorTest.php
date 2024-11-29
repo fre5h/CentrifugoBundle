@@ -40,18 +40,10 @@ final class ResponseProcessorTest extends TestCase
 {
     use ConsecutiveParams;
 
-    /** @var ResponseInterface|MockObject */
     private ResponseInterface|MockObject $response;
-
-    /** @var CentrifugoChecker|MockObject */
     private CentrifugoChecker|MockObject $centrifugoChecker;
-
-    /** @var CommandHistoryLogger|MockObject */
     private CommandHistoryLogger|MockObject $commandHistoryLogger;
-
-    /** @var Profiler|MockObject */
     private Profiler|MockObject $profiler;
-
     private ResponseProcessor $responseProcessor;
 
     protected function setUp(): void
@@ -63,7 +55,7 @@ final class ResponseProcessorTest extends TestCase
         $this->responseProcessor = new ResponseProcessor(
             $this->centrifugoChecker,
             $this->commandHistoryLogger,
-            $this->profiler
+            $this->profiler,
         );
     }
 
@@ -116,7 +108,7 @@ final class ResponseProcessorTest extends TestCase
             ->expects($this->exactly(3))
             ->method('logCommand')
             ->with(
-                ...$this->withConsecutive(
+                ...self::withConsecutive(
                     [$this->isInstanceOf(PublishCommand::class), true, null],
                     [$this->isInstanceOf(BroadcastCommand::class), true, null],
                     [$this->isInstanceOf(ChannelsCommand::class), true, ['chat', 'notification']],
@@ -132,7 +124,7 @@ final class ResponseProcessorTest extends TestCase
                     new ChannelsCommand(),
                 ]
             ),
-            $this->response
+            $this->response,
         );
         $this->assertSame(
             [
@@ -140,7 +132,7 @@ final class ResponseProcessorTest extends TestCase
                 null,
                 ['chat', 'notification'],
             ],
-            $result
+            $result,
         );
     }
 
@@ -171,7 +163,7 @@ final class ResponseProcessorTest extends TestCase
                     new ChannelsCommand(),
                 ]
             ),
-            $this->response
+            $this->response,
         );
     }
 
@@ -275,7 +267,7 @@ final class ResponseProcessorTest extends TestCase
 
         $this->responseProcessor->processResponse(
             $this->createStub(ResultableCommandInterface::class),
-            $this->response
+            $this->response,
         );
     }
 
@@ -325,7 +317,7 @@ final class ResponseProcessorTest extends TestCase
             ->expects($this->exactly(3))
             ->method('logCommand')
             ->with(
-                ...$this->withConsecutive(
+                ...self::withConsecutive(
                     [$this->isInstanceOf(PublishCommand::class), false, ['error' => ['message' => 'test message 2', 'code' => 456]]],
                     [$this->isInstanceOf(BroadcastCommand::class), true, null],
                     [$this->isInstanceOf(ChannelsCommand::class), true, ['chat', 'notification']],
@@ -345,7 +337,7 @@ final class ResponseProcessorTest extends TestCase
                     new ChannelsCommand(),
                 ]
             ),
-            $this->response
+            $this->response,
         );
     }
 }

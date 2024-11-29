@@ -30,9 +30,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class DisconnectCommandTest extends TestCase
 {
-    /** @var CentrifugoInterface|MockObject */
     private CentrifugoInterface|MockObject $centrifugo;
-
     private Command $command;
     private Application $application;
     private CommandTester $commandTester;
@@ -72,7 +70,7 @@ final class DisconnectCommandTest extends TestCase
             [
                 'command' => $this->command->getName(),
                 'user' => 'user123',
-            ]
+            ],
         );
         $this->assertSame(0, $result);
 
@@ -98,7 +96,7 @@ final class DisconnectCommandTest extends TestCase
                 '--session' => 'sessionID',
                 '--disconnectCode' => 999,
                 '--disconnectReason' => 'some reason',
-            ]
+            ],
         );
         $this->assertSame(0, $result);
 
@@ -125,7 +123,7 @@ final class DisconnectCommandTest extends TestCase
                 '--client' => 'clientID2',
                 '--session' => 'sessionID',
                 '--disconnectReason' => 'some reason',
-            ]
+            ],
         );
         $this->assertSame(0, $result);
 
@@ -152,7 +150,7 @@ final class DisconnectCommandTest extends TestCase
                 '--client' => 'clientID2',
                 '--session' => 'sessionID',
                 '--disconnectCode' => 999,
-            ]
+            ],
         );
         $this->assertSame(0, $result);
 
@@ -173,7 +171,7 @@ final class DisconnectCommandTest extends TestCase
             [
                 'command' => $this->command->getName(),
                 'user' => 'user123',
-            ]
+            ],
         );
         $this->assertSame(1, $result);
 

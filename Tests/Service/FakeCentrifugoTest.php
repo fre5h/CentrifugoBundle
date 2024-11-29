@@ -60,8 +60,8 @@ final class FakeCentrifugoTest extends TestCase
                 [
                     new Model\PublishCommand([], 'channelA'),
                     new Model\PublishCommand([], 'channelB'),
-                ]
-            )
+                ],
+            ),
         );
     }
 }

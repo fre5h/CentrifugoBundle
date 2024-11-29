@@ -30,12 +30,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class OptionOffsetTraitTest extends TestCase
 {
-    /** @var CentrifugoInterface|MockObject */
     private CentrifugoInterface|MockObject $centrifugo;
-
-    /** @var CentrifugoChecker|MockObject */
     private CentrifugoChecker|MockObject $centrifugoChecker;
-
     private Command $command;
     private Application $application;
     private CommandTester $commandTester;
@@ -77,7 +73,7 @@ final class OptionOffsetTraitTest extends TestCase
                 'command' => $this->command->getName(),
                 'channel' => 'channelName',
                 '--offset' => 20,
-            ]
+            ],
         );
     }
 
@@ -97,7 +93,7 @@ final class OptionOffsetTraitTest extends TestCase
                 'command' => $this->command->getName(),
                 'channel' => 'channelName',
                 '--offset' => 0,
-            ]
+            ],
         );
     }
 
@@ -117,7 +113,7 @@ final class OptionOffsetTraitTest extends TestCase
                 'command' => $this->command->getName(),
                 'channel' => 'channelName',
                 '--offset' => 'abcd',
-            ]
+            ],
         );
     }
 }

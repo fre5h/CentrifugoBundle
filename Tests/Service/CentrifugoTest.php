@@ -36,24 +36,12 @@ final class CentrifugoTest extends TestCase
 {
     use ConsecutiveParams;
 
-    /** @var HttpClientInterface|MockObject */
     private HttpClientInterface|MockObject $httpClient;
-
-    /** @var ResponseInterface|MockObject */
     private ResponseInterface|MockObject $response;
-
-    /** @var ResponseProcessor|MockObject */
     private ResponseProcessor|MockObject $responseProcessor;
-
-    /** @var CommandHistoryLogger|MockObject */
     private CommandHistoryLogger|MockObject $commandHistoryLogger;
-
-    /** @var CentrifugoChecker|MockObject */
     private CentrifugoChecker|MockObject $centrifugoChecker;
-
-    /** @var Profiler|MockObject */
     private Profiler|MockObject $profiler;
-
     private Centrifugo $centrifugo;
 
     protected function setUp(): void
@@ -71,7 +59,7 @@ final class CentrifugoTest extends TestCase
             $this->responseProcessor,
             $this->commandHistoryLogger,
             $this->centrifugoChecker,
-            $this->profiler
+            $this->profiler,
         );
     }
 
@@ -130,7 +118,7 @@ final class CentrifugoTest extends TestCase
         $this->centrifugoChecker
             ->expects($this->exactly(2))
             ->method('assertValidChannelName')
-            ->with(...$this->withConsecutive(
+            ->with(...self::withConsecutive(
                 ['channelA'],
                 ['channelB'],
             ))
@@ -505,7 +493,7 @@ final class CentrifugoTest extends TestCase
             ->expects($this->exactly(2))
             ->method('assertValidChannelName')
             ->with(
-                ...$this->withConsecutive(
+                ...self::withConsecutive(
                     ['channelA'],
                     ['channelB'],
                 )

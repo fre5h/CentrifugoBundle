@@ -53,7 +53,7 @@ final class InfoCommandTest extends TestCase
             <<<'JSON'
                 {}
             JSON,
-            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
+            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT),
         );
     }
 
