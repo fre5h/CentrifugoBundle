@@ -41,24 +41,24 @@ final class JwtPayloadTest extends TestCase
             ['avengers'],
         );
 
-        self::assertInstanceOf(AbstractJwtPayload::class, $jwtPayload);
-        self::assertSame('spiderman', $jwtPayload->getSubject());
-        self::assertSame(
+        $this->assertInstanceOf(AbstractJwtPayload::class, $jwtPayload);
+        $this->assertSame('spiderman', $jwtPayload->getSubject());
+        $this->assertSame(
             [
                 'name' => 'Peter Parker',
                 'email' => 'spiderman@marvel.com',
             ],
             $jwtPayload->getInfo(),
         );
-        self::assertSame(
+        $this->assertSame(
             [
                 'foo' => 'bar',
             ],
             $jwtPayload->getMeta(),
         );
-        self::assertSame(123, $jwtPayload->getExpirationTime());
-        self::assertSame('test', $jwtPayload->getBase64Info());
-        self::assertSame(['avengers'], $jwtPayload->getChannels());
+        $this->assertSame(123, $jwtPayload->getExpirationTime());
+        $this->assertSame('test', $jwtPayload->getBase64Info());
+        $this->assertSame(['avengers'], $jwtPayload->getChannels());
     }
 
     #[Test]
@@ -78,7 +78,7 @@ final class JwtPayloadTest extends TestCase
             ['avengers'],
         );
 
-        self::assertEquals(
+        $this->assertEquals(
             [
                 'sub' => 'spiderman',
                 'info' => [
@@ -103,7 +103,7 @@ final class JwtPayloadTest extends TestCase
             'spiderman'
         );
 
-        self::assertEquals(
+        $this->assertEquals(
             [
                 'sub' => 'spiderman',
             ],

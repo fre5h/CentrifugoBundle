@@ -33,8 +33,8 @@ final class PublishCommandTest extends TestCase
             data: ['bar' => 'baz'],
             channel: 'foo',
         );
-        self::assertInstanceOf(SerializableCommandInterface::class, $command);
-        self::assertInstanceOf(CommandInterface::class, $command);
+        $this->assertInstanceOf(SerializableCommandInterface::class, $command);
+        $this->assertInstanceOf(CommandInterface::class, $command);
     }
 
     #[Test]
@@ -44,9 +44,9 @@ final class PublishCommandTest extends TestCase
             data: ['bar' => 'baz'],
             channel: 'foo',
         );
-        self::assertEquals(Method::PUBLISH, $command->getMethod());
-        self::assertEquals(['channel' => 'foo', 'data' => ['bar' => 'baz']], $command->getParams());
-        self::assertEquals(['foo'], $command->getChannels());
+        $this->assertEquals(Method::PUBLISH, $command->getMethod());
+        $this->assertEquals(['channel' => 'foo', 'data' => ['bar' => 'baz']], $command->getParams());
+        $this->assertEquals(['foo'], $command->getChannels());
     }
 
     #[Test]
@@ -56,7 +56,7 @@ final class PublishCommandTest extends TestCase
             data: ['bar' => 'baz'],
             channel: 'foo',
         );
-        self::assertJsonStringEqualsJsonString(
+        $this->assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
                     "channel": "foo",
@@ -79,7 +79,7 @@ final class PublishCommandTest extends TestCase
             tags: ['tag' => 'value'],
             base64data: 'qwerty',
         );
-        self::assertJsonStringEqualsJsonString(
+        $this->assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
                     "channel": "foo",

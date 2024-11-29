@@ -82,23 +82,23 @@ final class ResponseProcessorTest extends TestCase
     public function processingBatchRequest(): void
     {
         $this->centrifugoChecker
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('assertValidResponseStatusCode')
             ->with($this->response)
         ;
         $this->centrifugoChecker
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('assertValidResponseHeaders')
             ->with($this->response)
         ;
         $this->centrifugoChecker
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('assertValidResponseContentType')
             ->with($this->response)
         ;
 
         $this->response
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getContent')
             ->willReturn(<<<'JSON'
                 {
@@ -113,13 +113,13 @@ final class ResponseProcessorTest extends TestCase
         ;
 
         $this->commandHistoryLogger
-            ->expects(self::exactly(3))
+            ->expects($this->exactly(3))
             ->method('logCommand')
             ->with(
-                ...self::withConsecutive(
-                    [self::isInstanceOf(PublishCommand::class), true, null],
-                    [self::isInstanceOf(BroadcastCommand::class), true, null],
-                    [self::isInstanceOf(ChannelsCommand::class), true, ['chat', 'notification']],
+                ...$this->withConsecutive(
+                    [$this->isInstanceOf(PublishCommand::class), true, null],
+                    [$this->isInstanceOf(BroadcastCommand::class), true, null],
+                    [$this->isInstanceOf(ChannelsCommand::class), true, ['chat', 'notification']],
                 )
             )
         ;
@@ -134,7 +134,7 @@ final class ResponseProcessorTest extends TestCase
             ),
             $this->response
         );
-        self::assertSame(
+        $this->assertSame(
             [
                 null,
                 null,
@@ -148,7 +148,7 @@ final class ResponseProcessorTest extends TestCase
     public function logicException(): void
     {
         $this->response
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getContent')
             ->willReturn(<<<'JSON'
                 {
@@ -179,23 +179,23 @@ final class ResponseProcessorTest extends TestCase
     public function processingResultableCommand(): void
     {
         $this->centrifugoChecker
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('assertValidResponseStatusCode')
             ->with($this->response)
         ;
         $this->centrifugoChecker
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('assertValidResponseHeaders')
             ->with($this->response)
         ;
         $this->centrifugoChecker
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('assertValidResponseContentType')
             ->with($this->response)
         ;
 
         $this->response
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getContent')
             ->willReturn(<<<'JSON'
                 ["foo", "bar"]
@@ -206,36 +206,36 @@ final class ResponseProcessorTest extends TestCase
         $command = new ChannelsCommand();
 
         $this->commandHistoryLogger
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('logCommand')
             ->with($command, true, ['foo', 'bar'])
         ;
 
         $result = $this->responseProcessor->processResponse($command, $this->response);
-        self::assertSame(['foo', 'bar'], $result);
+        $this->assertSame(['foo', 'bar'], $result);
     }
 
     #[Test]
     public function processingNonResultableCommand(): void
     {
         $this->centrifugoChecker
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('assertValidResponseStatusCode')
             ->with($this->response)
         ;
         $this->centrifugoChecker
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('assertValidResponseHeaders')
             ->with($this->response)
         ;
         $this->centrifugoChecker
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('assertValidResponseContentType')
             ->with($this->response)
         ;
 
         $this->response
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getContent')
             ->willReturn(<<<'JSON'
                 {
@@ -252,20 +252,20 @@ final class ResponseProcessorTest extends TestCase
         $command = new PublishCommand(['foo' => 'bar'], 'test');
 
         $this->commandHistoryLogger
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('logCommand')
             ->with($command, true, null)
         ;
 
         $result = $this->responseProcessor->processResponse($command, $this->response);
-        self::assertNull($result);
+        $this->assertNull($result);
     }
 
     #[Test]
     public function invalidResponse(): void
     {
         $this->response
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getContent')
             ->willReturn('invalid json')
         ;
@@ -283,7 +283,7 @@ final class ResponseProcessorTest extends TestCase
     public function processingCentrifugoErrorForSingleCommand(): void
     {
         $this->response
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getContent')
             ->willReturn('{"error":{"message":"test message","code":123}}')
         ;
@@ -291,7 +291,7 @@ final class ResponseProcessorTest extends TestCase
         $command = $this->createStub(CommandInterface::class);
 
         $this->commandHistoryLogger
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('logCommand')
             ->with($command, false, ['error' => ['message' => 'test message', 'code' => '123']])
         ;
@@ -307,7 +307,7 @@ final class ResponseProcessorTest extends TestCase
     public function processingCentrifugoErrorForBatchRequest(): void
     {
         $this->response
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getContent')
             ->willReturn(<<<'JSON'
                 {
@@ -322,13 +322,13 @@ final class ResponseProcessorTest extends TestCase
         ;
 
         $this->commandHistoryLogger
-            ->expects(self::exactly(3))
+            ->expects($this->exactly(3))
             ->method('logCommand')
             ->with(
-                ...self::withConsecutive(
-                    [self::isInstanceOf(PublishCommand::class), false, ['error' => ['message' => 'test message 2', 'code' => 456]]],
-                    [self::isInstanceOf(BroadcastCommand::class), true, null],
-                    [self::isInstanceOf(ChannelsCommand::class), true, ['chat', 'notification']],
+                ...$this->withConsecutive(
+                    [$this->isInstanceOf(PublishCommand::class), false, ['error' => ['message' => 'test message 2', 'code' => 456]]],
+                    [$this->isInstanceOf(BroadcastCommand::class), true, null],
+                    [$this->isInstanceOf(ChannelsCommand::class), true, ['chat', 'notification']],
                 )
             )
         ;

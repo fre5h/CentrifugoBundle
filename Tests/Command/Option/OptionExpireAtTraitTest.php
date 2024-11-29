@@ -62,7 +62,7 @@ final class OptionExpireAtTraitTest extends TestCase
     public function validOption(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('refresh')
         ;
 
@@ -79,7 +79,7 @@ final class OptionExpireAtTraitTest extends TestCase
     public function zeroValue(): void
     {
         $this->centrifugo
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('refresh')
         ;
 
@@ -99,7 +99,7 @@ final class OptionExpireAtTraitTest extends TestCase
     public function nonStringValue(): void
     {
         $this->centrifugo
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('refresh')
         ;
 

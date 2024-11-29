@@ -56,7 +56,7 @@ final class JwtGeneratorTest extends TestCase
             ['avengers']
         );
 
-        self::assertEquals(
+        $this->assertEquals(
             'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzcGlkZXJtYW4iLCJleHAiOjEyMywiaW5mbyI6eyJuYW1lIjoiUGV0ZXIgUGFya2VyIiwiZW1haWwiOiJzcGlkZXJtYW5AbWFydmVsLmNvbSJ9LCJtZXRhIjp7ImZvbyI6ImJhciJ9LCJiNjRpbmZvIjoidGVzdCIsImNoYW5uZWxzIjpbImF2ZW5nZXJzIl19.4GtuKq_znrDoZ9zINRK0BoAJm13Hf1Rp4iR1RHfMNPQ',
             $this->jwtGenerator->generateToken($jwtPayload)
         );
@@ -67,7 +67,7 @@ final class JwtGeneratorTest extends TestCase
     {
         $jwtPayload = new JwtPayload('spiderman');
 
-        self::assertSame(
+        $this->assertSame(
             'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzcGlkZXJtYW4ifQ.L9EM5Iw3MKRNnEPnWiBf_CLDtSmjG5dprKx28XPBdm4',
             $this->jwtGenerator->generateToken($jwtPayload)
         );
@@ -91,7 +91,7 @@ final class JwtGeneratorTest extends TestCase
             true
         );
 
-        self::assertEquals(
+        $this->assertEquals(
             'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjbGllbnQiOiJzcGlkZXJtYW4iLCJjaGFubmVsIjoiYXZlbmdlcnMiLCJleHAiOjEyMywiaW5mbyI6eyJuYW1lIjoiUGV0ZXIgUGFya2VyIiwiZW1haWwiOiJzcGlkZXJtYW5AbWFydmVsLmNvbSJ9LCJtZXRhIjp7ImZvbyI6ImJhciJ9LCJiNjRpbmZvIjoidGVzdCIsImV0byI6dHJ1ZX0.UKYGy0wlUFrWL6dkQhPsS4I4NTUh1NlpI8tYULW1ZbM',
             $this->jwtGenerator->generateToken($jwtPayloadForPrivateChannel)
         );
@@ -102,7 +102,7 @@ final class JwtGeneratorTest extends TestCase
     {
         $jwtPayloadForPrivateChannel = new JwtPayloadForPrivateChannel('spiderman', 'avengers');
 
-        self::assertSame(
+        $this->assertSame(
             'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjbGllbnQiOiJzcGlkZXJtYW4iLCJjaGFubmVsIjoiYXZlbmdlcnMifQ.x2UWWlh823m_EelPCSuoIuik0s4DuYRX9_vRhXEVaeQ',
             $this->jwtGenerator->generateToken($jwtPayloadForPrivateChannel)
         );
@@ -131,7 +131,7 @@ final class JwtGeneratorTest extends TestCase
             new JwtPayloadForChannelOverride(true, false, true, false, true)
         );
 
-        self::assertEquals(
+        $this->assertEquals(
             'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzcGlkZXJtYW4iLCJjaGFubmVsIjoiYXZlbmdlcnMiLCJpbmZvIjp7Im5hbWUiOiJQZXRlciBQYXJrZXIiLCJlbWFpbCI6InNwaWRlcm1hbkBtYXJ2ZWwuY29tIn0sIm1ldGEiOnsiZm9vIjoiYmFyIn0sImI2NGluZm8iOiJ0ZXN0IiwiZXhwIjoxMjMsImV4cGlyZV9hdCI6MzIxLCJhdWQiOlsiYXVkaWVuY2UiXSwiaXNzIjoiaXNzdWVyIiwiaWF0Ijo0NTYsImp0aSI6Imp3dElkIiwib3ZlcnJpZGUiOnsicHJlc2VuY2UiOnsidmFsdWUiOnRydWV9LCJqb2luX2xlYXZlIjp7InZhbHVlIjpmYWxzZX0sImZvcmNlX3B1c2hfam9pbl9sZWF2ZSI6eyJ2YWx1ZSI6dHJ1ZX0sImZvcmNlX3JlY292ZXJ5Ijp7InZhbHVlIjpmYWxzZX0sImZvcmNlX3Bvc3RpbmciOnsidmFsdWUiOnRydWV9fX0.NNULjr95eGRt-KMwKel8ZORjD4fyT1j1P5UiszbC-Zo',
             $this->jwtGenerator->generateToken($jwtPayloadForChannel)
         );
@@ -142,7 +142,7 @@ final class JwtGeneratorTest extends TestCase
     {
         $jwtPayloadForChannel = new JwtPayloadForChannel('spiderman', 'avengers');
 
-        self::assertSame(
+        $this->assertSame(
             'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzcGlkZXJtYW4iLCJjaGFubmVsIjoiYXZlbmdlcnMifQ.OYI-kcfDwuE-V06M-jkIX1-Rvdna1l9PXdMkmc_BTGY',
             $this->jwtGenerator->generateToken($jwtPayloadForChannel)
         );

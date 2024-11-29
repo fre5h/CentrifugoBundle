@@ -68,7 +68,7 @@ final class OptionDataTraitTest extends TestCase
     public function dataIsNotValidJson(): void
     {
         $this->centrifugo
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('subscribe')
         ;
 
@@ -89,7 +89,7 @@ final class OptionDataTraitTest extends TestCase
     public function validOption(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('subscribe')
         ;
 

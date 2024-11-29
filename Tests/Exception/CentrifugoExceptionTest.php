@@ -45,13 +45,13 @@ final class CentrifugoExceptionTest extends TestCase
     #[Test]
     public function getResponse(): void
     {
-        self::assertSame($this->response, $this->exception->getResponse());
+        $this->assertSame($this->response, $this->exception->getResponse());
     }
 
     #[Test]
     public function exception(): void
     {
-        self::assertInstanceOf(\Exception::class, $this->exception);
-        self::assertInstanceOf(ExceptionInterface::class, $this->exception);
+        $this->assertInstanceOf(\Exception::class, $this->exception);
+        $this->assertInstanceOf(ExceptionInterface::class, $this->exception);
     }
 }

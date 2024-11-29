@@ -31,24 +31,24 @@ final class DisconnectCommandTest extends TestCase
     public function interfaces(): void
     {
         $command = new DisconnectCommand(user: 'foo');
-        self::assertInstanceOf(SerializableCommandInterface::class, $command);
-        self::assertInstanceOf(CommandInterface::class, $command);
+        $this->assertInstanceOf(SerializableCommandInterface::class, $command);
+        $this->assertInstanceOf(CommandInterface::class, $command);
     }
 
     #[Test]
     public function constructor(): void
     {
         $command = new DisconnectCommand(user: 'foo');
-        self::assertEquals(Method::DISCONNECT, $command->getMethod());
-        self::assertEquals(['user' => 'foo'], $command->getParams());
-        self::assertEquals([], $command->getChannels());
+        $this->assertEquals(Method::DISCONNECT, $command->getMethod());
+        $this->assertEquals(['user' => 'foo'], $command->getParams());
+        $this->assertEquals([], $command->getChannels());
     }
 
     #[Test]
     public function serializationRequiredData(): void
     {
         $command = new DisconnectCommand(user: 'foo');
-        self::assertJsonStringEqualsJsonString(
+        $this->assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
                     "user": "foo"
@@ -68,7 +68,7 @@ final class DisconnectCommandTest extends TestCase
             session: 'sessionID1',
             disconnectObject: new Disconnect(code: 999, reason: 'some reason'),
         );
-        self::assertJsonStringEqualsJsonString(
+        $this->assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
                     "user": "foo",

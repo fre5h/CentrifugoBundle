@@ -30,24 +30,24 @@ final class ChannelsCommandTest extends TestCase
     public function interfaces(): void
     {
         $command = new ChannelsCommand();
-        self::assertInstanceOf(SerializableCommandInterface::class, $command);
-        self::assertInstanceOf(CommandInterface::class, $command);
+        $this->assertInstanceOf(SerializableCommandInterface::class, $command);
+        $this->assertInstanceOf(CommandInterface::class, $command);
     }
 
     #[Test]
     public function constructor(): void
     {
         $command = new ChannelsCommand();
-        self::assertEquals(Method::CHANNELS, $command->getMethod());
-        self::assertEquals([], $command->getParams());
-        self::assertEquals([], $command->getChannels());
+        $this->assertEquals(Method::CHANNELS, $command->getMethod());
+        $this->assertEquals([], $command->getParams());
+        $this->assertEquals([], $command->getChannels());
     }
 
     #[Test]
     public function serializationWithoutPattern(): void
     {
         $command = new ChannelsCommand();
-        self::assertJsonStringEqualsJsonString(
+        $this->assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {}
             JSON,
@@ -60,7 +60,7 @@ final class ChannelsCommandTest extends TestCase
     {
         $command = new ChannelsCommand(pattern: 'abc');
 
-        self::assertJsonStringEqualsJsonString(
+        $this->assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
                     "pattern": "abc"
@@ -74,6 +74,6 @@ final class ChannelsCommandTest extends TestCase
     public function processResponse(): void
     {
         $command = new ChannelsCommand();
-        self::assertEquals(['foo' => 'bar'], $command->processResponse(['foo' => 'bar']));
+        $this->assertEquals(['foo' => 'bar'], $command->processResponse(['foo' => 'bar']));
     }
 }

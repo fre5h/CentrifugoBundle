@@ -67,7 +67,7 @@ final class HistoryRemoveCommandTest extends TestCase
     public function successfulExecution(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('historyRemove')
             ->with('channelA')
         ;
@@ -78,17 +78,17 @@ final class HistoryRemoveCommandTest extends TestCase
                 'channel' => 'channelA',
             ]
         );
-        self::assertSame(0, $result);
+        $this->assertSame(0, $result);
 
         $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('DONE', $output);
+        $this->assertStringContainsString('DONE', $output);
     }
 
     #[Test]
     public function exception(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('historyRemove')
             ->willThrowException(new \Exception('test'))
         ;
@@ -99,9 +99,9 @@ final class HistoryRemoveCommandTest extends TestCase
                 'channel' => 'channelA',
             ]
         );
-        self::assertSame(1, $result);
+        $this->assertSame(1, $result);
 
         $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('test', $output);
+        $this->assertStringContainsString('test', $output);
     }
 }

@@ -63,7 +63,7 @@ final class DisconnectCommandTest extends TestCase
     public function successfulExecutionWithRequiredParameters(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('disconnect')
             ->with('user123')
         ;
@@ -74,19 +74,19 @@ final class DisconnectCommandTest extends TestCase
                 'user' => 'user123',
             ]
         );
-        self::assertSame(0, $result);
+        $this->assertSame(0, $result);
 
         $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('DONE', $output);
+        $this->assertStringContainsString('DONE', $output);
     }
 
     #[Test]
     public function successfulExecutionWithAllParameters(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('disconnect')
-            ->with('user123', ['clientID1'], 'clientID2', 'sessionID', self::isInstanceOf(Disconnect::class))
+            ->with('user123', ['clientID1'], 'clientID2', 'sessionID', $this->isInstanceOf(Disconnect::class))
         ;
 
         $result = $this->commandTester->execute(
@@ -100,17 +100,17 @@ final class DisconnectCommandTest extends TestCase
                 '--disconnectReason' => 'some reason',
             ]
         );
-        self::assertSame(0, $result);
+        $this->assertSame(0, $result);
 
         $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('DONE', $output);
+        $this->assertStringContainsString('DONE', $output);
     }
 
     #[Test]
     public function exceptionForMissingDisconnectCode(): void
     {
         $this->centrifugo
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('disconnect')
         ;
 
@@ -127,17 +127,17 @@ final class DisconnectCommandTest extends TestCase
                 '--disconnectReason' => 'some reason',
             ]
         );
-        self::assertSame(0, $result);
+        $this->assertSame(0, $result);
 
         $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('DONE', $output);
+        $this->assertStringContainsString('DONE', $output);
     }
 
     #[Test]
     public function exceptionForMissingDisconnectReason(): void
     {
         $this->centrifugo
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('disconnect')
         ;
 
@@ -154,17 +154,17 @@ final class DisconnectCommandTest extends TestCase
                 '--disconnectCode' => 999,
             ]
         );
-        self::assertSame(0, $result);
+        $this->assertSame(0, $result);
 
         $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('DONE', $output);
+        $this->assertStringContainsString('DONE', $output);
     }
 
     #[Test]
     public function exception(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('disconnect')
             ->willThrowException(new \Exception('test'))
         ;
@@ -175,9 +175,9 @@ final class DisconnectCommandTest extends TestCase
                 'user' => 'user123',
             ]
         );
-        self::assertSame(1, $result);
+        $this->assertSame(1, $result);
 
         $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('test', $output);
+        $this->assertStringContainsString('test', $output);
     }
 }

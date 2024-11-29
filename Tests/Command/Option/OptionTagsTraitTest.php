@@ -68,7 +68,7 @@ final class OptionTagsTraitTest extends TestCase
     public function tagsIsNotValidJson(): void
     {
         $this->centrifugo
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('publish')
         ;
 
@@ -89,7 +89,7 @@ final class OptionTagsTraitTest extends TestCase
     public function tagsIsNotArray(): void
     {
         $this->centrifugo
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('publish')
         ;
 
@@ -110,7 +110,7 @@ final class OptionTagsTraitTest extends TestCase
     public function tagValueIsNotString(): void
     {
         $this->centrifugo
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('publish')
         ;
 
@@ -131,7 +131,7 @@ final class OptionTagsTraitTest extends TestCase
     public function validTags(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('publish')
         ;
 

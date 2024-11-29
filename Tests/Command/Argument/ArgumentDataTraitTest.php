@@ -30,12 +30,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class ArgumentDataTraitTest extends TestCase
 {
-    /** @var CentrifugoInterface|MockObject */
     private CentrifugoInterface|MockObject $centrifugo;
-
-    /** @var CentrifugoChecker|MockObject */
     private CentrifugoChecker|MockObject $centrifugoChecker;
-
     private Command $command;
     private Application $application;
     private CommandTester $commandTester;
@@ -68,7 +64,7 @@ final class ArgumentDataTraitTest extends TestCase
     public function dataIsNotValidJson(): void
     {
         $this->centrifugo
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('broadcast')
         ;
 
@@ -88,7 +84,7 @@ final class ArgumentDataTraitTest extends TestCase
     public function dataIsNotString(): void
     {
         $this->centrifugo
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('broadcast')
         ;
 

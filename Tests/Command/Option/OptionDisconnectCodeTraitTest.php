@@ -62,7 +62,7 @@ final class OptionDisconnectCodeTraitTest extends TestCase
     public function validOption(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('disconnect')
         ;
 
@@ -80,7 +80,7 @@ final class OptionDisconnectCodeTraitTest extends TestCase
     public function invalidOption(): void
     {
         $this->centrifugo
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('disconnect')
         ;
 

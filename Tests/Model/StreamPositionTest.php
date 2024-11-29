@@ -27,7 +27,7 @@ final class StreamPositionTest extends TestCase
     public function constructor(): void
     {
         $streamPosition = new StreamPosition(5, 'ABCD');
-        self::assertSame(5, $streamPosition->getOffset());
-        self::assertSame('ABCD', $streamPosition->getEpoch());
+        $this->assertSame(5, $streamPosition->getOffset());
+        $this->assertSame('ABCD', $streamPosition->getEpoch());
     }
 }

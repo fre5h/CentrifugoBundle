@@ -39,7 +39,7 @@ final class LogicExceptionTest extends TestCase
     #[Test]
     public function exception(): void
     {
-        self::assertInstanceOf(ExceptionInterface::class, $this->exception);
-        self::assertInstanceOf(\LogicException::class, $this->exception);
+        $this->assertInstanceOf(ExceptionInterface::class, $this->exception);
+        $this->assertInstanceOf(\LogicException::class, $this->exception);
     }
 }

@@ -31,24 +31,24 @@ final class PresenceCommandTest extends TestCase
     public function interfaces(): void
     {
         $command = new PresenceCommand(channel: 'foo');
-        self::assertInstanceOf(SerializableCommandInterface::class, $command);
-        self::assertInstanceOf(CommandInterface::class, $command);
+        $this->assertInstanceOf(SerializableCommandInterface::class, $command);
+        $this->assertInstanceOf(CommandInterface::class, $command);
     }
 
     #[Test]
     public function constructor(): void
     {
         $command = new PresenceCommand(channel: 'foo');
-        self::assertEquals(Method::PRESENCE, $command->getMethod());
-        self::assertEquals(['channel' => 'foo'], $command->getParams());
-        self::assertEquals(['foo'], $command->getChannels());
+        $this->assertEquals(Method::PRESENCE, $command->getMethod());
+        $this->assertEquals(['channel' => 'foo'], $command->getParams());
+        $this->assertEquals(['foo'], $command->getChannels());
     }
 
     #[Test]
     public function serialization(): void
     {
         $command = new PresenceCommand(channel: 'foo');
-        self::assertJsonStringEqualsJsonString(
+        $this->assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
                     "channel": "foo"
@@ -62,6 +62,6 @@ final class PresenceCommandTest extends TestCase
     public function processResponse(): void
     {
         $command = new PresenceCommand(channel: 'foo');
-        self::assertEquals(['foo' => 'bar'], $command->processResponse(['result' => ['presence' => ['foo' => 'bar']]]));
+        $this->assertEquals(['foo' => 'bar'], $command->processResponse(['result' => ['presence' => ['foo' => 'bar']]]));
     }
 }

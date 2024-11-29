@@ -52,25 +52,25 @@ final class FreshCentrifugoExtensionTest extends TestCase
         $this->container->loadFromExtension($this->extension->getAlias());
         $this->container->compile();
 
-        self::assertArrayHasKey(CentrifugoInterface::class, $this->container->getRemovedIds());
-        self::assertArrayHasKey(ResponseProcessor::class, $this->container->getRemovedIds());
-        self::assertArrayHasKey(DateTimeHelper::class, $this->container->getRemovedIds());
-        self::assertArrayNotHasKey(CentrifugoInterface::class, $this->container->getDefinitions());
-        self::assertArrayNotHasKey(ResponseProcessor::class, $this->container->getDefinitions());
-        self::assertArrayNotHasKey(DateTimeHelper::class, $this->container->getDefinitions());
+        $this->assertArrayHasKey(CentrifugoInterface::class, $this->container->getRemovedIds());
+        $this->assertArrayHasKey(ResponseProcessor::class, $this->container->getRemovedIds());
+        $this->assertArrayHasKey(DateTimeHelper::class, $this->container->getRemovedIds());
+        $this->assertArrayNotHasKey(CentrifugoInterface::class, $this->container->getDefinitions());
+        $this->assertArrayNotHasKey(ResponseProcessor::class, $this->container->getDefinitions());
+        $this->assertArrayNotHasKey(DateTimeHelper::class, $this->container->getDefinitions());
 
-        self::assertTrue($this->container->hasParameter('centrifugo.channel_max_length'));
-        self::assertSame(255, $this->container->getParameter('centrifugo.channel_max_length'));
-        self::assertTrue($this->container->hasParameter('centrifugo.jwt.ttl'));
-        self::assertNull($this->container->getParameter('centrifugo.jwt.ttl'));
-        self::assertFalse($this->container->getParameter('centrifugo.fake_mode'));
-        self::assertNotEmpty($this->container->getParameter('centrifugo.api_key'));
-        self::assertNotEmpty($this->container->getParameter('centrifugo.api_endpoint'));
-        self::assertNotEmpty($this->container->getParameter('centrifugo.secret'));
+        $this->assertTrue($this->container->hasParameter('centrifugo.channel_max_length'));
+        $this->assertSame(255, $this->container->getParameter('centrifugo.channel_max_length'));
+        $this->assertTrue($this->container->hasParameter('centrifugo.jwt.ttl'));
+        $this->assertNull($this->container->getParameter('centrifugo.jwt.ttl'));
+        $this->assertFalse($this->container->getParameter('centrifugo.fake_mode'));
+        $this->assertNotEmpty($this->container->getParameter('centrifugo.api_key'));
+        $this->assertNotEmpty($this->container->getParameter('centrifugo.api_endpoint'));
+        $this->assertNotEmpty($this->container->getParameter('centrifugo.secret'));
 
         $childDefinitions = $this->container->getAutoconfiguredInstanceof();
         foreach ($childDefinitions as $childDefinition) {
-           self::assertTrue($childDefinition->hasTag('centrifugo.channel_authenticator'));
+           $this->assertTrue($childDefinition->hasTag('centrifugo.channel_authenticator'));
         }
     }
 

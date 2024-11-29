@@ -31,24 +31,24 @@ final class HistoryCommandTest extends TestCase
     public function interfaces(): void
     {
         $command = new HistoryCommand(channel: 'foo');
-        self::assertInstanceOf(SerializableCommandInterface::class, $command);
-        self::assertInstanceOf(CommandInterface::class, $command);
+        $this->assertInstanceOf(SerializableCommandInterface::class, $command);
+        $this->assertInstanceOf(CommandInterface::class, $command);
     }
 
     #[Test]
     public function constructor(): void
     {
         $command = new HistoryCommand(channel: 'foo');
-        self::assertEquals(Method::HISTORY, $command->getMethod());
-        self::assertEquals(['channel' => 'foo'], $command->getParams());
-        self::assertEquals(['foo'], $command->getChannels());
+        $this->assertEquals(Method::HISTORY, $command->getMethod());
+        $this->assertEquals(['channel' => 'foo'], $command->getParams());
+        $this->assertEquals(['foo'], $command->getChannels());
     }
 
     #[Test]
     public function serializationRequiredData(): void
     {
         $command = new HistoryCommand(channel: 'foo');
-        self::assertJsonStringEqualsJsonString(
+        $this->assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
                     "channel": "foo"
@@ -67,7 +67,7 @@ final class HistoryCommandTest extends TestCase
             limit: 10,
             streamPosition: new StreamPosition(offset: 5, epoch: 'test'),
         );
-        self::assertJsonStringEqualsJsonString(
+        $this->assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
                     "channel": "foo",
@@ -92,7 +92,7 @@ final class HistoryCommandTest extends TestCase
             limit: 0,
             streamPosition: new StreamPosition(offset: null, epoch: null),
         );
-        self::assertJsonStringEqualsJsonString(
+        $this->assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
                     "channel": "foo",
@@ -112,6 +112,6 @@ final class HistoryCommandTest extends TestCase
             limit: 0,
             streamPosition: new StreamPosition(offset: null, epoch: null),
         );
-        self::assertEquals(['foo' => 'bar'], $command->processResponse(['result' => ['foo' => 'bar']]));
+        $this->assertEquals(['foo' => 'bar'], $command->processResponse(['result' => ['foo' => 'bar']]));
     }
 }

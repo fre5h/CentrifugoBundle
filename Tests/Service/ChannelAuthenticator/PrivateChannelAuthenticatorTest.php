@@ -68,20 +68,20 @@ final class PrivateChannelAuthenticatorTest extends TestCase
     public function invalidJsonRequest(): void
     {
         $this->request
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getContent')
             ->willReturn('bla bla')
         ;
 
         $this->customerChannelAuthenticator
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('supports')
         ;
 
         $this->expectException(BadRequestHttpException::class);
         $this->expectExceptionMessage('Invalid JSON.');
 
-        self::assertEquals(['channels' => []], $this->privateChannelAuthenticator->authChannelsForClientFromRequest($this->request));
+        $this->assertEquals(['channels' => []], $this->privateChannelAuthenticator->authChannelsForClientFromRequest($this->request));
     }
 
     #[Test]
@@ -89,20 +89,20 @@ final class PrivateChannelAuthenticatorTest extends TestCase
     public function testInvalidClientInRequest(string $content): void
     {
         $this->request
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getContent')
             ->willReturn($content)
         ;
 
         $this->customerChannelAuthenticator
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('supports')
         ;
 
         $this->expectException(BadRequestHttpException::class);
         $this->expectExceptionMessage('Client must be set in request.');
 
-        self::assertEquals(['channels' => []], $this->privateChannelAuthenticator->authChannelsForClientFromRequest($this->request));
+        $this->assertEquals(['channels' => []], $this->privateChannelAuthenticator->authChannelsForClientFromRequest($this->request));
     }
 
     public static function dataProviderForTestInvalidClientInRequest(): iterable
@@ -147,20 +147,20 @@ final class PrivateChannelAuthenticatorTest extends TestCase
     public function testInvalidChannelsInRequest(string $content): void
     {
         $this->request
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getContent')
             ->willReturn($content)
         ;
 
         $this->customerChannelAuthenticator
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('supports')
         ;
 
         $this->expectException(BadRequestHttpException::class);
         $this->expectExceptionMessage('Channels must be set in request.');
 
-        self::assertEquals(['channels' => []], $this->privateChannelAuthenticator->authChannelsForClientFromRequest($this->request));
+        $this->assertEquals(['channels' => []], $this->privateChannelAuthenticator->authChannelsForClientFromRequest($this->request));
     }
 
     public static function dataProviderForTestInvalidChannelsInRequest(): iterable
@@ -196,7 +196,7 @@ final class PrivateChannelAuthenticatorTest extends TestCase
     public function nonStringChannelInRequest(): void
     {
         $this->request
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getContent')
             ->willReturn(<<<'JSON'
                 {
@@ -207,41 +207,41 @@ final class PrivateChannelAuthenticatorTest extends TestCase
         ;
 
         $this->customerChannelAuthenticator
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('supports')
         ;
 
         $this->expectException(BadRequestHttpException::class);
         $this->expectExceptionMessage('Channel must be a string.');
 
-        self::assertEquals(['channels' => []], $this->privateChannelAuthenticator->authChannelsForClientFromRequest($this->request));
+        $this->assertEquals(['channels' => []], $this->privateChannelAuthenticator->authChannelsForClientFromRequest($this->request));
     }
 
     #[Test]
     public function exceptionOnGetContent(): void
     {
         $this->request
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getContent')
             ->willThrowException(new \Exception('test'))
         ;
 
         $this->customerChannelAuthenticator
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('supports')
         ;
 
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('test');
 
-        self::assertEquals(['channels' => []], $this->privateChannelAuthenticator->authChannelsForClientFromRequest($this->request));
+        $this->assertEquals(['channels' => []], $this->privateChannelAuthenticator->authChannelsForClientFromRequest($this->request));
     }
 
     #[Test]
     public function noChannelAuthenticator(): void
     {
         $this->request
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getContent')
             ->willReturn(<<<'JSON'
                 {
@@ -252,20 +252,20 @@ final class PrivateChannelAuthenticatorTest extends TestCase
         ;
 
         $this->customerChannelAuthenticator
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('supports')
             ->with('avengers')
             ->willReturn(false)
         ;
 
-        self::assertEquals(['channels' => []], $this->privateChannelAuthenticator->authChannelsForClientFromRequest($this->request));
+        $this->assertEquals(['channels' => []], $this->privateChannelAuthenticator->authChannelsForClientFromRequest($this->request));
     }
 
     #[Test]
     public function successChannelAuthenticator(): void
     {
         $this->request
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getContent')
             ->willReturn(<<<'JSON'
                 {
@@ -276,10 +276,10 @@ final class PrivateChannelAuthenticatorTest extends TestCase
         ;
 
         $this->customerChannelAuthenticator
-            ->expects(self::exactly(2))
+            ->expects($this->exactly(2))
             ->method('supports')
             ->with(
-                ...self::withConsecutive(
+                ...$this->withConsecutive(
                     ['avengers'],
                     ['marvel'],
                 )
@@ -288,10 +288,10 @@ final class PrivateChannelAuthenticatorTest extends TestCase
         ;
 
         $this->customerChannelAuthenticator
-            ->expects(self::exactly(2))
+            ->expects($this->exactly(2))
             ->method('hasAccessToChannel')
             ->with(
-                ...self::withConsecutive(
+                ...$this->withConsecutive(
                     ['avengers'],
                     ['marvel'],
                 )
@@ -300,10 +300,10 @@ final class PrivateChannelAuthenticatorTest extends TestCase
         ;
 
         $this->credentialsGenerator
-            ->expects(self::exactly(2))
+            ->expects($this->exactly(2))
             ->method('generateJwtTokenForPrivateChannel')
             ->with(
-                ...self::withConsecutive(
+                ...$this->withConsecutive(
                     ['spiderman', 'avengers'],
                     ['spiderman', 'marvel'],
                 )
@@ -311,7 +311,7 @@ final class PrivateChannelAuthenticatorTest extends TestCase
             ->willReturnOnConsecutiveCalls('test1', 'test2')
         ;
 
-        self::assertEquals(
+        $this->assertEquals(
             [
                 'channels' => [
                     [

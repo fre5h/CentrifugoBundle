@@ -68,7 +68,7 @@ final class HistoryCommandTest extends TestCase
     public function successfulExecutionWithRequiredParameters(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('history')
             ->with('channelA')
             ->willReturn(
@@ -92,11 +92,11 @@ final class HistoryCommandTest extends TestCase
                 'channel' => 'channelA',
             ]
         );
-        self::assertSame(0, $result);
+        $this->assertSame(0, $result);
 
         $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('Publications', $output);
-        self::assertStringContainsString(
+        $this->assertStringContainsString('Publications', $output);
+        $this->assertStringContainsString(
             <<<'JSON'
 {
     "foo": "bar"
@@ -104,17 +104,17 @@ final class HistoryCommandTest extends TestCase
 JSON,
             $output
         );
-        self::assertStringContainsString('Offset: 0', $output);
-        self::assertStringContainsString('Epoch: test', $output);
+        $this->assertStringContainsString('Offset: 0', $output);
+        $this->assertStringContainsString('Epoch: test', $output);
     }
 
     #[Test]
     public function successfulExecutionWithAllParameters(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('history')
-            ->with('channelA', true, 10, self::isInstanceOf(StreamPosition::class))
+            ->with('channelA', true, 10, $this->isInstanceOf(StreamPosition::class))
             ->willReturn(
                 [
                     'publications' => [
@@ -140,11 +140,11 @@ JSON,
                 '--reverse' => true,
             ]
         );
-        self::assertSame(0, $result);
+        $this->assertSame(0, $result);
 
         $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('Publications', $output);
-        self::assertStringContainsString(
+        $this->assertStringContainsString('Publications', $output);
+        $this->assertStringContainsString(
             <<<'JSON'
 {
     "foo": "bar"
@@ -152,15 +152,15 @@ JSON,
 JSON,
             $output
         );
-        self::assertStringContainsString('Offset: 0', $output);
-        self::assertStringContainsString('Epoch: test', $output);
+        $this->assertStringContainsString('Offset: 0', $output);
+        $this->assertStringContainsString('Epoch: test', $output);
     }
 
     #[Test]
     public function exception(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('history')
             ->willThrowException(new \Exception('test'))
         ;
@@ -171,9 +171,9 @@ JSON,
                 'channel' => 'channelA',
             ]
         );
-        self::assertSame(1, $result);
+        $this->assertSame(1, $result);
 
         $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('test', $output);
+        $this->assertStringContainsString('test', $output);
     }
 }

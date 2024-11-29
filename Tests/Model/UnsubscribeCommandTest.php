@@ -33,8 +33,8 @@ final class UnsubscribeCommandTest extends TestCase
             user: 'bar',
             channel: 'foo',
         );
-        self::assertInstanceOf(SerializableCommandInterface::class, $command);
-        self::assertInstanceOf(CommandInterface::class, $command);
+        $this->assertInstanceOf(SerializableCommandInterface::class, $command);
+        $this->assertInstanceOf(CommandInterface::class, $command);
     }
 
     #[Test]
@@ -44,9 +44,9 @@ final class UnsubscribeCommandTest extends TestCase
             user: 'bar',
             channel: 'foo',
         );
-        self::assertEquals(Method::UNSUBSCRIBE, $command->getMethod());
-        self::assertEquals(['channel' => 'foo', 'user' => 'bar'], $command->getParams());
-        self::assertEquals(['foo'], $command->getChannels());
+        $this->assertEquals(Method::UNSUBSCRIBE, $command->getMethod());
+        $this->assertEquals(['channel' => 'foo', 'user' => 'bar'], $command->getParams());
+        $this->assertEquals(['foo'], $command->getChannels());
     }
 
     #[Test]
@@ -56,7 +56,7 @@ final class UnsubscribeCommandTest extends TestCase
             user: 'bar',
             channel: 'foo',
         );
-        self::assertJsonStringEqualsJsonString(
+        $this->assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
                     "channel": "foo",
@@ -76,7 +76,7 @@ final class UnsubscribeCommandTest extends TestCase
             client: 'abc',
             session: 'qwerty',
         );
-        self::assertJsonStringEqualsJsonString(
+        $this->assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
                     "channel": "foo",

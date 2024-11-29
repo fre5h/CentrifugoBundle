@@ -59,15 +59,15 @@ final class CredentialsGeneratorTest extends TestCase
     public function generateJwtTokenForAnonymous(): void
     {
         $this->dateTimeHelper
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getCurrentDatetimeUtc')
             ->willReturn(new \DateTime('2000-01-01 00:00:00', new \DateTimeZone('UTC')))
         ;
 
         $this->jwtGenerator
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('generateToken')
-            ->with(self::callback(static function (JwtPayload $jwtPayload) {
+            ->with($this->callback(static function (JwtPayload $jwtPayload) {
                 return '' === $jwtPayload->getSubject()
                     && [] === $jwtPayload->getInfo()
                     && [] === $jwtPayload->getMeta()
@@ -79,26 +79,26 @@ final class CredentialsGeneratorTest extends TestCase
             ->willReturn('test1')
         ;
 
-        self::assertEquals('test1', $this->credentialsGenerator->generateJwtTokenForAnonymous());
+        $this->assertEquals('test1', $this->credentialsGenerator->generateJwtTokenForAnonymous());
     }
 
     #[Test]
     public function generateJwtTokenForUser(): void
     {
         $this->dateTimeHelper
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getCurrentDatetimeUtc')
             ->willReturn(new \DateTime('2000-02-02 00:00:00', new \DateTimeZone('UTC')))
         ;
 
         $user = $this->createMock(CentrifugoUserInterface::class);
         $user
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getCentrifugoSubject')
             ->willReturn('spiderman')
         ;
         $user
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getCentrifugoUserInfo')
             ->willReturn(
                 [
@@ -109,9 +109,9 @@ final class CredentialsGeneratorTest extends TestCase
         ;
 
         $this->jwtGenerator
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('generateToken')
-            ->with(self::callback(static function (JwtPayload $jwtPayload) {
+            ->with($this->callback(static function (JwtPayload $jwtPayload) {
                 return 'spiderman' === $jwtPayload->getSubject()
                     && ['name' => 'Peter Parker', 'email' => 'spiderman@marvel.com'] === $jwtPayload->getInfo()
                     && 949449610 === $jwtPayload->getExpirationTime() // 2000-02-02 00:00:10
@@ -122,26 +122,26 @@ final class CredentialsGeneratorTest extends TestCase
             ->willReturn('test2')
         ;
 
-        self::assertEquals('test2', $this->credentialsGenerator->generateJwtTokenForUser($user, 'qwerty', ['channelA']));
+        $this->assertEquals('test2', $this->credentialsGenerator->generateJwtTokenForUser($user, 'qwerty', ['channelA']));
     }
 
     #[Test]
     public function generateJwtTokenForUserWithMeta(): void
     {
         $this->dateTimeHelper
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getCurrentDatetimeUtc')
             ->willReturn(new \DateTime('2000-02-02 00:00:00', new \DateTimeZone('UTC')))
         ;
 
         $user = $this->createMock(CentrifugoUserMetaInterface::class);
         $user
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getCentrifugoSubject')
             ->willReturn('spiderman')
         ;
         $user
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getCentrifugoUserInfo')
             ->willReturn(
                 [
@@ -151,7 +151,7 @@ final class CredentialsGeneratorTest extends TestCase
             )
         ;
         $user
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getCentrifugoUserMeta')
             ->willReturn(
                 [
@@ -161,9 +161,9 @@ final class CredentialsGeneratorTest extends TestCase
         ;
 
         $this->jwtGenerator
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('generateToken')
-            ->with(self::callback(static function (JwtPayload $jwtPayload) {
+            ->with($this->callback(static function (JwtPayload $jwtPayload) {
                 return 'spiderman' === $jwtPayload->getSubject()
                     && ['name' => 'Peter Parker', 'email' => 'spiderman@marvel.com'] === $jwtPayload->getInfo()
                     && ['foo' => 'bar'] === $jwtPayload->getMeta()
@@ -175,22 +175,22 @@ final class CredentialsGeneratorTest extends TestCase
             ->willReturn('test2')
         ;
 
-        self::assertEquals('test2', $this->credentialsGenerator->generateJwtTokenForUser($user, 'qwerty', ['channelA']));
+        $this->assertEquals('test2', $this->credentialsGenerator->generateJwtTokenForUser($user, 'qwerty', ['channelA']));
     }
 
     #[Test]
     public function generateJwtTokenForPrivateChannel(): void
     {
         $this->dateTimeHelper
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getCurrentDatetimeUtc')
             ->willReturn(new \DateTime('2000-03-03 00:00:00', new \DateTimeZone('UTC')))
         ;
 
         $this->jwtGenerator
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('generateToken')
-            ->with(self::callback(static function (JwtPayloadForPrivateChannel $jwtPayloadForPrivateChannel) {
+            ->with($this->callback(static function (JwtPayloadForPrivateChannel $jwtPayloadForPrivateChannel) {
                 return 'spiderman' === $jwtPayloadForPrivateChannel->getClient()
                     && 'avengers' === $jwtPayloadForPrivateChannel->getChannel()
                     && [] === $jwtPayloadForPrivateChannel->getInfo()
@@ -203,29 +203,29 @@ final class CredentialsGeneratorTest extends TestCase
             ->willReturn('test3')
         ;
 
-        self::assertEquals('test3', $this->credentialsGenerator->generateJwtTokenForPrivateChannel('spiderman', 'avengers', null, true));
+        $this->assertEquals('test3', $this->credentialsGenerator->generateJwtTokenForPrivateChannel('spiderman', 'avengers', null, true));
     }
 
     #[Test]
     public function generateJwtTokenForChannel(): void
     {
         $this->dateTimeHelper
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getCurrentDatetimeUtc')
             ->willReturn(new \DateTime('2000-03-03 00:00:00', new \DateTimeZone('UTC')))
         ;
 
         $user = $this->createMock(CentrifugoUserInterface::class);
         $user
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getCentrifugoSubject')
             ->willReturn('spiderman')
         ;
 
         $this->jwtGenerator
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('generateToken')
-            ->with(self::callback(static function (JwtPayloadForChannel $jwtPayloadForChannel) {
+            ->with($this->callback(static function (JwtPayloadForChannel $jwtPayloadForChannel) {
                 return 'spiderman' === $jwtPayloadForChannel->getSubject()
                     && 'avengers' === $jwtPayloadForChannel->getChannel()
                     && [] === $jwtPayloadForChannel->getInfo()
@@ -243,6 +243,6 @@ final class CredentialsGeneratorTest extends TestCase
             ->willReturn('test4')
         ;
 
-        self::assertEquals('test4', $this->credentialsGenerator->generateJwtTokenForChannel($user, 'avengers'));
+        $this->assertEquals('test4', $this->credentialsGenerator->generateJwtTokenForChannel($user, 'avengers'));
     }
 }

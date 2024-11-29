@@ -61,7 +61,7 @@ final class OptionDisconnectReasonTraitTest extends TestCase
     public function validOption(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('disconnect')
         ;
 

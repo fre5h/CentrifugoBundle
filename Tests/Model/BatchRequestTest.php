@@ -45,23 +45,23 @@ final class BatchRequestTest extends TestCase
     public function getCommands(): void
     {
         $commands = $this->command->getCommands();
-        self::assertInstanceOf(PublishCommand::class, $commands->current());
+        $this->assertInstanceOf(PublishCommand::class, $commands->current());
 
         $commands->next();
-        self::assertInstanceOf(BroadcastCommand::class, $commands->current());
+        $this->assertInstanceOf(BroadcastCommand::class, $commands->current());
     }
 
     #[Test]
     public function addCommandAndGetNumberOfCommands(): void
     {
-        self::assertEquals(2, $this->command->getNumberOfCommands());
+        $this->assertEquals(2, $this->command->getNumberOfCommands());
         $this->command->addCommand(new InfoCommand());
-        self::assertEquals(3, $this->command->getNumberOfCommands());
+        $this->assertEquals(3, $this->command->getNumberOfCommands());
         $commands = $this->command->getCommands();
         $commands->next();
         $commands->next();
 
-        self::assertInstanceOf(InfoCommand::class, $commands->current());
+        $this->assertInstanceOf(InfoCommand::class, $commands->current());
     }
 
     #[Test]
@@ -77,26 +77,26 @@ final class BatchRequestTest extends TestCase
     public function getChannels(): void
     {
         $channels = $this->command->getChannels();
-        self::assertEquals('channelA', $channels->current());
+        $this->assertEquals('channelA', $channels->current());
 
         $channels->next();
-        self::assertEquals('channelB', $channels->current());
+        $this->assertEquals('channelB', $channels->current());
 
         $channels->next();
-        self::assertEquals('channelC', $channels->current());
+        $this->assertEquals('channelC', $channels->current());
     }
 
     #[Test]
     public function prepareLineDelimitedJsonWithEmptyBatchRequest(): void
     {
         $batchRequest = new BatchRequest();
-        self::assertEquals('{}', $batchRequest->prepareLineDelimitedJson());
+        $this->assertEquals('{}', $batchRequest->prepareLineDelimitedJson());
     }
 
     #[Test]
     public function prepareLineDelimitedJsonWithNonEmptyBatchRequest(): void
     {
-        self::assertJsonStringEqualsJsonString(
+        $this->assertJsonStringEqualsJsonString(
             expectedJson: <<<'JSON'
                 {
                     "commands": [

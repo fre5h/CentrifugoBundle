@@ -67,7 +67,7 @@ final class PresenceStatsCommandTest extends TestCase
     public function successfulExecution(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('presenceStats')
             ->with('channelA')
             ->willReturn(
@@ -84,19 +84,19 @@ final class PresenceStatsCommandTest extends TestCase
                 'channel' => 'channelA',
             ]
         );
-        self::assertSame(0, $result);
+        $this->assertSame(0, $result);
 
         $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('Presence Stats', $output);
-        self::assertStringContainsString('Total number of clients in channel: 2', $output);
-        self::assertStringContainsString('Total number of unique users in channel: 1', $output);
+        $this->assertStringContainsString('Presence Stats', $output);
+        $this->assertStringContainsString('Total number of clients in channel: 2', $output);
+        $this->assertStringContainsString('Total number of unique users in channel: 1', $output);
     }
 
     #[Test]
     public function exception(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('presenceStats')
             ->willThrowException(new \Exception('test'))
         ;
@@ -107,9 +107,9 @@ final class PresenceStatsCommandTest extends TestCase
                 'channel' => 'channelA',
             ]
         );
-        self::assertSame(1, $result);
+        $this->assertSame(1, $result);
 
         $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('test', $output);
+        $this->assertStringContainsString('test', $output);
     }
 }

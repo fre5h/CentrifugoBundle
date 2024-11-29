@@ -55,16 +55,16 @@ final class RegisterCentrifugoPassTest extends TestCase
     public function processFakeCentrifugo(): void
     {
         $this->containerBuilder
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getParameter')
             ->with('centrifugo.fake_mode')
             ->willReturn(true)
         ;
 
         $this->containerBuilder
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('setDefinition')
-            ->with(CentrifugoInterface::class, self::callback(static function (Definition $definition) {
+            ->with(CentrifugoInterface::class, $this->callback(static function (Definition $definition) {
                 return FakeCentrifugo::class === $definition->getClass();
             }))
         ;
@@ -80,7 +80,7 @@ final class RegisterCentrifugoPassTest extends TestCase
         $this->containerBuilder
             ->expects($matcher)
             ->method('getParameter')
-            ->with(...self::withConsecutive(
+            ->with(...$this->withConsecutive(
                 ['centrifugo.fake_mode'],
                 ['centrifugo.api_endpoint'],
                 ['centrifugo.api_key'],
@@ -93,9 +93,9 @@ final class RegisterCentrifugoPassTest extends TestCase
         ;
 
         $this->containerBuilder
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('setDefinition')
-            ->with(CentrifugoInterface::class, self::callback(static function (Definition $definition) {
+            ->with(CentrifugoInterface::class, $this->callback(static function (Definition $definition) {
                 return Centrifugo::class === $definition->getClass();
             }))
         ;

@@ -61,7 +61,7 @@ final class InfoCommandTest extends TestCase
     public function successfulExecution(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('info')
             ->willReturn(
                 [
@@ -81,54 +81,54 @@ final class InfoCommandTest extends TestCase
         ;
 
         $result = $this->commandTester->execute(['command' => $this->command->getName()]);
-        self::assertSame(0, $result);
+        $this->assertSame(0, $result);
 
         $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('Info', $output);
-        self::assertStringContainsString('Node Test', $output);
-        self::assertStringContainsString('metrics', $output);
-        self::assertStringContainsString('  ├ interval: 60', $output);
-        self::assertStringContainsString('  └ items', $output);
-        self::assertStringContainsString('    └ process.virtual.memory_max_bytes: -1', $output);
+        $this->assertStringContainsString('Info', $output);
+        $this->assertStringContainsString('Node Test', $output);
+        $this->assertStringContainsString('metrics', $output);
+        $this->assertStringContainsString('  ├ interval: 60', $output);
+        $this->assertStringContainsString('  └ items', $output);
+        $this->assertStringContainsString('    └ process.virtual.memory_max_bytes: -1', $output);
     }
 
     #[Test]
     public function noData(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('info')
             ->willReturn(['nodes' => []])
         ;
 
         $result = $this->commandTester->execute(['command' => $this->command->getName()]);
-        self::assertSame(0, $result);
+        $this->assertSame(0, $result);
 
         $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('NO DATA', $output);
+        $this->assertStringContainsString('NO DATA', $output);
     }
 
     #[Test]
     public function exception(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('info')
             ->willThrowException(new \Exception('test'))
         ;
 
         $result = $this->commandTester->execute(['command' => $this->command->getName()]);
-        self::assertSame(1, $result);
+        $this->assertSame(1, $result);
 
         $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('test', $output);
+        $this->assertStringContainsString('test', $output);
     }
 
     #[Test]
     public function unexpectedValueException(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('info')
             ->willReturn(
                 [
@@ -143,9 +143,9 @@ final class InfoCommandTest extends TestCase
         ;
 
         $result = $this->commandTester->execute(['command' => $this->command->getName()]);
-        self::assertSame(1, $result);
+        $this->assertSame(1, $result);
 
         $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('Value is not an array, nor a string', $output);
+        $this->assertStringContainsString('Value is not an array, nor a string', $output);
     }
 }

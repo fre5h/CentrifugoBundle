@@ -42,25 +42,25 @@ final class JwtPayloadForPrivateChannelTest extends TestCase
             true,
         );
 
-        self::assertInstanceOf(AbstractJwtPayload::class, $jwtPayloadForPrivateChannel);
-        self::assertSame('spiderman', $jwtPayloadForPrivateChannel->getClient());
-        self::assertSame('avengers', $jwtPayloadForPrivateChannel->getChannel());
-        self::assertSame(
+        $this->assertInstanceOf(AbstractJwtPayload::class, $jwtPayloadForPrivateChannel);
+        $this->assertSame('spiderman', $jwtPayloadForPrivateChannel->getClient());
+        $this->assertSame('avengers', $jwtPayloadForPrivateChannel->getChannel());
+        $this->assertSame(
             [
                 'name' => 'Peter Parker',
                 'email' => 'spiderman@marvel.com',
             ],
             $jwtPayloadForPrivateChannel->getInfo(),
         );
-        self::assertSame(
+        $this->assertSame(
             [
                 'foo' => 'bar',
             ],
             $jwtPayloadForPrivateChannel->getMeta(),
         );
-        self::assertSame(123, $jwtPayloadForPrivateChannel->getExpirationTime());
-        self::assertSame('test', $jwtPayloadForPrivateChannel->getBase64Info());
-        self::assertTrue($jwtPayloadForPrivateChannel->isEto());
+        $this->assertSame(123, $jwtPayloadForPrivateChannel->getExpirationTime());
+        $this->assertSame('test', $jwtPayloadForPrivateChannel->getBase64Info());
+        $this->assertTrue($jwtPayloadForPrivateChannel->isEto());
     }
 
     #[Test]
@@ -81,7 +81,7 @@ final class JwtPayloadForPrivateChannelTest extends TestCase
             true,
         );
 
-        self::assertEquals(
+        $this->assertEquals(
             [
                 'client' => 'spiderman',
                 'channel' => 'avengers',
@@ -108,7 +108,7 @@ final class JwtPayloadForPrivateChannelTest extends TestCase
             'avengers',
         );
 
-        self::assertEquals(
+        $this->assertEquals(
             [
                 'client' => 'spiderman',
                 'channel' => 'avengers',
