@@ -107,6 +107,7 @@ jobs:
         symfony-version:
           - '7.0'
           - '7.1'
+          - '7.2'
     steps:
       - name: 'Checkout Code'
         uses: actions/checkout@v4
