@@ -64,7 +64,7 @@ class Centrifugo implements CentrifugoInterface
     /**
      * {@inheritdoc}
      */
-    public function subscribe(string $user, string $channel, array $info = [], string $base64Info = null, string $client = null, string $session = null, array $data = [], ?string $base64Data = null, ?StreamPosition $recoverSince = null, ?Override $override = null): void
+    public function subscribe(string $user, string $channel, array $info = [], string $base64Info = null, ?string $client = null, ?string $session = null, array $data = [], ?string $base64Data = null, ?StreamPosition $recoverSince = null, ?Override $override = null): void
     {
         $this->doSendCommand(new Model\SubscribeCommand($user, $channel, $info, $base64Info, $client, $session, $data, $base64Data, $recoverSince, $override));
     }
@@ -88,7 +88,7 @@ class Centrifugo implements CentrifugoInterface
     /**
      * {@inheritdoc}
      */
-    public function refresh(string $user, string $client = null, ?string $session = null, ?bool $expired = null, ?int $expireAt = null): void
+    public function refresh(string $user, ?string $client = null, ?string $session = null, ?bool $expired = null, ?int $expireAt = null): void
     {
         $this->doSendCommand(new Model\RefreshCommand($user, $client, $session, $expired, $expireAt));
     }
@@ -128,7 +128,7 @@ class Centrifugo implements CentrifugoInterface
     /**
      * {@inheritdoc}
      */
-    public function channels(string $pattern = null): array
+    public function channels(?string $pattern = null): array
     {
         return (array) $this->doSendCommand(new Model\ChannelsCommand($pattern));
     }
