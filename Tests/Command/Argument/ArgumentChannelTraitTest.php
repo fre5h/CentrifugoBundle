@@ -31,12 +31,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class ArgumentChannelTraitTest extends TestCase
 {
-    /** @var CentrifugoInterface|MockObject */
     private CentrifugoInterface|MockObject $centrifugo;
-
-    /** @var CentrifugoChecker|MockObject */
     private CentrifugoChecker|MockObject $centrifugoChecker;
-
     private Command $command;
     private Application $application;
     private CommandTester $commandTester;
@@ -69,14 +65,14 @@ final class ArgumentChannelTraitTest extends TestCase
     public function invalidChannelName(): void
     {
         $this->centrifugoChecker
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('assertValidChannelName')
             ->with('channelA')
             ->willThrowException(new CentrifugoInvalidArgumentException('test'))
         ;
 
         $this->centrifugo
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('presence')
         ;
 
@@ -95,12 +91,12 @@ final class ArgumentChannelTraitTest extends TestCase
     public function channelNameIsNotString(): void
     {
         $this->centrifugoChecker
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('assertValidChannelName')
         ;
 
         $this->centrifugo
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('presence')
         ;
 
@@ -119,12 +115,12 @@ final class ArgumentChannelTraitTest extends TestCase
     public function channelNameIsMissed(): void
     {
         $this->centrifugoChecker
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('assertValidChannelName')
         ;
 
         $this->centrifugo
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('presence')
         ;
 

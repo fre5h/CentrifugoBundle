@@ -1,0 +1,11 @@
+services:
+  fresh_centrifugo_bundle_php:
+    container_name: "fresh_centrifugo_bundle_php"
+    image: fresh-centrifugo-bundle-php:1.0
+    stdin_open: true
+    tty: true
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - .:/var/www/bundle

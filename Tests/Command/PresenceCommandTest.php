@@ -29,12 +29,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class PresenceCommandTest extends TestCase
 {
-    /** @var CentrifugoInterface|MockObject */
     private CentrifugoInterface|MockObject $centrifugo;
-
-    /** @var CentrifugoChecker|MockObject */
     private CentrifugoChecker|MockObject $centrifugoChecker;
-
     private Command $command;
     private Application $application;
     private CommandTester $commandTester;
@@ -67,7 +63,7 @@ final class PresenceCommandTest extends TestCase
     public function successfulExecution(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('presence')
             ->with('channelA')
             ->willReturn(
@@ -84,7 +80,7 @@ final class PresenceCommandTest extends TestCase
                             ],
                         ],
                     ],
-                ]
+                ],
             )
         ;
 
@@ -92,24 +88,24 @@ final class PresenceCommandTest extends TestCase
             [
                 'command' => $this->command->getName(),
                 'channel' => 'channelA',
-            ]
+            ],
         );
-        self::assertSame(0, $result);
+        $this->assertSame(0, $result);
 
         $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('Presence', $output);
-        self::assertStringContainsString('client: c54313b2-0442-499a-a70c-051f8588020f', $output);
-        self::assertStringContainsString('user: 42', $output);
-        self::assertStringContainsString('conn_info', $output);
-        self::assertStringContainsString('chan_info', $output);
-        self::assertStringContainsString('"username": "user1@test.com"', $output);
+        $this->assertStringContainsString('Presence', $output);
+        $this->assertStringContainsString('client: c54313b2-0442-499a-a70c-051f8588020f', $output);
+        $this->assertStringContainsString('user: 42', $output);
+        $this->assertStringContainsString('conn_info', $output);
+        $this->assertStringContainsString('chan_info', $output);
+        $this->assertStringContainsString('"username": "user1@test.com"', $output);
     }
 
     #[Test]
     public function noData(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('presence')
             ->with('channelA')
             ->willReturn(['presence' => []])
@@ -119,19 +115,19 @@ final class PresenceCommandTest extends TestCase
             [
                 'command' => $this->command->getName(),
                 'channel' => 'channelA',
-            ]
+            ],
         );
-        self::assertSame(0, $result);
+        $this->assertSame(0, $result);
 
         $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('NO DATA', $output);
+        $this->assertStringContainsString('NO DATA', $output);
     }
 
     #[Test]
     public function exception(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('presence')
             ->willThrowException(new \Exception('test'))
         ;
@@ -140,11 +136,11 @@ final class PresenceCommandTest extends TestCase
             [
                 'command' => $this->command->getName(),
                 'channel' => 'channelA',
-            ]
+            ],
         );
-        self::assertSame(1, $result);
+        $this->assertSame(1, $result);
 
         $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('test', $output);
+        $this->assertStringContainsString('test', $output);
     }
 }

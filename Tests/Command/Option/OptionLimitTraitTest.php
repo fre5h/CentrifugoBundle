@@ -30,12 +30,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class OptionLimitTraitTest extends TestCase
 {
-    /** @var CentrifugoInterface|MockObject */
     private CentrifugoInterface|MockObject $centrifugo;
-
-    /** @var CentrifugoChecker|MockObject */
     private CentrifugoChecker|MockObject $centrifugoChecker;
-
     private Command $command;
     private Application $application;
     private CommandTester $commandTester;
@@ -68,7 +64,7 @@ final class OptionLimitTraitTest extends TestCase
     public function validOption(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('history')
         ;
 
@@ -77,7 +73,7 @@ final class OptionLimitTraitTest extends TestCase
                 'command' => $this->command->getName(),
                 'channel' => 'channelName',
                 '--limit' => 20,
-            ]
+            ],
         );
     }
 
@@ -85,7 +81,7 @@ final class OptionLimitTraitTest extends TestCase
     public function zeroValue(): void
     {
         $this->centrifugo
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('history')
         ;
 
@@ -97,7 +93,7 @@ final class OptionLimitTraitTest extends TestCase
                 'command' => $this->command->getName(),
                 'channel' => 'channelName',
                 '--limit' => 0,
-            ]
+            ],
         );
     }
 
@@ -105,7 +101,7 @@ final class OptionLimitTraitTest extends TestCase
     public function nonStringValue(): void
     {
         $this->centrifugo
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('history')
         ;
 
@@ -117,7 +113,7 @@ final class OptionLimitTraitTest extends TestCase
                 'command' => $this->command->getName(),
                 'channel' => 'channelName',
                 '--limit' => 'abcd',
-            ]
+            ],
         );
     }
 }

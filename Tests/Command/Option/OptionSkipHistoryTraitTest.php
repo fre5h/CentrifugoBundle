@@ -29,12 +29,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class OptionSkipHistoryTraitTest extends TestCase
 {
-    /** @var CentrifugoInterface|MockObject */
     private CentrifugoInterface|MockObject $centrifugo;
-
-    /** @var CentrifugoChecker|MockObject */
     private CentrifugoChecker|MockObject $centrifugoChecker;
-
     private Command $command;
     private Application $application;
     private CommandTester $commandTester;
@@ -67,7 +63,7 @@ final class OptionSkipHistoryTraitTest extends TestCase
     public function validOption(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('publish')
         ;
 
@@ -77,7 +73,7 @@ final class OptionSkipHistoryTraitTest extends TestCase
                 'data' => '{"foo":"bar"}',
                 'channel' => 'channelName',
                 '--skipHistory' => true,
-            ]
+            ],
         );
     }
 }

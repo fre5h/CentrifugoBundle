@@ -1,0 +1,6 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Run unit tests" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
+    <TestRunner configuration_file="/var/www/bundle/phpunit.xml.dist" scope="XML" />
+    <method v="2" />
+  </configuration>
+</component>

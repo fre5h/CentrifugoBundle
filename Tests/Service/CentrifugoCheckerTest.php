@@ -27,9 +27,7 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
  */
 final class CentrifugoCheckerTest extends TestCase
 {
-    /** @var ResponseInterface|MockObject */
     private ResponseInterface|MockObject $response;
-
     private CentrifugoChecker $centrifugoChecker;
 
     protected function setUp(): void
@@ -67,14 +65,14 @@ final class CentrifugoCheckerTest extends TestCase
     #[Test]
     public function validChannelName(): void
     {
-        self::assertTrue($this->centrifugoChecker->assertValidChannelName('1234567890'));
+        $this->assertTrue($this->centrifugoChecker->assertValidChannelName('1234567890'));
     }
 
     #[Test]
     public function invalidResponseStatusCode(): void
     {
         $this->response
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getStatusCode')
             ->willReturn(500)
         ;
@@ -89,7 +87,7 @@ final class CentrifugoCheckerTest extends TestCase
     public function validResponseStatusCode(): void
     {
         $this->response
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getStatusCode')
             ->willReturn(200)
         ;
@@ -101,7 +99,7 @@ final class CentrifugoCheckerTest extends TestCase
     public function invalidResponseHeaders(): void
     {
         $this->response
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getHeaders')
             ->with(false)
             ->willReturn([])
@@ -117,7 +115,7 @@ final class CentrifugoCheckerTest extends TestCase
     public function validResponseHeaders(): void
     {
         $this->response
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getHeaders')
             ->with(false)
             ->willReturn(['content-type' => []])
@@ -130,7 +128,7 @@ final class CentrifugoCheckerTest extends TestCase
     public function invalidResponseContentType(): void
     {
         $this->response
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getHeaders')
             ->with(false)
             ->willReturn(['content-type' => ['text/html']])
@@ -146,7 +144,7 @@ final class CentrifugoCheckerTest extends TestCase
     public function validResponseContentType(): void
     {
         $this->response
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getHeaders')
             ->with(false)
             ->willReturn(['content-type' => ['application/json']])

@@ -39,25 +39,25 @@ final class CommandHistoryLoggerTest extends TestCase
     #[Test]
     public function constructor(): void
     {
-        self::assertCount(0, $this->commandHistoryLogger->getCommandHistory());
-        self::assertSame(0, $this->commandHistoryLogger->getCommandsCount());
-        self::assertSame(0, $this->commandHistoryLogger->getRequestsCount());
-        self::assertSame(0, $this->commandHistoryLogger->getSuccessfulCommandsCount());
-        self::assertSame(0, $this->commandHistoryLogger->getFailedCommandsCount());
+        $this->assertCount(0, $this->commandHistoryLogger->getCommandHistory());
+        $this->assertSame(0, $this->commandHistoryLogger->getCommandsCount());
+        $this->assertSame(0, $this->commandHistoryLogger->getRequestsCount());
+        $this->assertSame(0, $this->commandHistoryLogger->getSuccessfulCommandsCount());
+        $this->assertSame(0, $this->commandHistoryLogger->getFailedCommandsCount());
     }
 
     #[Test]
     public function requestCount(): void
     {
-        self::assertSame(0, $this->commandHistoryLogger->getRequestsCount());
+        $this->assertSame(0, $this->commandHistoryLogger->getRequestsCount());
         $this->commandHistoryLogger->increaseRequestsCount();
 
-        self::assertSame(1, $this->commandHistoryLogger->getRequestsCount());
+        $this->assertSame(1, $this->commandHistoryLogger->getRequestsCount());
         $this->commandHistoryLogger->increaseRequestsCount();
-        self::assertSame(2, $this->commandHistoryLogger->getRequestsCount());
+        $this->assertSame(2, $this->commandHistoryLogger->getRequestsCount());
 
         $this->commandHistoryLogger->clearCommandHistory();
-        self::assertSame(0, $this->commandHistoryLogger->getRequestsCount());
+        $this->assertSame(0, $this->commandHistoryLogger->getRequestsCount());
     }
 
     #[Test]
@@ -65,29 +65,29 @@ final class CommandHistoryLoggerTest extends TestCase
     {
         $command = new PublishCommand([], 'channelA');
         $this->commandHistoryLogger->logCommand($command, true, ['test']);
-        self::assertCount(1, $this->commandHistoryLogger->getCommandHistory());
-        self::assertSame(
+        $this->assertCount(1, $this->commandHistoryLogger->getCommandHistory());
+        $this->assertSame(
             [
                 'command' => $command,
                 'result' => ['test'],
                 'success' => true,
             ],
-            $this->commandHistoryLogger->getCommandHistory()[0]
+            $this->commandHistoryLogger->getCommandHistory()[0],
         );
-        self::assertSame(1, $this->commandHistoryLogger->getCommandsCount());
-        self::assertSame(1, $this->commandHistoryLogger->getSuccessfulCommandsCount());
-        self::assertSame(0, $this->commandHistoryLogger->getFailedCommandsCount());
+        $this->assertSame(1, $this->commandHistoryLogger->getCommandsCount());
+        $this->assertSame(1, $this->commandHistoryLogger->getSuccessfulCommandsCount());
+        $this->assertSame(0, $this->commandHistoryLogger->getFailedCommandsCount());
 
         $this->commandHistoryLogger->logCommand(new PublishCommand([], 'channelB'), false, []);
-        self::assertCount(2, $this->commandHistoryLogger->getCommandHistory());
-        self::assertSame(2, $this->commandHistoryLogger->getCommandsCount());
-        self::assertSame(1, $this->commandHistoryLogger->getSuccessfulCommandsCount());
-        self::assertSame(1, $this->commandHistoryLogger->getFailedCommandsCount());
+        $this->assertCount(2, $this->commandHistoryLogger->getCommandHistory());
+        $this->assertSame(2, $this->commandHistoryLogger->getCommandsCount());
+        $this->assertSame(1, $this->commandHistoryLogger->getSuccessfulCommandsCount());
+        $this->assertSame(1, $this->commandHistoryLogger->getFailedCommandsCount());
 
         $this->commandHistoryLogger->clearCommandHistory();
-        self::assertCount(0, $this->commandHistoryLogger->getCommandHistory());
-        self::assertSame(0, $this->commandHistoryLogger->getCommandsCount());
-        self::assertSame(0, $this->commandHistoryLogger->getSuccessfulCommandsCount());
-        self::assertSame(0, $this->commandHistoryLogger->getFailedCommandsCount());
+        $this->assertCount(0, $this->commandHistoryLogger->getCommandHistory());
+        $this->assertSame(0, $this->commandHistoryLogger->getCommandsCount());
+        $this->assertSame(0, $this->commandHistoryLogger->getSuccessfulCommandsCount());
+        $this->assertSame(0, $this->commandHistoryLogger->getFailedCommandsCount());
     }
 }

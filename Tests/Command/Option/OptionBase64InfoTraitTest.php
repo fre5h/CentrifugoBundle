@@ -30,12 +30,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class OptionBase64InfoTraitTest extends TestCase
 {
-    /** @var CentrifugoInterface|MockObject */
     private CentrifugoInterface|MockObject $centrifugo;
-
-    /** @var CentrifugoChecker|MockObject */
     private CentrifugoChecker|MockObject $centrifugoChecker;
-
     private Command $command;
     private Application $application;
     private CommandTester $commandTester;
@@ -68,7 +64,7 @@ final class OptionBase64InfoTraitTest extends TestCase
     public function optionIsNotValidBase64(): void
     {
         $this->centrifugo
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('subscribe')
         ;
 
@@ -81,7 +77,7 @@ final class OptionBase64InfoTraitTest extends TestCase
                 'user' => 'user123',
                 'channel' => 'channelName',
                 '--base64info' => 'SGVsbG8gd29ybGQ=bla',
-            ]
+            ],
         );
     }
 
@@ -89,7 +85,7 @@ final class OptionBase64InfoTraitTest extends TestCase
     public function validOption(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('subscribe')
         ;
 
@@ -99,7 +95,7 @@ final class OptionBase64InfoTraitTest extends TestCase
                 'user' => 'user123',
                 'channel' => 'channelName',
                 '--base64info' => 'SGVsbG8gd29ybGQ=',
-            ]
+            ],
         );
     }
 }

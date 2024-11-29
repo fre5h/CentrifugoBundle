@@ -30,12 +30,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class ArgumentChannelsTraitTest extends TestCase
 {
-    /** @var CentrifugoInterface|MockObject */
     private CentrifugoInterface|MockObject $centrifugo;
-
-    /** @var CentrifugoChecker|MockObject */
     private CentrifugoChecker|MockObject $centrifugoChecker;
-
     private Command $command;
     private Application $application;
     private CommandTester $commandTester;
@@ -68,14 +64,14 @@ final class ArgumentChannelsTraitTest extends TestCase
     public function invalidChannelName(): void
     {
         $this->centrifugoChecker
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('assertValidChannelName')
             ->with('channelA')
             ->willThrowException(new InvalidArgumentException('test'))
         ;
 
         $this->centrifugo
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('broadcast')
         ;
 

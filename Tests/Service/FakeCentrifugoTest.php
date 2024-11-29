@@ -47,21 +47,21 @@ final class FakeCentrifugoTest extends TestCase
         $this->centrifugo->disconnect('user123');
         $this->centrifugo->subscribe('user123', 'channelA');
         $this->centrifugo->refresh('user123');
-        self::assertSame([], $this->centrifugo->presence('channelA'));
-        self::assertSame([], $this->centrifugo->presenceStats('channelA'));
-        self::assertSame([], $this->centrifugo->history('channelA'));
+        $this->assertSame([], $this->centrifugo->presence('channelA'));
+        $this->assertSame([], $this->centrifugo->presenceStats('channelA'));
+        $this->assertSame([], $this->centrifugo->history('channelA'));
         $this->centrifugo->historyRemove('channelA');
-        self::assertSame([], $this->centrifugo->channels());
-        self::assertSame([], $this->centrifugo->channels('pattern'));
-        self::assertSame([], $this->centrifugo->info());
-        self::assertSame(
+        $this->assertSame([], $this->centrifugo->channels());
+        $this->assertSame([], $this->centrifugo->channels('pattern'));
+        $this->assertSame([], $this->centrifugo->info());
+        $this->assertSame(
             [],
             $this->centrifugo->batchRequest(
                 [
                     new Model\PublishCommand([], 'channelA'),
                     new Model\PublishCommand([], 'channelB'),
-                ]
-            )
+                ],
+            ),
         );
     }
 }

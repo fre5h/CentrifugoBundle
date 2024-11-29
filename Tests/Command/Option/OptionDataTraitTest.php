@@ -30,12 +30,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class OptionDataTraitTest extends TestCase
 {
-    /** @var CentrifugoInterface|MockObject */
     private CentrifugoInterface|MockObject $centrifugo;
-
-    /** @var CentrifugoChecker|MockObject */
     private CentrifugoChecker|MockObject $centrifugoChecker;
-
     private Command $command;
     private Application $application;
     private CommandTester $commandTester;
@@ -68,7 +64,7 @@ final class OptionDataTraitTest extends TestCase
     public function dataIsNotValidJson(): void
     {
         $this->centrifugo
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('subscribe')
         ;
 
@@ -89,7 +85,7 @@ final class OptionDataTraitTest extends TestCase
     public function validOption(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('subscribe')
         ;
 

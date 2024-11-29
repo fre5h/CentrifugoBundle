@@ -29,12 +29,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class UnsubscribeCommandTest extends TestCase
 {
-    /** @var CentrifugoInterface|MockObject */
     private CentrifugoInterface|MockObject $centrifugo;
-
-    /** @var CentrifugoChecker|MockObject */
     private CentrifugoChecker|MockObject $centrifugoChecker;
-
     private Command $command;
     private Application $application;
     private CommandTester $commandTester;
@@ -67,7 +63,7 @@ final class UnsubscribeCommandTest extends TestCase
     public function successfulExecutionWithRequiredParameters(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('unsubscribe')
             ->with('user123', 'channelA')
         ;
@@ -77,19 +73,19 @@ final class UnsubscribeCommandTest extends TestCase
                 'command' => $this->command->getName(),
                 'user' => 'user123',
                 'channel' => 'channelA',
-            ]
+            ],
         );
-        self::assertSame(0, $result);
+        $this->assertSame(0, $result);
 
         $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('DONE', $output);
+        $this->assertStringContainsString('DONE', $output);
     }
 
     #[Test]
     public function successfulExecutionWithAllParameters(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('unsubscribe')
             ->with('user123', 'channelA')
         ;
@@ -101,19 +97,19 @@ final class UnsubscribeCommandTest extends TestCase
                 'channel' => 'channelA',
                 '--client' => 'clientID',
                 '--session' => 'sessionID',
-            ]
+            ],
         );
-        self::assertSame(0, $result);
+        $this->assertSame(0, $result);
 
         $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('DONE', $output);
+        $this->assertStringContainsString('DONE', $output);
     }
 
     #[Test]
     public function exception(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('unsubscribe')
             ->willThrowException(new \Exception('test'))
         ;
@@ -123,11 +119,11 @@ final class UnsubscribeCommandTest extends TestCase
                 'command' => $this->command->getName(),
                 'user' => 'user123',
                 'channel' => 'channelA',
-            ]
+            ],
         );
-        self::assertSame(1, $result);
+        $this->assertSame(1, $result);
 
         $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('test', $output);
+        $this->assertStringContainsString('test', $output);
     }
 }

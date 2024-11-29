@@ -27,9 +27,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 final class CommandCollectorTest extends TestCase
 {
-    /** @var CommandHistoryLogger|MockObject  */
     private CommandHistoryLogger|MockObject $commandHistoryLogger;
-
     private CentrifugoCollector $centrifugoCollector;
 
     protected function setUp(): void
@@ -49,39 +47,39 @@ final class CommandCollectorTest extends TestCase
     #[Test]
     public function constructor(): void
     {
-        self::assertEquals(0, $this->centrifugoCollector->getCommandsCount());
-        self::assertEquals(0, $this->centrifugoCollector->getRequestsCount());
-        self::assertEquals(0, $this->centrifugoCollector->getSuccessfulCommandsCount());
-        self::assertEquals(0, $this->centrifugoCollector->getFailedCommandsCount());
-        self::assertCount(0, $this->centrifugoCollector->getCommandHistory());
-        self::assertSame('centrifugo', $this->centrifugoCollector->getName());
+        $this->assertEquals(0, $this->centrifugoCollector->getCommandsCount());
+        $this->assertEquals(0, $this->centrifugoCollector->getRequestsCount());
+        $this->assertEquals(0, $this->centrifugoCollector->getSuccessfulCommandsCount());
+        $this->assertEquals(0, $this->centrifugoCollector->getFailedCommandsCount());
+        $this->assertCount(0, $this->centrifugoCollector->getCommandHistory());
+        $this->assertSame('centrifugo', $this->centrifugoCollector->getName());
     }
 
     #[Test]
     public function collectAndReset(): void
     {
         $this->commandHistoryLogger
-            ->expects(self::exactly(2))
+            ->expects($this->exactly(2))
             ->method('getCommandHistory')
             ->willReturn([['test']], [['test'], ['test']])
         ;
         $this->commandHistoryLogger
-            ->expects(self::exactly(2))
+            ->expects($this->exactly(2))
             ->method('getCommandsCount')
             ->willReturnOnConsecutiveCalls(1, 2)
         ;
         $this->commandHistoryLogger
-            ->expects(self::exactly(2))
+            ->expects($this->exactly(2))
             ->method('getRequestsCount')
             ->willReturnOnConsecutiveCalls(1, 2)
         ;
         $this->commandHistoryLogger
-            ->expects(self::exactly(2))
+            ->expects($this->exactly(2))
             ->method('getSuccessfulCommandsCount')
             ->willReturnOnConsecutiveCalls(1, 1)
         ;
         $this->commandHistoryLogger
-            ->expects(self::exactly(2))
+            ->expects($this->exactly(2))
             ->method('getFailedCommandsCount')
             ->willReturnOnConsecutiveCalls(0, 1)
         ;
@@ -91,29 +89,29 @@ final class CommandCollectorTest extends TestCase
             $this->createStub(Response::class)
         );
 
-        self::assertEquals(1, $this->centrifugoCollector->getCommandsCount());
-        self::assertEquals(1, $this->centrifugoCollector->getRequestsCount());
-        self::assertEquals(1, $this->centrifugoCollector->getSuccessfulCommandsCount());
-        self::assertEquals(0, $this->centrifugoCollector->getFailedCommandsCount());
-        self::assertCount(1, $this->centrifugoCollector->getCommandHistory());
+        $this->assertEquals(1, $this->centrifugoCollector->getCommandsCount());
+        $this->assertEquals(1, $this->centrifugoCollector->getRequestsCount());
+        $this->assertEquals(1, $this->centrifugoCollector->getSuccessfulCommandsCount());
+        $this->assertEquals(0, $this->centrifugoCollector->getFailedCommandsCount());
+        $this->assertCount(1, $this->centrifugoCollector->getCommandHistory());
 
         $this->centrifugoCollector->collect(
             $this->createStub(Request::class),
-            $this->createStub(Response::class)
+            $this->createStub(Response::class),
         );
 
-        self::assertEquals(2, $this->centrifugoCollector->getCommandsCount());
-        self::assertEquals(2, $this->centrifugoCollector->getRequestsCount());
-        self::assertEquals(1, $this->centrifugoCollector->getSuccessfulCommandsCount());
-        self::assertEquals(1, $this->centrifugoCollector->getFailedCommandsCount());
-        self::assertCount(2, $this->centrifugoCollector->getCommandHistory());
+        $this->assertEquals(2, $this->centrifugoCollector->getCommandsCount());
+        $this->assertEquals(2, $this->centrifugoCollector->getRequestsCount());
+        $this->assertEquals(1, $this->centrifugoCollector->getSuccessfulCommandsCount());
+        $this->assertEquals(1, $this->centrifugoCollector->getFailedCommandsCount());
+        $this->assertCount(2, $this->centrifugoCollector->getCommandHistory());
 
         $this->centrifugoCollector->reset();
 
-        self::assertEquals(0, $this->centrifugoCollector->getCommandsCount());
-        self::assertEquals(0, $this->centrifugoCollector->getRequestsCount());
-        self::assertEquals(0, $this->centrifugoCollector->getSuccessfulCommandsCount());
-        self::assertEquals(0, $this->centrifugoCollector->getFailedCommandsCount());
-        self::assertCount(0, $this->centrifugoCollector->getCommandHistory());
+        $this->assertEquals(0, $this->centrifugoCollector->getCommandsCount());
+        $this->assertEquals(0, $this->centrifugoCollector->getRequestsCount());
+        $this->assertEquals(0, $this->centrifugoCollector->getSuccessfulCommandsCount());
+        $this->assertEquals(0, $this->centrifugoCollector->getFailedCommandsCount());
+        $this->assertCount(0, $this->centrifugoCollector->getCommandHistory());
     }
 }

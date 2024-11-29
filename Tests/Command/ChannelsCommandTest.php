@@ -28,9 +28,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class ChannelsCommandTest extends TestCase
 {
-    /** @var CentrifugoInterface|MockObject */
     private CentrifugoInterface|MockObject $centrifugo;
-
     private Command $command;
     private Application $application;
     private CommandTester $commandTester;
@@ -61,25 +59,25 @@ final class ChannelsCommandTest extends TestCase
     public function successfulExecutionWithoutPattern(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('channels')
             ->willReturn(['channels' => ['channelA' => ['num_clients' => 33], 'channelB' => ['num_clients' => 25]]])
         ;
 
         $result = $this->commandTester->execute(['command' => $this->command->getName()]);
-        self::assertSame(0, $result);
+        $this->assertSame(0, $result);
 
         $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('channelA       33', $output);
-        self::assertStringContainsString('channelB       25', $output);
-        self::assertStringContainsString('Total Channels: 2', $output);
+        $this->assertStringContainsString('channelA       33', $output);
+        $this->assertStringContainsString('channelB       25', $output);
+        $this->assertStringContainsString('Total Channels: 2', $output);
     }
 
     #[Test]
     public function successfulExecutionWithPattern(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('channels')
             ->willReturn(['channels' => ['channelA' => ['num_clients' => 33]]])
         ;
@@ -87,59 +85,59 @@ final class ChannelsCommandTest extends TestCase
         $result = $this->commandTester->execute(
             [
                 'command' => $this->command->getName(),
-                'pattern' => 'channelA'
-            ]
+                'pattern' => 'channelA',
+            ],
         );
-        self::assertSame(0, $result);
+        $this->assertSame(0, $result);
 
         $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('channelA       33', $output);
-        self::assertStringContainsString('Total Channels: 1', $output);
+        $this->assertStringContainsString('channelA       33', $output);
+        $this->assertStringContainsString('Total Channels: 1', $output);
     }
 
     #[Test]
     public function noData(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('channels')
             ->willReturn(['channels' => []])
         ;
 
         $result = $this->commandTester->execute(['command' => $this->command->getName()]);
-        self::assertSame(0, $result);
+        $this->assertSame(0, $result);
 
         $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('NO DATA', $output);
+        $this->assertStringContainsString('NO DATA', $output);
     }
 
     #[Test]
     public function exception(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('channels')
             ->willThrowException(new \Exception('test'))
         ;
 
         $result = $this->commandTester->execute(['command' => $this->command->getName()]);
-        self::assertSame(1, $result);
+        $this->assertSame(1, $result);
 
         $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('test', $output);
+        $this->assertStringContainsString('test', $output);
     }
 
     #[Test]
     public function autocomplete(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('channels')
             ->willReturn(['channels' => ['channel1' => [], 'channel2' => []]])
         ;
 
         $channels = $this->command->getChannelsForAutocompletion()();
 
-        self::assertSame(['channel1', 'channel2'], $channels);
+        $this->assertSame(['channel1', 'channel2'], $channels);
     }
 }

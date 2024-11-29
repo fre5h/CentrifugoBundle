@@ -29,9 +29,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class ArgumentUserTraitTest extends TestCase
 {
-    /** @var CentrifugoInterface|MockObject */
     private CentrifugoInterface|MockObject $centrifugo;
-
     private Command $command;
     private Application $application;
     private CommandTester $commandTester;
@@ -62,7 +60,7 @@ final class ArgumentUserTraitTest extends TestCase
     public function invalidUser(): void
     {
         $this->centrifugo
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('disconnect')
         ;
 

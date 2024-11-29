@@ -45,35 +45,35 @@ final class JwtPayloadForChannelTest extends TestCase
             new JwtPayloadForChannelOverride(true, false, true, false, true),
         );
 
-        self::assertInstanceOf(JwtPayloadForChannel::class, $jwtPayloadForChannel);
-        self::assertSame('spiderman', $jwtPayloadForChannel->getSubject());
-        self::assertSame('avengers', $jwtPayloadForChannel->getChannel());
-        self::assertSame(
+        $this->assertInstanceOf(JwtPayloadForChannel::class, $jwtPayloadForChannel);
+        $this->assertSame('spiderman', $jwtPayloadForChannel->getSubject());
+        $this->assertSame('avengers', $jwtPayloadForChannel->getChannel());
+        $this->assertSame(
             [
                 'name' => 'Peter Parker',
                 'email' => 'spiderman@marvel.com',
             ],
             $jwtPayloadForChannel->getInfo(),
         );
-        self::assertSame(
+        $this->assertSame(
             [
                 'foo' => 'bar',
             ],
             $jwtPayloadForChannel->getMeta(),
         );
-        self::assertSame(123, $jwtPayloadForChannel->getExpirationTime());
-        self::assertSame('test', $jwtPayloadForChannel->getBase64Info());
-        self::assertSame(321, $jwtPayloadForChannel->getSubscriptionExpirationTime());
-        self::assertSame(['audience'], $jwtPayloadForChannel->getAudiences());
-        self::assertSame('issuer', $jwtPayloadForChannel->getIssuer());
-        self::assertSame(456, $jwtPayloadForChannel->getIssuedAt());
-        self::assertSame('jwtId', $jwtPayloadForChannel->getJwtId());
-        self::assertInstanceOf(JwtPayloadForChannelOverride::class, $jwtPayloadForChannel->getOverride());
-        self::assertTrue($jwtPayloadForChannel->getOverride()->getPresence());
-        self::assertFalse($jwtPayloadForChannel->getOverride()->getJoinLeave());
-        self::assertTrue($jwtPayloadForChannel->getOverride()->getForcePushJoinLeave());
-        self::assertFalse($jwtPayloadForChannel->getOverride()->getForceRecovery());
-        self::assertTrue($jwtPayloadForChannel->getOverride()->getForcePosting());
+        $this->assertSame(123, $jwtPayloadForChannel->getExpirationTime());
+        $this->assertSame('test', $jwtPayloadForChannel->getBase64Info());
+        $this->assertSame(321, $jwtPayloadForChannel->getSubscriptionExpirationTime());
+        $this->assertSame(['audience'], $jwtPayloadForChannel->getAudiences());
+        $this->assertSame('issuer', $jwtPayloadForChannel->getIssuer());
+        $this->assertSame(456, $jwtPayloadForChannel->getIssuedAt());
+        $this->assertSame('jwtId', $jwtPayloadForChannel->getJwtId());
+        $this->assertInstanceOf(JwtPayloadForChannelOverride::class, $jwtPayloadForChannel->getOverride());
+        $this->assertTrue($jwtPayloadForChannel->getOverride()->getPresence());
+        $this->assertFalse($jwtPayloadForChannel->getOverride()->getJoinLeave());
+        $this->assertTrue($jwtPayloadForChannel->getOverride()->getForcePushJoinLeave());
+        $this->assertFalse($jwtPayloadForChannel->getOverride()->getForceRecovery());
+        $this->assertTrue($jwtPayloadForChannel->getOverride()->getForcePosting());
     }
 
     #[Test]
@@ -99,7 +99,7 @@ final class JwtPayloadForChannelTest extends TestCase
             new JwtPayloadForChannelOverride(false, true, false, true, false),
         );
 
-        self::assertEquals(
+        $this->assertEquals(
             [
                 'sub' => 'spiderman',
                 'channel' => 'avengers',
@@ -147,7 +147,7 @@ final class JwtPayloadForChannelTest extends TestCase
             'avengers',
         );
 
-        self::assertEquals(
+        $this->assertEquals(
             [
                 'sub' => 'spiderman',
                 'channel' => 'avengers',

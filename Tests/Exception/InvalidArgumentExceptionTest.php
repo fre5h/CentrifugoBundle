@@ -39,7 +39,7 @@ final class InvalidArgumentExceptionTest extends TestCase
     #[Test]
     public function exception(): void
     {
-        self::assertInstanceOf(ExceptionInterface::class, $this->exception);
-        self::assertInstanceOf(\InvalidArgumentException::class, $this->exception);
+        $this->assertInstanceOf(ExceptionInterface::class, $this->exception);
+        $this->assertInstanceOf(\InvalidArgumentException::class, $this->exception);
     }
 }

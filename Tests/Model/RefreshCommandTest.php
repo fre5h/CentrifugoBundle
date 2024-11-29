@@ -30,30 +30,30 @@ final class RefreshCommandTest extends TestCase
     public function interfaces(): void
     {
         $command = new RefreshCommand(user: 'foo');
-        self::assertInstanceOf(SerializableCommandInterface::class, $command);
-        self::assertInstanceOf(CommandInterface::class, $command);
+        $this->assertInstanceOf(SerializableCommandInterface::class, $command);
+        $this->assertInstanceOf(CommandInterface::class, $command);
     }
 
     #[Test]
     public function constructor(): void
     {
         $command = new RefreshCommand(user: 'foo');
-        self::assertEquals(Method::REFRESH, $command->getMethod());
-        self::assertEquals(['user' => 'foo'], $command->getParams());
-        self::assertEquals([], $command->getChannels());
+        $this->assertEquals(Method::REFRESH, $command->getMethod());
+        $this->assertEquals(['user' => 'foo'], $command->getParams());
+        $this->assertEquals([], $command->getChannels());
     }
 
     #[Test]
     public function serializationRequiredData(): void
     {
         $command = new RefreshCommand(user: 'foo');
-        self::assertJsonStringEqualsJsonString(
+        $this->assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
                     "user": "foo"
                 }
             JSON,
-            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
+            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT),
         );
     }
 
@@ -67,7 +67,7 @@ final class RefreshCommandTest extends TestCase
             expired: true,
             expireAt: 1234567890,
         );
-        self::assertJsonStringEqualsJsonString(
+        $this->assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
                     "user": "foo",
@@ -77,7 +77,7 @@ final class RefreshCommandTest extends TestCase
                     "expire_at": 1234567890
                 }
             JSON,
-            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
+            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT),
         );
     }
 }

@@ -36,24 +36,12 @@ final class CentrifugoTest extends TestCase
 {
     use ConsecutiveParams;
 
-    /** @var HttpClientInterface|MockObject */
     private HttpClientInterface|MockObject $httpClient;
-
-    /** @var ResponseInterface|MockObject */
     private ResponseInterface|MockObject $response;
-
-    /** @var ResponseProcessor|MockObject */
     private ResponseProcessor|MockObject $responseProcessor;
-
-    /** @var CommandHistoryLogger|MockObject */
     private CommandHistoryLogger|MockObject $commandHistoryLogger;
-
-    /** @var CentrifugoChecker|MockObject */
     private CentrifugoChecker|MockObject $centrifugoChecker;
-
-    /** @var Profiler|MockObject */
     private Profiler|MockObject $profiler;
-
     private Centrifugo $centrifugo;
 
     protected function setUp(): void
@@ -71,7 +59,7 @@ final class CentrifugoTest extends TestCase
             $this->responseProcessor,
             $this->commandHistoryLogger,
             $this->centrifugoChecker,
-            $this->profiler
+            $this->profiler,
         );
     }
 
@@ -92,26 +80,26 @@ final class CentrifugoTest extends TestCase
     public function publishCommand(): void
     {
         $this->centrifugoChecker
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('assertValidChannelName')
             ->with('channelA')
         ;
 
         $this->httpClient
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('request')
             ->willReturn($this->response)
         ;
 
         $this->commandHistoryLogger
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('increaseRequestsCount')
         ;
 
         $this->responseProcessor
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('processResponse')
-            ->with(self::isInstanceOf(Model\PublishCommand::class), $this->response)
+            ->with($this->isInstanceOf(Model\PublishCommand::class), $this->response)
             ->willReturn(null)
         ;
 
@@ -128,7 +116,7 @@ final class CentrifugoTest extends TestCase
     public function broadcastCommand(): void
     {
         $this->centrifugoChecker
-            ->expects(self::exactly(2))
+            ->expects($this->exactly(2))
             ->method('assertValidChannelName')
             ->with(...self::withConsecutive(
                 ['channelA'],
@@ -137,20 +125,20 @@ final class CentrifugoTest extends TestCase
         ;
 
         $this->httpClient
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('request')
             ->willReturn($this->response)
         ;
 
         $this->commandHistoryLogger
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('increaseRequestsCount')
         ;
 
         $this->responseProcessor
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('processResponse')
-            ->with(self::isInstanceOf(Model\BroadcastCommand::class), $this->response)
+            ->with($this->isInstanceOf(Model\BroadcastCommand::class), $this->response)
             ->willReturn(null)
         ;
 
@@ -167,26 +155,26 @@ final class CentrifugoTest extends TestCase
     public function unsubscribeCommand(): void
     {
         $this->centrifugoChecker
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('assertValidChannelName')
             ->with('channelA')
         ;
 
         $this->httpClient
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('request')
             ->willReturn($this->response)
         ;
 
         $this->commandHistoryLogger
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('increaseRequestsCount')
         ;
 
         $this->responseProcessor
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('processResponse')
-            ->with(self::isInstanceOf(Model\UnsubscribeCommand::class), $this->response)
+            ->with($this->isInstanceOf(Model\UnsubscribeCommand::class), $this->response)
             ->willReturn(null)
         ;
 
@@ -202,26 +190,26 @@ final class CentrifugoTest extends TestCase
     public function subscribeCommand(): void
     {
         $this->centrifugoChecker
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('assertValidChannelName')
             ->with('channelA')
         ;
 
         $this->httpClient
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('request')
             ->willReturn($this->response)
         ;
 
         $this->commandHistoryLogger
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('increaseRequestsCount')
         ;
 
         $this->responseProcessor
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('processResponse')
-            ->with(self::isInstanceOf(Model\SubscribeCommand::class), $this->response)
+            ->with($this->isInstanceOf(Model\SubscribeCommand::class), $this->response)
             ->willReturn(null)
         ;
 
@@ -249,25 +237,25 @@ final class CentrifugoTest extends TestCase
     public function disconnectCommand(): void
     {
         $this->centrifugoChecker
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('assertValidChannelName')
         ;
 
         $this->httpClient
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('request')
             ->willReturn($this->response)
         ;
 
         $this->commandHistoryLogger
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('increaseRequestsCount')
         ;
 
         $this->responseProcessor
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('processResponse')
-            ->with(self::isInstanceOf(Model\DisconnectCommand::class), $this->response)
+            ->with($this->isInstanceOf(Model\DisconnectCommand::class), $this->response)
             ->willReturn(null)
         ;
 
@@ -284,25 +272,25 @@ final class CentrifugoTest extends TestCase
     public function refreshCommand(): void
     {
         $this->centrifugoChecker
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('assertValidChannelName')
         ;
 
         $this->httpClient
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('request')
             ->willReturn($this->response)
         ;
 
         $this->commandHistoryLogger
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('increaseRequestsCount')
         ;
 
         $this->responseProcessor
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('processResponse')
-            ->with(self::isInstanceOf(Model\RefreshCommand::class), $this->response)
+            ->with($this->isInstanceOf(Model\RefreshCommand::class), $this->response)
             ->willReturn(null)
         ;
 
@@ -319,26 +307,26 @@ final class CentrifugoTest extends TestCase
     public function presenceCommand(): void
     {
         $this->centrifugoChecker
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('assertValidChannelName')
             ->with('channelA')
         ;
 
         $this->httpClient
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('request')
             ->willReturn($this->response)
         ;
 
         $this->commandHistoryLogger
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('increaseRequestsCount')
         ;
 
         $this->responseProcessor
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('processResponse')
-            ->with(self::isInstanceOf(Model\PresenceCommand::class), $this->response)
+            ->with($this->isInstanceOf(Model\PresenceCommand::class), $this->response)
             ->willReturn([])
         ;
 
@@ -349,26 +337,26 @@ final class CentrifugoTest extends TestCase
     public function presenceStatsCommand(): void
     {
         $this->centrifugoChecker
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('assertValidChannelName')
             ->with('channelA')
         ;
 
         $this->httpClient
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('request')
             ->willReturn($this->response)
         ;
 
         $this->commandHistoryLogger
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('increaseRequestsCount')
         ;
 
         $this->responseProcessor
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('processResponse')
-            ->with(self::isInstanceOf(Model\PresenceStatsCommand::class), $this->response)
+            ->with($this->isInstanceOf(Model\PresenceStatsCommand::class), $this->response)
             ->willReturn([])
         ;
 
@@ -379,26 +367,26 @@ final class CentrifugoTest extends TestCase
     public function historyCommand(): void
     {
         $this->centrifugoChecker
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('assertValidChannelName')
             ->with('channelA')
         ;
 
         $this->httpClient
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('request')
             ->willReturn($this->response)
         ;
 
         $this->commandHistoryLogger
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('increaseRequestsCount')
         ;
 
         $this->responseProcessor
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('processResponse')
-            ->with(self::isInstanceOf(Model\HistoryCommand::class), $this->response)
+            ->with($this->isInstanceOf(Model\HistoryCommand::class), $this->response)
             ->willReturn([])
         ;
 
@@ -414,26 +402,26 @@ final class CentrifugoTest extends TestCase
     public function historyRemoveCommand(): void
     {
         $this->centrifugoChecker
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('assertValidChannelName')
             ->with('channelA')
         ;
 
         $this->httpClient
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('request')
             ->willReturn($this->response)
         ;
 
         $this->commandHistoryLogger
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('increaseRequestsCount')
         ;
 
         $this->responseProcessor
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('processResponse')
-            ->with(self::isInstanceOf(Model\HistoryRemoveCommand::class), $this->response)
+            ->with($this->isInstanceOf(Model\HistoryRemoveCommand::class), $this->response)
             ->willReturn(null)
         ;
 
@@ -444,25 +432,25 @@ final class CentrifugoTest extends TestCase
     public function channelsCommand(): void
     {
         $this->centrifugoChecker
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('assertValidChannelName')
         ;
 
         $this->httpClient
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('request')
             ->willReturn($this->response)
         ;
 
         $this->commandHistoryLogger
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('increaseRequestsCount')
         ;
 
         $this->responseProcessor
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('processResponse')
-            ->with(self::isInstanceOf(Model\ChannelsCommand::class), $this->response)
+            ->with($this->isInstanceOf(Model\ChannelsCommand::class), $this->response)
             ->willReturn([])
         ;
 
@@ -473,25 +461,25 @@ final class CentrifugoTest extends TestCase
     public function infoCommand(): void
     {
         $this->centrifugoChecker
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('assertValidChannelName')
         ;
 
         $this->httpClient
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('request')
             ->willReturn($this->response)
         ;
 
         $this->commandHistoryLogger
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('increaseRequestsCount')
         ;
 
         $this->responseProcessor
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('processResponse')
-            ->with(self::isInstanceOf(Model\InfoCommand::class), $this->response)
+            ->with($this->isInstanceOf(Model\InfoCommand::class), $this->response)
             ->willReturn([])
         ;
 
@@ -502,7 +490,7 @@ final class CentrifugoTest extends TestCase
     public function batchRequest(): void
     {
         $this->centrifugoChecker
-            ->expects(self::exactly(2))
+            ->expects($this->exactly(2))
             ->method('assertValidChannelName')
             ->with(
                 ...self::withConsecutive(
@@ -513,20 +501,20 @@ final class CentrifugoTest extends TestCase
         ;
 
         $this->httpClient
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('request')
             ->willReturn($this->response)
         ;
 
         $this->commandHistoryLogger
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('increaseRequestsCount')
         ;
 
         $this->responseProcessor
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('processResponse')
-            ->with(self::isInstanceOf(Model\BatchRequest::class), $this->response)
+            ->with($this->isInstanceOf(Model\BatchRequest::class), $this->response)
             ->willReturn([])
         ;
 

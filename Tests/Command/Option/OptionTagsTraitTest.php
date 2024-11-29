@@ -30,12 +30,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class OptionTagsTraitTest extends TestCase
 {
-    /** @var CentrifugoInterface|MockObject */
     private CentrifugoInterface|MockObject $centrifugo;
-
-    /** @var CentrifugoChecker|MockObject */
     private CentrifugoChecker|MockObject $centrifugoChecker;
-
     private Command $command;
     private Application $application;
     private CommandTester $commandTester;
@@ -68,7 +64,7 @@ final class OptionTagsTraitTest extends TestCase
     public function tagsIsNotValidJson(): void
     {
         $this->centrifugo
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('publish')
         ;
 
@@ -81,7 +77,7 @@ final class OptionTagsTraitTest extends TestCase
                 'data' => '{"foo":"bar"}',
                 'channel' => 'channelName',
                 '--tags' => 'invalid json',
-            ]
+            ],
         );
     }
 
@@ -89,7 +85,7 @@ final class OptionTagsTraitTest extends TestCase
     public function tagsIsNotArray(): void
     {
         $this->centrifugo
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('publish')
         ;
 
@@ -102,7 +98,7 @@ final class OptionTagsTraitTest extends TestCase
                 'data' => '{"foo":"bar"}',
                 'channel' => 'channelName',
                 '--tags' => 'true',
-            ]
+            ],
         );
     }
 
@@ -110,7 +106,7 @@ final class OptionTagsTraitTest extends TestCase
     public function tagValueIsNotString(): void
     {
         $this->centrifugo
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('publish')
         ;
 
@@ -123,7 +119,7 @@ final class OptionTagsTraitTest extends TestCase
                 'data' => '{"foo":"bar"}',
                 'channel' => 'channelName',
                 '--tags' => '{"foo":123}',
-            ]
+            ],
         );
     }
 
@@ -131,7 +127,7 @@ final class OptionTagsTraitTest extends TestCase
     public function validTags(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('publish')
         ;
 
@@ -141,7 +137,7 @@ final class OptionTagsTraitTest extends TestCase
                 'data' => '{"foo":"bar"}',
                 'channel' => 'channelName',
                 '--tags' => '{"env":"test"}',
-            ]
+            ],
         );
     }
 }

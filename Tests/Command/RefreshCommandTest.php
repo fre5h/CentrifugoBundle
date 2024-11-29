@@ -28,9 +28,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class RefreshCommandTest extends TestCase
 {
-    /** @var CentrifugoInterface|MockObject */
     private CentrifugoInterface|MockObject $centrifugo;
-
     private Command $command;
     private Application $application;
     private CommandTester $commandTester;
@@ -61,7 +59,7 @@ final class RefreshCommandTest extends TestCase
     public function successfulExecutionWithRequiredParameters(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('refresh')
             ->with('user123')
         ;
@@ -70,19 +68,19 @@ final class RefreshCommandTest extends TestCase
             [
                 'command' => $this->command->getName(),
                 'user' => 'user123',
-            ]
+            ],
         );
-        self::assertSame(0, $result);
+        $this->assertSame(0, $result);
 
         $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('DONE', $output);
+        $this->assertStringContainsString('DONE', $output);
     }
 
     #[Test]
     public function successfulExecutionWithAllParameters(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('refresh')
             ->with('user123', 'clientID', 'sessionID', true, 1234567890)
         ;
@@ -95,19 +93,19 @@ final class RefreshCommandTest extends TestCase
                 '--session' => 'sessionID',
                 '--expired' => true,
                 '--expireAt' => 1234567890,
-            ]
+            ],
         );
-        self::assertSame(0, $result);
+        $this->assertSame(0, $result);
 
         $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('DONE', $output);
+        $this->assertStringContainsString('DONE', $output);
     }
 
     #[Test]
     public function exception(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('refresh')
             ->willThrowException(new \Exception('test'))
         ;
@@ -116,11 +114,11 @@ final class RefreshCommandTest extends TestCase
             [
                 'command' => $this->command->getName(),
                 'user' => 'user123',
-            ]
+            ],
         );
-        self::assertSame(1, $result);
+        $this->assertSame(1, $result);
 
         $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('test', $output);
+        $this->assertStringContainsString('test', $output);
     }
 }

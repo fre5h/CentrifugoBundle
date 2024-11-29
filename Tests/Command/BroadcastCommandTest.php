@@ -29,12 +29,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class BroadcastCommandTest extends TestCase
 {
-    /** @var CentrifugoInterface|MockObject */
     private CentrifugoInterface|MockObject $centrifugo;
-
-    /** @var CentrifugoChecker|MockObject */
     private CentrifugoChecker|MockObject $centrifugoChecker;
-
     private Command $command;
     private Application $application;
     private CommandTester $commandTester;
@@ -67,7 +63,7 @@ final class BroadcastCommandTest extends TestCase
     public function successfulExecutionWithRequiredParameters(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('broadcast')
             ->with(['foo' => 'bar'], ['channelA', 'channelB'])
         ;
@@ -77,19 +73,19 @@ final class BroadcastCommandTest extends TestCase
                 'command' => $this->command->getName(),
                 'data' => '{"foo":"bar"}',
                 'channels' => ['channelA', 'channelB'],
-            ]
+            ],
         );
-        self::assertSame(0, $result);
+        $this->assertSame(0, $result);
 
         $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('DONE', $output);
+        $this->assertStringContainsString('DONE', $output);
     }
 
     #[Test]
     public function successfulExecutionWithAllParameters(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('broadcast')
             ->with(['foo' => 'bar'], ['channelA', 'channelB'], true, ['env' => 'test'], 'SGVsbG8gd29ybGQ=')
         ;
@@ -102,19 +98,19 @@ final class BroadcastCommandTest extends TestCase
                 '--tags' => '{"env":"test"}',
                 '--skipHistory' => true,
                 '--base64data' => 'SGVsbG8gd29ybGQ=',
-            ]
+            ],
         );
-        self::assertSame(0, $result);
+        $this->assertSame(0, $result);
 
         $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('DONE', $output);
+        $this->assertStringContainsString('DONE', $output);
     }
 
     #[Test]
     public function exception(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('broadcast')
             ->willThrowException(new \Exception('test'))
         ;
@@ -124,11 +120,11 @@ final class BroadcastCommandTest extends TestCase
                 'command' => $this->command->getName(),
                 'data' => '{"foo":"bar"}',
                 'channels' => ['channelA', 'channelB'],
-            ]
+            ],
         );
-        self::assertSame(1, $result);
+        $this->assertSame(1, $result);
 
         $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('test', $output);
+        $this->assertStringContainsString('test', $output);
     }
 }

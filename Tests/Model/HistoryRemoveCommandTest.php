@@ -30,30 +30,30 @@ final class HistoryRemoveCommandTest extends TestCase
     public function interfaces(): void
     {
         $command = new HistoryRemoveCommand(channel: 'foo');
-        self::assertInstanceOf(SerializableCommandInterface::class, $command);
-        self::assertInstanceOf(CommandInterface::class, $command);
+        $this->assertInstanceOf(SerializableCommandInterface::class, $command);
+        $this->assertInstanceOf(CommandInterface::class, $command);
     }
 
     #[Test]
     public function constructor(): void
     {
         $command = new HistoryRemoveCommand(channel: 'foo');
-        self::assertEquals(Method::HISTORY_REMOVE, $command->getMethod());
-        self::assertEquals(['channel' => 'foo'], $command->getParams());
-        self::assertEquals(['foo'], $command->getChannels());
+        $this->assertEquals(Method::HISTORY_REMOVE, $command->getMethod());
+        $this->assertEquals(['channel' => 'foo'], $command->getParams());
+        $this->assertEquals(['foo'], $command->getChannels());
     }
 
     #[Test]
     public function serialization(): void
     {
         $command = new HistoryRemoveCommand(channel: 'foo');
-        self::assertJsonStringEqualsJsonString(
+        $this->assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
                     "channel": "foo"
                 }
             JSON,
-            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
+            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT),
         );
     }
 }

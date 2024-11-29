@@ -29,12 +29,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class PublishCommandTest extends TestCase
 {
-    /** @var CentrifugoInterface|MockObject */
     private CentrifugoInterface|MockObject $centrifugo;
-
-    /** @var CentrifugoChecker|MockObject */
     private CentrifugoChecker|MockObject $centrifugoChecker;
-
     private Command $command;
     private Application $application;
     private CommandTester $commandTester;
@@ -67,7 +63,7 @@ final class PublishCommandTest extends TestCase
     public function successfulExecutionWithRequiredParameters(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('publish')
             ->with(['foo' => 'bar'], 'channelA')
         ;
@@ -77,19 +73,19 @@ final class PublishCommandTest extends TestCase
                 'command' => $this->command->getName(),
                 'data' => '{"foo":"bar"}',
                 'channel' => 'channelA',
-            ]
+            ],
         );
-        self::assertSame(0, $result);
+        $this->assertSame(0, $result);
 
         $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('DONE', $output);
+        $this->assertStringContainsString('DONE', $output);
     }
 
     #[Test]
     public function successfulExecutionWithAllParameters(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('publish')
             ->with(['foo' => 'bar'], 'channelA', true, ['env' => 'test'], 'SGVsbG8gd29ybGQ=')
         ;
@@ -104,17 +100,17 @@ final class PublishCommandTest extends TestCase
                 '--base64data' => 'SGVsbG8gd29ybGQ=',
             ],
         );
-        self::assertSame(0, $result);
+        $this->assertSame(0, $result);
 
         $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('DONE', $output);
+        $this->assertStringContainsString('DONE', $output);
     }
 
     #[Test]
     public function exception(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('publish')
             ->willThrowException(new \Exception('test'))
         ;
@@ -124,11 +120,11 @@ final class PublishCommandTest extends TestCase
                 'command' => $this->command->getName(),
                 'data' => '{"foo":"bar"}',
                 'channel' => 'channelA',
-            ]
+            ],
         );
-        self::assertSame(1, $result);
+        $this->assertSame(1, $result);
 
         $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('test', $output);
+        $this->assertStringContainsString('test', $output);
     }
 }

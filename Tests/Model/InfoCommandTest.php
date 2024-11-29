@@ -32,28 +32,28 @@ final class InfoCommandTest extends TestCase
     public function interfaces(): void
     {
         $command = new InfoCommand();
-        self::assertInstanceOf(SerializableCommandInterface::class, $command);
-        self::assertInstanceOf(CommandInterface::class, $command);
+        $this->assertInstanceOf(SerializableCommandInterface::class, $command);
+        $this->assertInstanceOf(CommandInterface::class, $command);
     }
 
     #[Test]
     public function constructor(): void
     {
         $command = new InfoCommand();
-        self::assertEquals(Method::INFO, $command->getMethod());
-        self::assertEquals([], $command->getParams());
-        self::assertEquals([], $command->getChannels());
+        $this->assertEquals(Method::INFO, $command->getMethod());
+        $this->assertEquals([], $command->getParams());
+        $this->assertEquals([], $command->getChannels());
     }
 
     #[Test]
     public function serialization(): void
     {
         $command = new InfoCommand();
-        self::assertJsonStringEqualsJsonString(
+        $this->assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {}
             JSON,
-            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
+            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT),
         );
     }
 
@@ -61,6 +61,6 @@ final class InfoCommandTest extends TestCase
     public function processResponse(): void
     {
         $command = new InfoCommand();
-        self::assertEquals(['foo' => 'bar'], $command->processResponse(['result' => ['foo' => 'bar']]));
+        $this->assertEquals(['foo' => 'bar'], $command->processResponse(['result' => ['foo' => 'bar']]));
     }
 }

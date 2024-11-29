@@ -29,9 +29,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class OptionDisconnectCodeTraitTest extends TestCase
 {
-    /** @var CentrifugoInterface|MockObject */
     private CentrifugoInterface|MockObject $centrifugo;
-
     private Command $command;
     private Application $application;
     private CommandTester $commandTester;
@@ -62,7 +60,7 @@ final class OptionDisconnectCodeTraitTest extends TestCase
     public function validOption(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('disconnect')
         ;
 
@@ -80,7 +78,7 @@ final class OptionDisconnectCodeTraitTest extends TestCase
     public function invalidOption(): void
     {
         $this->centrifugo
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('disconnect')
         ;
 

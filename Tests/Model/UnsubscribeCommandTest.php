@@ -33,8 +33,8 @@ final class UnsubscribeCommandTest extends TestCase
             user: 'bar',
             channel: 'foo',
         );
-        self::assertInstanceOf(SerializableCommandInterface::class, $command);
-        self::assertInstanceOf(CommandInterface::class, $command);
+        $this->assertInstanceOf(SerializableCommandInterface::class, $command);
+        $this->assertInstanceOf(CommandInterface::class, $command);
     }
 
     #[Test]
@@ -44,9 +44,9 @@ final class UnsubscribeCommandTest extends TestCase
             user: 'bar',
             channel: 'foo',
         );
-        self::assertEquals(Method::UNSUBSCRIBE, $command->getMethod());
-        self::assertEquals(['channel' => 'foo', 'user' => 'bar'], $command->getParams());
-        self::assertEquals(['foo'], $command->getChannels());
+        $this->assertEquals(Method::UNSUBSCRIBE, $command->getMethod());
+        $this->assertEquals(['channel' => 'foo', 'user' => 'bar'], $command->getParams());
+        $this->assertEquals(['foo'], $command->getChannels());
     }
 
     #[Test]
@@ -56,14 +56,14 @@ final class UnsubscribeCommandTest extends TestCase
             user: 'bar',
             channel: 'foo',
         );
-        self::assertJsonStringEqualsJsonString(
+        $this->assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
                     "channel": "foo",
                     "user": "bar"
                 }
             JSON,
-            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
+            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT),
         );
     }
 
@@ -76,7 +76,7 @@ final class UnsubscribeCommandTest extends TestCase
             client: 'abc',
             session: 'qwerty',
         );
-        self::assertJsonStringEqualsJsonString(
+        $this->assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
                     "channel": "foo",
@@ -85,7 +85,7 @@ final class UnsubscribeCommandTest extends TestCase
                     "session": "qwerty"
                 }
             JSON,
-            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
+            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT),
         );
     }
 }

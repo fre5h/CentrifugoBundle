@@ -30,9 +30,9 @@ final class FreshCentrifugoBundleTest extends TestCase
     {
         $containerBuilder = $this->createMock(ContainerBuilder::class);
         $containerBuilder
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('addCompilerPass')
-            ->with(self::isInstanceOf(RegisterCentrifugoPass::class))
+            ->with($this->isInstanceOf(RegisterCentrifugoPass::class))
         ;
 
         $bundle = new FreshCentrifugoBundle();

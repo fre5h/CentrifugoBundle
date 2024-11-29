@@ -27,7 +27,7 @@ final class DisconnectTest extends TestCase
     public function constructor(): void
     {
         $disconnectObject = new Disconnect(999, 'some reason');
-        self::assertSame(999, $disconnectObject->getCode());
-        self::assertSame('some reason', $disconnectObject->getReason());
+        $this->assertSame(999, $disconnectObject->getCode());
+        $this->assertSame('some reason', $disconnectObject->getReason());
     }
 }

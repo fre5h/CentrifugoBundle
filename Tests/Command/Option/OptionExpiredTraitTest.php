@@ -28,9 +28,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class OptionExpiredTraitTest extends TestCase
 {
-    /** @var CentrifugoInterface|MockObject */
     private CentrifugoInterface|MockObject $centrifugo;
-
     private Command $command;
     private Application $application;
     private CommandTester $commandTester;
@@ -61,7 +59,7 @@ final class OptionExpiredTraitTest extends TestCase
     public function validOption(): void
     {
         $this->centrifugo
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('refresh')
         ;
 

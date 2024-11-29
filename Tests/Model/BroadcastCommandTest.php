@@ -33,8 +33,8 @@ final class BroadcastCommandTest extends TestCase
             data: ['baz' => 'qux'],
             channels: ['foo', 'bar'],
         );
-        self::assertInstanceOf(SerializableCommandInterface::class, $command);
-        self::assertInstanceOf(CommandInterface::class, $command);
+        $this->assertInstanceOf(SerializableCommandInterface::class, $command);
+        $this->assertInstanceOf(CommandInterface::class, $command);
     }
 
     #[Test]
@@ -44,9 +44,9 @@ final class BroadcastCommandTest extends TestCase
             data: ['baz' => 'qux'],
             channels: ['foo', 'bar'],
         );
-        self::assertEquals(Method::BROADCAST, $command->getMethod());
-        self::assertEquals(['channels' => ['foo', 'bar'], 'data' => ['baz' => 'qux']], $command->getParams());
-        self::assertEquals(['foo', 'bar'], $command->getChannels());
+        $this->assertEquals(Method::BROADCAST, $command->getMethod());
+        $this->assertEquals(['channels' => ['foo', 'bar'], 'data' => ['baz' => 'qux']], $command->getParams());
+        $this->assertEquals(['foo', 'bar'], $command->getChannels());
     }
 
     #[Test]
@@ -56,7 +56,7 @@ final class BroadcastCommandTest extends TestCase
             data: ['baz' => 'qux'],
             channels: ['foo', 'bar'],
         );
-        self::assertJsonStringEqualsJsonString(
+        $this->assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
                     "channels": ["foo", "bar"],
@@ -65,7 +65,7 @@ final class BroadcastCommandTest extends TestCase
                     }
                 }
             JSON,
-            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
+            \json_encode($command, \JSON_THROW_ON_ERROR),
         );
     }
 
@@ -79,7 +79,7 @@ final class BroadcastCommandTest extends TestCase
             tags: ['tag' => 'value'],
             base64data: 'qwerty',
         );
-        self::assertJsonStringEqualsJsonString(
+        $this->assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
                     "channels": ["foo", "bar"],
@@ -93,7 +93,7 @@ final class BroadcastCommandTest extends TestCase
                     "base64data": "qwerty"
                 }
             JSON,
-            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
+            \json_encode($command, \JSON_THROW_ON_ERROR),
         );
     }
 }

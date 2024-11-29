@@ -36,12 +36,14 @@
     },
     "require-dev": {
         "escapestudios/symfony2-coding-standard": "^3.13",
+        "friendsofphp/php-cs-fixer": "^v3.64",
         "jetbrains/phpstorm-attributes": "^1.0",
         "phpstan/phpstan": "^1.12",
         "phpstan/phpstan-deprecation-rules": "^1.1",
         "phpstan/phpstan-phpunit": "^1.4",
         "phpstan/phpstan-symfony": "^1.4",
         "phpunit/phpunit": "^11.3",
+        "roave/security-advisories": "dev-latest",
         "seec/phpunit-consecutive-params": "^1.1",
         "slam/phpstan-extensions": "^6.4"
     },
@@ -57,6 +59,28 @@
         "psr-4": {
             "Fresh\\CentrifugoBundle\\Tests\\": "Tests/"
         }
+    },
+    "scripts": {
+        "ci:pack": [
+            "@ci:composer-validate",
+            "@ci:psr-check",
+            "@ci:code-style",
+            "@ci:static-analysis",
+            "@ci:phpunit"
+        ],
+        "ci:composer-validate": "@composer validate --no-check-all",
+        "ci:psr-check": "@composer dump-autoload --dry-run --strict-psr --optimize",
+        "ci:code-style": [
+            "vendor/bin/phpcs --standard=phpcs.xml",
+            "vendor/bin/php-cs-fixer fix --dry-run --config=.php-cs-fixer.php -v"
+        ],
+        "ci:static-analysis": [
+            "XDEBUG_MODE=off vendor/bin/phpstan analyse -l 9 --no-progress -c phpstan.neon ./"
+        ],
+        "ci:phpunit": [
+            "export XDEBUG_MODE=coverage && vendor/bin/phpunit -c phpunit.xml --coverage-clover=clover-coverage.xml",
+            "vendor/bin/coverage-check clover-coverage.xml 100"
+        ]
     },
     "config": {
         "sort-packages": true,

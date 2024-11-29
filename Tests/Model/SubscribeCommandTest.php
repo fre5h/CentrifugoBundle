@@ -35,8 +35,8 @@ final class SubscribeCommandTest extends TestCase
             user: 'user123',
             channel: 'foo',
         );
-        self::assertInstanceOf(SerializableCommandInterface::class, $command);
-        self::assertInstanceOf(CommandInterface::class, $command);
+        $this->assertInstanceOf(SerializableCommandInterface::class, $command);
+        $this->assertInstanceOf(CommandInterface::class, $command);
     }
 
     #[Test]
@@ -46,9 +46,9 @@ final class SubscribeCommandTest extends TestCase
             user: 'user123',
             channel: 'foo',
         );
-        self::assertEquals(Method::SUBSCRIBE, $command->getMethod());
-        self::assertEquals(['user' => 'user123', 'channel' => 'foo'], $command->getParams());
-        self::assertEquals(['foo'], $command->getChannels());
+        $this->assertEquals(Method::SUBSCRIBE, $command->getMethod());
+        $this->assertEquals(['user' => 'user123', 'channel' => 'foo'], $command->getParams());
+        $this->assertEquals(['foo'], $command->getChannels());
     }
 
     #[Test]
@@ -58,14 +58,14 @@ final class SubscribeCommandTest extends TestCase
             user: 'user123',
             channel: 'foo',
         );
-        self::assertJsonStringEqualsJsonString(
+        $this->assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
                     "user": "user123",
                     "channel": "foo"
                 }
             JSON,
-            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
+            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT),
         );
     }
 
@@ -90,7 +90,7 @@ final class SubscribeCommandTest extends TestCase
                 forceRecovery: true,
             ),
         );
-        self::assertJsonStringEqualsJsonString(
+        $this->assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
                     "user": "user123",
@@ -118,7 +118,7 @@ final class SubscribeCommandTest extends TestCase
                     }
                 }
             JSON,
-            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
+            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT),
         );
     }
 
@@ -136,7 +136,7 @@ final class SubscribeCommandTest extends TestCase
             base64Data: '',
             recoverSince: new StreamPosition(offset: null, epoch: null),
         );
-        self::assertJsonStringEqualsJsonString(
+        $this->assertJsonStringEqualsJsonString(
             <<<'JSON'
                 {
                     "user": "user123",
@@ -151,7 +151,7 @@ final class SubscribeCommandTest extends TestCase
                     }
                 }
             JSON,
-            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT)
+            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT),
         );
     }
 }
