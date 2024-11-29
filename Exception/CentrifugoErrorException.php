@@ -29,7 +29,7 @@ class CentrifugoErrorException extends CentrifugoException
      * @param int               $code
      * @param \Throwable|null   $previous
      */
-    public function __construct(private readonly CommandInterface $command, ResponseInterface $response, string $message = '', int $code = 0, \Throwable $previous = null)
+    public function __construct(private readonly CommandInterface $command, ResponseInterface $response, string $message = '', int $code = 0, ?\Throwable $previous = null)
     {
         parent::__construct($response, $message, $code, $previous);
     }

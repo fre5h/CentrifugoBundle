@@ -26,7 +26,7 @@ final class DisconnectCommand extends AbstractCommand
      * @param string|null     $session
      * @param Disconnect|null $disconnectObject
      */
-    public function __construct(string $user, array $clientIdWhitelist = [], string $client = null, string $session = null, Disconnect $disconnectObject = null)
+    public function __construct(string $user, array $clientIdWhitelist = [], ?string $client = null, ?string $session = null, ?Disconnect $disconnectObject = null)
     {
         $params = [
             'user' => $user,

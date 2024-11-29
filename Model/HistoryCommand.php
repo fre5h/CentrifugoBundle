@@ -27,7 +27,7 @@ final class HistoryCommand extends AbstractCommand implements ResultableCommandI
      * @param int|null            $limit
      * @param StreamPosition|null $streamPosition
      */
-    public function __construct(protected readonly string $channel, bool $reverse = false, int $limit = null, StreamPosition $streamPosition = null)
+    public function __construct(protected readonly string $channel, bool $reverse = false, ?int $limit = null, ?StreamPosition $streamPosition = null)
     {
         $params = [
             'channel' => $channel,
