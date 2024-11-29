@@ -64,7 +64,7 @@ class Centrifugo implements CentrifugoInterface
     /**
      * {@inheritdoc}
      */
-    public function subscribe(string $user, string $channel, array $info = [], string $base64Info = null, ?string $client = null, ?string $session = null, array $data = [], ?string $base64Data = null, ?StreamPosition $recoverSince = null, ?Override $override = null): void
+    public function subscribe(string $user, string $channel, array $info = [], ?string $base64Info = null, ?string $client = null, ?string $session = null, array $data = [], ?string $base64Data = null, ?StreamPosition $recoverSince = null, ?Override $override = null): void
     {
         $this->doSendCommand(new Model\SubscribeCommand($user, $channel, $info, $base64Info, $client, $session, $data, $base64Data, $recoverSince, $override));
     }
