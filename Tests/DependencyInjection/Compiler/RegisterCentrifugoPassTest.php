@@ -32,7 +32,7 @@ final class RegisterCentrifugoPassTest extends TestCase
 {
     use ConsecutiveParams;
 
-    private ContainerBuilder|MockObject $containerBuilder;
+    private ContainerBuilder&MockObject $containerBuilder;
     private RegisterCentrifugoPass $registerCentrifugoPass;
 
     protected function setUp(): void

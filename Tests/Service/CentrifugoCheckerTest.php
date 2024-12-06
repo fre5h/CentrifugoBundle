@@ -27,7 +27,7 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
  */
 final class CentrifugoCheckerTest extends TestCase
 {
-    private ResponseInterface|MockObject $response;
+    private ResponseInterface&MockObject $response;
     private CentrifugoChecker $centrifugoChecker;
 
     protected function setUp(): void

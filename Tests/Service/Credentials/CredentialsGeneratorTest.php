@@ -31,8 +31,8 @@ use PHPUnit\Framework\TestCase;
  */
 final class CredentialsGeneratorTest extends TestCase
 {
-    private JwtGenerator|MockObject $jwtGenerator;
-    private DateTimeHelper|MockObject $dateTimeHelper;
+    private JwtGenerator&MockObject $jwtGenerator;
+    private DateTimeHelper&MockObject $dateTimeHelper;
     private CredentialsGenerator $credentialsGenerator;
 
     protected function setUp(): void
@@ -49,33 +49,6 @@ final class CredentialsGeneratorTest extends TestCase
             $this->dateTimeHelper,
             $this->credentialsGenerator,
         );
-    }
-
-    #[Test]
-    public function generateJwtTokenForAnonymous(): void
-    {
-        $this->dateTimeHelper
-            ->expects($this->once())
-            ->method('getCurrentDatetimeUtc')
-            ->willReturn(new \DateTime('2000-01-01 00:00:00', new \DateTimeZone('UTC')))
-        ;
-
-        $this->jwtGenerator
-            ->expects($this->once())
-            ->method('generateToken')
-            ->with($this->callback(static function (JwtPayload $jwtPayload) {
-                return '' === $jwtPayload->getSubject()
-                    && [] === $jwtPayload->getInfo()
-                    && [] === $jwtPayload->getMeta()
-                    && 946684810 === $jwtPayload->getExpirationTime() // 2000-01-01 00:00:10
-                    && null === $jwtPayload->getBase64Info()
-                    && [] === $jwtPayload->getChannels()
-                ;
-            }))
-            ->willReturn('test1')
-        ;
-
-        $this->assertEquals('test1', $this->credentialsGenerator->generateJwtTokenForAnonymous());
     }
 
     #[Test]
@@ -119,6 +92,71 @@ final class CredentialsGeneratorTest extends TestCase
         ;
 
         $this->assertEquals('test2', $this->credentialsGenerator->generateJwtTokenForUser($user, 'qwerty', ['channelA']));
+    }
+
+    #[Test]
+    public function generateJwtToken(): void
+    {
+        $this->dateTimeHelper
+            ->expects($this->once())
+            ->method('getCurrentDatetimeUtc')
+            ->willReturn(new \DateTime('2000-02-02 00:00:00', new \DateTimeZone('UTC')))
+        ;
+
+        $this->jwtGenerator
+            ->expects($this->once())
+            ->method('generateToken')
+            ->with($this->callback(static function (JwtPayload $jwtPayload) {
+                return 'spiderman' === $jwtPayload->getSubject()
+                    && ['name' => 'Peter Parker', 'email' => 'spiderman@marvel.com'] === $jwtPayload->getInfo()
+                    && 949449610 === $jwtPayload->getExpirationTime() // 2000-02-02 00:00:10
+                    && 'qwerty' === $jwtPayload->getBase64Info()
+                    && ['channelA'] === $jwtPayload->getChannels()
+                ;
+            }))
+            ->willReturn('test2')
+        ;
+
+        $this->assertEquals(
+            'test2',
+            $this->credentialsGenerator->generateJwtToken(
+                subject: 'spiderman',
+                info: [
+                    'name' => 'Peter Parker',
+                    'email' => 'spiderman@marvel.com',
+                ],
+                meta: [],
+                base64info: 'qwerty',
+                channels: ['channelA'],
+            )
+        );
+    }
+
+    #[Test]
+    public function generateJwtTokenForAnonymous(): void
+    {
+        $this->dateTimeHelper
+            ->expects($this->once())
+            ->method('getCurrentDatetimeUtc')
+            ->willReturn(new \DateTime('2000-01-01 00:00:00', new \DateTimeZone('UTC')))
+        ;
+
+        $this->jwtGenerator
+            ->expects($this->once())
+            ->method('generateToken')
+            ->with($this->callback(static function (JwtPayload $jwtPayload) {
+                return '' === $jwtPayload->getSubject()
+                    && [] === $jwtPayload->getInfo()
+                    && [] === $jwtPayload->getMeta()
+                    && 946684810 === $jwtPayload->getExpirationTime() // 2000-01-01 00:00:10
+                    && null === $jwtPayload->getBase64Info()
+                    && [] === $jwtPayload->getChannels()
+                ;
+            }))
+            ->willReturn('test1')
+        ;
+
+        $this->assertEquals('test1', $this->credentialsGenerator->generateJwtTokenForAnonymous());
     }
 
     #[Test]

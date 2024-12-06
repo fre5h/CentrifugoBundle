@@ -29,7 +29,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 final class OptionExpireAtTraitTest extends TestCase
 {
-    private CentrifugoInterface|MockObject $centrifugo;
+    private CentrifugoInterface&MockObject $centrifugo;
     private Command $command;
     private Application $application;
     private CommandTester $commandTester;
