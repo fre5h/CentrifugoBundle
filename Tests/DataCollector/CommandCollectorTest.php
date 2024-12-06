@@ -27,7 +27,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 final class CommandCollectorTest extends TestCase
 {
-    private CommandHistoryLogger|MockObject $commandHistoryLogger;
+    private CommandHistoryLogger&MockObject $commandHistoryLogger;
     private CentrifugoCollector $centrifugoCollector;
 
     protected function setUp(): void

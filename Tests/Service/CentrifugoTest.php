@@ -36,12 +36,12 @@ final class CentrifugoTest extends TestCase
 {
     use ConsecutiveParams;
 
-    private HttpClientInterface|MockObject $httpClient;
-    private ResponseInterface|MockObject $response;
-    private ResponseProcessor|MockObject $responseProcessor;
-    private CommandHistoryLogger|MockObject $commandHistoryLogger;
-    private CentrifugoChecker|MockObject $centrifugoChecker;
-    private Profiler|MockObject $profiler;
+    private HttpClientInterface&MockObject $httpClient;
+    private ResponseInterface&MockObject $response;
+    private ResponseProcessor&MockObject $responseProcessor;
+    private CommandHistoryLogger&MockObject $commandHistoryLogger;
+    private CentrifugoChecker&MockObject $centrifugoChecker;
+    private Profiler&MockObject $profiler;
     private Centrifugo $centrifugo;
 
     protected function setUp(): void

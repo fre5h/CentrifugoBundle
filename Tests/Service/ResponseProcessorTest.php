@@ -40,10 +40,10 @@ final class ResponseProcessorTest extends TestCase
 {
     use ConsecutiveParams;
 
-    private ResponseInterface|MockObject $response;
-    private CentrifugoChecker|MockObject $centrifugoChecker;
-    private CommandHistoryLogger|MockObject $commandHistoryLogger;
-    private Profiler|MockObject $profiler;
+    private ResponseInterface&MockObject $response;
+    private CentrifugoChecker&MockObject $centrifugoChecker;
+    private CommandHistoryLogger&MockObject $commandHistoryLogger;
+    private Profiler&MockObject $profiler;
     private ResponseProcessor $responseProcessor;
 
     protected function setUp(): void

@@ -32,9 +32,9 @@ final class PrivateChannelAuthenticatorTest extends TestCase
 {
     use ConsecutiveParams;
 
-    private Request|MockObject $request;
-    private ChannelAuthenticatorInterface|MockObject $customerChannelAuthenticator;
-    private CredentialsGenerator|MockObject $credentialsGenerator;
+    private Request&MockObject $request;
+    private ChannelAuthenticatorInterface&MockObject $customerChannelAuthenticator;
+    private CredentialsGenerator&MockObject $credentialsGenerator;
     private PrivateChannelAuthenticator $privateChannelAuthenticator;
 
     protected function setUp(): void

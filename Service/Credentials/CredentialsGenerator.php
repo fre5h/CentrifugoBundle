@@ -58,6 +58,29 @@ class CredentialsGenerator
     }
 
     /**
+     * @param string      $subject
+     * @param array       $info
+     * @param array       $meta
+     * @param string|null $base64info
+     * @param array       $channels
+     *
+     * @return string
+     */
+    public function generateJwtToken(string $subject, array $info = [], array $meta = [], ?string $base64info = null, array $channels = []): string
+    {
+        $jwtPayload = new JwtPayload(
+            subject: $subject,
+            info: $info,
+            meta: $meta,
+            expirationTime: $this->getExpirationTime(),
+            base64info: $base64info,
+            channels: $channels,
+        );
+
+        return $this->jwtGenerator->generateToken($jwtPayload);
+    }
+
+    /**
      * @param string|null $base64info
      * @param array       $channels
      *
