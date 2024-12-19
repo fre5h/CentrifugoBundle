@@ -17,6 +17,7 @@ use Fresh\CentrifugoBundle\Service\Jwt\JwtGenerator;
 use Fresh\CentrifugoBundle\Token\JwtPayload;
 use Fresh\CentrifugoBundle\Token\JwtPayloadForChannel;
 use Fresh\CentrifugoBundle\Token\JwtPayloadForPrivateChannel;
+use Fresh\CentrifugoBundle\Token\JwtSubscriptionPayload;
 use Fresh\CentrifugoBundle\User\CentrifugoUserInterface;
 use Fresh\CentrifugoBundle\User\CentrifugoUserMetaInterface;
 use Fresh\DateTime\DateTimeHelper;
@@ -128,6 +129,44 @@ final class CredentialsGeneratorTest extends TestCase
                 meta: [],
                 base64info: 'qwerty',
                 channels: ['channelA'],
+            )
+        );
+    }
+
+    #[Test]
+    public function generateJwtSubscriptionToken(): void
+    {
+        $this->dateTimeHelper
+            ->expects($this->once())
+            ->method('getCurrentDatetimeUtc')
+            ->willReturn(new \DateTime('2000-02-02 00:00:00', new \DateTimeZone('UTC')))
+        ;
+
+        $this->jwtGenerator
+            ->expects($this->once())
+            ->method('generateToken')
+            ->with($this->callback(static function (JwtSubscriptionPayload $jwtSubscriptionPayload) {
+                return 'spiderman' === $jwtSubscriptionPayload->getSubject()
+                    && 'channel' === $jwtSubscriptionPayload->getChannel()
+                    && ['name' => 'Peter Parker', 'email' => 'spiderman@marvel.com'] === $jwtSubscriptionPayload->getInfo()
+                    && 949449610 === $jwtSubscriptionPayload->getExpirationTime() // 2000-02-02 00:00:10
+                    && 'qwerty' === $jwtSubscriptionPayload->getBase64Info()
+                ;
+            }))
+            ->willReturn('test2')
+        ;
+
+        $this->assertEquals(
+            'test2',
+            $this->credentialsGenerator->generateJwtSubscriptionToken(
+                subject: 'spiderman',
+                channel: 'channel',
+                info: [
+                    'name' => 'Peter Parker',
+                    'email' => 'spiderman@marvel.com',
+                ],
+                meta: [],
+                base64info: 'qwerty',
             )
         );
     }

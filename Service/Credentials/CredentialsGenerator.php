@@ -16,6 +16,7 @@ use Fresh\CentrifugoBundle\Service\Jwt\JwtGenerator;
 use Fresh\CentrifugoBundle\Token\JwtPayload;
 use Fresh\CentrifugoBundle\Token\JwtPayloadForChannel;
 use Fresh\CentrifugoBundle\Token\JwtPayloadForPrivateChannel;
+use Fresh\CentrifugoBundle\Token\JwtSubscriptionPayload;
 use Fresh\CentrifugoBundle\User\CentrifugoUserInterface;
 use Fresh\CentrifugoBundle\User\CentrifugoUserMetaInterface;
 use Fresh\DateTime\DateTimeHelper;
@@ -75,6 +76,29 @@ class CredentialsGenerator
             expirationTime: $this->getExpirationTime(),
             base64info: $base64info,
             channels: $channels,
+        );
+
+        return $this->jwtGenerator->generateToken($jwtPayload);
+    }
+
+    /**
+     * @param string      $subject
+     * @param string      $channel
+     * @param array       $info
+     * @param array       $meta
+     * @param string|null $base64info
+     *
+     * @return string
+     */
+    public function generateJwtSubscriptionToken(string $subject, string $channel, array $info = [], array $meta = [], ?string $base64info = null): string
+    {
+        $jwtPayload = new JwtSubscriptionPayload(
+            subject: $subject,
+            channel: $channel,
+            info: $info,
+            meta: $meta,
+            expirationTime: $this->getExpirationTime(),
+            base64info: $base64info,
         );
 
         return $this->jwtGenerator->generateToken($jwtPayload);
