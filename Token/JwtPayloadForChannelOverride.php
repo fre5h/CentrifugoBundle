@@ -74,7 +74,7 @@ final class JwtPayloadForChannelOverride
     }
 
     /**
-     * @return array|null
+     * @return array
      */
     #[ArrayShape([
         'presence' => 'array|null',
