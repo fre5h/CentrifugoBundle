@@ -14,3 +14,9 @@ parameters:
         -
             identifier: missingType.iterableValue
             reportUnmatched: false
+        -
+            identifier: function.alreadyNarrowedType
+            reportUnmatched: false
+        -
+            identifier: instanceof.alwaysTrue
+            reportUnmatched: false

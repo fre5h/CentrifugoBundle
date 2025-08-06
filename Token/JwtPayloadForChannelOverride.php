@@ -83,7 +83,7 @@ final class JwtPayloadForChannelOverride
         'force_recovery' => 'array|null',
         'force_posting' => 'array|null',
     ])]
-    public function getPayloadData(): ?array
+    public function getPayloadData(): array
     {
         $data = [];
 
