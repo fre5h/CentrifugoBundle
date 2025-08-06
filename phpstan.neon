@@ -10,4 +10,7 @@ parameters:
         - '%rootDir%/../../../vendor/*'
     fileExtensions:
         - 'php'
-    checkMissingIterableValueType: false
+    ignoreErrors:
+        -
+            identifier: missingType.iterableValue
+            reportUnmatched: false
