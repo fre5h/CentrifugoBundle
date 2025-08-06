@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the FreshCentrifugoBundle.
  *
@@ -17,7 +18,7 @@ use Fresh\CentrifugoBundle\Exception\CentrifugoException;
 use Fresh\CentrifugoBundle\Exception\ExceptionInterface;
 use Fresh\CentrifugoBundle\Model\CommandInterface;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
@@ -29,8 +30,8 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 final class CentrifugoErrorExceptionTest extends TestCase
 {
     private CentrifugoErrorException $exception;
-    private CommandInterface&MockObject $command;
-    private ResponseInterface&MockObject $response;
+    private CommandInterface&Stub $command;
+    private ResponseInterface&Stub $response;
 
     protected function setUp(): void
     {

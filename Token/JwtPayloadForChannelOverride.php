@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the FreshCentrifugoBundle.
  *
@@ -73,7 +74,7 @@ final class JwtPayloadForChannelOverride
     }
 
     /**
-     * @return array|null
+     * @return array
      */
     #[ArrayShape([
         'presence' => 'array|null',
@@ -82,7 +83,7 @@ final class JwtPayloadForChannelOverride
         'force_recovery' => 'array|null',
         'force_posting' => 'array|null',
     ])]
-    public function getPayloadData(): ?array
+    public function getPayloadData(): array
     {
         $data = [];
 
