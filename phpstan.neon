@@ -2,11 +2,10 @@ includes:
     - 'vendor/phpstan/phpstan-phpunit/extension.neon'
     - 'vendor/phpstan/phpstan-phpunit/rules.neon'
     - 'vendor/phpstan/phpstan-symfony/extension.neon'
-    - 'vendor/slam/phpstan-extensions/conf/slam-rules.neon'
 parameters:
-    level: 9
+    level: 10
     excludePaths:
-        - '%rootDir%/../../../DependencyInjection/Configuration'
+        - '%rootDir%/../../../DependencyInjection/Configuration.php'
         - '%rootDir%/../../../Tests/*'
         - '%rootDir%/../../../vendor/*'
     fileExtensions:
