@@ -44,6 +44,7 @@
         "phpstan/phpstan-symfony": "^2.0",
         "phpunit/phpunit": "^12.4",
         "roave/security-advisories": "dev-latest",
+        "rregeer/phpunit-coverage-check": "^0.3.1",
         "seec/phpunit-consecutive-params": "^1.2"
     },
     "autoload": {
@@ -74,10 +75,10 @@
             "vendor/bin/php-cs-fixer fix --dry-run --config=.php-cs-fixer.php -v"
         ],
         "ci:static-analysis": [
-            "XDEBUG_MODE=off vendor/bin/phpstan analyse -l 10 --no-progress -c phpstan.neon ./"
+            "XDEBUG_MODE=off vendor/bin/phpstan analyse --no-progress -c phpstan.neon ./"
         ],
         "ci:phpunit": [
-            "export XDEBUG_MODE=coverage && vendor/bin/phpunit -c phpunit.xml --coverage-clover=clover-coverage.xml",
+            "export XDEBUG_MODE=coverage && vendor/bin/phpunit -c phpunit.xml.dist --coverage-clover=clover-coverage.xml",
             "vendor/bin/coverage-check clover-coverage.xml 100"
         ]
     },

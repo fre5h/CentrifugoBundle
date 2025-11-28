@@ -21,10 +21,10 @@ namespace Fresh\CentrifugoBundle\Token;
 abstract class AbstractJwtPayload implements JwtPayloadInterface
 {
     /**
-     * @param array       $info
-     * @param array       $meta
-     * @param int|null    $expirationTime
-     * @param string|null $base64info
+     * @param array<string, mixed> $info
+     * @param array<string, mixed> $meta
+     * @param int|null             $expirationTime
+     * @param string|null          $base64info
      */
     public function __construct(private readonly array $info = [], private readonly array $meta = [], private readonly ?int $expirationTime = null, private readonly ?string $base64info = null)
     {

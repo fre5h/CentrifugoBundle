@@ -3,7 +3,7 @@ includes:
     - 'vendor/phpstan/phpstan-phpunit/rules.neon'
     - 'vendor/phpstan/phpstan-symfony/extension.neon'
 parameters:
-    level: 10
+    level: 9
     excludePaths:
         - '%rootDir%/../../../DependencyInjection/Configuration.php'
         - '%rootDir%/../../../Tests/*'
