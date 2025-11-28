@@ -173,7 +173,7 @@ class Centrifugo implements CentrifugoInterface
 
         $response = $this->httpClient->request(
             Request::METHOD_POST,
-            sprintf('%s/%s', $this->endpoint, $command->getMethod()->value),
+            \sprintf('%s/%s', $this->endpoint, $command->getMethod()->value),
             [
                 'headers' => [
                     'X-API-Key' => $this->apiKey,

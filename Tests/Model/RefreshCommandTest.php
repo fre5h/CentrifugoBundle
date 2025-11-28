@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Fresh\CentrifugoBundle\Tests\Model;
 
 use Fresh\CentrifugoBundle\Model\CommandInterface;
-use Fresh\CentrifugoBundle\Model\RefreshCommand;
 use Fresh\CentrifugoBundle\Model\Method;
+use Fresh\CentrifugoBundle\Model\RefreshCommand;
 use Fresh\CentrifugoBundle\Model\SerializableCommandInterface;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -54,7 +54,7 @@ final class RefreshCommandTest extends TestCase
                     "user": "foo"
                 }
             JSON,
-            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT),
+            json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT),
         );
     }
 
@@ -78,7 +78,7 @@ final class RefreshCommandTest extends TestCase
                     "expire_at": 1234567890
                 }
             JSON,
-            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT),
+            json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT),
         );
     }
 }

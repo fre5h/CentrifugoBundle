@@ -55,7 +55,7 @@ final class HistoryCommandTest extends TestCase
                     "channel": "foo"
                 }
             JSON,
-            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT),
+            json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT),
         );
     }
 
@@ -80,7 +80,7 @@ final class HistoryCommandTest extends TestCase
                     }
                 }
             JSON,
-            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT),
+            json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT),
         );
     }
 
@@ -100,7 +100,7 @@ final class HistoryCommandTest extends TestCase
                     "reverse": true
                 }
             JSON,
-            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT),
+            json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT),
         );
     }
 

@@ -38,7 +38,7 @@ trait OptionInfoTrait
         if (\is_string($info)) {
             try {
                 /** @var array $decodedData */
-                $decodedData = \json_decode($info, true, 512, \JSON_THROW_ON_ERROR);
+                $decodedData = json_decode($info, true, 512, \JSON_THROW_ON_ERROR);
                 $this->info = $decodedData;
             } catch (\JsonException) {
                 throw new InvalidOptionException('Option "--info" is not a valid JSON.');

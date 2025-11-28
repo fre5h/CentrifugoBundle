@@ -37,7 +37,7 @@ abstract class AbstractCommand extends Command
     public function getChannelsForAutocompletion(): \Closure
     {
         return function () {
-            return \array_keys($this->centrifugo->channels()['channels']);
+            return array_keys($this->centrifugo->channels()['channels']);
         };
     }
 }

@@ -23,7 +23,7 @@ return (new PhpCsFixer\Config())
         'declare_strict_types' => true,
         'no_superfluous_phpdoc_tags' => false,
         'no_empty_phpdoc' => false,
-        'visibility_required' => false,
+        'modifier_keywords' => false,
         'array_syntax' => [
             'syntax' => 'short',
         ],

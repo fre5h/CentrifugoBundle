@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Fresh\CentrifugoBundle\Tests\Model;
 
 use Fresh\CentrifugoBundle\Model\CommandInterface;
-use Fresh\CentrifugoBundle\Model\Override;
-use Fresh\CentrifugoBundle\Model\SubscribeCommand;
 use Fresh\CentrifugoBundle\Model\Method;
+use Fresh\CentrifugoBundle\Model\Override;
 use Fresh\CentrifugoBundle\Model\SerializableCommandInterface;
 use Fresh\CentrifugoBundle\Model\StreamPosition;
+use Fresh\CentrifugoBundle\Model\SubscribeCommand;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
@@ -66,7 +66,7 @@ final class SubscribeCommandTest extends TestCase
                     "channel": "foo"
                 }
             JSON,
-            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT),
+            json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT),
         );
     }
 
@@ -119,7 +119,7 @@ final class SubscribeCommandTest extends TestCase
                     }
                 }
             JSON,
-            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT),
+            json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT),
         );
     }
 
@@ -152,7 +152,7 @@ final class SubscribeCommandTest extends TestCase
                     }
                 }
             JSON,
-            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT),
+            json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT),
         );
     }
 }
