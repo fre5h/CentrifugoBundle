@@ -26,7 +26,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-#[AsCommand(name: 'centrifugo:channels', description: 'Get list of active (with one or more subscribers) channels')]
+#[AsCommand(
+    name: 'centrifugo:channels',
+    description: 'Get list of active (with one or more subscribers) channels',
+)]
 final class ChannelsCommand extends AbstractCommand
 {
     use ArgumentPatternTrait;

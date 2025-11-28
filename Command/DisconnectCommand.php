@@ -33,7 +33,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-#[AsCommand(name: 'centrifugo:disconnect', description: 'Disconnect a user by ID')]
+#[AsCommand(
+    name: 'centrifugo:disconnect',
+    description: 'Disconnect a user by ID',
+)]
 final class DisconnectCommand extends AbstractCommand
 {
     use ArgumentUserTrait;

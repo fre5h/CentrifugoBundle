@@ -38,7 +38,7 @@ trait OptionTagsTrait
         if (\is_string($tags) && !empty($tags)) {
             try {
                 /** @var array $decodedData */
-                $decodedData = \json_decode($tags, true, 512, \JSON_THROW_ON_ERROR);
+                $decodedData = json_decode($tags, true, 512, \JSON_THROW_ON_ERROR);
 
                 if (!\is_array($decodedData)) {
                     throw new InvalidOptionException('Option "--tags" should be an associative array of strings.');

@@ -35,7 +35,7 @@ trait OptionBase64DataTrait
         $base64data = $input->getParameterOption('--base64data', null);
 
         if (\is_string($base64data) && !empty($base64data)) {
-            $decodedData = \base64_decode($base64data, true);
+            $decodedData = base64_decode($base64data, true);
             if (false === $decodedData) {
                 throw new InvalidOptionException('Option "--base64data" should be a valid base64 encoded string.');
             }

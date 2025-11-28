@@ -34,7 +34,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-#[AsCommand(name: 'centrifugo:history', description: 'Get channel history information (list of last messages published into channel)')]
+#[AsCommand(
+    name: 'centrifugo:history',
+    description: 'Get channel history information (list of last messages published into channel)',
+)]
 final class HistoryCommand extends AbstractCommand
 {
     use ArgumentChannelTrait;
@@ -126,7 +129,7 @@ HELP
                 $io->title('Publications');
 
                 foreach ($data['publications'] as $info) {
-                    $io->writeln(\json_encode($info['data'], \JSON_PRETTY_PRINT | \JSON_THROW_ON_ERROR));
+                    $io->writeln(json_encode($info['data'], \JSON_PRETTY_PRINT | \JSON_THROW_ON_ERROR));
                     $io->newLine();
                     $io->writeln('<info>------------</info>');
                     $io->newLine();

@@ -44,7 +44,7 @@ class JwtGenerator
         $headerPartEncoded = $this->base64EncodeUrlSafe($headerPart);
         $payloadPartEncoded = $this->base64EncodeUrlSafe($payloadPart);
 
-        return \implode('.', [
+        return implode('.', [
             $headerPartEncoded,
             $payloadPartEncoded,
             $this->buildSignaturePart($headerPartEncoded, $payloadPartEncoded),
@@ -83,7 +83,7 @@ class JwtGenerator
     private function buildSignaturePart(string $headerPartDecoded, string $payloadPartDecoded): string
     {
         $data = $headerPartDecoded.'.'.$payloadPartDecoded;
-        $hash = \hash_hmac(self::HMAC_ALGORITHM, $data, $this->centrifugoSecret, true);
+        $hash = hash_hmac(self::HMAC_ALGORITHM, $data, $this->centrifugoSecret, true);
 
         return $this->base64EncodeUrlSafe($hash);
     }
@@ -95,7 +95,7 @@ class JwtGenerator
      */
     private function convertArrayToJsonString(array $array): string
     {
-        return \json_encode($array, \JSON_THROW_ON_ERROR);
+        return json_encode($array, \JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -105,6 +105,6 @@ class JwtGenerator
      */
     private function base64EncodeUrlSafe(string $string): string
     {
-        return \str_replace(['+', '/', '='], ['-', '_', ''], \base64_encode($string));
+        return str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($string));
     }
 }

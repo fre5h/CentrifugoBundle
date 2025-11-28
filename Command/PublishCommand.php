@@ -33,7 +33,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-#[AsCommand(name: 'centrifugo:publish', description: 'Publish data into a channel')]
+#[AsCommand(
+    name: 'centrifugo:publish',
+    description: 'Publish data into a channel',
+)]
 final class PublishCommand extends AbstractCommand
 {
     use ArgumentChannelTrait;

@@ -24,7 +24,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-#[AsCommand(name: 'centrifugo:info', description: 'Get information about running Centrifugo nodes')]
+#[AsCommand(
+    name: 'centrifugo:info',
+    description: 'Get information about running Centrifugo nodes',
+)]
 final class InfoCommand extends AbstractCommand
 {
     /**
@@ -93,7 +96,7 @@ HELP
         if ($padding > 0) {
             $formattedKey = $last ? '└ ' : '├ ';
             $formattedKey .= $key;
-            $formattedKey = \str_pad($formattedKey, \strlen($formattedKey) + $padding, ' ', \STR_PAD_LEFT);
+            $formattedKey = str_pad($formattedKey, \strlen($formattedKey) + $padding, ' ', \STR_PAD_LEFT);
         }
 
         if (!\is_array($value)) {

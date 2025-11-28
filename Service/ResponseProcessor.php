@@ -38,7 +38,7 @@ class ResponseProcessor
      * @param CommandHistoryLogger $commandHistoryLogger
      * @param Profiler|null        $profiler
      */
-    public function __construct(private readonly CentrifugoChecker $centrifugoChecker, private readonly CommandHistoryLogger $commandHistoryLogger, readonly ?Profiler $profiler)
+    public function __construct(private readonly CentrifugoChecker $centrifugoChecker, private readonly CommandHistoryLogger $commandHistoryLogger, ?Profiler $profiler)
     {
         $this->profilerEnabled = $profiler instanceof Profiler;
     }
@@ -47,10 +47,10 @@ class ResponseProcessor
      * @param CommandInterface  $command
      * @param ResponseInterface $response
      *
+     * @return array|null
+     *
      * @throws LogicException
      * @throws CentrifugoErrorException
-     *
-     * @return array|null
      */
     public function processResponse(CommandInterface $command, ResponseInterface $response): ?array
     {
@@ -64,7 +64,7 @@ class ResponseProcessor
 
         try {
             /** @var array<string, array<string, mixed>> $data */
-            $data = \json_decode($content, true, 512, \JSON_THROW_ON_ERROR);
+            $data = json_decode($content, true, 512, \JSON_THROW_ON_ERROR);
         } catch (\Exception $parsingException) {
             throw new CentrifugoException(response: $response, message: 'Centrifugo response payload is not a valid JSON', previous: $parsingException);
         }

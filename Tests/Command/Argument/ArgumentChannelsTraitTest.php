@@ -44,7 +44,7 @@ final class ArgumentChannelsTraitTest extends TestCase
         $command = new BroadcastCommand($this->centrifugo, $this->centrifugoChecker);
 
         $this->application = new Application();
-        $this->application->add($command);
+        $this->application->addCommand($command);
 
         $this->command = $this->application->find('centrifugo:broadcast');
         $this->commandTester = new CommandTester($this->command);

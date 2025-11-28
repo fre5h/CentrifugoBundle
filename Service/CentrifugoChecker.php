@@ -35,13 +35,13 @@ class CentrifugoChecker
     /**
      * @param string $channelName
      *
-     * @throws InvalidArgumentException
-     *
      * @return bool
+     *
+     * @throws InvalidArgumentException
      */
     public function assertValidChannelName(string $channelName): bool
     {
-        if (false === \mb_detect_encoding($channelName, 'ASCII', true)) {
+        if (false === mb_detect_encoding($channelName, 'ASCII', true)) {
             throw new InvalidArgumentException('Invalid channel name. Only ASCII symbols must be used in channel string.');
         }
 

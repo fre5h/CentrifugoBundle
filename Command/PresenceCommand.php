@@ -28,7 +28,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-#[AsCommand(name: 'centrifugo:presence', description: 'Get channel presence information (all clients currently subscribed on this channel)')]
+#[AsCommand(
+    name: 'centrifugo:presence',
+    description: 'Get channel presence information (all clients currently subscribed on this channel)',
+)]
 final class PresenceCommand extends AbstractCommand
 {
     use ArgumentChannelTrait;
@@ -124,10 +127,10 @@ HELP
      */
     private function formatInfo(array $connInfo): string
     {
-        $json = \json_encode($connInfo, \JSON_PRETTY_PRINT | \JSON_THROW_ON_ERROR);
+        $json = json_encode($connInfo, \JSON_PRETTY_PRINT | \JSON_THROW_ON_ERROR);
 
         return array_reduce(
-            \explode("\n", $json),
+            explode("\n", $json),
             static function (string $jsonWithPadding, string $line) {
                 return \sprintf("%s   │ <comment>%s</comment>\n", $jsonWithPadding, $line);
             },

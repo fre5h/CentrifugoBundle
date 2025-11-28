@@ -52,7 +52,7 @@ final class ChannelsCommandTest extends TestCase
             <<<'JSON'
                 {}
             JSON,
-            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT),
+            json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT),
         );
     }
 
@@ -67,7 +67,7 @@ final class ChannelsCommandTest extends TestCase
                     "pattern": "abc"
                 }
             JSON,
-            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT),
+            json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT),
         );
     }
 

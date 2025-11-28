@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Fresh\CentrifugoBundle\Tests\Model;
 
 use Fresh\CentrifugoBundle\Model\CommandInterface;
-use Fresh\CentrifugoBundle\Model\DisconnectCommand;
 use Fresh\CentrifugoBundle\Model\Disconnect;
+use Fresh\CentrifugoBundle\Model\DisconnectCommand;
 use Fresh\CentrifugoBundle\Model\Method;
 use Fresh\CentrifugoBundle\Model\SerializableCommandInterface;
 use PHPUnit\Framework\Attributes\Test;
@@ -55,7 +55,7 @@ final class DisconnectCommandTest extends TestCase
                     "user": "foo"
                 }
             JSON,
-            \json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT),
+            json_encode($command, \JSON_THROW_ON_ERROR | \JSON_FORCE_OBJECT),
         );
     }
 
@@ -82,7 +82,7 @@ final class DisconnectCommandTest extends TestCase
                     }
                 }
             JSON,
-            \json_encode($command, \JSON_THROW_ON_ERROR),
+            json_encode($command, \JSON_THROW_ON_ERROR),
         );
     }
 }

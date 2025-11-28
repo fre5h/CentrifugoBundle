@@ -25,8 +25,8 @@ final class JwtPayloadForChannel extends AbstractJwtPayload
     /**
      * @param string                            $subject
      * @param string                            $channel
-     * @param array                             $info
-     * @param array                             $meta
+     * @param array<string, mixed>              $info
+     * @param array<string, mixed>              $meta
      * @param int|null                          $expirationTime
      * @param string|null                       $base64info
      * @param int|null                          $subscriptionExpirationTime

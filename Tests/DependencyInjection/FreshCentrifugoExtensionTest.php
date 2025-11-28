@@ -71,7 +71,7 @@ final class FreshCentrifugoExtensionTest extends TestCase
 
         $childDefinitions = $this->container->getAutoconfiguredInstanceof();
         foreach ($childDefinitions as $childDefinition) {
-           $this->assertTrue($childDefinition->hasTag('centrifugo.channel_authenticator'));
+            $this->assertTrue($childDefinition->hasTag('centrifugo.channel_authenticator'));
         }
     }
 

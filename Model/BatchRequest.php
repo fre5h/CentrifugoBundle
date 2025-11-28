@@ -58,7 +58,7 @@ final class BatchRequest implements CommandInterface
     public function addCommand(CommandInterface $command): void
     {
         $this->commands[] = $command;
-        $this->channels = \array_merge($this->channels, (array) $command->getChannels());
+        $this->channels = array_merge($this->channels, (array) $command->getChannels());
     }
 
     /**
@@ -100,12 +100,12 @@ final class BatchRequest implements CommandInterface
             $serializedCommands[] = \sprintf(
                 '{"%s":%s}',
                 $command->getMethod()->value,
-                \json_encode($command, \JSON_THROW_ON_ERROR),
+                json_encode($command, \JSON_THROW_ON_ERROR),
             );
         }
 
         if (!empty($serializedCommands)) {
-            $json = \sprintf('{"commands":[%s]}', \implode(',', $serializedCommands));
+            $json = \sprintf('{"commands":[%s]}', implode(',', $serializedCommands));
         } else {
             $json = '{}';
         }

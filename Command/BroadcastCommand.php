@@ -33,7 +33,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-#[AsCommand(name: 'centrifugo:broadcast', description: 'Publish same data into many channels')]
+#[AsCommand(
+    name: 'centrifugo:broadcast',
+    description: 'Publish same data into many channels',
+)]
 final class BroadcastCommand extends AbstractCommand
 {
     use ArgumentChannelsTrait;

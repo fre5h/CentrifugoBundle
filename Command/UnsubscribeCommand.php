@@ -32,7 +32,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-#[AsCommand(name: 'centrifugo:unsubscribe', description: 'Unsubscribe user from a channel')]
+#[AsCommand(
+    name: 'centrifugo:unsubscribe',
+    description: 'Unsubscribe user from a channel',
+)]
 final class UnsubscribeCommand extends AbstractCommand
 {
     use ArgumentChannelTrait;

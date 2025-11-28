@@ -44,7 +44,7 @@ final class HistoryCommandTest extends TestCase
         $command = new HistoryCommand($this->centrifugo, $this->centrifugoChecker);
 
         $this->application = new Application();
-        $this->application->add($command);
+        $this->application->addCommand($command);
 
         $this->command = $this->application->find('centrifugo:history');
         $this->commandTester = new CommandTester($this->command);
