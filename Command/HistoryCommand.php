@@ -34,7 +34,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-#[AsCommand(name: 'centrifugo:history', description: 'Get channel history information (list of last messages published into channel)')]
+#[AsCommand(
+    name: 'centrifugo:history',
+    description: 'Get channel history information (list of last messages published into channel)',
+)]
 final class HistoryCommand extends AbstractCommand
 {
     use ArgumentChannelTrait;

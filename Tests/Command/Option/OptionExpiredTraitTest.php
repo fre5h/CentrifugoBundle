@@ -40,7 +40,7 @@ final class OptionExpiredTraitTest extends TestCase
         $command = new RefreshCommand($this->centrifugo);
 
         $this->application = new Application();
-        $this->application->add($command);
+        $this->application->addCommand($command);
 
         $this->command = $this->application->find('centrifugo:refresh');
         $this->commandTester = new CommandTester($this->command);

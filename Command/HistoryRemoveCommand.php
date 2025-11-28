@@ -28,7 +28,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-#[AsCommand(name: 'centrifugo:history-remove', description: 'Remove publications in channel history')]
+#[AsCommand(
+    name: 'centrifugo:history-remove',
+    description: 'Remove publications in channel history',
+)]
 final class HistoryRemoveCommand extends AbstractCommand
 {
     use ArgumentChannelTrait;

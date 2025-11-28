@@ -43,7 +43,7 @@ final class HistoryRemoveCommandTest extends TestCase
         $command = new HistoryRemoveCommand($this->centrifugo, $this->centrifugoChecker);
 
         $this->application = new Application();
-        $this->application->add($command);
+        $this->application->addCommand($command);
 
         $this->command = $this->application->find('centrifugo:history-remove');
         $this->commandTester = new CommandTester($this->command);

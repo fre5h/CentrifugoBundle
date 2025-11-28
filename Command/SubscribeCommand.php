@@ -39,7 +39,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-#[AsCommand(name: 'centrifugo:subscribe', description: 'Subscribe user to a channel')]
+#[AsCommand(
+    name: 'centrifugo:subscribe',
+    description: 'Subscribe user to a channel',
+)]
 final class SubscribeCommand extends AbstractCommand
 {
     use ArgumentChannelTrait;

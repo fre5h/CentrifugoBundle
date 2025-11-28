@@ -40,7 +40,7 @@ final class InfoCommandTest extends TestCase
         $command = new InfoCommand($this->centrifugo);
 
         $this->application = new Application();
-        $this->application->add($command);
+        $this->application->addCommand($command);
 
         $this->command = $this->application->find('centrifugo:info');
         $this->commandTester = new CommandTester($this->command);

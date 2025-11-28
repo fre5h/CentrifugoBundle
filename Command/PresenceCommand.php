@@ -28,7 +28,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-#[AsCommand(name: 'centrifugo:presence', description: 'Get channel presence information (all clients currently subscribed on this channel)')]
+#[AsCommand(
+    name: 'centrifugo:presence',
+    description: 'Get channel presence information (all clients currently subscribed on this channel)',
+)]
 final class PresenceCommand extends AbstractCommand
 {
     use ArgumentChannelTrait;

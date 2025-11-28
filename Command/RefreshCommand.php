@@ -31,7 +31,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-#[AsCommand(name: 'centrifugo:refresh', description: 'Refresh user connection')]
+#[AsCommand(
+    name: 'centrifugo:refresh',
+    description: 'Refresh user connection',
+)]
 final class RefreshCommand extends AbstractCommand
 {
     use ArgumentUserTrait;

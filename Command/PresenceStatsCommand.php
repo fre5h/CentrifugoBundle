@@ -28,7 +28,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author Artem Henvald <genvaldartem@gmail.com>
  */
-#[AsCommand(name: 'centrifugo:presence-stats', description: 'Get short channel presence information - number of clients and number of unique users (based on user ID)')]
+#[AsCommand(
+    name: 'centrifugo:presence-stats',
+    description: 'Get short channel presence information - number of clients and number of unique users (based on user ID)',
+)]
 final class PresenceStatsCommand extends AbstractCommand
 {
     use ArgumentChannelTrait;
