@@ -15,6 +15,7 @@ namespace Fresh\CentrifugoBundle\Tests\Logger;
 
 use Fresh\CentrifugoBundle\DataCollector\CentrifugoCollector;
 use Fresh\CentrifugoBundle\Logger\CommandHistoryLogger;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -46,6 +47,7 @@ final class CommandCollectorTest extends TestCase
     }
 
     #[Test]
+    #[AllowMockObjectsWithoutExpectations]
     public function constructor(): void
     {
         $this->assertEquals(0, $this->centrifugoCollector->getCommandsCount());

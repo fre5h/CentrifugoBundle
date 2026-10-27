@@ -18,6 +18,7 @@ use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
@@ -31,7 +32,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 final class OptionEpochTraitTest extends TestCase
 {
     private CentrifugoInterface&MockObject $centrifugo;
-    private CentrifugoChecker&MockObject $centrifugoChecker;
+    private CentrifugoChecker&Stub $centrifugoChecker;
     private Command $command;
     private Application $application;
     private CommandTester $commandTester;
@@ -39,7 +40,7 @@ final class OptionEpochTraitTest extends TestCase
     protected function setUp(): void
     {
         $this->centrifugo = $this->createMock(CentrifugoInterface::class);
-        $this->centrifugoChecker = $this->createMock(CentrifugoChecker::class);
+        $this->centrifugoChecker = $this->createStub(CentrifugoChecker::class);
         $command = new HistoryCommand($this->centrifugo, $this->centrifugoChecker);
 
         $this->application = new Application();

@@ -16,6 +16,7 @@ namespace Fresh\CentrifugoBundle\Tests\Service\Jwt;
 use Fresh\CentrifugoBundle\Service\ChannelAuthenticator\ChannelAuthenticatorInterface;
 use Fresh\CentrifugoBundle\Service\ChannelAuthenticator\PrivateChannelAuthenticator;
 use Fresh\CentrifugoBundle\Service\Credentials\CredentialsGenerator;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -60,6 +61,7 @@ final class PrivateChannelAuthenticatorTest extends TestCase
     }
 
     #[Test]
+    #[AllowMockObjectsWithoutExpectations]
     public function invalidJsonRequest(): void
     {
         $this->request
@@ -74,13 +76,14 @@ final class PrivateChannelAuthenticatorTest extends TestCase
         ;
 
         $this->expectException(BadRequestHttpException::class);
-        $this->expectExceptionMessage('Invalid JSON.');
+        $this->expectExceptionMessageIsOrContains('Invalid JSON.');
 
         $this->assertEquals(['channels' => []], $this->privateChannelAuthenticator->authChannelsForClientFromRequest($this->request));
     }
 
     #[Test]
     #[DataProvider('dataProviderForTestInvalidClientInRequest')]
+    #[AllowMockObjectsWithoutExpectations]
     public function testInvalidClientInRequest(string $content): void
     {
         $this->request
@@ -95,7 +98,7 @@ final class PrivateChannelAuthenticatorTest extends TestCase
         ;
 
         $this->expectException(BadRequestHttpException::class);
-        $this->expectExceptionMessage('Client must be set in request.');
+        $this->expectExceptionMessageIsOrContains('Client must be set in request.');
 
         $this->assertEquals(['channels' => []], $this->privateChannelAuthenticator->authChannelsForClientFromRequest($this->request));
     }
@@ -139,6 +142,7 @@ final class PrivateChannelAuthenticatorTest extends TestCase
     }
 
     #[DataProvider('dataProviderForTestInvalidChannelsInRequest')]
+    #[AllowMockObjectsWithoutExpectations]
     public function testInvalidChannelsInRequest(string $content): void
     {
         $this->request
@@ -153,7 +157,7 @@ final class PrivateChannelAuthenticatorTest extends TestCase
         ;
 
         $this->expectException(BadRequestHttpException::class);
-        $this->expectExceptionMessage('Channels must be set in request.');
+        $this->expectExceptionMessageIsOrContains('Channels must be set in request.');
 
         $this->assertEquals(['channels' => []], $this->privateChannelAuthenticator->authChannelsForClientFromRequest($this->request));
     }
@@ -188,6 +192,7 @@ final class PrivateChannelAuthenticatorTest extends TestCase
     }
 
     #[Test]
+    #[AllowMockObjectsWithoutExpectations]
     public function nonStringChannelInRequest(): void
     {
         $this->request
@@ -207,12 +212,13 @@ final class PrivateChannelAuthenticatorTest extends TestCase
         ;
 
         $this->expectException(BadRequestHttpException::class);
-        $this->expectExceptionMessage('Channel must be a string.');
+        $this->expectExceptionMessageIsOrContains('Channel must be a string.');
 
         $this->assertEquals(['channels' => []], $this->privateChannelAuthenticator->authChannelsForClientFromRequest($this->request));
     }
 
     #[Test]
+    #[AllowMockObjectsWithoutExpectations]
     public function exceptionOnGetContent(): void
     {
         $this->request
@@ -227,12 +233,13 @@ final class PrivateChannelAuthenticatorTest extends TestCase
         ;
 
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('test');
+        $this->expectExceptionMessageIsOrContains('test');
 
         $this->assertEquals(['channels' => []], $this->privateChannelAuthenticator->authChannelsForClientFromRequest($this->request));
     }
 
     #[Test]
+    #[AllowMockObjectsWithoutExpectations]
     public function noChannelAuthenticator(): void
     {
         $this->request

@@ -83,7 +83,7 @@ final class OptionExpireAtTraitTest extends TestCase
         ;
 
         $this->expectException(InvalidOptionException::class);
-        $this->expectExceptionMessage('Option "--expireAt" should be a valid integer value greater than 0.');
+        $this->expectExceptionMessageIsOrContains('Option "--expireAt" should be a valid integer value greater than 0.');
 
         $this->commandTester->execute(
             [
@@ -103,7 +103,7 @@ final class OptionExpireAtTraitTest extends TestCase
         ;
 
         $this->expectException(InvalidOptionException::class);
-        $this->expectExceptionMessage('Option "--expireAt" should be a valid integer value greater than 0.');
+        $this->expectExceptionMessageIsOrContains('Option "--expireAt" should be a valid integer value greater than 0.');
 
         $this->commandTester->execute(
             [

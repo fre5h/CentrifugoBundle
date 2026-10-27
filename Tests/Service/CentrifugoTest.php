@@ -22,6 +22,7 @@ use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\ResponseProcessor;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use SEEC\PhpUnit\Helper\ConsecutiveParams;
 use Symfony\Component\HttpKernel\Profiler\Profiler;
@@ -38,21 +39,21 @@ final class CentrifugoTest extends TestCase
     use ConsecutiveParams;
 
     private HttpClientInterface&MockObject $httpClient;
-    private ResponseInterface&MockObject $response;
+    private ResponseInterface&Stub $response;
     private ResponseProcessor&MockObject $responseProcessor;
     private CommandHistoryLogger&MockObject $commandHistoryLogger;
     private CentrifugoChecker&MockObject $centrifugoChecker;
-    private Profiler&MockObject $profiler;
+    private Profiler&Stub $profiler;
     private Centrifugo $centrifugo;
 
     protected function setUp(): void
     {
         $this->httpClient = $this->createMock(HttpClientInterface::class);
-        $this->response = $this->createMock(ResponseInterface::class);
+        $this->response = $this->createStub(ResponseInterface::class);
         $this->responseProcessor = $this->createMock(ResponseProcessor::class);
         $this->commandHistoryLogger = $this->createMock(CommandHistoryLogger::class);
         $this->centrifugoChecker = $this->createMock(CentrifugoChecker::class);
-        $this->profiler = $this->createMock(Profiler::class);
+        $this->profiler = $this->createStub(Profiler::class);
         $this->centrifugo = new Centrifugo(
             'http://test.com',
             'qwerty',
