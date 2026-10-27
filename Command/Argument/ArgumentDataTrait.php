@@ -40,7 +40,7 @@ trait ArgumentDataTrait
         }
 
         try {
-            /** @var array $decodedData */
+            /** @var array<string, mixed> $decodedData */
             $decodedData = json_decode($data, true, 512, \JSON_THROW_ON_ERROR);
             $this->data = $decodedData;
         } catch (\JsonException) {

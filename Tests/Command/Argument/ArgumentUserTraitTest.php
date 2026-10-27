@@ -66,7 +66,7 @@ final class ArgumentUserTraitTest extends TestCase
         ;
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Argument "user" is not a string.');
+        $this->expectExceptionMessageIsOrContains('Argument "user" is not a string.');
 
         $this->commandTester->execute(
             [

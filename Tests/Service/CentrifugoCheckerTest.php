@@ -16,6 +16,7 @@ namespace Fresh\CentrifugoBundle\Tests\Service;
 use Fresh\CentrifugoBundle\Exception\CentrifugoException;
 use Fresh\CentrifugoBundle\Exception\InvalidArgumentException;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -46,24 +47,27 @@ final class CentrifugoCheckerTest extends TestCase
     }
 
     #[Test]
+    #[AllowMockObjectsWithoutExpectations]
     public function invalidChannelName(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Invalid channel name. Only ASCII symbols must be used in channel string.');
+        $this->expectExceptionMessageIsOrContains('Invalid channel name. Only ASCII symbols must be used in channel string.');
 
         $this->centrifugoChecker->assertValidChannelName('Hallöchen');
     }
 
     #[Test]
+    #[AllowMockObjectsWithoutExpectations]
     public function invalidChannelNameLength(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Invalid channel name length. Maximum allowed length is 10.');
+        $this->expectExceptionMessageIsOrContains('Invalid channel name length. Maximum allowed length is 10.');
 
         $this->centrifugoChecker->assertValidChannelName('ABCDEFGHIJK');
     }
 
     #[Test]
+    #[AllowMockObjectsWithoutExpectations]
     public function validChannelName(): void
     {
         $this->assertTrue($this->centrifugoChecker->assertValidChannelName('1234567890'));
@@ -79,7 +83,7 @@ final class CentrifugoCheckerTest extends TestCase
         ;
 
         $this->expectException(CentrifugoException::class);
-        $this->expectExceptionMessage('Wrong status code for Centrifugo response');
+        $this->expectExceptionMessageIsOrContains('Wrong status code for Centrifugo response');
 
         $this->centrifugoChecker->assertValidResponseStatusCode($this->response);
     }
@@ -107,7 +111,7 @@ final class CentrifugoCheckerTest extends TestCase
         ;
 
         $this->expectException(CentrifugoException::class);
-        $this->expectExceptionMessage('Missing "content-type" header in Centrifugo response');
+        $this->expectExceptionMessageIsOrContains('Missing "content-type" header in Centrifugo response');
 
         $this->centrifugoChecker->assertValidResponseHeaders($this->response);
     }
@@ -136,7 +140,7 @@ final class CentrifugoCheckerTest extends TestCase
         ;
 
         $this->expectException(CentrifugoException::class);
-        $this->expectExceptionMessage('Unexpected content type for Centrifugo response');
+        $this->expectExceptionMessageIsOrContains('Unexpected content type for Centrifugo response');
 
         $this->centrifugoChecker->assertValidResponseContentType($this->response);
     }

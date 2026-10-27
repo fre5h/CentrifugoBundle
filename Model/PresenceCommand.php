@@ -40,6 +40,9 @@ final class PresenceCommand extends AbstractCommand implements ResultableCommand
      */
     public function processResponse(array $data): array
     {
-        return $data['result']['presence'];
+        /** @var array{presence: array<string, array<string, mixed>>} $result */
+        $result = $data['result'];
+
+        return $result['presence'];
     }
 }

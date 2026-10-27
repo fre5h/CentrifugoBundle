@@ -26,7 +26,7 @@ interface CentrifugoUserInterface
     public function getCentrifugoSubject(): string;
 
     /**
-     * @return mixed[]
+     * @return array<string, mixed>
      */
     public function getCentrifugoUserInfo(): array;
 }

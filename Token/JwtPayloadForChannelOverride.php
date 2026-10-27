@@ -88,23 +88,23 @@ final class JwtPayloadForChannelOverride
         $data = [];
 
         if (null !== $this->getPresence()) {
-            $data['presence']['value'] = $this->getPresence();
+            $data['presence'] = ['value' => $this->getPresence()];
         }
 
         if (null !== $this->getJoinLeave()) {
-            $data['join_leave']['value'] = $this->getJoinLeave();
+            $data['join_leave'] = ['value' => $this->getJoinLeave()];
         }
 
         if (null !== $this->getForcePushJoinLeave()) {
-            $data['force_push_join_leave']['value'] = $this->getForcePushJoinLeave();
+            $data['force_push_join_leave'] = ['value' => $this->getForcePushJoinLeave()];
         }
 
         if (null !== $this->getForceRecovery()) {
-            $data['force_recovery']['value'] = $this->getForceRecovery();
+            $data['force_recovery'] = ['value' => $this->getForceRecovery()];
         }
 
         if (null !== $this->getForcePosting()) {
-            $data['force_posting']['value'] = $this->getForcePosting();
+            $data['force_posting'] = ['value' => $this->getForcePosting()];
         }
 
         return $data;

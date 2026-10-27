@@ -77,7 +77,7 @@ final class ArgumentChannelsTraitTest extends TestCase
         ;
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('test');
+        $this->expectExceptionMessageIsOrContains('test');
 
         $this->commandTester->execute(
             [

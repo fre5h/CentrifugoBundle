@@ -1,4 +1,4 @@
-FROM php:8.4
+FROM php:8.5.12
 RUN apt-get update && apt-get -yq \
     install \
     git \

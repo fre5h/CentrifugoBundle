@@ -18,6 +18,7 @@ use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
@@ -32,7 +33,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 final class OptionTagsTraitTest extends TestCase
 {
     private CentrifugoInterface&MockObject $centrifugo;
-    private CentrifugoChecker&MockObject $centrifugoChecker;
+    private CentrifugoChecker&Stub $centrifugoChecker;
     private Command $command;
     private Application $application;
     private CommandTester $commandTester;
@@ -40,7 +41,7 @@ final class OptionTagsTraitTest extends TestCase
     protected function setUp(): void
     {
         $this->centrifugo = $this->createMock(CentrifugoInterface::class);
-        $this->centrifugoChecker = $this->createMock(CentrifugoChecker::class);
+        $this->centrifugoChecker = $this->createStub(CentrifugoChecker::class);
         $command = new PublishCommand($this->centrifugo, $this->centrifugoChecker);
 
         $this->application = new Application();
@@ -70,7 +71,7 @@ final class OptionTagsTraitTest extends TestCase
         ;
 
         $this->expectException(InvalidOptionException::class);
-        $this->expectExceptionMessage('Option "--tags" is not a valid JSON.');
+        $this->expectExceptionMessageIsOrContains('Option "--tags" is not a valid JSON.');
 
         $this->commandTester->execute(
             [
@@ -91,7 +92,7 @@ final class OptionTagsTraitTest extends TestCase
         ;
 
         $this->expectException(InvalidOptionException::class);
-        $this->expectExceptionMessage('Option "--tags" should be an associative array of strings.');
+        $this->expectExceptionMessageIsOrContains('Option "--tags" should be an associative array of strings.');
 
         $this->commandTester->execute(
             [
@@ -112,7 +113,7 @@ final class OptionTagsTraitTest extends TestCase
         ;
 
         $this->expectException(InvalidOptionException::class);
-        $this->expectExceptionMessage('Option "--tags" should be an associative array of strings.');
+        $this->expectExceptionMessageIsOrContains('Option "--tags" should be an associative array of strings.');
 
         $this->commandTester->execute(
             [

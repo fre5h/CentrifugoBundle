@@ -88,6 +88,7 @@ HELP
         $io = new SymfonyStyle($input, $output);
 
         try {
+            /** @var array{presence: array<string, array{client: string, user: string, conn_info?: array<mixed>, chan_info?: array<mixed>}>} $data */
             $data = $this->centrifugo->presence($this->channel);
 
             if (!empty($data['presence'])) {

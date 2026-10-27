@@ -22,8 +22,8 @@
 
 ## Requirements 🧐
 
-* PHP >= 8.4
-* Symfony >= 7.4
+* PHP >= 8.5
+* Symfony >= 8.1
 
 ## Installation 🌱
 
@@ -35,8 +35,8 @@ $ composer req fresh/centrifugo-bundle
 
 | Bundle Version (X.Y.Z) |   PHP    | Symfony | Comment             |
 |:----------------------:|:--------:|:-------:|:--------------------|
-|        `6.4.*`         | `>= 8.4` | `>=7.4` | **Current version** |
-|        `6.3.*`         | `>= 8.3` |  `7.*`  | Previous version    |
+|        `6.5.*`         | `>= 8.5` | `>=8.1` | **Current version** |
+|        `6.4.*`         | `>= 8.4` | `>=7.4` | Previous version    |
 
 By default, [Symfony Flex](https://symfony.com/doc/current/setup/flex.html) adds this bundle to the `config/bundles.php` file and adds required environment variables into `.env` file.
 In case when you ignored `contrib-recipe` during bundle installation it would not be done. Then you have to do this manually.

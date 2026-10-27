@@ -84,7 +84,7 @@ final class OptionDisconnectCodeTraitTest extends TestCase
         ;
 
         $this->expectException(InvalidOptionException::class);
-        $this->expectExceptionMessage('Option "--disconnectCode" should be a valid integer value greater than 0.');
+        $this->expectExceptionMessageIsOrContains('Option "--disconnectCode" should be a valid integer value greater than 0.');
 
         $this->commandTester->execute(
             [

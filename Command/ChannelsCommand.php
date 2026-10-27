@@ -84,13 +84,15 @@ HELP
             $data = $this->centrifugo->channels(pattern: $this->pattern);
 
             if (!empty($data['channels'])) {
+                /** @var array<string, array{num_clients: int}> $channels */
+                $channels = $data['channels'];
                 $rows = [];
-                foreach ($data['channels'] as $channelName => $item) {
+                foreach ($channels as $channelName => $item) {
                     $rows[] = [$channelName, $item['num_clients']];
                 }
                 $io->table(['Channel Name', 'Number Of Subscriptions'], $rows);
 
-                $io->text(\sprintf('<info>Total Channels</info>: %d', \count($data['channels'])));
+                $io->text(\sprintf('<info>Total Channels</info>: %d', \count($channels)));
             } else {
                 $io->success('NO DATA');
             }

@@ -41,7 +41,7 @@ class CredentialsGenerator
     /**
      * @param CentrifugoUserInterface|CentrifugoUserMetaInterface $user
      * @param string|null                                         $base64info
-     * @param array                                               $channels
+     * @param string[]                                            $channels
      *
      * @return string
      */
@@ -60,11 +60,11 @@ class CredentialsGenerator
     }
 
     /**
-     * @param string      $subject
-     * @param array       $info
-     * @param array       $meta
-     * @param string|null $base64info
-     * @param array       $channels
+     * @param string               $subject
+     * @param array<string, mixed> $info
+     * @param array<string, mixed> $meta
+     * @param string|null          $base64info
+     * @param string[]             $channels
      *
      * @return string
      */
@@ -83,11 +83,11 @@ class CredentialsGenerator
     }
 
     /**
-     * @param string      $subject
-     * @param string      $channel
-     * @param array       $info
-     * @param array       $meta
-     * @param string|null $base64info
+     * @param string               $subject
+     * @param string               $channel
+     * @param array<string, mixed> $info
+     * @param array<string, mixed> $meta
+     * @param string|null          $base64info
      *
      * @return string
      */
@@ -107,7 +107,7 @@ class CredentialsGenerator
 
     /**
      * @param string|null $base64info
-     * @param array       $channels
+     * @param string[]    $channels
      *
      * @return string
      */
@@ -151,7 +151,7 @@ class CredentialsGenerator
     /**
      * @param CentrifugoUserInterface|CentrifugoUserMetaInterface $user
      * @param string                                              $channel
-     * @param array                                               $info
+     * @param array<string, mixed>                                $info
      * @param string|null                                         $base64info
      *
      * @return string

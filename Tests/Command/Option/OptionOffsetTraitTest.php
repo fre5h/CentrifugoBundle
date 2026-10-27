@@ -18,6 +18,7 @@ use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\CentrifugoInterface;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
@@ -32,7 +33,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 final class OptionOffsetTraitTest extends TestCase
 {
     private CentrifugoInterface&MockObject $centrifugo;
-    private CentrifugoChecker&MockObject $centrifugoChecker;
+    private CentrifugoChecker&Stub $centrifugoChecker;
     private Command $command;
     private Application $application;
     private CommandTester $commandTester;
@@ -40,7 +41,7 @@ final class OptionOffsetTraitTest extends TestCase
     protected function setUp(): void
     {
         $this->centrifugo = $this->createMock(CentrifugoInterface::class);
-        $this->centrifugoChecker = $this->createMock(CentrifugoChecker::class);
+        $this->centrifugoChecker = $this->createStub(CentrifugoChecker::class);
         $command = new HistoryCommand($this->centrifugo, $this->centrifugoChecker);
 
         $this->application = new Application();
@@ -87,7 +88,7 @@ final class OptionOffsetTraitTest extends TestCase
         ;
 
         $this->expectException(InvalidOptionException::class);
-        $this->expectExceptionMessage('Option "--offset" should be a valid integer value greater than 0.');
+        $this->expectExceptionMessageIsOrContains('Option "--offset" should be a valid integer value greater than 0.');
 
         $this->commandTester->execute(
             [
@@ -107,7 +108,7 @@ final class OptionOffsetTraitTest extends TestCase
         ;
 
         $this->expectException(InvalidOptionException::class);
-        $this->expectExceptionMessage('Option "--offset" should be a valid integer value greater than 0.');
+        $this->expectExceptionMessageIsOrContains('Option "--offset" should be a valid integer value greater than 0.');
 
         $this->commandTester->execute(
             [

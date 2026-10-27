@@ -25,8 +25,10 @@ use Fresh\CentrifugoBundle\Model\PublishCommand;
 use Fresh\CentrifugoBundle\Model\ResultableCommandInterface;
 use Fresh\CentrifugoBundle\Service\CentrifugoChecker;
 use Fresh\CentrifugoBundle\Service\ResponseProcessor;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use SEEC\PhpUnit\Helper\ConsecutiveParams;
 use Symfony\Component\HttpKernel\Profiler\Profiler;
@@ -44,14 +46,14 @@ final class ResponseProcessorTest extends TestCase
     private ResponseInterface&MockObject $response;
     private CentrifugoChecker&MockObject $centrifugoChecker;
     private CommandHistoryLogger&MockObject $commandHistoryLogger;
-    private Profiler&MockObject $profiler;
+    private Profiler&Stub $profiler;
     private ResponseProcessor $responseProcessor;
 
     protected function setUp(): void
     {
         $this->response = $this->createMock(ResponseInterface::class);
         $this->commandHistoryLogger = $this->createMock(CommandHistoryLogger::class);
-        $this->profiler = $this->createMock(Profiler::class);
+        $this->profiler = $this->createStub(Profiler::class);
         $this->centrifugoChecker = $this->createMock(CentrifugoChecker::class);
         $this->responseProcessor = new ResponseProcessor(
             $this->centrifugoChecker,
@@ -138,6 +140,7 @@ final class ResponseProcessorTest extends TestCase
     }
 
     #[Test]
+    #[AllowMockObjectsWithoutExpectations]
     public function logicException(): void
     {
         $this->response
@@ -154,7 +157,7 @@ final class ResponseProcessorTest extends TestCase
         ;
 
         $this->expectException(LogicException::class);
-        $this->expectExceptionMessage('Number of commands doesn\'t match number of responses');
+        $this->expectExceptionMessageIsOrContains('Number of commands doesn\'t match number of responses');
 
         $this->responseProcessor->processResponse(
             new BatchRequest(
@@ -255,6 +258,7 @@ final class ResponseProcessorTest extends TestCase
     }
 
     #[Test]
+    #[AllowMockObjectsWithoutExpectations]
     public function invalidResponse(): void
     {
         $this->response
@@ -264,7 +268,7 @@ final class ResponseProcessorTest extends TestCase
         ;
 
         $this->expectException(CentrifugoException::class);
-        $this->expectExceptionMessage('Centrifugo response payload is not a valid JSON');
+        $this->expectExceptionMessageIsOrContains('Centrifugo response payload is not a valid JSON');
 
         $this->responseProcessor->processResponse(
             $this->createStub(ResultableCommandInterface::class),
@@ -273,6 +277,7 @@ final class ResponseProcessorTest extends TestCase
     }
 
     #[Test]
+    #[AllowMockObjectsWithoutExpectations]
     public function processingCentrifugoErrorForSingleCommand(): void
     {
         $this->response
@@ -291,12 +296,13 @@ final class ResponseProcessorTest extends TestCase
 
         $this->expectException(CentrifugoErrorException::class);
         $this->expectExceptionCode(123);
-        $this->expectExceptionMessage('test message');
+        $this->expectExceptionMessageIsOrContains('test message');
 
         $this->responseProcessor->processResponse($command, $this->response);
     }
 
     #[Test]
+    #[AllowMockObjectsWithoutExpectations]
     public function processingCentrifugoErrorForBatchRequest(): void
     {
         $this->response
@@ -328,7 +334,7 @@ final class ResponseProcessorTest extends TestCase
 
         $this->expectException(CentrifugoErrorException::class);
         $this->expectExceptionCode(456);
-        $this->expectExceptionMessage('test message 2');
+        $this->expectExceptionMessageIsOrContains('test message 2');
 
         $this->responseProcessor->processResponse(
             new BatchRequest(

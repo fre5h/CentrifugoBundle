@@ -25,12 +25,12 @@ use JetBrains\PhpStorm\ArrayShape;
 final class JwtSubscriptionPayload extends AbstractJwtPayload
 {
     /**
-     * @param string      $subject
-     * @param string      $channel
-     * @param array       $info
-     * @param array       $meta
-     * @param int|null    $expirationTime
-     * @param string|null $base64info
+     * @param string               $subject
+     * @param string               $channel
+     * @param array<string, mixed> $info
+     * @param array<string, mixed> $meta
+     * @param int|null             $expirationTime
+     * @param string|null          $base64info
      */
     public function __construct(private readonly string $subject, private readonly string $channel, array $info = [], array $meta = [], ?int $expirationTime = null, ?string $base64info = null)
     {

@@ -88,6 +88,7 @@ HELP
         $io = new SymfonyStyle($input, $output);
 
         try {
+            /** @var array{num_clients: int, num_users: int} $data */
             $data = $this->centrifugo->presenceStats($this->channel);
 
             $io->title('Presence Stats');

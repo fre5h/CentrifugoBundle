@@ -33,6 +33,9 @@ final class InfoCommand extends AbstractCommand implements ResultableCommandInte
      */
     public function processResponse(array $data): array
     {
-        return $data['result'];
+        /** @var array<string, mixed> $result */
+        $result = $data['result'];
+
+        return $result;
     }
 }

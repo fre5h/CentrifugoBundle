@@ -35,8 +35,9 @@ class FreshCentrifugoExtension extends Extension
         $loader->load('services.php');
 
         $configuration = new Configuration();
+        /** @var array{channel_max_length: int, jwt: array{ttl: int}, fake_mode: bool, api_key: string, api_endpoint: string, secret: string} $config */
         $config = $this->processConfiguration($configuration, $configs);
-        $container->setParameter('centrifugo.channel_max_length', (int) $config['channel_max_length']);
+        $container->setParameter('centrifugo.channel_max_length', $config['channel_max_length']);
         $container->setParameter('centrifugo.jwt.ttl', $config['jwt']['ttl']);
         $container->setParameter('centrifugo.fake_mode', $config['fake_mode']);
         $container->setParameter('centrifugo.api_key', $config['api_key']);

@@ -69,7 +69,7 @@ final class BatchRequestTest extends TestCase
     public function constructorWithException(): void
     {
         $this->expectException(UnexpectedValueException::class);
-        $this->expectExceptionMessage('Invalid command for batch request. Only instances of Fresh\CentrifugoBundle\Model\CommandInterface are allowed.');
+        $this->expectExceptionMessageIsOrContains('Invalid command for batch request. Only instances of Fresh\CentrifugoBundle\Model\CommandInterface are allowed.');
 
         new BatchRequest([new \stdClass()]);
     }

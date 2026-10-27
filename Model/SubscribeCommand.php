@@ -66,21 +66,29 @@ final class SubscribeCommand extends AbstractCommand
         }
 
         if ($recoverSince instanceof StreamPosition) {
+            $recoverSinceParams = [];
+
             if (\is_int($recoverSince->getOffset()) && $recoverSince->getOffset() > 0) {
-                $params['recover_since']['offset'] = $recoverSince->getOffset();
+                $recoverSinceParams['offset'] = $recoverSince->getOffset();
             }
 
             if (\is_string($recoverSince->getEpoch()) && !empty($recoverSince->getEpoch())) {
-                $params['recover_since']['epoch'] = $recoverSince->getEpoch();
+                $recoverSinceParams['epoch'] = $recoverSince->getEpoch();
+            }
+
+            if ([] !== $recoverSinceParams) {
+                $params['recover_since'] = $recoverSinceParams;
             }
         }
 
         if ($override instanceof Override) {
-            $params['override']['presence'] = $override->isPresence();
-            $params['override']['join_leave'] = $override->isJoinLeave();
-            $params['override']['force_push_join_leave'] = $override->isForcePushJoinLeave();
-            $params['override']['force_positioning'] = $override->isForcePositioning();
-            $params['override']['force_recovery'] = $override->isForceRecovery();
+            $params['override'] = [
+                'presence' => $override->isPresence(),
+                'join_leave' => $override->isJoinLeave(),
+                'force_push_join_leave' => $override->isForcePushJoinLeave(),
+                'force_positioning' => $override->isForcePositioning(),
+                'force_recovery' => $override->isForceRecovery(),
+            ];
         }
 
         parent::__construct(Method::SUBSCRIBE, $params);

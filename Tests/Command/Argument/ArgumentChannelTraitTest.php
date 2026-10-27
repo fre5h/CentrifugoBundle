@@ -78,7 +78,7 @@ final class ArgumentChannelTraitTest extends TestCase
         ;
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('test');
+        $this->expectExceptionMessageIsOrContains('test');
 
         $this->commandTester->execute(
             [
@@ -102,7 +102,7 @@ final class ArgumentChannelTraitTest extends TestCase
         ;
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Argument "channel" is not a string.');
+        $this->expectExceptionMessageIsOrContains('Argument "channel" is not a string.');
 
         $this->commandTester->execute(
             [
@@ -126,7 +126,7 @@ final class ArgumentChannelTraitTest extends TestCase
         ;
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Argument "channel" is required.');
+        $this->expectExceptionMessageIsOrContains('Argument "channel" is required.');
 
         $this->commandTester->execute(
             [

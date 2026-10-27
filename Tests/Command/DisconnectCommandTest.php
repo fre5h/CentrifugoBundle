@@ -114,7 +114,7 @@ final class DisconnectCommandTest extends TestCase
         ;
 
         $this->expectException(InvalidOptionException::class);
-        $this->expectExceptionMessage('Options "--disconnectReason" and "--disconnectCode" should set be together.');
+        $this->expectExceptionMessageIsOrContains('Options "--disconnectReason" and "--disconnectCode" should set be together.');
 
         $result = $this->commandTester->execute(
             [
@@ -141,7 +141,7 @@ final class DisconnectCommandTest extends TestCase
         ;
 
         $this->expectException(InvalidOptionException::class);
-        $this->expectExceptionMessage('Options "--disconnectReason" and "--disconnectCode" should set be together.');
+        $this->expectExceptionMessageIsOrContains('Options "--disconnectReason" and "--disconnectCode" should set be together.');
 
         $result = $this->commandTester->execute(
             [
