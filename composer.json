@@ -72,7 +72,7 @@
         "ci:psr-check": "@composer dump-autoload --dry-run --strict-psr --optimize",
         "ci:code-style": [
             "vendor/bin/phpcs --standard=phpcs.xml",
-            "vendor/bin/php-cs-fixer fix --dry-run --config=.php-cs-fixer.php -v"
+            "vendor/bin/php-cs-fixer fix --dry-run --config=.php-cs-fixer.php -v",
         ],
         "ci:static-analysis": [
             "XDEBUG_MODE=off vendor/bin/phpstan analyse --no-progress -c phpstan.neon ./"
