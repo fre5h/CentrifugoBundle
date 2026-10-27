@@ -56,6 +56,7 @@ HELP
         $io = new SymfonyStyle($input, $output);
 
         try {
+            /** @var array{nodes: list<array{name: string, ...<string, mixed>}>} $data */
             $data = $this->centrifugo->info();
 
             if (!empty($data['nodes'])) {

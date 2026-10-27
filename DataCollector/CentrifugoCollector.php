@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Fresh\CentrifugoBundle\DataCollector;
 
 use Fresh\CentrifugoBundle\Logger\CommandHistoryLogger;
-use Fresh\CentrifugoBundle\Model\CommandInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
@@ -76,7 +75,10 @@ class CentrifugoCollector extends DataCollector
      */
     public function getCommandsCount(): int
     {
-        return $this->data['commands_count'];
+        /** @var int $count */
+        $count = $this->data['commands_count'];
+
+        return $count;
     }
 
     /**
@@ -84,7 +86,10 @@ class CentrifugoCollector extends DataCollector
      */
     public function getSuccessfulCommandsCount(): int
     {
-        return $this->data['successful_commands_count'];
+        /** @var int $count */
+        $count = $this->data['successful_commands_count'];
+
+        return $count;
     }
 
     /**
@@ -92,7 +97,10 @@ class CentrifugoCollector extends DataCollector
      */
     public function getFailedCommandsCount(): int
     {
-        return $this->data['failed_commands_count'];
+        /** @var int $count */
+        $count = $this->data['failed_commands_count'];
+
+        return $count;
     }
 
     /**
@@ -100,14 +108,20 @@ class CentrifugoCollector extends DataCollector
      */
     public function getRequestsCount(): int
     {
-        return $this->data['requests_count'];
+        /** @var int $count */
+        $count = $this->data['requests_count'];
+
+        return $count;
     }
 
     /**
-     * @return CommandInterface[]
+     * @return array<array>
      */
     public function getCommandHistory(): array
     {
-        return $this->data['command_history'];
+        /** @var array<array> $commandHistory */
+        $commandHistory = $this->data['command_history'];
+
+        return $commandHistory;
     }
 }

@@ -46,8 +46,10 @@ final class DisconnectCommand extends AbstractCommand
         }
 
         if ($disconnectObject instanceof Disconnect) {
-            $params['disconnect']['code'] = $disconnectObject->getCode();
-            $params['disconnect']['reason'] = $disconnectObject->getReason();
+            $params['disconnect'] = [
+                'code' => $disconnectObject->getCode(),
+                'reason' => $disconnectObject->getReason(),
+            ];
         }
 
         parent::__construct(Method::DISCONNECT, $params);

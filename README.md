@@ -35,7 +35,7 @@ $ composer req fresh/centrifugo-bundle
 
 | Bundle Version (X.Y.Z) |   PHP    | Symfony | Comment             |
 |:----------------------:|:--------:|:-------:|:--------------------|
-|        `7.0.*`         | `>= 8.5` | `>=8.1` | **Current version** |
+|        `6.5.*`         | `>= 8.5` | `>=8.1` | **Current version** |
 |        `6.4.*`         | `>= 8.4` | `>=7.4` | Previous version    |
 
 By default, [Symfony Flex](https://symfony.com/doc/current/setup/flex.html) adds this bundle to the `config/bundles.php` file and adds required environment variables into `.env` file.

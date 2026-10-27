@@ -118,6 +118,7 @@ HELP
         $io = new SymfonyStyle($input, $output);
 
         try {
+            /** @var array{publications?: list<array{data: mixed}>, offset: int, epoch: string} $data */
             $data = $this->centrifugo->history(
                 channel: $this->channel,
                 reverse: $this->reverse,

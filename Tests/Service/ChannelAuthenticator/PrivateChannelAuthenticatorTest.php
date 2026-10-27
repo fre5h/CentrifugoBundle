@@ -15,6 +15,7 @@ namespace Fresh\CentrifugoBundle\Tests\Service\Jwt;
 
 use Fresh\CentrifugoBundle\Service\ChannelAuthenticator\ChannelAuthenticatorInterface;
 use Fresh\CentrifugoBundle\Service\ChannelAuthenticator\PrivateChannelAuthenticator;
+use Fresh\CentrifugoBundle\Service\ChannelAuthenticator\PrivateChannelAuthenticatorResolver;
 use Fresh\CentrifugoBundle\Service\Credentials\CredentialsGenerator;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -46,7 +47,7 @@ final class PrivateChannelAuthenticatorTest extends TestCase
         $this->customerChannelAuthenticator = $this->createMock(ChannelAuthenticatorInterface::class);
         $this->privateChannelAuthenticator = new PrivateChannelAuthenticator(
             $this->credentialsGenerator,
-            [$this->customerChannelAuthenticator],
+            new PrivateChannelAuthenticatorResolver([$this->customerChannelAuthenticator]),
         );
     }
 
@@ -328,5 +329,127 @@ final class PrivateChannelAuthenticatorTest extends TestCase
             ],
             $this->privateChannelAuthenticator->authChannelsForClientFromRequest($this->request)
         );
+    }
+
+    #[Test]
+    public function accessDeniedForChannel(): void
+    {
+        $this->request
+            ->expects($this->once())
+            ->method('getContent')
+            ->willReturn(<<<'JSON'
+                {
+                    "client": "spiderman",
+                    "channels": ["avengers"]
+                }
+            JSON)
+        ;
+
+        $this->customerChannelAuthenticator
+            ->expects($this->once())
+            ->method('supports')
+            ->with('avengers')
+            ->willReturn(true)
+        ;
+
+        $this->customerChannelAuthenticator
+            ->expects($this->once())
+            ->method('hasAccessToChannel')
+            ->with('avengers')
+            ->willReturn(false)
+        ;
+
+        $this->credentialsGenerator
+            ->expects($this->never())
+            ->method('generateJwtTokenForPrivateChannel')
+        ;
+
+        $this->assertEquals(['channels' => []], $this->privateChannelAuthenticator->authChannelsForClientFromRequest($this->request));
+    }
+
+    #[Test]
+    public function onlyChannelsWithAccessGetTokens(): void
+    {
+        $this->request
+            ->expects($this->once())
+            ->method('getContent')
+            ->willReturn(<<<'JSON'
+                {
+                    "client": "spiderman",
+                    "channels": ["avengers", "marvel"]
+                }
+            JSON)
+        ;
+
+        $this->customerChannelAuthenticator
+            ->expects($this->exactly(2))
+            ->method('supports')
+            ->with(
+                ...self::withConsecutive(
+                    ['avengers'],
+                    ['marvel'],
+                )
+            )
+            ->willReturn(true)
+        ;
+
+        $this->customerChannelAuthenticator
+            ->expects($this->exactly(2))
+            ->method('hasAccessToChannel')
+            ->with(
+                ...self::withConsecutive(
+                    ['avengers'],
+                    ['marvel'],
+                )
+            )
+            ->willReturnOnConsecutiveCalls(false, true)
+        ;
+
+        $this->credentialsGenerator
+            ->expects($this->once())
+            ->method('generateJwtTokenForPrivateChannel')
+            ->with('spiderman', 'marvel')
+            ->willReturn('test-marvel')
+        ;
+
+        $this->assertEquals(
+            [
+                'channels' => [
+                    [
+                        'channel' => 'marvel',
+                        'token' => 'test-marvel',
+                    ],
+                ],
+            ],
+            $this->privateChannelAuthenticator->authChannelsForClientFromRequest($this->request)
+        );
+    }
+
+    #[Test]
+    #[AllowMockObjectsWithoutExpectations]
+    public function noAuthenticatorRegistered(): void
+    {
+        $privateChannelAuthenticator = new PrivateChannelAuthenticator(
+            $this->credentialsGenerator,
+            new PrivateChannelAuthenticatorResolver([]),
+        );
+
+        $this->request
+            ->expects($this->once())
+            ->method('getContent')
+            ->willReturn(<<<'JSON'
+                {
+                    "client": "spiderman",
+                    "channels": ["avengers"]
+                }
+            JSON)
+        ;
+
+        $this->credentialsGenerator
+            ->expects($this->never())
+            ->method('generateJwtTokenForPrivateChannel')
+        ;
+
+        $this->assertEquals(['channels' => []], $privateChannelAuthenticator->authChannelsForClientFromRequest($this->request));
     }
 }

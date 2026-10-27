@@ -26,17 +26,19 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class PrivateChannelAuthenticator
 {
     /**
-     * @param CredentialsGenerator                     $credentialsGenerator
-     * @param ChannelAuthenticatorInterface[]|iterable $channelAuthenticators
+     * @param CredentialsGenerator                $credentialsGenerator
+     * @param PrivateChannelAuthenticatorResolver $privateChannelAuthenticatorResolver
      */
-    public function __construct(private readonly CredentialsGenerator $credentialsGenerator, private readonly iterable $channelAuthenticators)
-    {
+    public function __construct(
+        private readonly CredentialsGenerator $credentialsGenerator,
+        private readonly PrivateChannelAuthenticatorResolver $privateChannelAuthenticatorResolver,
+    ) {
     }
 
     /**
      * @param Request $request
      *
-     * @return array
+     * @return array{channels: list<array{channel: string, token: string}>}
      */
     #[ArrayShape(['channels' => 'array'])]
     public function authChannelsForClientFromRequest(Request $request): array
@@ -46,11 +48,11 @@ class PrivateChannelAuthenticator
         [$client, $channels] = $this->processRequest($request);
 
         foreach ($channels as $channel) {
-            $token = $this->authChannelForClient($client, (string) $channel, $request);
+            $token = $this->authChannelForClient($client, $channel, $request);
 
             if (\is_string($token)) {
                 $authData[] = [
-                    'channel' => (string) $channel,
+                    'channel' => $channel,
                     'token' => $token,
                 ];
             }
@@ -70,7 +72,7 @@ class PrivateChannelAuthenticator
     {
         $token = null;
 
-        $channelAuthenticator = $this->findAppropriateChannelAuthenticator($channel, $request);
+        $channelAuthenticator = $this->privateChannelAuthenticatorResolver->findAppropriateChannelAuthenticator($channel, $request);
         if ($channelAuthenticator instanceof ChannelAuthenticatorInterface && $channelAuthenticator->hasAccessToChannel($channel, $request)) {
             $token = $this->credentialsGenerator->generateJwtTokenForPrivateChannel($client, $channel);
         }
@@ -79,26 +81,9 @@ class PrivateChannelAuthenticator
     }
 
     /**
-     * @param string  $channel
      * @param Request $request
      *
-     * @return ChannelAuthenticatorInterface|null
-     */
-    private function findAppropriateChannelAuthenticator(string $channel, Request $request): ?ChannelAuthenticatorInterface
-    {
-        foreach ($this->channelAuthenticators as $channelAuthenticator) {
-            if ($channelAuthenticator->supports($channel, $request)) {
-                return $channelAuthenticator;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * @param Request $request
-     *
-     * @return array
+     * @return array{string, list<string>}
      *
      * @throws BadRequestHttpException
      * @throws \Exception
@@ -106,31 +91,30 @@ class PrivateChannelAuthenticator
     private function processRequest(Request $request): array
     {
         try {
-            /** @var array $content */
+            /** @var array<string, mixed> $content */
             $content = json_decode((string) $request->getContent(), true, 512, \JSON_THROW_ON_ERROR);
         } catch (\JsonException) {
             throw new BadRequestHttpException('Invalid JSON.');
         }
 
-        $result = [];
-
         if (!isset($content['client']) || !\is_string($content['client'])) {
             throw new BadRequestHttpException('Client must be set in request.');
         }
-        $result[] = $content['client'];
 
         if (!isset($content['channels']) || !\is_array($content['channels']) || empty($content['channels'])) {
             throw new BadRequestHttpException('Channels must be set in request.');
         }
 
+        $channels = [];
+
         foreach ($content['channels'] as $channel) {
             if (!\is_string($channel)) {
                 throw new BadRequestHttpException('Channel must be a string.');
             }
+
+            $channels[] = $channel;
         }
 
-        $result[] = $content['channels'];
-
-        return $result;
+        return [$content['client'], $channels];
     }
 }

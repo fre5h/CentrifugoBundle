@@ -37,7 +37,7 @@ trait OptionTagsTrait
 
         if (\is_string($tags) && !empty($tags)) {
             try {
-                /** @var array $decodedData */
+                /** @var array<string, mixed> $decodedData */
                 $decodedData = json_decode($tags, true, 512, \JSON_THROW_ON_ERROR);
 
                 if (!\is_array($decodedData)) {

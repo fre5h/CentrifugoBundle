@@ -40,6 +40,9 @@ final class PresenceStatsCommand extends AbstractCommand implements ResultableCo
      */
     public function processResponse(array $data): array
     {
-        return $data['result'];
+        /** @var array<string, mixed> $result */
+        $result = $data['result'];
+
+        return $result;
     }
 }

@@ -31,6 +31,9 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 class ResponseProcessor
 {
     private bool $profilerEnabled;
+    /**
+     * @var array{command?: CommandInterface, response?: ResponseInterface, message?: string, code?: int}
+     */
     private array $centrifugoError = [];
 
     /**
@@ -47,7 +50,7 @@ class ResponseProcessor
      * @param CommandInterface  $command
      * @param ResponseInterface $response
      *
-     * @return array|null
+     * @return array<array-key, mixed>|null
      *
      * @throws LogicException
      * @throws CentrifugoErrorException
@@ -58,7 +61,7 @@ class ResponseProcessor
         $this->centrifugoChecker->assertValidResponseHeaders($response);
         $this->centrifugoChecker->assertValidResponseContentType($response);
 
-        $this->centrifugoError = [];
+        $this->resetCentrifugoError();
 
         $content = $response->getContent();
 
@@ -70,7 +73,7 @@ class ResponseProcessor
         }
 
         if ($command instanceof BatchRequest) {
-            /** @var array<int, array> $replies */
+            /** @var array<int, array<string, mixed>> $replies */
             $replies = $data['replies'];
             $result = [];
 
@@ -87,16 +90,18 @@ class ResponseProcessor
             $result = $this->decodeAndProcessResponseResult($command, $response, $data);
         }
 
-        if (\array_key_exists('command', $this->centrifugoError)
-            && \array_key_exists('response', $this->centrifugoError)
-            && \array_key_exists('message', $this->centrifugoError)
-            && \array_key_exists('code', $this->centrifugoError)
+        $centrifugoError = $this->centrifugoError;
+
+        if (\array_key_exists('command', $centrifugoError)
+            && \array_key_exists('response', $centrifugoError)
+            && \array_key_exists('message', $centrifugoError)
+            && \array_key_exists('code', $centrifugoError)
         ) {
             $exception = new CentrifugoErrorException(
-                command: $this->centrifugoError['command'],
-                response: $this->centrifugoError['response'],
-                message: $this->centrifugoError['message'],
-                code: $this->centrifugoError['code'],
+                command: $centrifugoError['command'],
+                response: $centrifugoError['response'],
+                message: $centrifugoError['message'],
+                code: $centrifugoError['code'],
             );
 
             throw $exception;
@@ -105,12 +110,17 @@ class ResponseProcessor
         return $result;
     }
 
+    private function resetCentrifugoError(): void
+    {
+        $this->centrifugoError = [];
+    }
+
     /**
-     * @param CommandInterface  $command
-     * @param ResponseInterface $response
-     * @param array             $data
+     * @param CommandInterface     $command
+     * @param ResponseInterface    $response
+     * @param array<string, mixed> $data
      *
-     * @return array|null
+     * @return array<string, mixed>|null
      */
     private function decodeAndProcessResponseResult(CommandInterface $command, ResponseInterface $response, array $data): ?array
     {
@@ -118,12 +128,15 @@ class ResponseProcessor
         $result = null;
 
         if (isset($data['error'])) {
+            /** @var array{message: string, code: int} $error */
+            $error = $data['error'];
+
             if (empty($this->centrifugoError)) {
                 $this->centrifugoError = [
                     'command' => $command,
                     'response' => $response,
-                    'message' => $data['error']['message'],
-                    'code' => $data['error']['code'],
+                    'message' => $error['message'],
+                    'code' => $error['code'],
                 ];
             }
 

@@ -43,12 +43,18 @@ final class HistoryCommand extends AbstractCommand implements ResultableCommandI
         }
 
         if ($streamPosition instanceof StreamPosition) {
+            $since = [];
+
             if (\is_int($streamPosition->getOffset()) && $streamPosition->getOffset() > 0) {
-                $params['since']['offset'] = $streamPosition->getOffset();
+                $since['offset'] = $streamPosition->getOffset();
             }
 
             if (\is_string($streamPosition->getEpoch()) && !empty($streamPosition->getEpoch())) {
-                $params['since']['epoch'] = $streamPosition->getEpoch();
+                $since['epoch'] = $streamPosition->getEpoch();
+            }
+
+            if ([] !== $since) {
+                $params['since'] = $since;
             }
         }
 
@@ -60,6 +66,9 @@ final class HistoryCommand extends AbstractCommand implements ResultableCommandI
      */
     public function processResponse(array $data): array
     {
-        return $data['result'];
+        /** @var array<string, mixed> $result */
+        $result = $data['result'];
+
+        return $result;
     }
 }

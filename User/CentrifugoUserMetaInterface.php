@@ -21,7 +21,7 @@ namespace Fresh\CentrifugoBundle\User;
 interface CentrifugoUserMetaInterface extends CentrifugoUserInterface
 {
     /**
-     * @return mixed[]
+     * @return array<string, mixed>
      */
     public function getCentrifugoUserMeta(): array;
 }
